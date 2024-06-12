@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Mgtt.ECom.Domain.UserManagement;
 
 namespace Mgtt.ECom.Domain.ReviewManagement
 {
@@ -9,13 +10,23 @@ namespace Mgtt.ECom.Domain.ReviewManagement
     /// </summary>
     public class Review : IValidatableObject
     {
-        public int ReviewID { get; internal set; }
+        public Review()
+        {
+            ReviewID = Guid.NewGuid();
+            ProductID = Guid.Empty;
+            UserID = Guid.Empty;
+            Rating = 3;
+            Comment = string.Empty;
+            ReviewDate = DateTime.UtcNow;
+        }
+
+        public Guid ReviewID { get; internal set; }
 
         [Required]
-        public int ProductID { get; set; }
+        public Guid ProductID { get; set; }
 
         [Required]
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
 
         [Required]
         [Range(1, 5, ErrorMessage = "Rating must be between 1 and 5")]
@@ -32,6 +43,21 @@ namespace Mgtt.ECom.Domain.ReviewManagement
         /// </summary>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            if (ReviewID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(ReviewID)} can't be empty");
+            }
+
+            if (ProductID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(ProductID)} can't be empty");
+            }
+
+            if (UserID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(UserID)} can't be empty");
+            }
+
             if (Rating < 1 || Rating > 5)
             {
                 yield return new ValidationResult($"{nameof(Rating)} must be between 1 and 5");

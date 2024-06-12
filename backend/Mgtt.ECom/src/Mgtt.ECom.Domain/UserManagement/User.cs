@@ -9,7 +9,16 @@ namespace Mgtt.ECom.Domain.UserManagement
     /// </summary>
     public class User : IValidatableObject
     {
-        public int UserID { get; internal set; }
+        public User()
+        {
+            UserID = Guid.NewGuid();
+            UserName = string.Empty;
+            PasswordHash = string.Empty;
+            Email = string.Empty;
+            Role = string.Empty;
+        }
+
+        public Guid UserID { get; internal set; }
 
         [Required]
         [StringLength(100)]
@@ -31,6 +40,11 @@ namespace Mgtt.ECom.Domain.UserManagement
         /// </summary>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            if (UserID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(UserID)} can't be empty");
+            }
+
             if (string.IsNullOrEmpty(UserName))
             {
                 yield return new ValidationResult($"{nameof(UserName)} can't be empty");

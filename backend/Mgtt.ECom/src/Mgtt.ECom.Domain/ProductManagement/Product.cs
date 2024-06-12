@@ -9,7 +9,22 @@ namespace Mgtt.ECom.Domain.ProductManagement
     /// </summary>
     public class Product : IValidatableObject
     {
-        public int ProductID { get; internal set; }
+        public Product()
+        {
+            ProductID = Guid.NewGuid();
+            CategoryID = Guid.Empty;
+            Name = string.Empty;
+            Description = string.Empty;
+            Price = 0.01f;
+            Stock = 0;
+            ImageUrl = string.Empty;
+        }
+
+        [Required]
+        public Guid ProductID { get; internal set; }
+
+        [Required]
+        public Guid CategoryID { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -26,8 +41,6 @@ namespace Mgtt.ECom.Domain.ProductManagement
         public int Stock { get; set; }
 
         [Required]
-        public int CategoryID { get; set; }
-
         public string ImageUrl { get; set; }
 
         /// <summary>
@@ -35,6 +48,11 @@ namespace Mgtt.ECom.Domain.ProductManagement
         /// </summary>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            if (ProductID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(ProductID)} can't be empty");
+            }
+
             if (string.IsNullOrEmpty(Name))
             {
                 yield return new ValidationResult($"{nameof(Name)} can't be empty");

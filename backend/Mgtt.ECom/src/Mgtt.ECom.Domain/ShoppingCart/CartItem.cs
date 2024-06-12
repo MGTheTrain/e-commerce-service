@@ -9,13 +9,23 @@ namespace Mgtt.ECom.Domain.ShoppingCart
     /// </summary>
     public class CartItem : IValidatableObject
     {
-        public int CartItemID { get; internal set; }
+        public CartItem()
+        {
+            CartItemID = Guid.NewGuid();
+            CartID = Guid.Empty;
+            ProductID = Guid.Empty;
+            Quantity = 1;
+            Price = 0.01f;
+        }
 
         [Required]
-        public int CartID { get; set; }
+        public Guid CartItemID { get; internal set; }
 
         [Required]
-        public int ProductID { get; set; }
+        public Guid CartID { get; set; }
+
+        [Required]
+        public Guid ProductID { get; set; }
 
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
@@ -30,6 +40,21 @@ namespace Mgtt.ECom.Domain.ShoppingCart
         /// </summary>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            if (CartItemID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(CartID)} can't be empty");
+            }
+
+            if (CartID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(CartID)} can't be empty");
+            }
+
+            if (ProductID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(ProductID)} can't be empty");
+            }
+
             if (Quantity <= 0)
             {
                 yield return new ValidationResult($"{nameof(Quantity)} must be greater than zero");

@@ -9,13 +9,23 @@ namespace Mgtt.ECom.Domain.OrderManagement
     /// </summary>
     public class OrderItem : IValidatableObject
     {
-        public int OrderItemID { get; internal set; }
+        public OrderItem()
+        {
+            OrderItemID = Guid.NewGuid();
+            OrderID = Guid.Empty;
+            ProductID = Guid.Empty;
+            Quantity = 1;
+            Price = 0.01f;
+        }
 
         [Required]
-        public int OrderID { get; set; }
+        public Guid OrderItemID { get; internal set; }
 
         [Required]
-        public int ProductID { get; set; }
+        public Guid OrderID { get; set; }
+
+        [Required]
+        public Guid ProductID { get; set; }
 
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
@@ -30,6 +40,21 @@ namespace Mgtt.ECom.Domain.OrderManagement
         /// </summary>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            if (OrderItemID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(OrderItemID)} can't be empty");
+            }
+
+            if (OrderID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(OrderID)} can't be empty");
+            }
+
+            if (ProductID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(ProductID)} can't be empty");
+            }
+
             if (Quantity <= 0)
             {
                 yield return new ValidationResult($"{nameof(Quantity)} must be greater than zero");

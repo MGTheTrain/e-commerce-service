@@ -9,7 +9,14 @@ namespace Mgtt.ECom.Domain.ProductManagement
     /// </summary>
     public class Category : IValidatableObject
     {
-        public int CategoryID { get; internal set; }
+        public Category()
+        {
+            CategoryID = Guid.NewGuid();
+            Name = string.Empty;
+            Description = string.Empty;
+        }
+
+        public Guid CategoryID { get; internal set; }
 
         [Required]
         [StringLength(100)]
@@ -22,6 +29,11 @@ namespace Mgtt.ECom.Domain.ProductManagement
         /// </summary>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            if (CategoryID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(CategoryID)} can't be empty");
+            }
+
             if (string.IsNullOrEmpty(Name))
             {
                 yield return new ValidationResult($"{nameof(Name)} can't be empty");

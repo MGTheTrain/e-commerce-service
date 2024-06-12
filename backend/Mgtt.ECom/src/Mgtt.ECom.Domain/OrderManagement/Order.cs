@@ -9,10 +9,20 @@ namespace Mgtt.ECom.Domain.OrderManagement
     /// </summary>
     public class Order : IValidatableObject
     {
-        public int OrderID { get; internal set; }
+        public Order()
+        {
+            OrderID = Guid.NewGuid();
+            UserID = Guid.Empty;
+            OrderDate = DateTime.UtcNow;
+            TotalAmount = 0.01f;
+            OrderStatus = "InProgress";
+        }
 
         [Required]
-        public int UserID { get; set; }
+        public Guid OrderID { get; internal set; }
+
+        [Required]
+        public Guid UserID { get; set; }
 
         [Required]
         public DateTime OrderDate { get; set; }
@@ -30,6 +40,16 @@ namespace Mgtt.ECom.Domain.OrderManagement
         /// </summary>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            if (OrderID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(OrderID)} can't be empty");
+            }
+
+            if (UserID == Guid.Empty)
+            {
+                yield return new ValidationResult($"{nameof(UserID)} can't be empty");
+            }
+
             if (OrderDate == default(DateTime))
             {
                 yield return new ValidationResult($"{nameof(OrderDate)} can't be default value");

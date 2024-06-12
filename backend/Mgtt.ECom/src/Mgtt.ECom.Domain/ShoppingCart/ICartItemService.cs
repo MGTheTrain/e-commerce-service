@@ -1,4 +1,4 @@
-namespace Mgtt.EComm.Domain.ShoppingCart;
+namespace Mgtt.ECom.Domain.ShoppingCart;
 
 public interface ICartItemService
 {

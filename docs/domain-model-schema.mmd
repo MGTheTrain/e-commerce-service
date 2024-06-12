@@ -1,0 +1,81 @@
+erDiagram
+    %% Bounded Contexts: User Management, Product Management, Order Management, Shopping Cart, Review Management
+    
+    %% User Management Context
+    User {
+        int UserID
+        string UserName
+        string PasswordHash
+        string Email
+        string Role
+    }
+    
+    %% Product Management Context
+    Product {
+        int ProductID
+        string Name
+        string Description
+        float Price
+        int Stock
+        int CategoryID
+        string ImageUrl
+    }
+    
+    Category {
+        int CategoryID
+        string Name
+        string Description
+    }
+    
+    %% Order Management Context
+    Order {
+        int OrderID
+        int UserID
+        date OrderDate
+        float TotalAmount
+        string OrderStatus
+    }
+    
+    OrderItem {
+        int OrderItemID
+        int OrderID
+        int ProductID
+        int Quantity
+        float Price
+    }
+    
+    %% Shopping Cart Context
+    Cart {
+        int CartID
+        int UserID
+        float TotalAmount
+    }
+    
+    CartItem {
+        int CartItemID
+        int CartIDh
+        int ProductID
+        int Quantity
+        float Price
+    }
+    
+    %% Review Management Context
+    Review {
+        int ReviewID
+        int ProductID
+        int UserID
+        int Rating
+        string Comment
+        date ReviewDate
+    }
+
+    %% Relationships
+    User ||--o{ Order : places
+    Order ||--|{ OrderItem : contains
+    Product ||--o{ OrderItem : includes
+    User ||--o{ Review : writes
+    Product ||--o{ Review : has
+    User ||--o{ Cart : owns
+    Cart ||--|{ CartItem : contains
+    Product ||--o{ CartItem : includes
+    Category ||--o{ Product : classifies

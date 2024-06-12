@@ -9,7 +9,7 @@
 
 ## Summary
 
-The e-commerce-service project is designed to provide a robust front- and backend for an e-commerce platform
+A simple frontend and backend for an e-commerce platform utilizing DDD principles based on an existing cookiecutter template
 
 ## Features
 

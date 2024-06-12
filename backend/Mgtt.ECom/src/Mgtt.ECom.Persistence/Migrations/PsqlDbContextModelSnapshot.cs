@@ -24,11 +24,9 @@ namespace Mgtt.ECom.Persistence.Migrations
 
             modelBuilder.Entity("Mgtt.ECom.Domain.OrderManagement.Order", b =>
                 {
-                    b.Property<int>("OrderID")
+                    b.Property<Guid>("OrderID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderID"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("timestamp with time zone");
@@ -41,8 +39,8 @@ namespace Mgtt.ECom.Persistence.Migrations
                     b.Property<float>("TotalAmount")
                         .HasColumnType("real");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("uuid");
 
                     b.HasKey("OrderID");
 
@@ -51,20 +49,18 @@ namespace Mgtt.ECom.Persistence.Migrations
 
             modelBuilder.Entity("Mgtt.ECom.Domain.OrderManagement.OrderItem", b =>
                 {
-                    b.Property<int>("OrderItemID")
+                    b.Property<Guid>("OrderItemID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderItemID"));
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("OrderID")
+                        .HasColumnType("uuid");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int>("ProductID")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("ProductID")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
@@ -76,11 +72,9 @@ namespace Mgtt.ECom.Persistence.Migrations
 
             modelBuilder.Entity("Mgtt.ECom.Domain.ProductManagement.Category", b =>
                 {
-                    b.Property<int>("CategoryID")
+                    b.Property<Guid>("CategoryID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CategoryID"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -98,14 +92,12 @@ namespace Mgtt.ECom.Persistence.Migrations
 
             modelBuilder.Entity("Mgtt.ECom.Domain.ProductManagement.Product", b =>
                 {
-                    b.Property<int>("ProductID")
+                    b.Property<Guid>("ProductID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProductID"));
-
-                    b.Property<int>("CategoryID")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CategoryID")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -133,19 +125,17 @@ namespace Mgtt.ECom.Persistence.Migrations
 
             modelBuilder.Entity("Mgtt.ECom.Domain.ReviewManagement.Review", b =>
                 {
-                    b.Property<int>("ReviewID")
+                    b.Property<Guid>("ReviewID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ReviewID"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
-                    b.Property<int>("ProductID")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("ProductID")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Rating")
                         .HasColumnType("integer");
@@ -153,8 +143,8 @@ namespace Mgtt.ECom.Persistence.Migrations
                     b.Property<DateTime>("ReviewDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("uuid");
 
                     b.HasKey("ReviewID");
 
@@ -163,17 +153,15 @@ namespace Mgtt.ECom.Persistence.Migrations
 
             modelBuilder.Entity("Mgtt.ECom.Domain.ShoppingCart.Cart", b =>
                 {
-                    b.Property<int>("CartID")
+                    b.Property<Guid>("CartID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CartID"));
+                        .HasColumnType("uuid");
 
                     b.Property<float>("TotalAmount")
                         .HasColumnType("real");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("uuid");
 
                     b.HasKey("CartID");
 
@@ -182,20 +170,18 @@ namespace Mgtt.ECom.Persistence.Migrations
 
             modelBuilder.Entity("Mgtt.ECom.Domain.ShoppingCart.CartItem", b =>
                 {
-                    b.Property<int>("CartItemID")
+                    b.Property<Guid>("CartItemID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CartItemID"));
-
-                    b.Property<int>("CartID")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CartID")
+                        .HasColumnType("uuid");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int>("ProductID")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("ProductID")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
@@ -207,11 +193,9 @@ namespace Mgtt.ECom.Persistence.Migrations
 
             modelBuilder.Entity("Mgtt.ECom.Domain.UserManagement.User", b =>
                 {
-                    b.Property<int>("UserID")
+                    b.Property<Guid>("UserID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserID"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Email")
                         .IsRequired()

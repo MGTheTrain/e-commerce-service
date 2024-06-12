@@ -34,8 +34,10 @@ public class PsqlDbContext : DbContext
     /// <param name="optionsBuilder">Options builder for configuring the DbContext.</param>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseNpgsql();
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseNpgsql(); // Only configure Npgsql if no other provider has been configured
+        }
     }
 
     /// <summary>

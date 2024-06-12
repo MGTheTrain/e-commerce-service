@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Mgtt.EComm.Domain.ShoppingCart
+namespace Mgtt.ECom.Domain.ShoppingCart
 {
     /// <summary>
     /// Represents a shopping cart item in the e-commerce system.

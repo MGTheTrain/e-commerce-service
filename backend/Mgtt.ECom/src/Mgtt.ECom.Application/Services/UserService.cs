@@ -48,7 +48,7 @@ namespace Mgtt.ECom.Application.Services
 
         public async Task<bool> ValidateUser(string email, string password)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+            var user = _context.Users.SingleOrDefault(u => u.Email == email);
             if (user == null) return false;
 
             return BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);

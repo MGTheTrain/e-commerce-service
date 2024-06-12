@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Xunit;
-using Mgtt.ECom.Domain.UserManagement;
 
 namespace Mgtt.ECom.DomainTest.User
 {
@@ -12,7 +11,7 @@ namespace Mgtt.ECom.DomainTest.User
         public void User_Validation_Succeeds_With_Valid_Data()
         {
             // Arrange
-            var user = new User
+            var user = new Mgtt.ECom.Domain.UserManagement.User
             {
                 UserName = "JohnDoe",
                 PasswordHash = "hashedpassword",
@@ -38,7 +37,7 @@ namespace Mgtt.ECom.DomainTest.User
         public void User_Validation_Fails_With_Invalid_Data(string userName, string passwordHash, string email, string role, string expectedMemberName)
         {
             // Arrange
-            var user = new User
+            var user = new Mgtt.ECom.Domain.UserManagement.User
             {
                 UserName = userName,
                 PasswordHash = passwordHash,

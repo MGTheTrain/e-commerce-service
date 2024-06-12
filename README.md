@@ -14,6 +14,7 @@ The e-commerce-service project is designed to provide a robust front- and backen
 ## Features
 
 ### User Management
+
 - User Registration & Authentication: Securely handle user sign-up, login, and role management.
 - User Profile Management: Manage user details such as username, email, and password.
 

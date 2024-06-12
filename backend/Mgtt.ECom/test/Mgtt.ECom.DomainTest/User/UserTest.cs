@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using Xunit;
 using Mgtt.ECom.Domain.UserManagement;
 
-namespace Mgtt.ECom.Tests
+namespace Mgtt.ECom.DomainTest.User
 {
     public class UserTests
     {

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <ProjectReference Include="..\Mgtt.ECom.Domain\Mgtt.ECom.Domain.csproj" />
+    <ProjectReference Include="..\Mgtt.ECom.Infrastructure\Mgtt.ECom.Infrastructure.csproj" />
+    <ProjectReference Include="..\Mgtt.ECom.Persistence\Mgtt.ECom.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

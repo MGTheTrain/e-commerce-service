@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{32FEAA5A-9F50-438C-9C60-A1D38AE911D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mgtt.ECom.Application", "src\Mgtt.ECom.Application\Mgtt.ECom.Application.csproj", "{7FC8E352-D18D-4563-80CE-BB3DEB18E9B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mgtt.ECom.Domain", "src\Mgtt.ECom.Domain\Mgtt.ECom.Domain.csproj", "{00A33731-2819-4097-9237-0BE3113F0635}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mgtt.ECom.Infrastructure", "src\Mgtt.ECom.Infrastructure\Mgtt.ECom.Infrastructure.csproj", "{5E0A8366-5669-44EA-A746-DF29ABAE9637}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mgtt.ECom.Persistence", "src\Mgtt.ECom.Persistence\Mgtt.ECom.Persistence.csproj", "{9163C3F9-78F0-4189-8FDD-130D7405FA18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mgtt.ECom.Web", "src\Mgtt.ECom.Web\Mgtt.ECom.Web.csproj", "{3448BD53-D78C-494A-A89D-DA12F16522BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{CBD92084-6126-4983-A2A9-E9A5B1055C83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mgtt.ECom.ApplicationTest", "test\Mgtt.ECom.ApplicationTest\Mgtt.ECom.ApplicationTest.csproj", "{86742CCF-B53B-4FDA-BAD6-60DA44750E55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mgtt.ECom.DomainTest", "test\Mgtt.ECom.DomainTest\Mgtt.ECom.DomainTest.csproj", "{4960D518-603C-416B-B69D-B3ABA0185E7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mgtt.ECom.InfrastructureTest", "test\Mgtt.ECom.InfrastructureTest\Mgtt.ECom.InfrastructureTest.csproj", "{A0010B20-942F-4E5A-8AC1-B884E7E912A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mgtt.ECom.PersistenceTest", "test\Mgtt.ECom.PersistenceTest\Mgtt.ECom.PersistenceTest.csproj", "{6150290E-5880-4832-B66D-B30ADA6E212D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FC8E352-D18D-4563-80CE-BB3DEB18E9B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FC8E352-D18D-4563-80CE-BB3DEB18E9B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FC8E352-D18D-4563-80CE-BB3DEB18E9B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FC8E352-D18D-4563-80CE-BB3DEB18E9B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00A33731-2819-4097-9237-0BE3113F0635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00A33731-2819-4097-9237-0BE3113F0635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00A33731-2819-4097-9237-0BE3113F0635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00A33731-2819-4097-9237-0BE3113F0635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E0A8366-5669-44EA-A746-DF29ABAE9637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E0A8366-5669-44EA-A746-DF29ABAE9637}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E0A8366-5669-44EA-A746-DF29ABAE9637}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E0A8366-5669-44EA-A746-DF29ABAE9637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9163C3F9-78F0-4189-8FDD-130D7405FA18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9163C3F9-78F0-4189-8FDD-130D7405FA18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9163C3F9-78F0-4189-8FDD-130D7405FA18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9163C3F9-78F0-4189-8FDD-130D7405FA18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3448BD53-D78C-494A-A89D-DA12F16522BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3448BD53-D78C-494A-A89D-DA12F16522BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3448BD53-D78C-494A-A89D-DA12F16522BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3448BD53-D78C-494A-A89D-DA12F16522BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86742CCF-B53B-4FDA-BAD6-60DA44750E55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86742CCF-B53B-4FDA-BAD6-60DA44750E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86742CCF-B53B-4FDA-BAD6-60DA44750E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86742CCF-B53B-4FDA-BAD6-60DA44750E55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4960D518-603C-416B-B69D-B3ABA0185E7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4960D518-603C-416B-B69D-B3ABA0185E7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4960D518-603C-416B-B69D-B3ABA0185E7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4960D518-603C-416B-B69D-B3ABA0185E7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0010B20-942F-4E5A-8AC1-B884E7E912A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0010B20-942F-4E5A-8AC1-B884E7E912A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0010B20-942F-4E5A-8AC1-B884E7E912A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0010B20-942F-4E5A-8AC1-B884E7E912A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6150290E-5880-4832-B66D-B30ADA6E212D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6150290E-5880-4832-B66D-B30ADA6E212D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6150290E-5880-4832-B66D-B30ADA6E212D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6150290E-5880-4832-B66D-B30ADA6E212D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7FC8E352-D18D-4563-80CE-BB3DEB18E9B6} = {32FEAA5A-9F50-438C-9C60-A1D38AE911D1}
+		{00A33731-2819-4097-9237-0BE3113F0635} = {32FEAA5A-9F50-438C-9C60-A1D38AE911D1}
+		{5E0A8366-5669-44EA-A746-DF29ABAE9637} = {32FEAA5A-9F50-438C-9C60-A1D38AE911D1}
+		{9163C3F9-78F0-4189-8FDD-130D7405FA18} = {32FEAA5A-9F50-438C-9C60-A1D38AE911D1}
+		{3448BD53-D78C-494A-A89D-DA12F16522BA} = {32FEAA5A-9F50-438C-9C60-A1D38AE911D1}
+		{86742CCF-B53B-4FDA-BAD6-60DA44750E55} = {CBD92084-6126-4983-A2A9-E9A5B1055C83}
+		{4960D518-603C-416B-B69D-B3ABA0185E7E} = {CBD92084-6126-4983-A2A9-E9A5B1055C83}
+		{A0010B20-942F-4E5A-8AC1-B884E7E912A3} = {CBD92084-6126-4983-A2A9-E9A5B1055C83}
+		{6150290E-5880-4832-B66D-B30ADA6E212D} = {CBD92084-6126-4983-A2A9-E9A5B1055C83}
+	EndGlobalSection
+EndGlobal

@@ -2,9 +2,9 @@ namespace Mgtt.ECom.Domain.ShoppingCart;
 
 public interface ICartItemService
 {
-    Task<CartItem> GetCartItemById(int cartItemId);
-    Task<IEnumerable<CartItem>> GetCartItemsByCartId(int cartId);
+    Task<CartItem> GetCartItemById(Guid cartItemId);
+    Task<IEnumerable<CartItem>> GetCartItemsByCartId(Guid cartId);
     Task CreateCartItem(CartItem cartItem);
     Task UpdateCartItem(CartItem cartItem);
-    Task DeleteCartItem(int cartItemId);
+    Task DeleteCartItem(Guid cartItemId);
 }

@@ -14,7 +14,7 @@ namespace Mgtt.ECom.Application.Services
             _context = context;
         }
 
-        public async Task<Cart> GetCartByUserId(int userId)
+        public async Task<Cart> GetCartByUserId(Guid userId)
         {
             return await Task.FromResult(_context.Carts.SingleOrDefault(c => c.UserID == userId));
         }
@@ -31,7 +31,7 @@ namespace Mgtt.ECom.Application.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteCart(int cartId)
+        public async Task DeleteCart(Guid cartId)
         {
             var cart = await _context.Carts.FindAsync(cartId);
             if (cart != null)

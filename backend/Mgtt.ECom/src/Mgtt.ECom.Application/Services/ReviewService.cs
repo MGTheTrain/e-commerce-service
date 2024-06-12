@@ -15,17 +15,17 @@ namespace Mgtt.ECom.Application.Services
             _context = context;
         }
 
-        public async Task<Review> GetReviewById(int reviewId)
+        public async Task<Review> GetReviewById(Guid reviewId)
         {
             return await Task.FromResult(_context.Reviews.Find(reviewId));
         }
 
-        public async Task<IEnumerable<Review>> GetReviewsByProductId(int productId)
+        public async Task<IEnumerable<Review>> GetReviewsByProductId(Guid productId)
         {
             return await Task.FromResult(_context.Reviews.Where(r => r.ProductID == productId).ToList());
         }
 
-        public async Task<IEnumerable<Review>> GetReviewsByUserId(int userId)
+        public async Task<IEnumerable<Review>> GetReviewsByUserId(Guid userId)
         {
             return await Task.FromResult(_context.Reviews.Where(r => r.UserID == userId).ToList());
         }
@@ -42,7 +42,7 @@ namespace Mgtt.ECom.Application.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteReview(int reviewId)
+        public async Task DeleteReview(Guid reviewId)
         {
             var review = await _context.Reviews.FindAsync(reviewId);
             if (review != null)

@@ -15,12 +15,12 @@ namespace Mgtt.ECom.Application.Services
             _context = context;
         }
 
-        public async Task<OrderItem> GetOrderItemById(int orderItemId)
+        public async Task<OrderItem> GetOrderItemById(Guid orderItemId)
         {
             return await Task.FromResult(_context.OrderItems.Find(orderItemId));
         }
 
-        public async Task<IEnumerable<OrderItem>> GetOrderItemsByOrderId(int orderId)
+        public async Task<IEnumerable<OrderItem>> GetOrderItemsByOrderId(Guid orderId)
         {
             return await Task.FromResult(_context.OrderItems.Where(oi => oi.OrderID == orderId).ToList());
         }
@@ -37,7 +37,7 @@ namespace Mgtt.ECom.Application.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteOrderItem(int orderItemId)
+        public async Task DeleteOrderItem(Guid orderItemId)
         {
             var orderItem = await _context.OrderItems.FindAsync(orderItemId);
             if (orderItem != null)

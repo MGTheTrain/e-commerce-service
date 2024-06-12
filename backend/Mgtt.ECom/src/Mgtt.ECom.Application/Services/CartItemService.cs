@@ -15,12 +15,12 @@ namespace Mgtt.ECom.Application.Services
             _context = context;
         }
 
-        public async Task<CartItem> GetCartItemById(int cartItemId)
+        public async Task<CartItem> GetCartItemById(Guid cartItemId)
         {
             return await Task.FromResult(_context.CartItems.Find(cartItemId));
         }
 
-        public async Task<IEnumerable<CartItem>> GetCartItemsByCartId(int cartId)
+        public async Task<IEnumerable<CartItem>> GetCartItemsByCartId(Guid cartId)
         {
             return await Task.FromResult(_context.CartItems.Where(ci => ci.CartID == cartId).ToList());
         }
@@ -37,7 +37,7 @@ namespace Mgtt.ECom.Application.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteCartItem(int cartItemId)
+        public async Task DeleteCartItem(Guid cartItemId)
         {
             var cartItem = await _context.CartItems.FindAsync(cartItemId);
             if (cartItem != null)

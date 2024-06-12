@@ -15,7 +15,7 @@ namespace Mgtt.ECom.Application.Services
             _context = context;
         }
 
-        public async Task<Product> GetProductById(int productId)
+        public async Task<Product> GetProductById(Guid productId)
         {
             return await Task.FromResult(_context.Products.Find(productId));
         }
@@ -25,7 +25,7 @@ namespace Mgtt.ECom.Application.Services
             return await Task.FromResult(_context.Products.ToList());
         }
 
-        public async Task<IEnumerable<Product>> GetProductsByCategory(int categoryId)
+        public async Task<IEnumerable<Product>> GetProductsByCategory(Guid categoryId)
         {
             return await Task.FromResult(_context.Products.Where(p => p.CategoryID == categoryId).ToList());
         }
@@ -42,7 +42,7 @@ namespace Mgtt.ECom.Application.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteProduct(int productId)
+        public async Task DeleteProduct(Guid productId)
         {
             var product = await _context.Products.FindAsync(productId);
             if (product != null)

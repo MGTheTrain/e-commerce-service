@@ -15,7 +15,7 @@ namespace Mgtt.ECom.Application.Services
             _context = context;
         }
 
-        public async Task<Category> GetCategoryById(int categoryId)
+        public async Task<Category> GetCategoryById(Guid categoryId)
         {
             return await Task.FromResult(_context.Categories.Find(categoryId));
         }
@@ -37,7 +37,7 @@ namespace Mgtt.ECom.Application.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteCategory(int categoryId)
+        public async Task DeleteCategory(Guid categoryId)
         {
             var category = await _context.Categories.FindAsync(categoryId);
             if (category != null)

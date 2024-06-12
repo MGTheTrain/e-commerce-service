@@ -2,10 +2,10 @@ namespace Mgtt.ECom.Domain.ProductManagement;
 
 public interface IProductService
 {
-    Task<Product> GetProductById(int productId);
+    Task<Product> GetProductById(Guid productId);
     Task<IEnumerable<Product>> GetAllProducts();
-    Task<IEnumerable<Product>> GetProductsByCategory(int categoryId);
+    Task<IEnumerable<Product>> GetProductsByCategory(Guid categoryId);
     Task CreateProduct(Product product);
     Task UpdateProduct(Product product);
-    Task DeleteProduct(int productId);
+    Task DeleteProduct(Guid productId);
 }

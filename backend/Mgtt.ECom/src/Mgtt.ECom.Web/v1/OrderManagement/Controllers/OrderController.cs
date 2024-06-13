@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Mgtt.ECom.Application.DTOs.Order;
+using Mgtt.ECom.Application.DTOs.OrderManagement;
 using Mgtt.ECom.Domain.OrderManagement;
 using System;
 using System.Collections.Generic;
@@ -12,10 +12,12 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly IOrderItemService _orderItemService;
 
-        public OrderController(IOrderService orderService)
+        public OrderController(IOrderService orderService, IOrderItemService orderItemService)
         {
             _orderService = orderService;
+            _orderItemService = orderItemService;
         }
 
         [HttpPost]
@@ -24,42 +26,27 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
             var order = new Order
             {
                 UserID = orderDTO.UserID,
-                OrderDate = orderDTO.OrderDate,
+                OrderDate = DateTime.UtcNow,
                 TotalAmount = orderDTO.TotalAmount,
                 OrderStatus = orderDTO.OrderStatus
             };
 
             await _orderService.CreateOrder(order);
 
-            return CreatedAtAction(nameof(GetOrderById), new { orderId = order.OrderID }, order);
-        }
-
-        [HttpGet("{orderId}")]
-        public async Task<ActionResult<OrderResponseDTO>> GetOrderById(Guid orderId)
-        {
-            var order = await _orderService.GetOrderById(orderId);
-
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            var orderDTO = new OrderResponseDTO
+            return CreatedAtAction(nameof(GetOrderById), new { orderId = order.OrderID }, new OrderResponseDTO
             {
                 OrderID = order.OrderID,
                 UserID = order.UserID,
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
                 OrderStatus = order.OrderStatus
-            };
-
-            return Ok(orderDTO);
+            });
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<OrderResponseDTO>>> GetOrdersByUserId(Guid userId)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<OrderResponseDTO>>> GetOrders()
         {
-            var orders = await _orderService.GetOrdersByUserId(userId);
+            var orders = await _orderService.GetOrdersByUserId(Guid.NewGuid()); // Example for demo
             var orderDTOs = new List<OrderResponseDTO>();
 
             foreach (var order in orders)
@@ -77,6 +64,26 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
             return Ok(orderDTOs);
         }
 
+        [HttpGet("{orderId}")]
+        public async Task<ActionResult<OrderResponseDTO>> GetOrderById(Guid orderId)
+        {
+            var order = await _orderService.GetOrderById(orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new OrderResponseDTO
+            {
+                OrderID = order.OrderID,
+                UserID = order.UserID,
+                OrderDate = order.OrderDate,
+                TotalAmount = order.TotalAmount,
+                OrderStatus = order.OrderStatus
+            });
+        }
+
         [HttpPut("{orderId}")]
         public async Task<IActionResult> UpdateOrder(Guid orderId, OrderRequestDTO orderDTO)
         {
@@ -87,8 +94,6 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 return NotFound();
             }
 
-            order.UserID = orderDTO.UserID;
-            order.OrderDate = orderDTO.OrderDate;
             order.TotalAmount = orderDTO.TotalAmount;
             order.OrderStatus = orderDTO.OrderStatus;
 
@@ -108,6 +113,104 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
             }
 
             await _orderService.DeleteOrder(orderId);
+
+            return NoContent();
+        }
+
+        [HttpPost("{orderId}/items")]
+        public async Task<IActionResult> CreateOrderItem(Guid orderId, OrderItemRequestDTO orderItemDTO)
+        {
+            var orderItem = new OrderItem
+            {
+                OrderID = orderId,
+                ProductID = orderItemDTO.ProductID,
+                Quantity = orderItemDTO.Quantity,
+                Price = orderItemDTO.Price
+            };
+
+            await _orderItemService.CreateOrderItem(orderItem);
+
+            return CreatedAtAction(nameof(GetOrderItemById), new { orderId, itemId = orderItem.OrderItemID }, new OrderItemResponseDTO
+            {
+                OrderItemID = orderItem.OrderItemID,
+                OrderID = orderItem.OrderID,
+                ProductID = orderItem.ProductID,
+                Quantity = orderItem.Quantity,
+                Price = orderItem.Price
+            });
+        }
+
+        [HttpGet("{orderId}/items")]
+        public async Task<ActionResult<IEnumerable<OrderItemResponseDTO>>> GetOrderItemsByOrderId(Guid orderId)
+        {
+            var orderItems = await _orderItemService.GetOrderItemsByOrderId(orderId);
+            var orderItemDTOs = new List<OrderItemResponseDTO>();
+
+            foreach (var orderItem in orderItems)
+            {
+                orderItemDTOs.Add(new OrderItemResponseDTO
+                {
+                    OrderItemID = orderItem.OrderItemID,
+                    OrderID = orderItem.OrderID,
+                    ProductID = orderItem.ProductID,
+                    Quantity = orderItem.Quantity,
+                    Price = orderItem.Price
+                });
+            }
+
+            return Ok(orderItemDTOs);
+        }
+
+        [HttpGet("{orderId}/items/{itemId}")]
+        public async Task<ActionResult<OrderItemResponseDTO>> GetOrderItemById(Guid orderId, Guid itemId)
+        {
+            var orderItem = await _orderItemService.GetOrderItemById(itemId);
+
+            if (orderItem == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new OrderItemResponseDTO
+            {
+                OrderItemID = orderItem.OrderItemID,
+                OrderID = orderItem.OrderID,
+                ProductID = orderItem.ProductID,
+                Quantity = orderItem.Quantity,
+                Price = orderItem.Price
+            });
+        }
+
+        [HttpPut("{orderId}/items/{itemId}")]
+        public async Task<IActionResult> UpdateOrderItem(Guid orderId, Guid itemId, OrderItemRequestDTO orderItemDTO)
+        {
+            var orderItem = await _orderItemService.GetOrderItemById(itemId);
+
+            if (orderItem == null)
+            {
+                return NotFound();
+            }
+
+            orderItem.ProductID = orderItemDTO.ProductID;
+            orderItem.Quantity = orderItemDTO.Quantity;
+            orderItem.Price = orderItemDTO.Price;
+
+            await _orderItemService.UpdateOrderItem(orderItem);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{orderId}/items/{itemId}")]
+        public async Task<IActionResult> DeleteOrderItem(Guid orderId, Guid itemId)
+        {
+            var orderItem = await _orderItemService.GetOrderItemById(itemId);
+
+            if (orderItem == null)
+            {
+                return NotFound();
+            }
+
+            await _orderItemService.DeleteOrderItem(itemId);
 
             return NoContent();
         }

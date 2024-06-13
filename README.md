@@ -47,8 +47,8 @@ Results should resemble following snippet:
 
 ### Backend
 
-You can find instructions on applicable commands for the backend source code in the following location [README.md](./backend/Mgtt.ECom/README.md)
+You can find instructions on applicable commands for the backend source code in the following [README.md](./backend/Mgtt.ECom/README.md)
 
 ### Frontend
 
-You can find instructions on applicable commands for the frontend source code in the following location [README.md](./frontend/e-commerce-service/README.md)
+You can find instructions on applicable commands for the frontend source code in the following [README.md](./frontend/e-commerce-service/README.md)

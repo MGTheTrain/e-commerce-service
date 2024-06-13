@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Mgtt.ECom.Web.v1.ProductManagement.DTOs;
 using Mgtt.ECom.Domain.ProductManagement;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Mgtt.ECom.Web.v1.ProductManagement.DTOs;
 
 namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 {
@@ -29,7 +29,14 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             await _categoryService.CreateCategory(category);
 
-            return CreatedAtAction(nameof(GetCategoryById), new { categoryId = category.CategoryID }, category);
+            var categoryResponseDTO = new CategoryResponseDTO
+            {
+                CategoryID = category.CategoryID,
+                Name = category.Name,
+                Description = category.Description
+            };
+
+            return CreatedAtAction(nameof(GetCategoryById), new { categoryId = categoryResponseDTO.CategoryID }, categoryResponseDTO);
         }
 
         [HttpGet]
@@ -74,6 +81,34 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         [HttpPut("{categoryId}")]
         public async Task<IActionResult> UpdateCategory(Guid categoryId, CategoryRequestDTO categoryDTO)
         {
-            var category = await _categoryService.GetCategoryById(categoryId);
+            var existingCategory = await _categoryService.GetCategoryById(categoryId);
 
-            if (category ==
+            if (existingCategory == null)
+            {
+                return NotFound();
+            }
+
+            existingCategory.Name = categoryDTO.Name;
+            existingCategory.Description = categoryDTO.Description;
+
+            await _categoryService.UpdateCategory(existingCategory);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{categoryId}")]
+        public async Task<IActionResult> DeleteCategory(Guid categoryId)
+        {
+            var existingCategory = await _categoryService.GetCategoryById(categoryId);
+
+            if (existingCategory == null)
+            {
+                return NotFound();
+            }
+
+            await _categoryService.DeleteCategory(categoryId);
+
+            return NoContent();
+        }
+    }
+}

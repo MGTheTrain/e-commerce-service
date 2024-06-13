@@ -56,6 +56,14 @@ make test
 make test-individual subdir=<subdirectory in the test folder, e.g. Mgtt.ECom.ApplicationTest>
 ```
 
+### Starting the Kestrel-Webserver
+
+Execute:
+
+```sh
+make run
+```
+
 ### Generating project documentation
 
 Run:

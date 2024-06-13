@@ -7,7 +7,7 @@ SRC_DIR = src
 TEST_DIR = test
 
 # Commands
-.PHONY: all build test test-individual clean docs format-and-lint
+.PHONY: all build test test-individual run clean docs format-and-lint
 
 # Default target
 all: build test
@@ -34,6 +34,10 @@ test-individual:
 	else \
 		$(DOTNET) test $(TEST_DIR)/$(subdir); \
 	fi
+
+# Start server
+run:
+	cd src/Mgtt.ECom/Mgtt.ECom.Web && dotnet run
 
 # Clean up generated files
 clean:

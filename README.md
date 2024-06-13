@@ -38,6 +38,11 @@ Simple front- and backend for an e-commerce platform utilizing DDD principles ba
 | **Shopping Cart**     | `ICartService`, `CartService`, `ICartItemService`, `CartItemService`                   | `CartRequestDTO`, `CartResponseDTO`, `CartItemRequestDTO`, `CartItemResponseDTO`     | `CartController`   | `POST /api/v1/carts`, `GET /api/v1/carts/{cartId}`, `PUT /api/v1/carts/{cartId}`, `DELETE /api/v1/carts/{cartId}`, `POST /api/v1/carts/{cartId}/items`, `GET /api/v1/carts/{cartId}/items`, `GET /api/v1/carts/{cartId}/items/{itemId}`, `PUT /api/v1/carts/{cartId}/items/{itemId}`, `DELETE /api/v1/cart/{cartId}/items/{itemId}`                                      |
 | **Review Management** | `IReviewService`, `ReviewService`                                                      | `ReviewRequestDTO`, `ReviewResponseDTO`                                              | `ReviewController` | `POST /api/v1/reviews`, `GET /api/v1/reviews`, `GET /api/v1/reviews/{reviewId}`, `PUT /api/v1/reviews/{reviewId}`, `DELETE /api/v1/reviews/{reviewId}` |
 
+Copy contents of the [swagger.json](./docs/api-design/swagger.json) to the [Swagger Online editor](https://editor.swagger.io/).
+Results should resemble following snippet:
+
+![swagger-ui](./docs/api-design/swagger-ui.PNG)
+
 ## Getting Started
 
 TBD

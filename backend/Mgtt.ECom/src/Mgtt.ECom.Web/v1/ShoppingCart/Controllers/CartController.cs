@@ -20,6 +20,12 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             _cartItemService = cartItemService;
         }
 
+        /// <summary>
+        /// Creates a new shopping cart.
+        /// </summary>
+        /// <param name="cartDTO">The cart data transfer object containing user ID and total amount.</param>
+        /// <returns>A newly created cart.</returns>
+        /// <response code="201">Returns the newly created cart.</response>
         [HttpPost]
         public async Task<IActionResult> CreateCart(CartRequestDTO cartDTO)
         {
@@ -39,6 +45,13 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             });
         }
 
+        /// <summary>
+        /// Gets a cart by ID.
+        /// </summary>
+        /// <param name="cartId">The ID of the cart.</param>
+        /// <returns>The cart with the specified ID.</returns>
+        /// <response code="200">Returns the cart with the specified ID.</response>
+        /// <response code="404">If the cart is not found.</response>
         [HttpGet("{cartId}")]
         public async Task<ActionResult<CartResponseDTO>> GetCartById(Guid cartId)
         {
@@ -57,6 +70,13 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             });
         }
 
+        /// <summary>
+        /// Updates an existing cart.
+        /// </summary>
+        /// <param name="cartId">The ID of the cart to update.</param>
+        /// <param name="cartDTO">The cart data transfer object containing the updated total amount.</param>
+        /// <response code="204">If the cart was successfully updated.</response>
+        /// <response code="404">If the cart is not found.</response>
         [HttpPut("{cartId}")]
         public async Task<IActionResult> UpdateCart(Guid cartId, CartRequestDTO cartDTO)
         {
@@ -74,6 +94,12 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Deletes a cart by ID.
+        /// </summary>
+        /// <param name="cartId">The ID of the cart to delete.</param>
+        /// <response code="204">If the cart was successfully deleted.</response>
+        /// <response code="404">If the cart is not found.</response>
         [HttpDelete("{cartId}")]
         public async Task<IActionResult> DeleteCart(Guid cartId)
         {
@@ -89,6 +115,13 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Adds an item to a cart.
+        /// </summary>
+        /// <param name="cartId">The ID of the cart to add the item to.</param>
+        /// <param name="cartItemDTO">The cart item data transfer object containing product ID, quantity, and price.</param>
+        /// <returns>A newly created cart item.</returns>
+        /// <response code="201">Returns the newly created cart item.</response>
         [HttpPost("{cartId}/items")]
         public async Task<IActionResult> CreateCartItem(Guid cartId, CartItemRequestDTO cartItemDTO)
         {
@@ -112,6 +145,12 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             });
         }
 
+        /// <summary>
+        /// Gets all items in a cart.
+        /// </summary>
+        /// <param name="cartId">The ID of the cart to get items from.</param>
+        /// <returns>A list of cart items.</returns>
+        /// <response code="200">Returns the list of cart items.</response>
         [HttpGet("{cartId}/items")]
         public async Task<ActionResult<IEnumerable<CartItemResponseDTO>>> GetCartItemsByCartId(Guid cartId)
         {
@@ -133,6 +172,14 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             return Ok(cartItemDTOs);
         }
 
+        /// <summary>
+        /// Gets a specific item in a cart.
+        /// </summary>
+        /// <param name="cartId">The ID of the cart.</param>
+        /// <param name="itemId">The ID of the cart item.</param>
+        /// <returns>The cart item with the specified ID.</returns>
+        /// <response code="200">Returns the cart item with the specified ID.</response>
+        /// <response code="404">If the cart item is not found.</response>
         [HttpGet("{cartId}/items/{itemId}")]
         public async Task<ActionResult<CartItemResponseDTO>> GetCartItemById(Guid cartId, Guid itemId)
         {
@@ -153,6 +200,14 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             });
         }
 
+        /// <summary>
+        /// Updates an item in a cart.
+        /// </summary>
+        /// <param name="cartId">The ID of the cart.</param>
+        /// <param name="itemId">The ID of the cart item to update.</param>
+        /// <param name="cartItemDTO">The cart item data transfer object containing updated product ID, quantity, and price.</param>
+        /// <response code="204">If the cart item was successfully updated.</response>
+        /// <response code="404">If the cart item is not found.</response>
         [HttpPut("{cartId}/items/{itemId}")]
         public async Task<IActionResult> UpdateCartItem(Guid cartId, Guid itemId, CartItemRequestDTO cartItemDTO)
         {
@@ -173,6 +228,13 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Deletes an item from a cart.
+        /// </summary>
+        /// <param name="cartId">The ID of the cart.</param>
+        /// <param name="itemId">The ID of the cart item to delete.</param>
+        /// <response code="204">If the cart item was successfully deleted.</response>
+        /// <response code="404">If the cart item is not found.</response>
         [HttpDelete("{cartId}/items/{itemId}")]
         public async Task<IActionResult> DeleteCartItem(Guid cartId, Guid itemId)
         {

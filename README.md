@@ -26,7 +26,7 @@ Simple front- and backend for an e-commerce platform utilizing DDD principles ba
 | **Review Management**  | Product Reviews                            | Enable users to write reviews for products, rate them, and provide feedback. |
 |                        | Review Moderation                          | Manage and moderate user reviews to maintain quality and trustworthiness.   |
 
-**NOTE:** Check out the [entity relationship diagram](./docs/diagrams/domain-model-schema.mmd)
+**NOTE:** Also consider checking out the [entity relationship diagram](./docs/diagrams/entity-relationship-diagram.mmd)
 
 ## API Structure
 

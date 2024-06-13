@@ -50,11 +50,11 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <summary>
         /// Gets a cart by user ID.
         /// </summary>
-        /// <param name="userId">The ID of the user.</param>
+        /// <param name="userId">The ID of the cart user.</param>
         /// <returns>The cart with the specified ID.</returns>
         /// <response code="200">Returns the cart with the specified ID.</response>
         /// <response code="404">If the cart is not found.</response>
-        [HttpGet("{cartId}")]
+        [HttpGet("{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CartResponseDTO>> GetCartByUserId(Guid userId)
@@ -77,14 +77,14 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <summary>
         /// Updates an existing cart.
         /// </summary>
-        /// <param name="userId">The ID of the cart user to update.</param>
+        /// <param name="userId">The ID of the cart user.</param>
         /// <param name="cartDTO">The cart data transfer object containing the updated total amount.</param>
         /// <response code="204">If the cart was successfully updated.</response>
         /// <response code="404">If the cart is not found.</response>
-        [HttpPut("{cartId}")]
+        [HttpPut("{userId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateCart(Guid userId, CartRequestDTO cartDTO)
+        public async Task<IActionResult> UpdateCartByUserId(Guid userId, CartRequestDTO cartDTO)
         {
             var cart = await _cartService.GetCartByUserId(userId);
 
@@ -103,13 +103,13 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <summary>
         /// Deletes a cart by ID.
         /// </summary>
-        /// <param name="cartId">The ID of the cart to delete.</param>
+        /// <param name="userId">The ID of the cart user.</param>
         /// <response code="204">If the cart was successfully deleted.</response>
         /// <response code="404">If the cart is not found.</response>
-        [HttpDelete("{cartId}")]
+        [HttpDelete("{userId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteCart(Guid userId)
+        public async Task<IActionResult> DeleteCartByUserId(Guid userId)
         {
             var cart = await _cartService.GetCartByUserId(userId);
 

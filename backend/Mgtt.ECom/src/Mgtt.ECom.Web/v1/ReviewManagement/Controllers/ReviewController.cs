@@ -26,6 +26,8 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         /// <response code="201">Returns the newly created review.</response>
         /// <response code="400">If the review data is invalid.</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReviewResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateReview(ReviewRequestDTO reviewDTO)
         {
             var review = new Review
@@ -60,6 +62,8 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         /// <response code="200">Returns the review with the specified ID.</response>
         /// <response code="404">If the review is not found.</response>
         [HttpGet("{reviewId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReviewResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ReviewResponseDTO>> GetReviewById(Guid reviewId)
         {
             var review = await _reviewService.GetReviewById(reviewId);
@@ -89,6 +93,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         /// <returns>A list of reviews for the specified product.</returns>
         /// <response code="200">Returns a list of reviews for the specified product.</response>
         [HttpGet("product/{productId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
         public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetReviewsByProductId(Guid productId)
         {
             var reviews = await _reviewService.GetReviewsByProductId(productId);
@@ -117,6 +122,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         /// <returns>A list of reviews by the specified user.</returns>
         /// <response code="200">Returns a list of reviews by the specified user.</response>
         [HttpGet("user/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
         public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetReviewsByUserId(Guid userId)
         {
             var reviews = await _reviewService.GetReviewsByUserId(userId);
@@ -147,6 +153,8 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         /// <response code="400">If the review data is invalid.</response>
         /// <response code="404">If the review is not found.</response>
         [HttpPut("{reviewId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateReview(Guid reviewId, ReviewRequestDTO reviewDTO)
         {
             var existingReview = await _reviewService.GetReviewById(reviewId);
@@ -173,6 +181,8 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         /// <response code="204">If the review was successfully deleted.</response>
         /// <response code="404">If the review is not found.</response>
         [HttpDelete("{reviewId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteReview(Guid reviewId)
         {
             var existingReview = await _reviewService.GetReviewById(reviewId);

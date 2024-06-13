@@ -1,5 +1,6 @@
 using Mgtt.ECom.Web.v1.UserManagement.DTOs;
 using Mgtt.ECom.Domain.UserManagement;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -25,6 +26,8 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         /// <response code="200">Returns the user with the specified ID.</response>
         /// <response code="404">If the user is not found.</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserResponseDTO>> GetUserById(Guid id)
         {
             var user = await _userService.GetUserById(id);
@@ -50,6 +53,8 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         /// <response code="201">Returns the newly created user.</response>
         /// <response code="400">If the user data is invalid.</response>
         [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserResponseDTO>> Register(UserRequestDTO userRequest)
         {
             if (!ModelState.IsValid)
@@ -87,6 +92,9 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         /// <response code="400">If the user data is invalid.</response>
         /// <response code="404">If the user is not found.</response>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateUser(Guid id, UserRequestDTO userRequest)
         {
             if (!ModelState.IsValid)
@@ -117,6 +125,8 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         /// <response code="204">If the user was successfully deleted.</response>
         /// <response code="404">If the user is not found.</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             var existingUser = await _userService.GetUserById(id);

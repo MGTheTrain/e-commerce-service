@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mgtt.ECom.Application.DTOs.ShoppingCart;
 using Mgtt.ECom.Domain.ShoppingCart;
@@ -27,6 +28,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <returns>A newly created cart.</returns>
         /// <response code="201">Returns the newly created cart.</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CartResponseDTO))]
         public async Task<IActionResult> CreateCart(CartRequestDTO cartDTO)
         {
             var cart = new Cart
@@ -53,9 +55,11 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <response code="200">Returns the cart with the specified ID.</response>
         /// <response code="404">If the cart is not found.</response>
         [HttpGet("{cartId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CartResponseDTO>> GetCartById(Guid cartId)
         {
-            var cart = await _cartService.GetCartByUserId(cartId);
+            var cart = await _cartService.GetCartById(cartId);
 
             if (cart == null)
             {
@@ -78,9 +82,11 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <response code="204">If the cart was successfully updated.</response>
         /// <response code="404">If the cart is not found.</response>
         [HttpPut("{cartId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateCart(Guid cartId, CartRequestDTO cartDTO)
         {
-            var cart = await _cartService.GetCartByUserId(cartId);
+            var cart = await _cartService.GetCartById(cartId);
 
             if (cart == null)
             {
@@ -101,9 +107,11 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <response code="204">If the cart was successfully deleted.</response>
         /// <response code="404">If the cart is not found.</response>
         [HttpDelete("{cartId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCart(Guid cartId)
         {
-            var cart = await _cartService.GetCartByUserId(cartId);
+            var cart = await _cartService.GetCartById(cartId);
 
             if (cart == null)
             {
@@ -123,6 +131,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <returns>A newly created cart item.</returns>
         /// <response code="201">Returns the newly created cart item.</response>
         [HttpPost("{cartId}/items")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CartItemResponseDTO))]
         public async Task<IActionResult> CreateCartItem(Guid cartId, CartItemRequestDTO cartItemDTO)
         {
             var cartItem = new CartItem
@@ -152,6 +161,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <returns>A list of cart items.</returns>
         /// <response code="200">Returns the list of cart items.</response>
         [HttpGet("{cartId}/items")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CartItemResponseDTO>))]
         public async Task<ActionResult<IEnumerable<CartItemResponseDTO>>> GetCartItemsByCartId(Guid cartId)
         {
             var cartItems = await _cartItemService.GetCartItemsByCartId(cartId);
@@ -181,6 +191,8 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <response code="200">Returns the cart item with the specified ID.</response>
         /// <response code="404">If the cart item is not found.</response>
         [HttpGet("{cartId}/items/{itemId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartItemResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CartItemResponseDTO>> GetCartItemById(Guid cartId, Guid itemId)
         {
             var cartItem = await _cartItemService.GetCartItemById(itemId);
@@ -209,6 +221,8 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <response code="204">If the cart item was successfully updated.</response>
         /// <response code="404">If the cart item is not found.</response>
         [HttpPut("{cartId}/items/{itemId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateCartItem(Guid cartId, Guid itemId, CartItemRequestDTO cartItemDTO)
         {
             var cartItem = await _cartItemService.GetCartItemById(itemId);
@@ -232,10 +246,17 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// Deletes an item from a cart.
         /// </summary>
         /// <param name="cartId">The ID of the cart.</param>
+        /// <param name="itemId">The
+        /// <summary>
+        /// Deletes an item from a cart.
+        /// </summary>
+        /// <param name="cartId">The ID of the cart.</param>
         /// <param name="itemId">The ID of the cart item to delete.</param>
         /// <response code="204">If the cart item was successfully deleted.</response>
         /// <response code="404">If the cart item is not found.</response>
         [HttpDelete("{cartId}/items/{itemId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCartItem(Guid cartId, Guid itemId)
         {
             var cartItem = await _cartItemService.GetCartItemById(itemId);

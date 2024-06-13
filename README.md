@@ -4,6 +4,7 @@
 
 - [Summary](#summary)
 - [Features](#features)
+- [API Structure](#api-structure)
 - [Getting Started](#getting-started)
 
 ## Summary
@@ -24,6 +25,17 @@ Simple front- and backend for an e-commerce platform utilizing DDD principles ba
 |                        | Cart Persistence                           | Ensure cart contents persist across user sessions.                          |
 | **Review Management**  | Product Reviews                            | Enable users to write reviews for products, rate them, and provide feedback. |
 |                        | Review Moderation                          | Manage and moderate user reviews to maintain quality and trustworthiness.   |
+
+## API Structure
+
+| Management Area       | Services                            | DTOs                                                                | Controllers        | Endpoints                                                                                                         |
+|-----------------------|-------------------------------------|---------------------------------------------------------------------|--------------------|------------------------------------------------------------------------------------------------------------------|
+| **User Management**   | `IUserService`, `UserService`       | `UserRequestDTO`, `UserResponseDTO`, `LoginRequestDTO`, `LoginResponseDTO` | `UserController`    | `POST /api/users/register`, `POST /api/users/login`, `GET /api/users/{id}`, `PUT /api/users/{id}`, `DELETE /api/users/{id}` |
+| **Product Management**| `IProductService`, `ProductService` | `ProductRequestDTO`, `ProductResponseDTO`, `CategoryRequestDTO`, `CategoryResponseDTO` | `ProductController`, `CategoryController` | `POST /api/products`, `GET /api/products`, `GET /api/products/{id}`, `PUT /api/products/{id}`, `DELETE /api/products/{id}`, `POST /api/categories`, `GET /api/categories`, `GET /api/categories/{id}`, `PUT /api/categories/{id}`, `DELETE /api/categories/{id}` |
+| **Order Management**  | `IOrderService`, `OrderService`     | `OrderRequestDTO`, `OrderResponseDTO`, `OrderItemRequestDTO`, `OrderItemResponseDTO`    | `OrderController`   | `POST /api/orders`, `GET /api/orders`, `GET /api/orders/{id}`, `PUT /api/orders/{id}`, `DELETE /api/orders/{id}` |
+| **Shopping Cart**     | `ICartService`, `CartService`       | `CartRequestDTO`, `CartResponseDTO`, `CartItemRequestDTO`, `CartItemResponseDTO`        | `CartController`    | `POST /api/cart`, `GET /api/cart`, `PUT /api/cart`, `DELETE /api/cart/{id}`                                      |
+| **Review Management** | `IReviewService`, `ReviewService`   | `ReviewRequestDTO`, `ReviewResponseDTO`                                                  | `ReviewController`  | `POST /api/reviews`, `GET /api/reviews`, `GET /api/reviews/{id}`, `PUT /api/reviews/{id}`, `DELETE /api/reviews/{id}` |
+
 
 ## Getting Started
 

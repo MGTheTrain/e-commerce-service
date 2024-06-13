@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mgtt.ECom.Application.DTOs.OrderManagement;
 using Mgtt.ECom.Domain.OrderManagement;
@@ -28,6 +29,8 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         /// <response code="201">Returns the newly created order.</response>
         /// <response code="400">If the order data is invalid.</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(OrderResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateOrder(OrderRequestDTO orderDTO)
         {
             var order = new Order
@@ -40,14 +43,16 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 
             await _orderService.CreateOrder(order);
 
-            return CreatedAtAction(nameof(GetOrderById), new { orderId = order.OrderID }, new OrderResponseDTO
+            var orderResponseDTO = new OrderResponseDTO
             {
                 OrderID = order.OrderID,
                 UserID = order.UserID,
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
                 OrderStatus = order.OrderStatus
-            });
+            };
+
+            return CreatedAtAction(nameof(GetOrderById), new { orderId = order.OrderID }, orderResponseDTO);
         }
 
         /// <summary>
@@ -56,6 +61,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         /// <returns>A list of all orders.</returns>
         /// <response code="200">Returns a list of all orders.</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrderResponseDTO>))]
         public async Task<ActionResult<IEnumerable<OrderResponseDTO>>> GetOrders()
         {
             var orders = await _orderService.GetOrdersByUserId(Guid.NewGuid()); // Example for demo
@@ -84,6 +90,8 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         /// <response code="200">Returns the order with the specified ID.</response>
         /// <response code="404">If the order is not found.</response>
         [HttpGet("{orderId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<OrderResponseDTO>> GetOrderById(Guid orderId)
         {
             var order = await _orderService.GetOrderById(orderId);
@@ -93,14 +101,16 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 return NotFound();
             }
 
-            return Ok(new OrderResponseDTO
+            var orderDTO = new OrderResponseDTO
             {
                 OrderID = order.OrderID,
                 UserID = order.UserID,
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
                 OrderStatus = order.OrderStatus
-            });
+            };
+
+            return Ok(orderDTO);
         }
 
         /// <summary>
@@ -108,10 +118,14 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         /// </summary>
         /// <param name="orderId">The ID of the order to update.</param>
         /// <param name="orderDTO">The order data transfer object containing updated order details.</param>
+        /// <returns>No content response if successful.</returns>
         /// <response code="204">If the order was successfully updated.</response>
         /// <response code="400">If the order data is invalid.</response>
         /// <response code="404">If the order is not found.</response>
         [HttpPut("{orderId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateOrder(Guid orderId, OrderRequestDTO orderDTO)
         {
             var order = await _orderService.GetOrderById(orderId);
@@ -133,9 +147,12 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         /// Deletes an order by its ID.
         /// </summary>
         /// <param name="orderId">The ID of the order to delete.</param>
+        /// <returns>No content response if successful.</returns>
         /// <response code="204">If the order was successfully deleted.</response>
         /// <response code="404">If the order is not found.</response>
         [HttpDelete("{orderId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteOrder(Guid orderId)
         {
             var order = await _orderService.GetOrderById(orderId);
@@ -159,6 +176,8 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         /// <response code="201">Returns the newly created order item.</response>
         /// <response code="400">If the order item data is invalid.</response>
         [HttpPost("{orderId}/items")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(OrderItemResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateOrderItem(Guid orderId, OrderItemRequestDTO orderItemDTO)
         {
             var orderItem = new OrderItem
@@ -171,14 +190,16 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 
             await _orderItemService.CreateOrderItem(orderItem);
 
-            return CreatedAtAction(nameof(GetOrderItemById), new { orderId, itemId = orderItem.OrderItemID }, new OrderItemResponseDTO
+            var orderItemResponseDTO = new OrderItemResponseDTO
             {
                 OrderItemID = orderItem.OrderItemID,
                 OrderID = orderItem.OrderID,
                 ProductID = orderItem.ProductID,
                 Quantity = orderItem.Quantity,
                 Price = orderItem.Price
-            });
+            };
+
+            return CreatedAtAction(nameof(GetOrderItemById), new { orderId, itemId = orderItem.OrderItemID }, orderItemResponseDTO);
         }
 
         /// <summary>
@@ -189,6 +210,8 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         /// <response code="200">Returns a list of all order items within the specified order.</response>
         /// <response code="404">If the order items are not found.</response>
         [HttpGet("{orderId}/items")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrderItemResponseDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<OrderItemResponseDTO>>> GetOrderItemsByOrderId(Guid orderId)
         {
             var orderItems = await _orderItemService.GetOrderItemsByOrderId(orderId);
@@ -218,23 +241,26 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         /// <response code="200">Returns the order item with the specified ID within the specified order.</response>
         /// <response code="404">If the order item is not found.</response>
         [HttpGet("{orderId}/items/{itemId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderItemResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<OrderItemResponseDTO>> GetOrderItemById(Guid orderId, Guid itemId)
         {
             var orderItem = await _orderItemService.GetOrderItemById(itemId);
-
             if (orderItem == null)
             {
                 return NotFound();
             }
 
-            return Ok(new OrderItemResponseDTO
+            var orderItemResponseDTO = new OrderItemResponseDTO
             {
                 OrderItemID = orderItem.OrderItemID,
                 OrderID = orderItem.OrderID,
                 ProductID = orderItem.ProductID,
                 Quantity = orderItem.Quantity,
                 Price = orderItem.Price
-            });
+            };
+
+            return Ok(orderItemResponseDTO);
         }
 
         /// <summary>
@@ -243,10 +269,14 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         /// <param name="orderId">The ID of the order to which the item belongs.</param>
         /// <param name="itemId">The ID of the order item to update.</param>
         /// <param name="orderItemDTO">The order item data transfer object containing updated item details.</param>
+        /// <returns>No content response if successful.</returns>
         /// <response code="204">If the order item was successfully updated.</response>
         /// <response code="400">If the order item data is invalid.</response>
         /// <response code="404">If the order item is not found.</response>
         [HttpPut("{orderId}/items/{itemId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateOrderItem(Guid orderId, Guid itemId, OrderItemRequestDTO orderItemDTO)
         {
             var orderItem = await _orderItemService.GetOrderItemById(itemId);
@@ -257,7 +287,9 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
             }
 
             orderItem.ProductID = orderItemDTO.ProductID;
-            orderItem.Quantity = orderItem
+            orderItem.Quantity = orderItemDTO.Quantity;
+            orderItem.Price = orderItemDTO.Price;
+
             await _orderItemService.UpdateOrderItem(orderItem);
 
             return NoContent();
@@ -268,9 +300,12 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         /// </summary>
         /// <param name="orderId">The ID of the order to which the item belongs.</param>
         /// <param name="itemId">The ID of the order item to delete.</param>
+        /// <returns>No content response if successful.</returns>
         /// <response code="204">If the order item was successfully deleted.</response>
         /// <response code="404">If the order item is not found.</response>
         [HttpDelete("{orderId}/items/{itemId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteOrderItem(Guid orderId, Guid itemId)
         {
             var orderItem = await _orderItemService.GetOrderItemById(itemId);

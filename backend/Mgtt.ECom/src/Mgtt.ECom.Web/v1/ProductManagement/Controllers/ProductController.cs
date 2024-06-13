@@ -26,6 +26,8 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         /// <response code="201">Returns the newly created product.</response>
         /// <response code="400">If the product data is invalid.</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProductResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateProduct(ProductRequestDTO productDTO)
         {
             var product = new Product
@@ -40,7 +42,18 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             await _productService.CreateProduct(product);
 
-            return CreatedAtAction(nameof(GetProductById), new { productId = product.ProductID }, product);
+            var productResponseDTO = new ProductResponseDTO
+            {
+                ProductID = product.ProductID,
+                CategoryID = product.CategoryID,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Stock = product.Stock,
+                ImageUrl = product.ImageUrl
+            };
+
+            return CreatedAtAction(nameof(GetProductById), new { productId = productResponseDTO.ProductID }, productResponseDTO);
         }
 
         /// <summary>
@@ -49,6 +62,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         /// <returns>A list of all products.</returns>
         /// <response code="200">Returns a list of all products.</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductResponseDTO>))]
         public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAllProducts()
         {
             var products = await _productService.GetAllProducts();
@@ -79,6 +93,8 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         /// <response code="200">Returns the product with the specified ID.</response>
         /// <response code="404">If the product is not found.</response>
         [HttpGet("{productId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductResponseDTO>> GetProductById(Guid productId)
         {
             var product = await _productService.GetProductById(productId);
@@ -107,10 +123,14 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         /// </summary>
         /// <param name="productId">The ID of the product to update.</param>
         /// <param name="productDTO">The product data transfer object containing updated product details.</param>
+        /// <returns>No content response if successful.</returns>
         /// <response code="204">If the product was successfully updated.</response>
         /// <response code="400">If the product data is invalid.</response>
         /// <response code="404">If the product is not found.</response>
         [HttpPut("{productId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateProduct(Guid productId, ProductRequestDTO productDTO)
         {
             var product = await _productService.GetProductById(productId);
@@ -136,9 +156,12 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         /// Deletes a product by its ID.
         /// </summary>
         /// <param name="productId">The ID of the product to delete.</param>
+        /// <returns>No content response if successful.</returns>
         /// <response code="204">If the product was successfully deleted.</response>
         /// <response code="404">If the product is not found.</response>
         [HttpDelete("{productId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteProduct(Guid productId)
         {
             var product = await _productService.GetProductById(productId);

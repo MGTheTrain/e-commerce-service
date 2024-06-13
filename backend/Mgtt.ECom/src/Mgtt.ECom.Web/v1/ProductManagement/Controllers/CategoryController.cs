@@ -26,6 +26,8 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         /// <response code="201">Returns the newly created category.</response>
         /// <response code="400">If the category data is invalid.</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CategoryResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCategory(CategoryRequestDTO categoryDTO)
         {
             var category = new Category
@@ -52,6 +54,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         /// <returns>A list of all categories.</returns>
         /// <response code="200">Returns a list of all categories.</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryResponseDTO>))]
         public async Task<ActionResult<IEnumerable<CategoryResponseDTO>>> GetAllCategories()
         {
             var categories = await _categoryService.GetAllCategories();
@@ -78,6 +81,8 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         /// <response code="200">Returns the category with the specified ID.</response>
         /// <response code="404">If the category is not found.</response>
         [HttpGet("{categoryId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CategoryResponseDTO>> GetCategoryById(Guid categoryId)
         {
             var category = await _categoryService.GetCategoryById(categoryId);
@@ -102,10 +107,14 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         /// </summary>
         /// <param name="categoryId">The ID of the category to update.</param>
         /// <param name="categoryDTO">The category data transfer object containing updated category details.</param>
+        /// <returns>No content response if successful.</returns>
         /// <response code="204">If the category was successfully updated.</response>
         /// <response code="400">If the category data is invalid.</response>
         /// <response code="404">If the category is not found.</response>
         [HttpPut("{categoryId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateCategory(Guid categoryId, CategoryRequestDTO categoryDTO)
         {
             var existingCategory = await _categoryService.GetCategoryById(categoryId);
@@ -127,9 +136,12 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         /// Deletes a category by its ID.
         /// </summary>
         /// <param name="categoryId">The ID of the category to delete.</param>
+        /// <returns>No content response if successful.</returns>
         /// <response code="204">If the category was successfully deleted.</response>
         /// <response code="404">If the category is not found.</response>
         [HttpDelete("{categoryId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCategory(Guid categoryId)
         {
             var existingCategory = await _categoryService.GetCategoryById(categoryId);

@@ -1,5 +1,16 @@
 // Incorporate required dependencies from the infrastructure, persistence, domain and application layer
 
+using System.Reflection;
+using Mgtt.ECom.Application.Services;
+using Mgtt.ECom.Domain.OrderManagement;
+using Mgtt.ECom.Domain.ProductManagement;
+using Mgtt.ECom.Domain.ReviewManagement;
+using Mgtt.ECom.Domain.ShoppingCart;
+using Mgtt.ECom.Domain.UserManagement;
+using Mgtt.ECom.Persistence.DataAccess;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();

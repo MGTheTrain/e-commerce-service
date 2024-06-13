@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Mgtt.ECom.Application.DTOs.Review;
 using Mgtt.ECom.Domain.ReviewManagement;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Mgtt.ECom.Web.v1.ReviewManagement.DTOs;
 
 namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
 {

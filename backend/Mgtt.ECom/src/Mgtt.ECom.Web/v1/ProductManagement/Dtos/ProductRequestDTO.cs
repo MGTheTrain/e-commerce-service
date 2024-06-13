@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Mgtt.ECom.Web.v1.ProductManagement.DTOs
 {
     public class ProductRequestDTO

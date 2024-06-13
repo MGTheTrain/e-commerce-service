@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Mgtt.ECom.Application.DTOs.OrderManagement;
 using Mgtt.ECom.Domain.OrderManagement;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Mgtt.ECom.Web.v1.OrderManagement.DTOs;
 
 namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 {

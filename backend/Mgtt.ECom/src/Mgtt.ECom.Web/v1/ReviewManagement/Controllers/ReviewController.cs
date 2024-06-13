@@ -18,6 +18,13 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
             _reviewService = reviewService;
         }
 
+        /// <summary>
+        /// Creates a new review.
+        /// </summary>
+        /// <param name="reviewDTO">The review data transfer object containing review details.</param>
+        /// <returns>The newly created review.</returns>
+        /// <response code="201">Returns the newly created review.</response>
+        /// <response code="400">If the review data is invalid.</response>
         [HttpPost]
         public async Task<IActionResult> CreateReview(ReviewRequestDTO reviewDTO)
         {
@@ -45,6 +52,13 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
             return CreatedAtAction(nameof(GetReviewById), new { reviewId = reviewResponseDTO.ReviewID }, reviewResponseDTO);
         }
 
+        /// <summary>
+        /// Retrieves a review by its ID.
+        /// </summary>
+        /// <param name="reviewId">The ID of the review.</param>
+        /// <returns>The review with the specified ID.</returns>
+        /// <response code="200">Returns the review with the specified ID.</response>
+        /// <response code="404">If the review is not found.</response>
         [HttpGet("{reviewId}")]
         public async Task<ActionResult<ReviewResponseDTO>> GetReviewById(Guid reviewId)
         {
@@ -68,6 +82,12 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
             return Ok(reviewDTO);
         }
 
+        /// <summary>
+        /// Retrieves reviews by product ID.
+        /// </summary>
+        /// <param name="productId">The ID of the product.</param>
+        /// <returns>A list of reviews for the specified product.</returns>
+        /// <response code="200">Returns a list of reviews for the specified product.</response>
         [HttpGet("product/{productId}")]
         public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetReviewsByProductId(Guid productId)
         {
@@ -90,6 +110,12 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
             return Ok(reviewDTOs);
         }
 
+        /// <summary>
+        /// Retrieves reviews by user ID.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>A list of reviews by the specified user.</returns>
+        /// <response code="200">Returns a list of reviews by the specified user.</response>
         [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetReviewsByUserId(Guid userId)
         {
@@ -112,6 +138,14 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
             return Ok(reviewDTOs);
         }
 
+        /// <summary>
+        /// Updates an existing review.
+        /// </summary>
+        /// <param name="reviewId">The ID of the review to update.</param>
+        /// <param name="reviewDTO">The review data transfer object containing updated review details.</param>
+        /// <response code="204">If the review was successfully updated.</response>
+        /// <response code="400">If the review data is invalid.</response>
+        /// <response code="404">If the review is not found.</response>
         [HttpPut("{reviewId}")]
         public async Task<IActionResult> UpdateReview(Guid reviewId, ReviewRequestDTO reviewDTO)
         {
@@ -132,6 +166,12 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Deletes a review by its ID.
+        /// </summary>
+        /// <param name="reviewId">The ID of the review to delete.</param>
+        /// <response code="204">If the review was successfully deleted.</response>
+        /// <response code="404">If the review is not found.</response>
         [HttpDelete("{reviewId}")]
         public async Task<IActionResult> DeleteReview(Guid reviewId)
         {

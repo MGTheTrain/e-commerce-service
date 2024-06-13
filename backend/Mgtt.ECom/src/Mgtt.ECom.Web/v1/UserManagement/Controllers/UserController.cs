@@ -17,6 +17,13 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// Retrieves a user by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the user.</param>
+        /// <returns>The user with the specified ID.</returns>
+        /// <response code="200">Returns the user with the specified ID.</response>
+        /// <response code="404">If the user is not found.</response>
         [HttpGet("{id}")]
         public async Task<ActionResult<UserResponseDTO>> GetUserById(Guid id)
         {
@@ -35,6 +42,13 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             return Ok(userResponse);
         }
 
+        /// <summary>
+        /// Registers a new user.
+        /// </summary>
+        /// <param name="userRequest">The user data transfer object containing user details.</param>
+        /// <returns>The newly created user.</returns>
+        /// <response code="201">Returns the newly created user.</response>
+        /// <response code="400">If the user data is invalid.</response>
         [HttpPost("register")]
         public async Task<ActionResult<UserResponseDTO>> Register(UserRequestDTO userRequest)
         {
@@ -64,6 +78,14 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             return CreatedAtAction(nameof(GetUserById), new { id = userResponse.UserID }, userResponse);
         }
 
+        /// <summary>
+        /// Updates an existing user.
+        /// </summary>
+        /// <param name="id">The ID of the user to update.</param>
+        /// <param name="userRequest">The user data transfer object containing updated user details.</param>
+        /// <response code="204">If the user was successfully updated.</response>
+        /// <response code="400">If the user data is invalid.</response>
+        /// <response code="404">If the user is not found.</response>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(Guid id, UserRequestDTO userRequest)
         {
@@ -88,6 +110,12 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Deletes a user by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the user to delete.</param>
+        /// <response code="204">If the user was successfully deleted.</response>
+        /// <response code="404">If the user is not found.</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {

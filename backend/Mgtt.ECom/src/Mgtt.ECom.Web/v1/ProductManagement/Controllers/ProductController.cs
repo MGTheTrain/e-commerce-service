@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Mgtt.ECom.Web.v1.ProductManagement.DTOs;
 using Mgtt.ECom.Domain.ProductManagement;
+using Mgtt.ECom.Web.v1.ProductManagement.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,6 +18,13 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
             _productService = productService;
         }
 
+        /// <summary>
+        /// Creates a new product.
+        /// </summary>
+        /// <param name="productDTO">The product data transfer object containing product details.</param>
+        /// <returns>The newly created product.</returns>
+        /// <response code="201">Returns the newly created product.</response>
+        /// <response code="400">If the product data is invalid.</response>
         [HttpPost]
         public async Task<IActionResult> CreateProduct(ProductRequestDTO productDTO)
         {
@@ -36,6 +43,11 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
             return CreatedAtAction(nameof(GetProductById), new { productId = product.ProductID }, product);
         }
 
+        /// <summary>
+        /// Retrieves all products.
+        /// </summary>
+        /// <returns>A list of all products.</returns>
+        /// <response code="200">Returns a list of all products.</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAllProducts()
         {
@@ -59,6 +71,13 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
             return Ok(productDTOs);
         }
 
+        /// <summary>
+        /// Retrieves a product by its ID.
+        /// </summary>
+        /// <param name="productId">The ID of the product.</param>
+        /// <returns>The product with the specified ID.</returns>
+        /// <response code="200">Returns the product with the specified ID.</response>
+        /// <response code="404">If the product is not found.</response>
         [HttpGet("{productId}")]
         public async Task<ActionResult<ProductResponseDTO>> GetProductById(Guid productId)
         {
@@ -83,6 +102,14 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
             return Ok(productDTO);
         }
 
+        /// <summary>
+        /// Updates an existing product.
+        /// </summary>
+        /// <param name="productId">The ID of the product to update.</param>
+        /// <param name="productDTO">The product data transfer object containing updated product details.</param>
+        /// <response code="204">If the product was successfully updated.</response>
+        /// <response code="400">If the product data is invalid.</response>
+        /// <response code="404">If the product is not found.</response>
         [HttpPut("{productId}")]
         public async Task<IActionResult> UpdateProduct(Guid productId, ProductRequestDTO productDTO)
         {
@@ -105,6 +132,12 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Deletes a product by its ID.
+        /// </summary>
+        /// <param name="productId">The ID of the product to delete.</param>
+        /// <response code="204">If the product was successfully deleted.</response>
+        /// <response code="404">If the product is not found.</response>
         [HttpDelete("{productId}")]
         public async Task<IActionResult> DeleteProduct(Guid productId)
         {

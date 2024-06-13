@@ -37,7 +37,7 @@ test-individual:
 
 # Start server
 run:
-	cd src/Mgtt.ECom/Mgtt.ECom.Web && dotnet run
+	cd src/Mgtt.ECom.Web && dotnet run
 
 # Clean up generated files
 clean:

@@ -48,7 +48,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         }
 
         /// <summary>
-        /// Gets a cart by user ID.
+        /// Gets a cart.
         /// </summary>
         /// <param name="userId">The ID of the cart user.</param>
         /// <returns>The cart with the specified ID.</returns>
@@ -101,7 +101,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         }
 
         /// <summary>
-        /// Deletes a cart by ID.
+        /// Deletes a cart.
         /// </summary>
         /// <param name="userId">The ID of the cart user.</param>
         /// <response code="204">If the cart was successfully deleted.</response>
@@ -242,11 +242,6 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// Deletes an item from a cart.
-        /// </summary>
-        /// <param name="cartId">The ID of the cart.</param>
-        /// <param name="itemId">The
         /// <summary>
         /// Deletes an item from a cart.
         /// </summary>

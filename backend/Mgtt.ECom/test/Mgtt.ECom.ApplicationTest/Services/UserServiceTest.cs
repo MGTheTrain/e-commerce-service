@@ -1,16 +1,20 @@
+using Mgtt.ECom.Application.Services;
 using Mgtt.ECom.Domain.UserManagement;
 using Mgtt.ECom.Persistence.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Mgtt.ECom.Application.Services.Tests
+namespace Mgtt.ECom.ApplicationTest.Services
 {
     public class UserServiceTests : IDisposable
     {
         private readonly PsqlDbContext _context;
         private readonly UserService _userService;
+        private readonly ILogger<UserService> _logger;
 
         public UserServiceTests()
         {
@@ -25,7 +29,10 @@ namespace Mgtt.ECom.Application.Services.Tests
             _context.Users.Add(new User { UserName = "TestUser", Email = "testuser@example.com", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), Role = "User" });
             _context.SaveChanges();
 
-            _userService = new UserService(_context);
+            // Mock ILogger
+            var loggerMock = new Mock<ILogger<UserService>>();
+
+            _userService = new UserService(_context, loggerMock.Object);
         }
 
         public void Dispose()

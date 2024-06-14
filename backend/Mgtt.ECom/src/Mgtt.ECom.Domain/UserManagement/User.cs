@@ -18,6 +18,7 @@ namespace Mgtt.ECom.Domain.UserManagement
             Role = string.Empty;
         }
 
+        [Required]
         public Guid UserID { get; internal set; }
 
         [Required]

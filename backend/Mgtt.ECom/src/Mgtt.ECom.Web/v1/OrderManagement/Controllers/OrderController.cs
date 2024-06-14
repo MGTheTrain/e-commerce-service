@@ -98,7 +98,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 
             if (order == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             var orderDTO = new OrderResponseDTO
@@ -132,7 +132,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 
             if (order == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             order.TotalAmount = orderDTO.TotalAmount;
@@ -159,7 +159,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 
             if (order == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             await _orderService.DeleteOrder(orderId);
@@ -248,7 +248,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
             var orderItem = await _orderItemService.GetOrderItemById(itemId);
             if (orderItem == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             var orderItemResponseDTO = new OrderItemResponseDTO
@@ -283,7 +283,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 
             if (orderItem == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             orderItem.ProductID = orderItemDTO.ProductID;
@@ -312,7 +312,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 
             if (orderItem == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             await _orderItemService.DeleteOrderItem(itemId);

@@ -101,7 +101,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             if (product == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             var productDTO = new ProductResponseDTO
@@ -137,7 +137,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             if (product == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             product.CategoryID = productDTO.CategoryID;
@@ -168,7 +168,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             if (product == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             await _productService.DeleteProduct(productId);

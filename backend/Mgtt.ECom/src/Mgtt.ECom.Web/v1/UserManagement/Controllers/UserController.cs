@@ -33,7 +33,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             var user = await _userService.GetUserById(id);
             if (user == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
             var userResponse = new UserResponseDTO
             {
@@ -105,7 +105,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             var existingUser = await _userService.GetUserById(id);
             if (existingUser == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             existingUser.UserName = userRequest.UserName;
@@ -132,7 +132,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             var existingUser = await _userService.GetUserById(id);
             if (existingUser == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             await _userService.DeleteUser(id);

@@ -63,7 +63,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             if (cart == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             return Ok(new CartResponseDTO
@@ -90,7 +90,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             if (cart == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             cart.TotalAmount = cartDTO.TotalAmount;
@@ -115,7 +115,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             if (cart == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             await _cartService.DeleteCart(cart.CartID);
@@ -199,7 +199,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             if (cartItem == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             return Ok(new CartItemResponseDTO
@@ -229,7 +229,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             if (cartItem == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             cartItem.CartID = cartItemDTO.CartID;
@@ -258,7 +258,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             if (cartItem == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             await _cartItemService.DeleteCartItem(itemId);

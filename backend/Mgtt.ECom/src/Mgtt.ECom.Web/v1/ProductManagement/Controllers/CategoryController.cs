@@ -89,7 +89,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             if (category == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             var categoryDTO = new CategoryResponseDTO
@@ -121,7 +121,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             if (existingCategory == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             existingCategory.Name = categoryDTO.Name;
@@ -148,7 +148,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             if (existingCategory == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             await _categoryService.DeleteCategory(categoryId);

@@ -70,7 +70,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
 
             if (review == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             var reviewDTO = new ReviewResponseDTO
@@ -161,7 +161,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
 
             if (existingReview == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             existingReview.ProductID = reviewDTO.ProductID;
@@ -189,7 +189,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
 
             if (existingReview == null)
             {
-                return NotFound();
+                return NotFound(null);
             }
 
             await _reviewService.DeleteReview(reviewId);

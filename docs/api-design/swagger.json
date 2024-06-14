@@ -61,6 +61,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "If the cart data is invalid.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -164,8 +184,25 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "If the cart was successfully updated."
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartResponseDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartResponseDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartResponseDTO"
+                }
+              }
+            }
           },
           "404": {
             "description": "If the cart is not found.",
@@ -186,6 +223,29 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "If the cart data is invalid.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "If the cart was successfully updated."
           }
         }
       },
@@ -288,6 +348,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CartItemResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the cart item data is invalid.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -463,8 +543,25 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "If the cart item was successfully updated."
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartItemResponseDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartItemResponseDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartItemResponseDTO"
+                }
+              }
+            }
           },
           "404": {
             "description": "If the cart item is not found.",
@@ -485,6 +582,29 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "If the cart item data is invalid.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "If the cart item was successfully updated."
           }
         }
       },
@@ -748,25 +868,22 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "If the category was successfully updated."
-          },
-          "400": {
-            "description": "If the category data is invalid.",
+          "200": {
+            "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/CategoryResponseDTO"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/CategoryResponseDTO"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/CategoryResponseDTO"
                 }
               }
             }
@@ -790,6 +907,29 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "If the category data is invalid.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "If the category was successfully updated."
           }
         }
       },
@@ -1043,8 +1183,45 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "If the order was successfully updated."
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderRequestDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderRequestDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderRequestDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "If the order is not found.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "400": {
             "description": "If the order data is invalid.",
@@ -1066,25 +1243,8 @@
               }
             }
           },
-          "404": {
-            "description": "If the order is not found.",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+          "204": {
+            "description": "If the order was successfully updated."
           }
         }
       },
@@ -1106,8 +1266,25 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "If the order was successfully deleted."
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderRequestDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderRequestDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderRequestDTO"
+                }
+              }
+            }
           },
           "404": {
             "description": "If the order is not found.",
@@ -1128,6 +1305,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "If the order was successfully deleted."
           }
         }
       }
@@ -1402,25 +1582,22 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "If the order item was successfully updated."
-          },
-          "400": {
-            "description": "If the order item data is invalid.",
+          "200": {
+            "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/OrderItemResponseDTO"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/OrderItemResponseDTO"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/OrderItemResponseDTO"
                 }
               }
             }
@@ -1444,6 +1621,29 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "If the order item data is invalid.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "If the order item was successfully updated."
           }
         }
       },
@@ -1707,25 +1907,22 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "If the product was successfully updated."
-          },
-          "400": {
-            "description": "If the product data is invalid.",
+          "200": {
+            "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/ProductResponseDTO"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/ProductResponseDTO"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/ProductResponseDTO"
                 }
               }
             }
@@ -1749,6 +1946,29 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "If the product data is invalid.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "If the product was successfully updated."
           }
         }
       },
@@ -1965,8 +2185,25 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "If the review was successfully updated."
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewResponseDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewResponseDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewResponseDTO"
+                }
+              }
+            }
           },
           "404": {
             "description": "If the review is not found.",
@@ -1989,7 +2226,27 @@
             }
           },
           "400": {
-            "description": "If the review data is invalid."
+            "description": "If the review data is invalid.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "If the review was successfully updated."
           }
         }
       },
@@ -2238,25 +2495,22 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "If the user was successfully updated."
-          },
-          "400": {
-            "description": "If the user data is invalid.",
+          "200": {
+            "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/UserResponseDTO"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/UserResponseDTO"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/UserResponseDTO"
                 }
               }
             }
@@ -2280,6 +2534,29 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "If the user data is invalid.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "If the user was successfully updated."
           }
         }
       },

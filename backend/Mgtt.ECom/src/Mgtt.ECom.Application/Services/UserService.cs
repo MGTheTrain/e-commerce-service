@@ -19,7 +19,7 @@ namespace Mgtt.ECom.Application.Services
             _logger = logger;
         }
 
-        public async Task<User> GetUserById(Guid userId)
+        public async Task<User?> GetUserById(Guid userId)
         {
             _logger.LogInformation("Fetching user by ID: {UserId}", userId);
             try
@@ -29,11 +29,11 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching user by ID: {UserId}", userId);
-                throw;
+                return await Task.FromResult<User?>(null);
             }
         }
 
-        public async Task<User> GetUserByEmail(string email)
+        public async Task<User?> GetUserByEmail(string email)
         {
             _logger.LogInformation("Fetching user by email: {Email}", email);
             try
@@ -43,27 +43,36 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching user by email: {Email}", email);
-                throw;
+                return await Task.FromResult<User?>(null);
             }
         }
-
-        public async Task CreateUser(User user)
+        public async Task<User?> CreateUser(User user)
         {
             _logger.LogInformation("Creating new user: {UserName}, {Email}", user.UserName, user.Email);
             try
             {
+                var existingUser = await _context.Users
+                                                 .FirstOrDefaultAsync(u => u.Email == user.Email);
+
+                if (existingUser != null)
+                {
+                    _logger.LogWarning("User with email {Email} already exists.", user.Email);
+                    throw new InvalidOperationException($"User with email {user.Email} already exists.");
+                }
+
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("User created successfully: {UserId}", user.UserID);
+                return await Task.FromResult<User?>(user);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating user: {UserName}, {Email}", user.UserName, user.Email);
-                throw;
+                return await Task.FromResult<User?>(null);
             }
         }
 
-        public async Task UpdateUser(User user)
+        public async Task<User?> UpdateUser(User user)
         {
             _logger.LogInformation("Updating user: {UserId}", user.UserID);
             try
@@ -71,11 +80,12 @@ namespace Mgtt.ECom.Application.Services
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("User updated successfully: {UserId}", user.UserID);
+                return await Task.FromResult<User?>(user);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating user: {UserId}", user.UserID);
-                throw;
+                return await Task.FromResult<User?>(null);
             }
         }
 
@@ -95,7 +105,6 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting user: {UserId}", userId);
-                throw;
             }
         }
 
@@ -122,7 +131,7 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error validating user: {Email}", email);
-                throw;
+                return false;
             }
         }
     }

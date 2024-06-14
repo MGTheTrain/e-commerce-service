@@ -20,7 +20,7 @@ namespace Mgtt.ECom.Application.Services
             _logger = logger;
         }
 
-        public async Task<Review> GetReviewById(Guid reviewId)
+        public async Task<Review?> GetReviewById(Guid reviewId)
         {
             _logger.LogInformation("Fetching review by ID: {ReviewId}", reviewId);
             try
@@ -30,11 +30,11 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching review by ID: {ReviewId}", reviewId);
-                throw;
+                return await Task.FromResult<Review?>(null);
             }
         }
 
-        public async Task<IEnumerable<Review>> GetReviewsByProductId(Guid productId)
+        public async Task<IEnumerable<Review>?> GetReviewsByProductId(Guid productId)
         {
             _logger.LogInformation("Fetching reviews by Product ID: {ProductId}", productId);
             try
@@ -44,11 +44,11 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching reviews by Product ID: {ProductId}", productId);
-                throw;
+                return await Task.FromResult<IEnumerable<Review>?>(null);
             }
         }
 
-        public async Task<IEnumerable<Review>> GetReviewsByUserId(Guid userId)
+        public async Task<IEnumerable<Review>?> GetReviewsByUserId(Guid userId)
         {
             _logger.LogInformation("Fetching reviews by User ID: {UserId}", userId);
             try
@@ -58,11 +58,11 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching reviews by User ID: {UserId}", userId);
-                throw;
+                return await Task.FromResult<IEnumerable<Review>?>(null);
             }
         }
 
-        public async Task CreateReview(Review review)
+        public async Task<Review?> CreateReview(Review review)
         {
             _logger.LogInformation("Creating new review for Product ID: {ProductId}, User ID: {UserId}", review.ProductID, review.UserID);
             try
@@ -70,15 +70,16 @@ namespace Mgtt.ECom.Application.Services
                 _context.Reviews.Add(review);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Review created successfully: {ReviewId}", review.ReviewID);
+                return await Task.FromResult<Review?>(review);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating review for Product ID: {ProductId}, User ID: {UserId}", review.ProductID, review.UserID);
-                throw;
+                return await Task.FromResult<Review?>(null);
             }
         }
 
-        public async Task UpdateReview(Review review)
+        public async Task<Review?> UpdateReview(Review review)
         {
             _logger.LogInformation("Updating review: {ReviewId}", review.ReviewID);
             try
@@ -86,11 +87,12 @@ namespace Mgtt.ECom.Application.Services
                 _context.Reviews.Update(review);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Review updated successfully: {ReviewId}", review.ReviewID);
+                return await Task.FromResult<Review?>(review);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating review: {ReviewId}", review.ReviewID);
-                throw;
+                return await Task.FromResult<Review?>(null);
             }
         }
 
@@ -110,7 +112,6 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting review: {ReviewId}", reviewId);
-                throw;
             }
         }
     }

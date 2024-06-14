@@ -2,9 +2,9 @@ namespace Mgtt.ECom.Domain.ProductManagement;
 
 public interface ICategoryService
 {
-    Task<Category> GetCategoryById(Guid categoryId);
-    Task<IEnumerable<Category>> GetAllCategories();
-    Task CreateCategory(Category category);
-    Task UpdateCategory(Category category);
+    Task<Category?> GetCategoryById(Guid categoryId);
+    Task<IEnumerable<Category>?> GetAllCategories();
+    Task<Category?> CreateCategory(Category category);
+    Task<Category?> UpdateCategory(Category category);
     Task DeleteCategory(Guid categoryId);
 }

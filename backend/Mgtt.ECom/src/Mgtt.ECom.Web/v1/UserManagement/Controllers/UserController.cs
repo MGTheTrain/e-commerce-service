@@ -92,8 +92,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         /// <response code="400">If the user data is invalid.</response>
         /// <response code="404">If the user is not found.</response>
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateUser(Guid id, UserRequestDTO userRequest)
         {

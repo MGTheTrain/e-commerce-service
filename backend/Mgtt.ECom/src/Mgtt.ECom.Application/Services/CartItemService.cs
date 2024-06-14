@@ -19,7 +19,7 @@ namespace Mgtt.ECom.Application.Services
             _logger = logger;
         }
 
-        public async Task<CartItem> GetCartItemById(Guid cartItemId)
+        public async Task<CartItem?> GetCartItemById(Guid cartItemId)
         {
             _logger.LogInformation("Fetching cart item by ID: {CartItemId}", cartItemId);
             try
@@ -29,11 +29,11 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching cart item by ID: {CartItemId}", cartItemId);
-                throw;
+                return await Task.FromResult<CartItem?>(null);
             }
         }
 
-        public async Task<IEnumerable<CartItem>> GetCartItemsByCartId(Guid cartId)
+        public async Task<IEnumerable<CartItem>?> GetCartItemsByCartId(Guid cartId)
         {
             _logger.LogInformation("Fetching cart items by CartID: {CartId}", cartId);
             try
@@ -43,11 +43,11 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching cart items by CartID: {CartId}", cartId);
-                throw;
+                return await Task.FromResult<IEnumerable<CartItem>?>(null);
             }
         }
 
-        public async Task CreateCartItem(CartItem cartItem)
+        public async Task<CartItem?> CreateCartItem(CartItem cartItem)
         {
             _logger.LogInformation("Creating cart item for CartID: {CartId}", cartItem.CartID);
             try
@@ -55,15 +55,16 @@ namespace Mgtt.ECom.Application.Services
                 _context.CartItems.Add(cartItem);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Cart item created successfully for CartID: {CartId}", cartItem.CartID);
+                return await Task.FromResult<CartItem?>(cartItem);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating cart item for CartID: {CartId}", cartItem.CartID);
-                throw;
+                return await Task.FromResult<CartItem?>(null);
             }
         }
 
-        public async Task UpdateCartItem(CartItem cartItem)
+        public async Task<CartItem?> UpdateCartItem(CartItem cartItem)
         {
             _logger.LogInformation("Updating cart item with ID: {CartItemId}", cartItem.CartItemID);
             try
@@ -71,11 +72,12 @@ namespace Mgtt.ECom.Application.Services
                 _context.CartItems.Update(cartItem);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Cart item updated successfully with ID: {CartItemId}", cartItem.CartItemID);
+                return await Task.FromResult<CartItem?>(cartItem);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating cart item with ID: {CartItemId}", cartItem.CartItemID);
-                throw;
+                return await Task.FromResult<CartItem?>(null);
             }
         }
 
@@ -95,7 +97,6 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting cart item with ID: {CartItemId}", cartItemId);
-                throw;
             }
         }
     }

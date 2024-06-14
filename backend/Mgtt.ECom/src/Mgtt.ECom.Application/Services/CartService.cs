@@ -18,7 +18,7 @@ namespace Mgtt.ECom.Application.Services
             _logger = logger;
         }
 
-        public async Task<Cart> GetCartByUserId(Guid userId)
+        public async Task<Cart?> GetCartByUserId(Guid userId)
         {
             _logger.LogInformation("Fetching cart by UserID: {UserId}", userId);
             try
@@ -28,11 +28,11 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching cart by UserID: {UserId}", userId);
-                throw;
+                return await Task.FromResult<Cart?>(null);
             }
         }
 
-        public async Task CreateCart(Cart cart)
+        public async Task<Cart?> CreateCart(Cart cart)
         {
             _logger.LogInformation("Creating new cart for UserID: {UserId}", cart.UserID);
             try
@@ -40,15 +40,16 @@ namespace Mgtt.ECom.Application.Services
                 _context.Carts.Add(cart);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Cart created successfully for UserID: {UserId}", cart.UserID);
+                return await Task.FromResult<Cart?>(cart);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating cart for UserID: {UserId}", cart.UserID);
-                throw;
+                return await Task.FromResult<Cart?>(null);
             }
         }
 
-        public async Task UpdateCart(Cart cart)
+        public async Task<Cart?> UpdateCart(Cart cart)
         {
             _logger.LogInformation("Updating cart for UserID: {UserId}", cart.UserID);
             try
@@ -56,11 +57,12 @@ namespace Mgtt.ECom.Application.Services
                 _context.Carts.Update(cart);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Cart updated successfully for UserID: {UserId}", cart.UserID);
+                return await Task.FromResult<Cart?>(cart);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating cart for UserID: {UserId}", cart.UserID);
-                throw;
+                return await Task.FromResult<Cart?>(null);
             }
         }
 
@@ -80,7 +82,6 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting cart with ID: {CartId}", cartId);
-                throw;
             }
         }
     }

@@ -20,21 +20,22 @@ namespace Mgtt.ECom.Application.Services
             _logger = logger;
         }
 
-        public async Task<OrderItem> GetOrderItemById(Guid orderItemId)
+        public async Task<OrderItem?> GetOrderItemById(Guid orderItemId)
         {
             _logger.LogInformation("Fetching order item by ID: {OrderItemId}", orderItemId);
             try
             {
-                return await _context.OrderItems.FindAsync(orderItemId);
+                var orderItem = await _context.OrderItems.FindAsync(orderItemId);
+                return await Task.FromResult<OrderItem?>(orderItem);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching order item by ID: {OrderItemId}", orderItemId);
-                throw;
+                return await Task.FromResult<OrderItem?>(null);
             }
         }
 
-        public async Task<IEnumerable<OrderItem>> GetOrderItemsByOrderId(Guid orderId)
+        public async Task<IEnumerable<OrderItem>?> GetOrderItemsByOrderId(Guid orderId)
         {
             _logger.LogInformation("Fetching order items by Order ID: {OrderId}", orderId);
             try
@@ -44,11 +45,11 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching order items by Order ID: {OrderId}", orderId);
-                throw;
+                return await Task.FromResult<IEnumerable<OrderItem>?>(null);
             }
         }
 
-        public async Task CreateOrderItem(OrderItem orderItem)
+        public async Task<OrderItem?> CreateOrderItem(OrderItem orderItem)
         {
             _logger.LogInformation("Creating new order item: {OrderItemId}", orderItem.OrderItemID);
             try
@@ -56,15 +57,16 @@ namespace Mgtt.ECom.Application.Services
                 _context.OrderItems.Add(orderItem);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Order item created successfully: {OrderItemId}", orderItem.OrderItemID);
+                return await Task.FromResult<OrderItem?>(orderItem);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating order item: {OrderItemId}", orderItem.OrderItemID);
-                throw;
+                return await Task.FromResult<OrderItem?>(null);
             }
         }
 
-        public async Task UpdateOrderItem(OrderItem orderItem)
+        public async Task<OrderItem?> UpdateOrderItem(OrderItem orderItem)
         {
             _logger.LogInformation("Updating order item: {OrderItemId}", orderItem.OrderItemID);
             try
@@ -72,11 +74,12 @@ namespace Mgtt.ECom.Application.Services
                 _context.OrderItems.Update(orderItem);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Order item updated successfully: {OrderItemId}", orderItem.OrderItemID);
+                return await Task.FromResult<OrderItem?>(orderItem);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating order item: {OrderItemId}", orderItem.OrderItemID);
-                throw;
+                return await Task.FromResult<OrderItem?>(null);
             }
         }
 
@@ -96,7 +99,6 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting order item: {OrderItemId}", orderItemId);
-                throw;
             }
         }
     }

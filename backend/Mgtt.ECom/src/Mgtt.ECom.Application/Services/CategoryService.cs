@@ -20,7 +20,7 @@ namespace Mgtt.ECom.Application.Services
             _logger = logger;
         }
 
-        public async Task<Category> GetCategoryById(Guid categoryId)
+        public async Task<Category?> GetCategoryById(Guid categoryId)
         {
             _logger.LogInformation("Fetching category by ID: {CategoryId}", categoryId);
             try
@@ -30,11 +30,11 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching category by ID: {CategoryId}", categoryId);
-                throw;
+                return await Task.FromResult<Category?>(null);
             }
         }
 
-        public async Task<IEnumerable<Category>> GetAllCategories()
+        public async Task<IEnumerable<Category>?> GetAllCategories()
         {
             _logger.LogInformation("Fetching all categories");
             try
@@ -44,11 +44,11 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching all categories");
-                throw;
+                return await Task.FromResult<IEnumerable<Category>?>(null);
             }
         }
 
-        public async Task CreateCategory(Category category)
+        public async Task<Category?> CreateCategory(Category category)
         {
             _logger.LogInformation("Creating new category: {CategoryId}", category.CategoryID);
             try
@@ -56,15 +56,16 @@ namespace Mgtt.ECom.Application.Services
                 _context.Categories.Add(category);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Category created successfully: {CategoryId}", category.CategoryID);
+                return await Task.FromResult<Category?>(category);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating category: {CategoryId}", category.CategoryID);
-                throw;
+                return await Task.FromResult<Category?>(null);
             }
         }
 
-        public async Task UpdateCategory(Category category)
+        public async Task<Category?> UpdateCategory(Category category)
         {
             _logger.LogInformation("Updating category: {CategoryId}", category.CategoryID);
             try
@@ -72,11 +73,12 @@ namespace Mgtt.ECom.Application.Services
                 _context.Categories.Update(category);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Category updated successfully: {CategoryId}", category.CategoryID);
+                return await Task.FromResult<Category?>(category);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating category: {CategoryId}", category.CategoryID);
-                throw;
+                return await Task.FromResult<Category?>(null);
             }
         }
 
@@ -96,7 +98,6 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting category: {CategoryId}", categoryId);
-                throw;
             }
         }
     }

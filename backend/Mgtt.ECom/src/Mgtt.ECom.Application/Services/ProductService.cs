@@ -20,7 +20,7 @@ namespace Mgtt.ECom.Application.Services
             _logger = logger;
         }
 
-        public async Task<Product> GetProductById(Guid productId)
+        public async Task<Product?> GetProductById(Guid productId)
         {
             _logger.LogInformation("Fetching product by ID: {ProductId}", productId);
             try
@@ -30,11 +30,11 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching product by ID: {ProductId}", productId);
-                throw;
+                return await Task.FromResult<Product?>(null);
             }
         }
 
-        public async Task<IEnumerable<Product>> GetAllProducts()
+        public async Task<IEnumerable<Product>?> GetAllProducts()
         {
             _logger.LogInformation("Fetching all products");
             try
@@ -44,7 +44,7 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching all products");
-                throw;
+                return await Task.FromResult<IEnumerable<Product>?>(null);
             }
         }
 
@@ -58,11 +58,11 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching products by Category ID: {CategoryId}", categoryId);
-                throw;
+                return await Task.FromResult<IEnumerable<Product>?>(null);
             }
         }
 
-        public async Task CreateProduct(Product product)
+        public async Task<Product?> CreateProduct(Product product)
         {
             _logger.LogInformation("Creating new product: {ProductName}", product.Name);
             try
@@ -70,15 +70,16 @@ namespace Mgtt.ECom.Application.Services
                 _context.Products.Add(product);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Product created successfully: {ProductId}", product.ProductID);
+                return await Task.FromResult<Product?>(product);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating product: {ProductName}", product.Name);
-                throw;
+                return await Task.FromResult<Product?>(null);
             }
         }
 
-        public async Task UpdateProduct(Product product)
+        public async Task<Product?> UpdateProduct(Product product)
         {
             _logger.LogInformation("Updating product: {ProductId}", product.ProductID);
             try
@@ -86,11 +87,12 @@ namespace Mgtt.ECom.Application.Services
                 _context.Products.Update(product);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Product updated successfully: {ProductId}", product.ProductID);
+                return await Task.FromResult<Product?>(product);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating product: {ProductId}", product.ProductID);
-                throw;
+                return await Task.FromResult<Product?>(null);
             }
         }
 
@@ -110,7 +112,6 @@ namespace Mgtt.ECom.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting product: {ProductId}", productId);
-                throw;
             }
         }
     }

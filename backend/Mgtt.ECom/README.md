@@ -58,9 +58,10 @@ make test-individual subdir=<subdirectory in the test folder, e.g. Mgtt.ECom.App
 
 ### Starting the Kestrel-Webserver
 
-Execute:
+Launch Docker Compose cluster and Kestrel-Webserver:
 
 ```sh
+docker-compose up -d --build 
 make run
 ```
 

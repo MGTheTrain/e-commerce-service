@@ -70,7 +70,11 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
                 Role = userRequest.Role
             };
 
-            await _userService.CreateUser(user);
+            var action = await _userService.CreateUser(user);
+            if (action == null)
+            {
+                return BadRequest(null); 
+            }
 
             var userResponseDTO = new UserResponseDTO
             {
@@ -113,7 +117,11 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             user.Email = userRequest.Email;
             user.Role = userRequest.Role;
 
-            await _userService.UpdateUser(user);
+            var action = await _userService.UpdateUser(user);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var userResponseDTO = new UserResponseDTO
             {

@@ -45,7 +45,11 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
                 ImageUrl = productDTO.ImageUrl
             };
 
-            await _productService.CreateProduct(product);
+            var action = await _productService.CreateProduct(product);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var productResponseDTO = new ProductResponseDTO
             {
@@ -157,7 +161,11 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
             product.Stock = productDTO.Stock;
             product.ImageUrl = productDTO.ImageUrl;
 
-            await _productService.UpdateProduct(product);
+            var action = await _productService.UpdateProduct(product);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var productResponseDTO = new ProductResponseDTO
             {

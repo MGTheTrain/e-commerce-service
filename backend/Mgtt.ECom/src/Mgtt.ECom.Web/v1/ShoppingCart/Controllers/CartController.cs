@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mgtt.ECom.Web.v1.ShoppingCart.DTOs;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 {
@@ -44,7 +45,11 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
                 TotalAmount = cartDTO.TotalAmount
             };
 
-            await _cartService.CreateCart(cart);
+            var action = await _cartService.CreateCart(cart);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var cartResponseDTO = new CartResponseDTO
             {
@@ -113,7 +118,11 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             cart.TotalAmount = cartDTO.TotalAmount;
 
-            await _cartService.UpdateCart(cart);
+            var action = await _cartService.UpdateCart(cart);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var cartResponseDto = new CartResponseDTO
             {
@@ -174,7 +183,11 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
                 Price = cartItemDTO.Price
             };
 
-            await _cartItemService.CreateCartItem(cartItem);
+            var action = await _cartItemService.CreateCartItem(cartItem);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var cartItemResponseDTO = new CartItemResponseDTO
             {
@@ -280,7 +293,11 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             cartItem.Quantity = cartItemDTO.Quantity;
             cartItem.Price = cartItemDTO.Price;
 
-            await _cartItemService.UpdateCartItem(cartItem);
+            var action = await _cartItemService.UpdateCartItem(cartItem);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var cartItemResponseDto = new CartItemResponseDTO
             {

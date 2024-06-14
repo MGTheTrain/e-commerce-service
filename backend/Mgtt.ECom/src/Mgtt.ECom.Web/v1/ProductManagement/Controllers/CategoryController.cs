@@ -4,6 +4,7 @@ using Mgtt.ECom.Web.v1.ProductManagement.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 {
@@ -41,7 +42,11 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
                 Description = categoryDTO.Description
             };
 
-            await _categoryService.CreateCategory(category);
+            var action = await _categoryService.CreateCategory(category);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var categoryResponseDTO = new CategoryResponseDTO
             {
@@ -137,7 +142,11 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
             category.Name = categoryDTO.Name;
             category.Description = categoryDTO.Description;
 
-            await _categoryService.UpdateCategory(category);
+            var action = await _categoryService.UpdateCategory(category);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var categoryResponseDTO = new CategoryResponseDTO
             {

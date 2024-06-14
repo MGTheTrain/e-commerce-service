@@ -46,7 +46,11 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 OrderStatus = orderDTO.OrderStatus
             };
 
-            await _orderService.CreateOrder(order);
+            var action = await _orderService.CreateOrder(order);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var orderResponseDTO = new OrderResponseDTO
             {
@@ -148,7 +152,11 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
             order.TotalAmount = orderDTO.TotalAmount;
             order.OrderStatus = orderDTO.OrderStatus;
 
-            await _orderService.UpdateOrder(order);
+            var action = await _orderService.UpdateOrder(order);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var orderResponseDTO = new OrderResponseDTO
             {
@@ -221,7 +229,11 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 Price = orderItemDTO.Price
             };
 
-            await _orderItemService.CreateOrderItem(orderItem);
+            var action = await _orderItemService.CreateOrderItem(orderItem);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var orderItemResponseDTO = new OrderItemResponseDTO
             {
@@ -328,7 +340,11 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
             orderItem.Quantity = orderItemDTO.Quantity;
             orderItem.Price = orderItemDTO.Price;
 
-            await _orderItemService.UpdateOrderItem(orderItem);
+            var action = await _orderItemService.UpdateOrderItem(orderItem);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var orderItemResponseDTO = new OrderItemResponseDTO
             {

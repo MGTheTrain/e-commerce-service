@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mgtt.ECom.Web.v1.ReviewManagement.DTOs;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
 {
@@ -44,7 +45,11 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
                 ReviewDate = DateTime.UtcNow
             };
 
-            await _reviewService.CreateReview(review);
+            var action = await _reviewService.CreateReview(review);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var reviewResponseDTO = new ReviewResponseDTO
             {
@@ -180,7 +185,11 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
             review.Rating = reviewDTO.Rating;
             review.Comment = reviewDTO.Comment;
 
-            await _reviewService.UpdateReview(review);
+            var action =await _reviewService.UpdateReview(review);
+            if (action == null)
+            {
+                return BadRequest(null);
+            }
 
             var reviewResponseDTO = new ReviewResponseDTO
             {

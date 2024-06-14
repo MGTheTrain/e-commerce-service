@@ -27,10 +27,17 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <param name="cartDTO">The cart data transfer object containing user ID and total amount.</param>
         /// <returns>A newly created cart.</returns>
         /// <response code="201">Returns the newly created cart.</response>
+        /// <response code="400">If the cart data is invalid.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CartResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCart(CartRequestDTO cartDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var cart = new Cart
             {
                 UserID = cartDTO.UserID,
@@ -39,12 +46,14 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             await _cartService.CreateCart(cart);
 
-            return CreatedAtAction(nameof(GetCartByUserId), new { cartId = cart.CartID }, new CartResponseDTO
+            var cartResponseDTO = new CartResponseDTO
             {
                 CartID = cart.CartID,
                 UserID = cart.UserID,
                 TotalAmount = cart.TotalAmount
-            });
+            };
+
+            return CreatedAtAction(nameof(CreateCart), cartResponseDTO);
         }
 
         /// <summary>
@@ -66,12 +75,14 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
                 return NotFound(null);
             }
 
-            return Ok(new CartResponseDTO
+            var cartResponseDto = new CartResponseDTO // utilize auto-mapper for optimization
             {
                 CartID = cart.CartID,
                 UserID = cart.UserID,
                 TotalAmount = cart.TotalAmount
-            });
+            };
+
+            return Ok(cartResponseDto);
         }
 
         /// <summary>
@@ -81,11 +92,18 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <param name="cartDTO">The cart data transfer object containing the updated total amount.</param>
         /// <response code="204">If the cart was successfully updated.</response>
         /// <response code="404">If the cart is not found.</response>
+        /// <response code="400">If the cart data is invalid.</response>
         [HttpPut("{userId}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateCartByUserId(Guid userId, CartRequestDTO cartDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var cart = await _cartService.GetCartByUserId(userId);
 
             if (cart == null)
@@ -97,7 +115,14 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             await _cartService.UpdateCart(cart);
 
-            return NoContent();
+            var cartResponseDto = new CartResponseDTO
+            {
+                CartID = cart.CartID,
+                UserID = cart.UserID,
+                TotalAmount = cart.TotalAmount
+            };
+
+            return Ok(cartResponseDto);
         }
 
         /// <summary>
@@ -130,10 +155,17 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <param name="cartItemDTO">The cart item data transfer object containing product ID, quantity, and price.</param>
         /// <returns>A newly created cart item.</returns>
         /// <response code="201">Returns the newly created cart item.</response>
+        /// <response code="400">If the cart item data is invalid.</response>
         [HttpPost("{cartId}/items")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CartItemResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCartItem(Guid cartId, CartItemRequestDTO cartItemDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var cartItem = new CartItem
             {
                 CartID = cartId,
@@ -144,14 +176,16 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             await _cartItemService.CreateCartItem(cartItem);
 
-            return CreatedAtAction(nameof(GetCartItemById), new { cartId, itemId = cartItem.CartItemID }, new CartItemResponseDTO
+            var cartItemResponseDTO = new CartItemResponseDTO
             {
                 CartItemID = cartItem.CartItemID,
                 CartID = cartItem.CartID,
                 ProductID = cartItem.ProductID,
                 Quantity = cartItem.Quantity,
                 Price = cartItem.Price
-            });
+            };
+
+            return CreatedAtAction(nameof(GetCartItemById), cartItemResponseDTO);
         }
 
         /// <summary>
@@ -202,14 +236,16 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
                 return NotFound(null);
             }
 
-            return Ok(new CartItemResponseDTO
+            var cartItemResponseDto = new CartItemResponseDTO
             {
                 CartItemID = cartItem.CartItemID,
                 CartID = cartItem.CartID,
                 ProductID = cartItem.ProductID,
                 Quantity = cartItem.Quantity,
                 Price = cartItem.Price
-            });
+            };
+
+            return Ok(cartItemResponseDto);
         }
 
         /// <summary>
@@ -220,11 +256,18 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <param name="cartItemDTO">The cart item data transfer object containing updated product ID, quantity, and price.</param>
         /// <response code="204">If the cart item was successfully updated.</response>
         /// <response code="404">If the cart item is not found.</response>
+        /// <response code="400">If the cart item data is invalid.</response>
         [HttpPut("{cartId}/items/{itemId}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartItemResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateCartItem(Guid cartId, Guid itemId, CartItemRequestDTO cartItemDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var cartItem = await _cartItemService.GetCartItemById(itemId);
 
             if (cartItem == null)
@@ -239,7 +282,16 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             await _cartItemService.UpdateCartItem(cartItem);
 
-            return NoContent();
+            var cartItemResponseDto = new CartItemResponseDTO
+            {
+                CartItemID = cartItem.CartItemID,
+                CartID = cartItem.CartID,
+                ProductID = cartItem.ProductID,
+                Quantity = cartItem.Quantity,
+                Price = cartItem.Price
+            };
+
+            return Ok(cartItemResponseDto);
         }
 
         /// <summary>

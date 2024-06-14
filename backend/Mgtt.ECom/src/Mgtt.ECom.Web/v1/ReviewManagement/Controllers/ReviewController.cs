@@ -30,6 +30,11 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateReview(ReviewRequestDTO reviewDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var review = new Review
             {
                 ProductID = reviewDTO.ProductID,
@@ -51,7 +56,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
                 ReviewDate = review.ReviewDate
             };
 
-            return CreatedAtAction(nameof(GetReviewById), new { reviewId = reviewResponseDTO.ReviewID }, reviewResponseDTO);
+            return CreatedAtAction(nameof(GetReviewById), reviewResponseDTO);
         }
 
         /// <summary>
@@ -153,25 +158,41 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         /// <response code="400">If the review data is invalid.</response>
         /// <response code="404">If the review is not found.</response>
         [HttpPut("{reviewId}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReviewResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateReview(Guid reviewId, ReviewRequestDTO reviewDTO)
         {
-            var existingReview = await _reviewService.GetReviewById(reviewId);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            if (existingReview == null)
+            var review = await _reviewService.GetReviewById(reviewId);
+
+            if (review == null)
             {
                 return NotFound(null);
             }
 
-            existingReview.ProductID = reviewDTO.ProductID;
-            existingReview.UserID = reviewDTO.UserID;
-            existingReview.Rating = reviewDTO.Rating;
-            existingReview.Comment = reviewDTO.Comment;
+            review.ProductID = reviewDTO.ProductID;
+            review.UserID = reviewDTO.UserID;
+            review.Rating = reviewDTO.Rating;
+            review.Comment = reviewDTO.Comment;
 
-            await _reviewService.UpdateReview(existingReview);
+            await _reviewService.UpdateReview(review);
 
-            return NoContent();
+            var reviewResponseDTO = new ReviewResponseDTO
+            {
+                ReviewID = review.ReviewID,
+                ProductID = review.ProductID,
+                UserID = review.UserID,
+                Rating = review.Rating,
+                Comment = review.Comment,
+                ReviewDate = review.ReviewDate
+            };
+
+            return Ok(reviewResponseDTO);
         }
 
         /// <summary>
@@ -185,9 +206,9 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteReview(Guid reviewId)
         {
-            var existingReview = await _reviewService.GetReviewById(reviewId);
+            var review = await _reviewService.GetReviewById(reviewId);
 
-            if (existingReview == null)
+            if (review == null)
             {
                 return NotFound(null);
             }

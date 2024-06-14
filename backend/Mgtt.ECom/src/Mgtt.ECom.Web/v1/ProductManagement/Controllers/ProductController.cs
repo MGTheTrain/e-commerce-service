@@ -30,6 +30,11 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateProduct(ProductRequestDTO productDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var product = new Product
             {
                 CategoryID = productDTO.CategoryID,
@@ -128,11 +133,16 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         /// <response code="400">If the product data is invalid.</response>
         /// <response code="404">If the product is not found.</response>
         [HttpPut("{productId}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateProduct(Guid productId, ProductRequestDTO productDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var product = await _productService.GetProductById(productId);
 
             if (product == null)
@@ -149,7 +159,18 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             await _productService.UpdateProduct(product);
 
-            return NoContent();
+            var productResponseDTO = new ProductResponseDTO
+            {
+                ProductID = product.ProductID,
+                CategoryID = product.CategoryID,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Stock = product.Stock,
+                ImageUrl = product.ImageUrl
+            };
+
+            return Ok(productResponseDTO);
         }
 
         /// <summary>

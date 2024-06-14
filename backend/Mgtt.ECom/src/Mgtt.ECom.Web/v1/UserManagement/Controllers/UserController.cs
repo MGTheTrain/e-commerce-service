@@ -72,7 +72,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
 
             await _userService.CreateUser(user);
 
-            var userResponse = new UserResponseDTO
+            var userResponseDTO = new UserResponseDTO
             {
                 UserID = user.UserID,
                 UserName = user.UserName,
@@ -80,7 +80,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
                 Role = user.Role
             };
 
-            return CreatedAtAction(nameof(GetUserById), new { id = userResponse.UserID }, userResponse);
+            return CreatedAtAction(nameof(GetUserById), userResponseDTO);
         }
 
         /// <summary>
@@ -89,11 +89,12 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         /// <param name="id">The ID of the user to update.</param>
         /// <param name="userRequest">The user data transfer object containing updated user details.</param>
         /// <response code="204">If the user was successfully updated.</response>
-        /// <response code="400">If the user data is invalid.</response>
         /// <response code="404">If the user is not found.</response>
+        /// <response code="400">If the user data is invalid.</response>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateUser(Guid id, UserRequestDTO userRequest)
         {
             if (!ModelState.IsValid)
@@ -101,20 +102,28 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingUser = await _userService.GetUserById(id);
-            if (existingUser == null)
+            var user = await _userService.GetUserById(id);
+            if (user == null)
             {
                 return NotFound(null);
             }
 
-            existingUser.UserName = userRequest.UserName;
-            existingUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userRequest.Password);
-            existingUser.Email = userRequest.Email;
-            existingUser.Role = userRequest.Role;
+            user.UserName = userRequest.UserName;
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userRequest.Password);
+            user.Email = userRequest.Email;
+            user.Role = userRequest.Role;
 
-            await _userService.UpdateUser(existingUser);
+            await _userService.UpdateUser(user);
 
-            return NoContent();
+            var userResponseDTO = new UserResponseDTO
+            {
+                UserID = user.UserID,
+                UserName = user.UserName,
+                Email = user.Email,
+                Role = user.Role
+            };
+
+            return Ok(userResponseDTO);
         }
 
         /// <summary>
@@ -128,8 +137,8 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
-            var existingUser = await _userService.GetUserById(id);
-            if (existingUser == null)
+            var user = await _userService.GetUserById(id);
+            if (user == null)
             {
                 return NotFound(null);
             }

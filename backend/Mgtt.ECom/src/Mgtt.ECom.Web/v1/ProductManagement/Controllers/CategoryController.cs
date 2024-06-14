@@ -30,6 +30,11 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCategory(CategoryRequestDTO categoryDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var category = new Category
             {
                 Name = categoryDTO.Name,
@@ -112,24 +117,36 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         /// <response code="400">If the category data is invalid.</response>
         /// <response code="404">If the category is not found.</response>
         [HttpPut("{categoryId}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateCategory(Guid categoryId, CategoryRequestDTO categoryDTO)
         {
-            var existingCategory = await _categoryService.GetCategoryById(categoryId);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            if (existingCategory == null)
+            var category = await _categoryService.GetCategoryById(categoryId);
+
+            if (category == null)
             {
                 return NotFound(null);
             }
 
-            existingCategory.Name = categoryDTO.Name;
-            existingCategory.Description = categoryDTO.Description;
+            category.Name = categoryDTO.Name;
+            category.Description = categoryDTO.Description;
 
-            await _categoryService.UpdateCategory(existingCategory);
+            await _categoryService.UpdateCategory(category);
 
-            return NoContent();
+            var categoryResponseDTO = new CategoryResponseDTO
+            {
+                CategoryID = category.CategoryID,
+                Name = category.Name,
+                Description = category.Description
+            };
+
+            return Ok(categoryResponseDTO);
         }
 
         /// <summary>

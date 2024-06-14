@@ -58,7 +58,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
                 ImageUrl = product.ImageUrl
             };
 
-            return CreatedAtAction(nameof(GetProductById), new { productId = productResponseDTO.ProductID }, productResponseDTO);
+            return CreatedAtAction(nameof(CreateProduct), productResponseDTO);
         }
 
         /// <summary>

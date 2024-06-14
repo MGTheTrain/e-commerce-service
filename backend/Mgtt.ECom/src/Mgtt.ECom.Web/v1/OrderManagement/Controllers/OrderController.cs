@@ -57,7 +57,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 OrderStatus = order.OrderStatus
             };
 
-            return CreatedAtAction(nameof(GetOrderById), new { orderId = order.OrderID }, orderResponseDTO);
+            return CreatedAtAction(nameof(CreateOrder),orderResponseDTO);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 Price = orderItem.Price
             };
 
-            return CreatedAtAction(nameof(GetOrderItemById), new { orderId, itemId = orderItem.OrderItemID }, orderItemResponseDTO);
+            return CreatedAtAction(nameof(CreateOrderItem),orderItemResponseDTO);
         }
 
         /// <summary>

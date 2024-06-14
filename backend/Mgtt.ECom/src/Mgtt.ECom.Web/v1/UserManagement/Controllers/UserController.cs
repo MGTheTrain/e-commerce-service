@@ -80,7 +80,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
                 Role = user.Role
             };
 
-            return CreatedAtAction(nameof(GetUserById), userResponseDTO);
+            return CreatedAtAction(nameof(Register), userResponseDTO);
         }
 
         /// <summary>

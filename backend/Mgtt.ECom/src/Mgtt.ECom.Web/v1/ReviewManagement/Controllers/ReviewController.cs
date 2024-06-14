@@ -56,7 +56,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
                 ReviewDate = review.ReviewDate
             };
 
-            return CreatedAtAction(nameof(GetReviewById), reviewResponseDTO);
+            return CreatedAtAction(nameof(CreateReview), reviewResponseDTO);
         }
 
         /// <summary>

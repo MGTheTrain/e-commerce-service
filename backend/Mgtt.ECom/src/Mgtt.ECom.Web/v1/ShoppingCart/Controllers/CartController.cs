@@ -185,7 +185,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
                 Price = cartItem.Price
             };
 
-            return CreatedAtAction(nameof(GetCartItemById), cartItemResponseDTO);
+            return CreatedAtAction(nameof(CreateCartItem), cartItemResponseDTO);
         }
 
         /// <summary>

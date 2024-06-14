@@ -50,7 +50,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
                 Description = category.Description
             };
 
-            return CreatedAtAction(nameof(GetCategoryById), new { categoryId = categoryResponseDTO.CategoryID }, categoryResponseDTO);
+            return CreatedAtAction(nameof(CreateCategory), categoryResponseDTO);
         }
 
         /// <summary>

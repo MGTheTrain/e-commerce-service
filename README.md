@@ -41,7 +41,7 @@ Simple front- and backend for an e-commerce platform utilizing DDD principles ba
 Copy contents of the [swagger.json](./docs/api-design/swagger.json) to the [Swagger Online editor](https://editor.swagger.io/).
 Results should resemble following snippet:
 
-![resulst-swagger-ui.PNG](./docs/api-design/resulst-swagger-ui.PNG)
+![swagger-ui-results.PNG](./docs/api-design/swagger-ui-results.PNG)
 
 ## Getting Started
 

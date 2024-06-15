@@ -54,6 +54,20 @@ make test
 make test-individual subdir=<subdirectory in the test folder, e.g. Mgtt.ECom.ApplicationTest>
 ```
 
+### Starting the Kestrel-Webserver
+
+If external services for storage or messaging are needed via Docker Compose modify the [docker-compose.yml](./devops/docker-compose/docker-compose.yml) and utilize the following line:
+
+```sh
+make start-docker-cmp
+```
+
+Start Kestrel-Webserver:
+
+```sh
+make run
+```
+
 ### Running smoke tests
 
 Run smoke tests:
@@ -72,20 +86,6 @@ make smoke-test-individual test_file_name=<test file name, e.g. test_user_manage
 Results should resemble the following (the **left half of the screen** is executing the smoke test while **the right half** is ramping up the Kestrel web server as a precondition):
 
 ![smoke-tests.results](../../docs/test/smoke-tests.results.PNG)
-
-### Starting the Kestrel-Webserver
-
-If external services for storage or messaging are needed via Docker Compose modify the [docker-compose.yml](./devops/docker-compose/docker-compose.yml) and utilize the following line:
-
-```sh
-make start-docker-cmp
-```
-
-Start Kestrel-Webserver:
-
-```sh
-make run
-```
 
 ### Generating project documentation
 

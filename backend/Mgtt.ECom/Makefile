@@ -1,5 +1,6 @@
 # Variables
 DOTNET = dotnet
+PYTEST = pytest
 
 # Directories
 DOCS_DIR = docs
@@ -26,13 +27,20 @@ test:
 
 test-individual:
 	@if [ -z "$(subdir)" ]; then \
-		echo "Please provide a subdirectory in the test folder using 'make test subdir=<subdirectory>'"; \
+		echo "Please provide a subdirectory in the test folder using 'make test-individual subdir=<subdirectory>'"; \
 	else \
 		$(DOTNET) test $(TEST_DIR)/$(subdir); \
 	fi
 
 smoke-test:
-	cd smoke-test && pip install -r requirements.txt && pytest --html=report.html
+	cd smoke-test && pip install -r requirements.txt && $(PYTEST) --html=report.html
+
+smoke-test-individual:
+	@if [ -z "$(test_file_name)" ]; then \
+		echo "Please provide a testname in the test folder using 'make smoke-test-individual test_file_name=<test file name, e.g. test_user_management_domain_smoker.py>'"; \
+	else \
+		cd smoke-test && pip install -r requirements.txt && $(PYTEST) $(test_file_name) --html=report.html; \
+	fi
 
 # Start server
 run:

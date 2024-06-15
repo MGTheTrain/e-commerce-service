@@ -59,6 +59,7 @@ make test-individual subdir=<subdirectory in the test folder, e.g. Mgtt.ECom.App
 Run smoke tests:
 
 ```sh
+pip install -r requirements.txt # install pip depdencies
 export API_BASE_URL='https://localhost:7260/api/v1' # Substitute the value if it differs
 # all
 make smoke-test

@@ -39,7 +39,7 @@ smoke-test-individual:
 	@if [ -z "$(test_file_name)" ]; then \
 		echo "Please provide a testname in the test folder using 'make smoke-test-individual test_file_name=<test file name, e.g. test_user_management_domain_smoker.py>'"; \
 	else \
-		cd smoke-test && pip install -r requirements.txt && $(PYTEST) $(test_file_name) --html=report.html; \
+		cd smoke-test && $(PYTEST) $(test_file_name) --html=report.html; \
 	fi
 
 # Start server

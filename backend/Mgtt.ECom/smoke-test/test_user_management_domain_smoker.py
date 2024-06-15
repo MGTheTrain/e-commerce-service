@@ -8,7 +8,6 @@ TEST_USER_EMAIL = f"{uuid.uuid4()}@example.com"
 TEST_USER_PASSWORD = "test_password"
 TEST_USER_ROLE = "user"
 
-@pytest.fixture(scope="module")
 def test_register_user():
     url = f"{API_BASE_URL}/register"
     body = {

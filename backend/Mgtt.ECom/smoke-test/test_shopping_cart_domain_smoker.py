@@ -6,7 +6,7 @@ API_BASE_URL = 'http://localhost/api/v1'
 TEST_USER_ID = str(uuid.uuid4())  # Sample UUID for test
 
 @pytest.fixture(scope="module")
-def cart_id():
+def test_create_cart():
     # Setup: Create a cart and return its ID
     url = f"{API_BASE_URL}/carts"
     body = {'userID': TEST_USER_ID, 'totalAmount': 100.0}

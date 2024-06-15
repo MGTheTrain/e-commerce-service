@@ -6,9 +6,7 @@ from datetime import datetime
 API_BASE_URL = 'http://localhost/api/v1'
 TEST_USER_ID = str(uuid.uuid4())  # Sample UUID for test
 
-@pytest.fixture(scope="module")
-def order_id():
-    # Setup: Create an order and return its ID
+def test_create_order():
     url = f"{API_BASE_URL}/orders"
     body = {
         'userID': TEST_USER_ID,
@@ -50,9 +48,7 @@ def test_delete_order(order_id):
     print('Delete Order Response:', response.status_code)
     assert response.status_code == 204
 
-@pytest.fixture(scope="module")
-def order_item_id(order_id):
-    # Setup: Create an order item and return its ID
+def test_create_order_item(order_id):
     url = f"{API_BASE_URL}/orders/{order_id}/items"
     body = {
         'productID': str(uuid.uuid4()),  # Sample product ID

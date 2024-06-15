@@ -11,31 +11,6 @@ TEST_PRODUCT_PRICE = 99.99
 TEST_PRODUCT_STOCK = 10
 TEST_PRODUCT_IMAGE_URL = "http://example.com/test-product.jpg"
 
-@pytest.fixture(scope="module")
-def category_id():
-    # Setup: Create a category and return its ID
-    url = f"{API_BASE_URL}/categories"
-    body = {'name': TEST_CATEGORY_NAME, 'description': TEST_CATEGORY_DESCRIPTION}
-    response = requests.post(url, json=body)
-    assert response.status_code == 201
-    return response.json().get('categoryID')
-
-@pytest.fixture(scope="module")
-def product_id(category_id):
-    # Setup: Create a product and return its ID
-    url = f"{API_BASE_URL}/products"
-    body = {
-        'categoryID': category_id,
-        'name': TEST_PRODUCT_NAME,
-        'description': TEST_PRODUCT_DESCRIPTION,
-        'price': TEST_PRODUCT_PRICE,
-        'stock': TEST_PRODUCT_STOCK,
-        'imageUrl': TEST_PRODUCT_IMAGE_URL
-    }
-    response = requests.post(url, json=body)
-    assert response.status_code == 201
-    return response.json().get('productID')
-
 def test_create_category():
     url = f"{API_BASE_URL}/categories"
     body = {'name': "New Test Category", 'description': "This is another test category."}

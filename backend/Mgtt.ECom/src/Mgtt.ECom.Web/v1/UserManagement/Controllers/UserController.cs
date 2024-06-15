@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
 {
-    [Route("api/users")]
+    [Route("api/v1/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -73,7 +73,8 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             var action = await _userService.CreateUser(user);
             if (action == null)
             {
-                return BadRequest(); // preferable return a proper response DTO with proper error message
+                return BadRequest(); // preferable return a proper
+                                     // response DTO with proper error message
             }
 
             var userResponseDTO = new UserResponseDTO

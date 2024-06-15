@@ -60,7 +60,10 @@ Run smoke tests:
 
 ```sh
 export API_BASE_URL='https://localhost:7260/api/v1' # Substitute the value if it differs
+# all
 make smoke-test
+# Individual tests
+make smoke-test-individual test_file_name=<test file name, e.g. test_user_management_domain_smoker.py>
 ```
 
 ### Starting the Kestrel-Webserver

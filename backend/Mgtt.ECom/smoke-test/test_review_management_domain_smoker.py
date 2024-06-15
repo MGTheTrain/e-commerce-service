@@ -9,7 +9,8 @@ TEST_USER_ID = str(uuid.uuid4())  # Replace with an actual user ID from your set
 TEST_REVIEW_RATING = 5
 TEST_REVIEW_COMMENT = "This is a test review."
 
-def test_create_review():
+@pytest.fixture(scope="module")
+def review_id():
     url = f"{API_BASE_URL}/reviews"
     body = {
         'productID': TEST_PRODUCT_ID,
@@ -20,7 +21,7 @@ def test_create_review():
     response = requests.post(url, json=body)
     print('Create Review Response:', response.status_code)
     assert response.status_code == 201
-    assert 'reviewID' in response.json()
+    return response.json().get('reviewID')
 
 def test_get_review_by_id(review_id):
     url = f"{API_BASE_URL}/reviews/{review_id}"

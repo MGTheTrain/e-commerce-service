@@ -65,9 +65,11 @@ export API_BASE_URL='http://localhost:5056/api/v1' # Substitute the value if it 
 make smoke-test
 # Individual tests
 make smoke-test-individual test_file_name=<test file name, e.g. test_user_management_domain_smoker.py>
+
+# After running the tests a test report is generated and available for review. To view it, open the file smoke-tests/report.html in your preferred web browser
 ```
 
-Results should resemble the following:
+Results should resemble the following (the **left half of the screen** is executing the smoke test while **the right half** is ramping up the Kestrel web server as a precondition):
 
 ![smoke-tests.results](../../docs/test/smoke-tests.results.PNG)
 

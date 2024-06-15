@@ -73,7 +73,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             var action = await _userService.CreateUser(user);
             if (action == null)
             {
-                return BadRequest(); 
+                return BadRequest(); // preferable return a proper response DTO with proper error message
             }
 
             var userResponseDTO = new UserResponseDTO

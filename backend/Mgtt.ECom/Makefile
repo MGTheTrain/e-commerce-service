@@ -7,18 +7,10 @@ SRC_DIR = src
 TEST_DIR = test
 
 # Commands
-.PHONY: all build test test-individual run clean docs format-and-lint
+.PHONY: all test test-individual smoke-test run clean docs format-and-lint
 
 # Default target
-all: build test
-
-# Compile the C# source code
-build:
-	@folders=$(find ./src -type f -name '*.csproj' -exec dirname {} \;); \
-	for folder in ${folders}; do \
-		echo "Running tests in folder: ${folder}"; \
-		dotnet build "${folder}"; \
-	done
+all: test
 
 # Run tests
 test:

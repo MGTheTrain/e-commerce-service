@@ -37,23 +37,23 @@ dotnet sln Mgtt.ECom.sln add ./test/Mgtt.ECom.InfrastructureTest/Mgtt.ECom.Infra
 dotnet sln Mgtt.ECom.sln add ./test/Mgtt.ECom.PersistenceTest/Mgtt.ECom.PersistenceTest.csproj
 ```
 
-### Compiling C# source code 
-
-Run in order to compile C# source files in the `src` folder:
-
-```sh
-make build
-```
-
 ### Running xUnit tests
 
-Run in order to compile and run xUnit tests:
+Run xUnit tests:
 
 ```sh
 # All tests
 make test
 # Individual tests
 make test-individual subdir=<subdirectory in the test folder, e.g. Mgtt.ECom.ApplicationTest>
+```
+
+### Running smoke tests
+
+Run smoke tests:
+
+```sh
+make smoke-test
 ```
 
 ### Starting the Kestrel-Webserver

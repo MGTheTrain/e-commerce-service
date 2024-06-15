@@ -33,7 +33,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             var user = await _userService.GetUserById(id);
             if (user == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
             var userResponse = new UserResponseDTO
             {
@@ -73,7 +73,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             var action = await _userService.CreateUser(user);
             if (action == null)
             {
-                return BadRequest(null); 
+                return BadRequest(); 
             }
 
             var userResponseDTO = new UserResponseDTO
@@ -109,7 +109,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             var user = await _userService.GetUserById(id);
             if (user == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             user.UserName = userRequest.UserName;
@@ -120,7 +120,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             var action = await _userService.UpdateUser(user);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var userResponseDTO = new UserResponseDTO
@@ -148,7 +148,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             var user = await _userService.GetUserById(id);
             if (user == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             await _userService.DeleteUser(id);

@@ -45,7 +45,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
             var action = await _categoryService.CreateCategory(category);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var categoryResponseDTO = new CategoryResponseDTO
@@ -99,7 +99,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             if (category == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             var categoryDTO = new CategoryResponseDTO
@@ -136,7 +136,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             if (category == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             category.Name = categoryDTO.Name;
@@ -145,7 +145,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
             var action = await _categoryService.UpdateCategory(category);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var categoryResponseDTO = new CategoryResponseDTO
@@ -174,7 +174,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             if (existingCategory == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             await _categoryService.DeleteCategory(categoryId);

@@ -48,7 +48,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
             var action = await _reviewService.CreateReview(review);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var reviewResponseDTO = new ReviewResponseDTO
@@ -80,7 +80,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
 
             if (review == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             var reviewDTO = new ReviewResponseDTO
@@ -177,7 +177,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
 
             if (review == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             review.ProductID = reviewDTO.ProductID;
@@ -188,7 +188,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
             var action =await _reviewService.UpdateReview(review);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var reviewResponseDTO = new ReviewResponseDTO
@@ -219,7 +219,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
 
             if (review == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             await _reviewService.DeleteReview(reviewId);

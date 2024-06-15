@@ -48,7 +48,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             var action = await _cartService.CreateCart(cart);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var cartResponseDTO = new CartResponseDTO
@@ -77,7 +77,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             if (cart == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             var cartResponseDto = new CartResponseDTO // utilize auto-mapper for optimization
@@ -113,7 +113,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             if (cart == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             cart.TotalAmount = cartDTO.TotalAmount;
@@ -121,7 +121,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             var action = await _cartService.UpdateCart(cart);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var cartResponseDto = new CartResponseDTO
@@ -149,7 +149,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             if (cart == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             await _cartService.DeleteCart(cart.CartID);
@@ -186,7 +186,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             var action = await _cartItemService.CreateCartItem(cartItem);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var cartItemResponseDTO = new CartItemResponseDTO
@@ -246,7 +246,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             if (cartItem == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             var cartItemResponseDto = new CartItemResponseDTO
@@ -285,7 +285,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             if (cartItem == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             cartItem.CartID = cartItemDTO.CartID;
@@ -296,7 +296,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             var action = await _cartItemService.UpdateCartItem(cartItem);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var cartItemResponseDto = new CartItemResponseDTO
@@ -327,7 +327,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
 
             if (cartItem == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             await _cartItemService.DeleteCartItem(itemId);

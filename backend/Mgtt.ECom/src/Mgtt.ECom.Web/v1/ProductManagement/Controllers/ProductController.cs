@@ -48,7 +48,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
             var action = await _productService.CreateProduct(product);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var productResponseDTO = new ProductResponseDTO
@@ -110,7 +110,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             if (product == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             var productDTO = new ProductResponseDTO
@@ -151,7 +151,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             if (product == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             product.CategoryID = productDTO.CategoryID;
@@ -164,7 +164,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
             var action = await _productService.UpdateProduct(product);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var productResponseDTO = new ProductResponseDTO
@@ -197,7 +197,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
 
             if (product == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             await _productService.DeleteProduct(productId);

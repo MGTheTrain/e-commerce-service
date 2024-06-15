@@ -49,7 +49,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
             var action = await _orderService.CreateOrder(order);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var orderResponseDTO = new OrderResponseDTO
@@ -107,7 +107,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 
             if (order == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             var orderDTO = new OrderResponseDTO
@@ -146,7 +146,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 
             if (order == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             order.TotalAmount = orderDTO.TotalAmount;
@@ -155,7 +155,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
             var action = await _orderService.UpdateOrder(order);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var orderResponseDTO = new OrderResponseDTO
@@ -186,7 +186,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 
             if (order == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             await _orderService.DeleteOrder(orderId);
@@ -232,7 +232,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
             var action = await _orderItemService.CreateOrderItem(orderItem);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var orderItemResponseDTO = new OrderItemResponseDTO
@@ -293,7 +293,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
             var orderItem = await _orderItemService.GetOrderItemById(itemId);
             if (orderItem == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             var orderItemResponseDTO = new OrderItemResponseDTO
@@ -333,7 +333,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 
             if (orderItem == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             orderItem.ProductID = orderItemDTO.ProductID;
@@ -343,7 +343,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
             var action = await _orderItemService.UpdateOrderItem(orderItem);
             if (action == null)
             {
-                return BadRequest(null);
+                return BadRequest();
             }
 
             var orderItemResponseDTO = new OrderItemResponseDTO
@@ -375,7 +375,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 
             if (orderItem == null)
             {
-                return NotFound(null);
+                return NotFound();
             }
 
             await _orderItemService.DeleteOrderItem(itemId);

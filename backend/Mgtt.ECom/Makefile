@@ -35,6 +35,9 @@ test-individual:
 		$(DOTNET) test $(TEST_DIR)/$(subdir); \
 	fi
 
+smoke-test:
+	cd smoke-test && pytest --html=report.html
+
 # Start server
 run:
 	cd src/Mgtt.ECom.Web && dotnet run

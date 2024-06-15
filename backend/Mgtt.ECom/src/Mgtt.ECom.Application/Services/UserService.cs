@@ -57,7 +57,7 @@ namespace Mgtt.ECom.Application.Services
                 if (existingUser != null)
                 {
                     _logger.LogWarning("User with email {Email} already exists.", user.Email);
-                    throw new InvalidOperationException($"User with email {user.Email} already exists.");
+                    return await Task.FromResult<User?>(null);
                 }
 
                 _context.Users.Add(user);

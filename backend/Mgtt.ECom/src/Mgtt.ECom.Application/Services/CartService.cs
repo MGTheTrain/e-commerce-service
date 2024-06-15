@@ -1,5 +1,6 @@
 using Mgtt.ECom.Domain.ShoppingCart;
 using Mgtt.ECom.Persistence.DataAccess;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -18,16 +19,16 @@ namespace Mgtt.ECom.Application.Services
             _logger = logger;
         }
 
-        public async Task<Cart?> GetCartByUserId(Guid userId)
+        public async Task<Cart?> GetCartById(Guid cartId)
         {
-            _logger.LogInformation("Fetching cart by UserID: {UserId}", userId);
+            _logger.LogInformation("Fetching cart by CartID: {cartId}", cartId);
             try
             {
-                return await Task.FromResult(_context.Carts.SingleOrDefault(c => c.UserID == userId));
+                return await Task.FromResult(_context.Carts.Find(cartId));
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error fetching cart by UserID: {UserId}", userId);
+                _logger.LogError(ex, "Error fetching cart by CartID: {cartId}", cartId);
                 return await Task.FromResult<Cart?>(null);
             }
         }

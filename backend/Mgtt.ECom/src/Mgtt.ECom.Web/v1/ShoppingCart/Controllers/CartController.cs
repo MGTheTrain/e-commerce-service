@@ -64,16 +64,16 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <summary>
         /// Gets a cart.
         /// </summary>
-        /// <param name="userId">The ID of the cart user.</param>
+        /// <param name="cartId">The ID of the cart.</param>
         /// <returns>The cart with the specified ID.</returns>
         /// <response code="200">Returns the cart with the specified ID.</response>
         /// <response code="404">If the cart is not found.</response>
-        [HttpGet("{userId}")]
+        [HttpGet("{cartId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CartResponseDTO>> GetCartByUserId(Guid userId)
+        public async Task<ActionResult<CartResponseDTO>> GetCartById(Guid cartId)
         {
-            var cart = await _cartService.GetCartByUserId(userId);
+            var cart = await _cartService.GetCartById(cartId);
 
             if (cart == null)
             {
@@ -93,23 +93,23 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <summary>
         /// Updates an existing cart.
         /// </summary>
-        /// <param name="userId">The ID of the cart user.</param>
+        /// <param name="cartId">The ID of the cart user.</param>
         /// <param name="cartDTO">The cart data transfer object containing the updated total amount.</param>
         /// <response code="204">If the cart was successfully updated.</response>
         /// <response code="404">If the cart is not found.</response>
         /// <response code="400">If the cart data is invalid.</response>
-        [HttpPut("{userId}")]
+        [HttpPut("{cartId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateCartByUserId(Guid userId, CartRequestDTO cartDTO)
+        public async Task<IActionResult> UpdateCartById(Guid cartId, CartRequestDTO cartDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var cart = await _cartService.GetCartByUserId(userId);
+            var cart = await _cartService.GetCartById(cartId);
 
             if (cart == null)
             {
@@ -137,15 +137,15 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <summary>
         /// Deletes a cart.
         /// </summary>
-        /// <param name="userId">The ID of the cart user.</param>
+        /// <param name="cartId">The ID of the cart.</param>
         /// <response code="204">If the cart was successfully deleted.</response>
         /// <response code="404">If the cart is not found.</response>
-        [HttpDelete("{userId}")]
+        [HttpDelete("{cartId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteCartByUserId(Guid userId)
+        public async Task<IActionResult> DeleteCartById(Guid cartId)
         {
-            var cart = await _cartService.GetCartByUserId(userId);
+            var cart = await _cartService.GetCartById(cartId);
 
             if (cart == null)
             {

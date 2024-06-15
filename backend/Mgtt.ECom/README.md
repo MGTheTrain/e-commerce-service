@@ -59,6 +59,7 @@ make test-individual subdir=<subdirectory in the test folder, e.g. Mgtt.ECom.App
 Run smoke tests:
 
 ```sh
+export API_BASE_URL='http://localhost:7260/api/v1' # replace value if different
 make smoke-test
 ```
 

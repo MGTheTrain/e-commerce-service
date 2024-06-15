@@ -5,6 +5,7 @@ DOTNET = dotnet
 DOCS_DIR = docs
 SRC_DIR = src
 TEST_DIR = test
+SMOKE_TEST_DIR = smoke-test
 
 # Commands
 .PHONY: start-docker-cmp stop-docker-cmp test test-individual smoke-test run clean docs format-and-lint
@@ -31,7 +32,7 @@ test-individual:
 	fi
 
 smoke-test:
-	cd smoke-test && pytest --html=report.html
+	cd smoke-test && pip install -r requirements.txt && pytest --html=report.html
 
 # Start server
 run:
@@ -42,6 +43,9 @@ clean:
 	rm -rf $(DOCS_DIR)/_build
 	rm -rf ${DOCS_DIR}/Mgtt.ECom/_site
 	rm -rf ${DOCS_DIR}/Mgtt.ECom/.jekyll-cache
+	rm -rf ${SMOKE_TEST_DIR}/__pycache__
+	rm -rf ${SMOKE_TEST_DIR}/assets
+	rm ${SMOKE_TEST_DIR}/report.html
 	find $(SRC_DIR) $(TEST_DIR) -type d \( -name 'obj' -o -name 'bin' \) -exec rm -rf {} +
 
 # Build and serve documentation

@@ -16,3 +16,8 @@ _site/
 
 # Mac OS
 .DS_Store
+
+# Python
+__pycache__
+assets
+report.html

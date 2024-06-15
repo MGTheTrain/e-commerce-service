@@ -1,8 +1,9 @@
 import requests
 import uuid
 import pytest
+import os
 
-API_BASE_URL = 'http://localhost/api/v1'
+API_BASE_URL = os.getenv('API_BASE_URL', 'http://localhost/api/v1')
 TEST_CATEGORY_NAME = "Test Category"
 TEST_CATEGORY_DESCRIPTION = "This is a test category."
 TEST_PRODUCT_NAME = "Test Product"

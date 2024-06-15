@@ -2,8 +2,9 @@ import requests
 import uuid
 import pytest
 from datetime import datetime
+import os
 
-API_BASE_URL = 'http://localhost/api/v1'
+API_BASE_URL = os.getenv('API_BASE_URL', 'http://localhost/api/v1')
 TEST_USER_ID = str(uuid.uuid4())  # Sample UUID for test
 
 def test_create_order():

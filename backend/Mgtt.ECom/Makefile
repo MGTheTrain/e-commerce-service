@@ -33,7 +33,7 @@ test-individual:
 	fi
 
 smoke-test:
-	cd smoke-test && pip install -r requirements.txt && $(PYTEST) --html=report.html
+	cd smoke-test && $(PYTEST) --html=report.html
 
 smoke-test-individual:
 	@if [ -z "$(test_file_name)" ]; then \

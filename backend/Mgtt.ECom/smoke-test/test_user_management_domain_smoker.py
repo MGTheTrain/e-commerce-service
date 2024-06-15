@@ -3,7 +3,7 @@ import uuid
 import pytest
 import os
 
-API_BASE_URL = os.getenv('API_BASE_URL', 'http://localhost/api/v1')
+API_BASE_URL = os.getenv('API_BASE_URL', 'https://localhost:7260/api/v1')
 TEST_USER_NAME = "test_user"
 TEST_USER_EMAIL = f"{uuid.uuid4()}@example.com"
 TEST_USER_PASSWORD = "test_password"

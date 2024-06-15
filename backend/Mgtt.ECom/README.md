@@ -60,12 +60,16 @@ Run smoke tests:
 
 ```sh
 pip install -r requirements.txt # install pip depdencies
-export API_BASE_URL='https://localhost:7260/api/v1' # Substitute the value if it differs
+export API_BASE_URL='http://localhost:5056/api/v1' # Substitute the value if it differs
 # all
 make smoke-test
 # Individual tests
 make smoke-test-individual test_file_name=<test file name, e.g. test_user_management_domain_smoker.py>
 ```
+
+Results should resemble the following:
+
+![smoke-tests.results](../../docs/test/smoke-tests.results.PNG)
 
 ### Starting the Kestrel-Webserver
 

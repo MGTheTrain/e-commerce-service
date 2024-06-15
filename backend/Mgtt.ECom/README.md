@@ -39,6 +39,12 @@ dotnet sln Mgtt.ECom.sln add ./test/Mgtt.ECom.PersistenceTest/Mgtt.ECom.Persiste
 
 ### Running xUnit tests
 
+If external services for storage or messaging are needed via Docker Compose modify the [docker-compose.yml](./devops/docker-compose/docker-compose.yml) and utilize the following line:
+
+```sh
+make start-docker-cmp
+```
+
 Run xUnit tests:
 
 ```sh
@@ -58,10 +64,15 @@ make smoke-test
 
 ### Starting the Kestrel-Webserver
 
-Launch Docker Compose cluster and Kestrel-Webserver:
+If external services for storage or messaging are needed via Docker Compose modify the [docker-compose.yml](./devops/docker-compose/docker-compose.yml) and utilize the following line:
 
 ```sh
-docker-compose up -d --build 
+make start-docker-cmp
+```
+
+Start Kestrel-Webserver:
+
+```sh
 make run
 ```
 

@@ -7,10 +7,16 @@ SRC_DIR = src
 TEST_DIR = test
 
 # Commands
-.PHONY: all test test-individual smoke-test run clean docs format-and-lint
+.PHONY: start-docker-cmp stop-docker-cmp test test-individual smoke-test run clean docs format-and-lint
 
-# Default target
-all: test
+start-docker-cmp:
+	cd devops/docker-compose
+	docker-compose up -d --build
+
+stop-docker-cmp:
+	cd devops/docker-compose
+	docker-compose down -v
+
 
 # Run tests
 test:

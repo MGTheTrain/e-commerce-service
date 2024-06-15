@@ -10,13 +10,10 @@ TEST_DIR = test
 .PHONY: start-docker-cmp stop-docker-cmp test test-individual smoke-test run clean docs format-and-lint
 
 start-docker-cmp:
-	cd devops/docker-compose
-	docker-compose up -d --build
+	cd devops/docker-compose && docker-compose up -d --build
 
 stop-docker-cmp:
-	cd devops/docker-compose
-	docker-compose down -v
-
+	cd devops/docker-compose && docker-compose down -v
 
 # Run tests
 test:

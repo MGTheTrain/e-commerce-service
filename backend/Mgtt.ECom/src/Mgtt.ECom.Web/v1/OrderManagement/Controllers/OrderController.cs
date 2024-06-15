@@ -178,7 +178,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         /// <response code="204">If the order was successfully deleted.</response>
         /// <response code="404">If the order is not found.</response>
         [HttpDelete("{orderId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderRequestDTO))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteOrder(Guid orderId)
         {
@@ -191,16 +191,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
 
             await _orderService.DeleteOrder(orderId);
 
-            var orderResponseDTO = new OrderResponseDTO
-            {
-                OrderID = order.OrderID,
-                UserID = order.UserID,
-                OrderDate = order.OrderDate,
-                TotalAmount = order.TotalAmount,
-                OrderStatus = order.OrderStatus
-            };
-
-            return Ok(orderResponseDTO);
+            return NoContent();
         }
 
         /// <summary>

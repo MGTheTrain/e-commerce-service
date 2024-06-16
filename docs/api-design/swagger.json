@@ -85,7 +85,7 @@
         }
       }
     },
-    "/api/v1/carts/{userId}": {
+    "/api/v1/carts/{cartId}": {
       "get": {
         "tags": [
           "Cart"
@@ -93,9 +93,9 @@
         "summary": "Gets a cart.",
         "parameters": [
           {
-            "name": "userId",
+            "name": "cartId",
             "in": "path",
-            "description": "The ID of the cart user.",
+            "description": "The ID of the cart.",
             "required": true,
             "schema": {
               "type": "string",
@@ -153,7 +153,7 @@
         "summary": "Updates an existing cart.",
         "parameters": [
           {
-            "name": "userId",
+            "name": "cartId",
             "in": "path",
             "description": "The ID of the cart user.",
             "required": true,
@@ -256,9 +256,9 @@
         "summary": "Deletes a cart.",
         "parameters": [
           {
-            "name": "userId",
+            "name": "cartId",
             "in": "path",
-            "description": "The ID of the cart user.",
+            "description": "The ID of the cart.",
             "required": true,
             "schema": {
               "type": "string",
@@ -1266,25 +1266,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/OrderRequestDTO"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OrderRequestDTO"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OrderRequestDTO"
-                }
-              }
-            }
+          "204": {
+            "description": "If the order was successfully deleted."
           },
           "404": {
             "description": "If the order is not found.",
@@ -1305,9 +1288,6 @@
                 }
               }
             }
-          },
-          "204": {
-            "description": "If the order was successfully deleted."
           }
         }
       }
@@ -2396,7 +2376,7 @@
         }
       }
     },
-    "/api/users/{id}": {
+    "/api/v1/users/{id}": {
       "get": {
         "tags": [
           "User"
@@ -2604,7 +2584,7 @@
         }
       }
     },
-    "/api/users/register": {
+    "/api/v1/users/register": {
       "post": {
         "tags": [
           "User"

@@ -6,7 +6,9 @@
     // Features to add to the dev container. More info: https://containers.dev/features
     "features": {
         "ghcr.io/devcontainers-contrib/features/angular-cli:2": {},
-        "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+        "ghcr.io/devcontainers/features/java:1": {}
     },
+    "postCreateCommand": "wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.57/swagger-codegen-cli-3.0.57.jar -O /tmp/swagger-codegen-cli.jar && npm install -g swagger-codegen-cli",
     "remoteUser": "root"
 }

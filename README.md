@@ -45,6 +45,10 @@ Results should resemble following snippet:
 
 ## Getting Started
 
+### Preconditions
+
+- [Install Docker Engine](https://docs.docker.com/engine/install/)
+
 ### Backend
 
 You can find instructions on applicable commands for the backend source code in the following [README.md](./backend/Mgtt.ECom/README.md)
@@ -52,3 +56,8 @@ You can find instructions on applicable commands for the backend source code in 
 ### Frontend
 
 You can find instructions on applicable commands for the frontend source code in the following [README.md](./frontend/e-commerce-service/README.md)
+
+### Local docker compose setup
+
+You can start the web front-end and back-end using the command `docker compose up -d --build`. 
+Similarly, you can remove all Docker resources with `docker compose down -v`.

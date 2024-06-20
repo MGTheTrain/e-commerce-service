@@ -8,7 +8,7 @@ MAINTAINER Marvin Gajek
 # ARG NUGET_REPOSITORY_SRC="PLACEHOLDER_ARG NUGET_REPOSITORY_SRC"
 
 WORKDIR /app
-COPY . .
+COPY backend/Mgtt.ECom/src .
 WORKDIR /app/Mgtt.ECom.Web
 
 # RUN dotnet nuget add source --name ${NUGET_SOURCE_NAME} --username ${NUGET_USERNAME} --password ${NUGET_PASSWORD} --store-password-in-clear-text ${NUGET_REPOSITORY_SRC}

@@ -60,4 +60,13 @@ You can find instructions on applicable commands for the frontend source code in
 ### Local docker compose setup
 
 You can start the web front-end and back-end using the command `docker compose up -d --build`. 
+
+To view the web backend, open a browser and go to `localhost:5000/swagger/index.html`. Results should resemble:
+
+![Swagger UI trough Docker](./docs/api-design/swagger-ui-trough-docker.PNG)
+
+To view the web frontend, open a browser and go to `localhost:4200`. Results should resemble:
+
+TBD
+
 Similarly, you can remove all Docker resources with `docker compose down -v`.

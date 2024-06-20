@@ -1,8 +1,17 @@
-import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { AppComponent } from "./app.component";
+import { BrowserModule } from "@angular/platform-browser";
+import { RoutingModule } from "./app.routes";
 
-import { routes } from './app.routes';
-
-export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes)]
-};
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    RoutingModule,
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }

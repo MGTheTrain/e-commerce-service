@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PageNotFoundComponent } from '../components/error-pages/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './components/error-pages/page-not-found/page-not-found.component';
 import { UserLoginComponent } from './components/user-management/user-login/user-login.component';
 import { UserRegistrationComponent } from './components/user-management/user-registration/user-registration.component';
 import { UserProfileComponent } from './components/user-management/user-profile/user-profile.component';
@@ -12,7 +12,7 @@ import { CartComponent } from './components/shopping-cart/cart/cart.component';
 import { CartItemComponent } from './components/shopping-cart/cart-item/cart-item.component';
 import { ReviewListComponent } from './components/review-management/review-list/review-list.component';
 import { ReviewDetailComponent } from './components/review-management/review-detail/review-detail.component';
-import { HomeComponent } from '../components/home/home/home.component';
+import { HomeComponent } from './components/home/home/home.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent },

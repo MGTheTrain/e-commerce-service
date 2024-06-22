@@ -13,7 +13,7 @@
     </div>
   
     <div class="row">
-      <div class="col-md-4" *ngFor="let review of filteredReviews()">
+      <div class="col-md-4" *ngFor="let review of filteredReviews()" (click)="handleReviewClick(review)">
         <div class="card mb-4 shadow-sm card-hover">
           <div class="card-body">
             <p class="card-text"><strong>Review ID:</strong> {{ review.reviewID }}</p>

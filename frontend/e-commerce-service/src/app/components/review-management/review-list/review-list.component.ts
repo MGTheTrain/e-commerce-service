@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-review-list',
@@ -25,6 +26,8 @@ export class ReviewListComponent {
   public faSearch: IconDefinition = faSearch;
   public searchText: string = '';
 
+  constructor(private router: Router) {}
+
   filteredReviews() {
     return this.reviews.filter(review => {
       return (
@@ -33,5 +36,9 @@ export class ReviewListComponent {
         )
       );
     })
+  }
+
+  handleReviewClick(review: ReviewResponseDTO): void {
+    this.router.navigate(['/reviews', review.reviewID]);
   }
 }

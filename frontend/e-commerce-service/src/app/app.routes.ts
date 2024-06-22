@@ -12,15 +12,13 @@ import { CartComponent } from './components/shopping-cart/cart/cart.component';
 import { CartItemComponent } from './components/shopping-cart/cart-item/cart-item.component';
 import { ReviewListComponent } from './components/review-management/review-list/review-list.component';
 import { ReviewDetailComponent } from './components/review-management/review-detail/review-detail.component';
-import { HomeComponent } from './components/home/home/home.component';
 
 const routes: Routes = [
-    { path: '', component: HomeComponent },
     { path: 'user/registration', component: UserRegistrationComponent },
     { path: 'user/login', component: UserLoginComponent },
     { path: 'user/profile', component: UserProfileComponent },
-    { path: 'products', component: ProductListComponent },
-    { path: 'products/:productId', component: ProductDetailComponent },
+    { path: '', component: ProductListComponent },
+    { path: ':productId', component: ProductDetailComponent },
     { path: 'orders', component: OrderListComponent },
     { path: 'orders/:orderId', component: OrderDetailComponent },
     { path: 'cart', component: CartComponent },

@@ -69,7 +69,7 @@ To view the web backend, open a browser and go to `localhost:5000/swagger/index.
 
 To view the web frontend, open a browser and go to `localhost:4200`. Results should resemble:
 
-![Web frontend with mock data](./docs/test/web-frontend-with-mock-data.PNG)
+![Web frontend including mock data](./docs/test/web-frontend-including-mock-data.PNG)
 
 ---
 You can remove all Docker resources with `docker compose down -v`.

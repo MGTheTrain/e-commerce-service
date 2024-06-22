@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <h2 class="mb-4">Order Details</h2>
+  <h2 class="text-center mb-4">Order Details</h2>
   <form (ngSubmit)="onDelete()" class="text-center">
     <div class="form-group mb-3">
       <input type="text" placeholder="User ID" class="form-control" id="userID" name="userID" [(ngModel)]="order.userID">
@@ -24,6 +24,7 @@
       </div>
     </div>
 
+    <hr>
     <div class="form-group mb-4">
       <button type="submit" class="btn btn-danger mr-2">
         <fa-icon [icon]="faTrash"></fa-icon> Delete Order

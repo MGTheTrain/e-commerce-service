@@ -17,7 +17,7 @@ import { UserListComponent } from './components/user-management/user-list/user-l
 const routes: Routes = [
     { path: 'user/registration', component: UserRegistrationComponent },
     { path: 'user/login', component: UserLoginComponent },
-    { path: 'user/profile', component: UserProfileComponent },
+    { path: 'user/:userId', component: UserProfileComponent },
     { path: 'user', component: UserListComponent },
     { path: 'products', component: ProductListComponent },
     { path: 'products/:productId', component: ProductDetailComponent },

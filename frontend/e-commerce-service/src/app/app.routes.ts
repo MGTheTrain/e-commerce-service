@@ -13,10 +13,12 @@ import { CartItemComponent } from './components/shopping-cart/cart-item/cart-ite
 import { ReviewListComponent } from './components/review-management/review-list/review-list.component';
 import { ReviewDetailComponent } from './components/review-management/review-detail/review-detail.component';
 import { UserListComponent } from './components/user-management/user-list/user-list.component';
+import { ResetPasswordComponent } from './components/user-management/reset-password/reset-password.component';
 
 const routes: Routes = [
     { path: 'user/registration', component: UserRegistrationComponent },
     { path: 'user/login', component: UserLoginComponent },
+    { path: 'user/reset-password', component: ResetPasswordComponent },
     { path: 'user/:userId', component: UserProfileComponent },
     { path: 'user', component: UserListComponent },
     { path: 'products', component: ProductListComponent },

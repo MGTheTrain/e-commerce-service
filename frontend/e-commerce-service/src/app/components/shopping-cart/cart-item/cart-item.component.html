@@ -1,7 +1,7 @@
 <div class="card mb-3 card-hover">
     <div class="card-body">
-      <h5 class="card-title">{{ cartItem.productID }}</h5>
-      <!-- <p class="card-text">Quantity: <input type="number" [(ngModel)]="cartItem.quantity" (change)="onUpdateQuantity($event.target.value)" min="1"></p> -->
+      <img [src]="product.imageUrl" class="card-img-top fixed-size-img" alt="Product Image">
+      <p class="card-text">Product Name: {{ product.name }} </p>
       <p class="card-text">Quantity: <input type="number" [(ngModel)]="cartItem.quantity"></p>
       <p class="card-text">Price: ${{ cartItem.price }}</p>
       <button class="btn btn-danger" (click)="onRemoveCartItem()">Remove</button>

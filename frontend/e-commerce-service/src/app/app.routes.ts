@@ -9,7 +9,6 @@ import { ProductDetailComponent } from './components/product-management/product-
 import { OrderListComponent } from './components/order-management/order-list/order-list.component';
 import { OrderDetailComponent } from './components/order-management/order-detail/order-detail.component';
 import { CartComponent } from './components/shopping-cart/cart/cart.component';
-import { CartItemComponent } from './components/shopping-cart/cart-item/cart-item.component';
 import { ReviewListComponent } from './components/review-management/review-list/review-list.component';
 import { ReviewDetailComponent } from './components/review-management/review-detail/review-detail.component';
 import { UserListComponent } from './components/user-management/user-list/user-list.component';
@@ -27,7 +26,6 @@ const routes: Routes = [
     { path: 'orders', component: OrderListComponent },
     { path: 'orders/:orderId', component: OrderDetailComponent },
     { path: 'cart', component: CartComponent },
-    { path: 'cart/items', component: CartItemComponent },
     { path: 'reviews', component: ReviewListComponent },
     { path: 'reviews/:reviewId', component: ReviewDetailComponent },
     { path: '**', component: PageNotFoundComponent },

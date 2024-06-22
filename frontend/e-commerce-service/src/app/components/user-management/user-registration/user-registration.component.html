@@ -1,1 +1,45 @@
-<p>user-registration works!</p>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h4 class="card-title text-center mb-4">User Registration</h4>
+            <form (ngSubmit)="onRegister()">
+              <div class="form-group">
+                <label for="userName">Username:</label>
+                <input type="text" class="form-control" id="userName" [(ngModel)]="user.userName" name="userName" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" [(ngModel)]="user.email" name="email" required>
+              </div>
+              <div class="form-group position-relative">
+                <label for="password">Password:</label>
+                <input [type]="hidePassword ? 'password' : 'text'" class="form-control" id="password" [(ngModel)]="password" name="password" required>
+                <fa-icon [icon]="hidePassword ? faEyeSlash : faEye" class="position-absolute password-toggle-icon" (click)="togglePasswordVisibility()"></fa-icon>
+              </div>
+              <div class="form-group position-relative mb-3">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input [type]="hideConfirmPassword ? 'password' : 'text'" class="form-control" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" required>
+                <fa-icon [icon]="hideConfirmPassword ? faEyeSlash : faEye" class="position-absolute password-toggle-icon" (click)="toggleConfirmPasswordVisibility()"></fa-icon>
+              </div>
+              <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary mb-3">
+                  <fa-icon [icon]="faUserPlus"></fa-icon> Register
+                </button>
+              </div>
+            </form>
+            <hr>
+            <div class="text-center">
+              <button class="btn btn-outline-secondary w-100 mb-2"><fa-icon [icon]="faGoogle"></fa-icon> Register with Google</button>
+              <button class="btn btn-outline-secondary w-100 mb-2"><fa-icon [icon]="faApple"></fa-icon> Register with Apple</button>
+              <button class="btn btn-outline-secondary w-100 mb-2"><fa-icon [icon]="faMicrosoft"></fa-icon> Register with Microsoft</button>
+              <p><a routerLink="/user/login">Already have an account? Login</a></p>
+              <p><a routerLink="/user/reset-password">Forgot Password?</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -5,6 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/free-brands-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { OrderResponseDTO } from '../../../generated/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-list',
@@ -26,6 +27,8 @@ export class OrderListComponent {
   public searchText: string = '';
   public filterOption: string = '';
 
+  constructor(private router: Router) {}
+
   filteredOrders() {
     return this.orders.filter(order => {
       // Convert orderDate to string for easier text matching
@@ -38,5 +41,8 @@ export class OrderListComponent {
       ) &&
         (!this.filterOption || order.orderStatus === this.filterOption)
     });
+  }
+  handleOrderClick(order: OrderResponseDTO): void {
+    this.router.navigate(['/orders', order.orderID]);
   }
 }

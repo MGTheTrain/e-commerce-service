@@ -12,11 +12,13 @@ import { CartComponent } from './components/shopping-cart/cart/cart.component';
 import { CartItemComponent } from './components/shopping-cart/cart-item/cart-item.component';
 import { ReviewListComponent } from './components/review-management/review-list/review-list.component';
 import { ReviewDetailComponent } from './components/review-management/review-detail/review-detail.component';
+import { UserListComponent } from './components/user-management/user-list/user-list.component';
 
 const routes: Routes = [
     { path: 'user/registration', component: UserRegistrationComponent },
     { path: 'user/login', component: UserLoginComponent },
     { path: 'user/profile', component: UserProfileComponent },
+    { path: 'user', component: UserListComponent },
     { path: '', component: ProductListComponent },
     { path: ':productId', component: ProductDetailComponent },
     { path: 'orders', component: OrderListComponent },

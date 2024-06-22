@@ -10,11 +10,6 @@
             <input type="text" class="form-control" placeholder="Search products" [(ngModel)]="searchText">
         </div>
       </div>
-      <div class="col-md-4">
-        <button class="btn btn-link" (click)="toggleSortDirection()">
-          Sort by {{ sortBy }} {{ sortDirection === 'asc' ? '▲' : '▼' }}
-        </button>
-      </div>
     </div>
   
     <div class="row">

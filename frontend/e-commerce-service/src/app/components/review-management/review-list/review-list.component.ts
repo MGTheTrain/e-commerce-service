@@ -24,8 +24,6 @@ export class ReviewListComponent {
 
   public faSearch: IconDefinition = faSearch;
   public searchText: string = '';
-  public sortBy: keyof ReviewResponseDTO = 'reviewDate'; // Default sorting by reviewDate
-  public sortDirection: 'asc' | 'desc' = 'desc'; // Default descending order
 
   filteredReviews() {
     return this.reviews.filter(review => {
@@ -34,22 +32,6 @@ export class ReviewListComponent {
           typeof val === 'string' && val.toLowerCase().includes(this.searchText.toLowerCase())
         )
       );
-    }).sort((a, b) => {
-      const aValue = a[this.sortBy];
-      const bValue = b[this.sortBy];
-      // Handle undefined values
-      if (aValue === undefined || bValue === undefined) {
-        return 0; 
-      }
-      if (this.sortDirection === 'asc') {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return bValue > aValue ? 1 : -1;
-      }
-    });
-  }
-
-  toggleSortDirection() {
-    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    })
   }
 }

@@ -62,7 +62,7 @@ export class ProductDetailComponent {
       reader.onload = (e: any) => {
         // this.product.imageUrl = e.target.result;
       };
-      reader.readAsDataURL(file);
+      // reader.readAsDataURL(file);
     }
   }
 }

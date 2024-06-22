@@ -1,39 +1,43 @@
 <div class="container mt-4">
-    <h2 class="mb-4">Order Details</h2>
-    <form (ngSubmit)="onDelete()" class="text-center">
-      <div class="form-group mb-3">
-        <label for="orderID">Order ID:</label>
-        <input type="text" class="form-control" id="orderID" name="orderID" [(ngModel)]="order.orderID" disabled>
-      </div>
-      <div class="form-group mb-3">
-        <label for="userID">User ID:</label>
-        <input type="text" class="form-control" id="userID" name="userID" [(ngModel)]="order.userID">
-      </div>
-      <div class="form-group mb-3">
-        <label for="orderDate">Order Date:</label>
-        <input type="date" class="form-control" id="orderDate" name="orderDate" [(ngModel)]="order.orderDate">
-      </div>
-      <div class="form-group mb-3">
-        <label for="totalAmount">Total Amount:</label>
-        <input type="number" class="form-control" id="totalAmount" name="totalAmount" [(ngModel)]="order.totalAmount">
-      </div>
-      <div class="form-group mb-3">
-        <label for="orderStatus">Order Status:</label>
-        <select class="form-control" id="orderStatus" name="orderStatus" [(ngModel)]="order.orderStatus">
-          <option value="pending">Pending</option>
-          <option value="shipped">Shipped</option>
-          <option value="delivered">Delivered</option>
-        </select>
-      </div>
-      <div class="form-group mb-4">
-        <button type="submit" class="btn btn-danger mr-2">
-          <fa-icon [icon]="faTrash"></fa-icon> Delete Order
-        </button>
-        <span class="mx-2"></span>
-        <button type="button" class="btn btn-primary">
-          <fa-icon [icon]="faEdit"></fa-icon> Update Order
-        </button>
-      </div>
-    </form>
-  </div>
-  
+  <h2 class="mb-4">Order Details</h2>
+  <form (ngSubmit)="onDelete()" class="text-center">
+    <div class="form-group mb-3">
+      <label for="orderID">Order ID:</label>
+      <input type="text" class="form-control" id="orderID" name="orderID" [(ngModel)]="order.orderID" disabled>
+    </div>
+    <div class="form-group mb-3">
+      <label for="userID">User ID:</label>
+      <input type="text" class="form-control" id="userID" name="userID" [(ngModel)]="order.userID">
+    </div>
+    <div class="form-group mb-3">
+      <label for="orderDate">Order Date:</label>
+      <input type="date" class="form-control" id="orderDate" name="orderDate" [(ngModel)]="order.orderDate">
+    </div>
+    <div class="form-group mb-3">
+      <label for="totalAmount">Total Amount:</label>
+      <input type="number" class="form-control" id="totalAmount" name="totalAmount" [(ngModel)]="order.totalAmount">
+    </div>
+    <div class="form-group mb-3">
+      <label for="orderStatus">Order Status:</label>
+      <select class="form-control" id="orderStatus" name="orderStatus" [(ngModel)]="order.orderStatus">
+        <option value="pending">Pending</option>
+        <option value="shipped">Shipped</option>
+        <option value="delivered">Delivered</option>
+      </select>
+    </div>
+
+    <div *ngFor="let item of orderItems">
+      <app-order-item [orderItem]="item"></app-order-item>
+    </div>
+
+    <div class="form-group mb-4">
+      <button type="submit" class="btn btn-danger mr-2">
+        <fa-icon [icon]="faTrash"></fa-icon> Delete Order
+      </button>
+      <span class="mx-2"></span>
+      <button type="button" class="btn btn-primary">
+        <fa-icon [icon]="faEdit"></fa-icon> Update Order
+      </button>
+    </div>
+  </form>
+</div>

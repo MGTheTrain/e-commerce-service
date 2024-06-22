@@ -1,29 +1,23 @@
 <div class="container mt-4">
     <h2 class="text-center mb-4">Review Details</h2>
     <form class="text-center">
+      <!-- <div class="form-group mb-3">
+        <input type="text" placeholder="Review ID" class="form-control" id="reviewID" name="reviewID" [(ngModel)]="review.reviewID" disabled>
+      </div> -->
       <div class="form-group mb-3">
-        <label for="reviewID">Review ID:</label>
-        <input type="text" class="form-control" id="reviewID" name="reviewID" [(ngModel)]="review.reviewID" disabled>
+        <input type="text" placeholder="Product ID" class="form-control" id="productID" name="productID" [(ngModel)]="review.productID">
       </div>
       <div class="form-group mb-3">
-        <label for="productID">Product ID:</label>
-        <input type="text" class="form-control" id="productID" name="productID" [(ngModel)]="review.productID">
+        <input type="text" placeholder="User ID" class="form-control" id="userID" name="userID" [(ngModel)]="review.userID">
       </div>
       <div class="form-group mb-3">
-        <label for="userID">User ID:</label>
-        <input type="text" class="form-control" id="userID" name="userID" [(ngModel)]="review.userID">
+        <input type="number" placeholder="Rating" class="form-control" id="rating" name="rating" [(ngModel)]="review.rating">
       </div>
       <div class="form-group mb-3">
-        <label for="rating">Rating:</label>
-        <input type="number" class="form-control" id="rating" name="rating" [(ngModel)]="review.rating">
+        <textarea class="form-control" placeholder="Comment" id="comment" name="comment" [(ngModel)]="review.comment"></textarea>
       </div>
       <div class="form-group mb-3">
-        <label for="comment">Comment:</label>
-        <textarea class="form-control" id="comment" name="comment" [(ngModel)]="review.comment"></textarea>
-      </div>
-      <div class="form-group mb-3">
-        <label for="reviewDate">Review Date:</label>
-        <input type="date" class="form-control" id="reviewDate" name="reviewDate" [(ngModel)]="review.reviewDate">
+        <input type="date" placeholder="Review Date" class="form-control" id="reviewDate" name="reviewDate" [(ngModel)]="review.reviewDate">
       </div>
       <div class="form-group mb-4">
         <button type="button" class="btn btn-danger" (click)="onDelete()">

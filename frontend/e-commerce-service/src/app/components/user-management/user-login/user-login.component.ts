@@ -4,19 +4,23 @@ import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faApple, faGoogle, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
-import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSignInAlt, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user-login',
   standalone: true,
-  imports: [ CommonModule, FormsModule, FontAwesomeModule ],
+  imports: [FormsModule, CommonModule, FontAwesomeModule],
   templateUrl: './user-login.component.html',
-  styleUrl: './user-login.component.css'
+  styleUrls: ['./user-login.component.css']
 })
 export class UserLoginComponent {
-  email: string = '';
-  password: string = '';
+  public email: string = '';
+  public password: string = '';
+  public hidePassword: boolean = true;
+
   public faSignInAlt: IconDefinition = faSignInAlt;
+  public faEye: IconDefinition = faEye;
+  public faEyeSlash: IconDefinition = faEyeSlash;
   public faMicrosoft: IconDefinition = faMicrosoft;
   public faApple: IconDefinition = faApple;
   public faGoogle: IconDefinition = faGoogle;
@@ -30,10 +34,14 @@ export class UserLoginComponent {
   }
 
   onForgotPassword(): void {
-    console.log('Redirecting to forgot password page');
+    console.log('Forgot password');
   }
 
   onRegister(): void {
-    console.log('Redirecting to register page');
+    console.log('Navigating to register');
+  }
+
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
   }
 }

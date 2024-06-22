@@ -1,8 +1,7 @@
 <div class="card mb-3">
     <div class="card-body card-hover">
-        <p class="card-text"><strong>Order Item ID:</strong> {{ orderItem.orderItemID }}</p>
-        <p class="card-text"><strong>Order ID:</strong> {{ orderItem.orderID }}</p>
-        <p class="card-text"><strong>Product ID:</strong> {{ orderItem.productID }}</p>
+        <img [src]="product.imageUrl" class="card-img-top fixed-size-img" alt="Product Image">
+        <p class="card-text">Product Name: {{ product.name }} </p>
         <p class="card-text"><strong>Quantity:</strong> {{ orderItem.quantity }}</p>
         <p class="card-text"><strong>Price:</strong> {{ orderItem.price }}</p>
     </div>

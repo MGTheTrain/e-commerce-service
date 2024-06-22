@@ -1,1 +1,13 @@
-<p>cart works!</p>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Shopping Cart</h2>
+    <div *ngFor="let item of cartItems">
+      <app-cart-item [cartItem]="item"></app-cart-item>
+    </div>
+    <div class="text-center">
+      <p>Total Amount: ${{ cart.totalAmount }}</p>
+      <button class="btn btn-primary" (click)="onUpdateCart()">Update Cart</button>
+      <span class="mx-2"></span>
+      <button class="btn btn-success" (click)="onCheckout()">Checkout</button>
+    </div>
+  </div>
+  

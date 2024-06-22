@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -25,6 +26,8 @@ export class ProductListComponent {
   public faSearch: IconDefinition = faSearch;
   public searchText: string = '';
 
+  constructor(private router: Router) {}
+
   filteredProducts() {
     return this.products.filter(product => {
       return (
@@ -35,5 +38,9 @@ export class ProductListComponent {
         product.stock?.toString().includes(this.searchText.toLowerCase())
       );
     });
+  }
+
+  handleProductClick(product: ProductResponseDTO): void {
+    this.router.navigate(['/products', product.productID]);
   }
 }

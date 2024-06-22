@@ -21,7 +21,7 @@ export class ProductDetailComponent {
   product: ProductResponseDTO = {
     productID: '1',
     categoryID: '1',
-    name: 'Product Name',
+    name: 'Dean Razorback Guitar',
     description: 'Product Description',
     price: 99.99,
     stock: 10,

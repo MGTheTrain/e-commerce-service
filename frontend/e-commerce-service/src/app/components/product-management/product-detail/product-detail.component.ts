@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ProductResponseDTO } from '../../../generated/api';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faImage } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -13,23 +13,24 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   standalone: true,
   imports: [ FormsModule, CommonModule, FontAwesomeModule ],
   templateUrl: './product-detail.component.html',
-  styleUrl: './product-detail.component.css'
+  styleUrls: ['./product-detail.component.css']
 })
 export class ProductDetailComponent {
   private subscription: Subscription | null = null;
 
-  product: ProductResponseDTO = {
-    productID: '1',
-    categoryID: '1',
-    name: 'Dean Razorback Guitar',
-    description: 'Product Description',
-    price: 99.99,
-    stock: 10,
-    imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
+  product: ProductResponseDTO = { 
+    productID: '2', 
+    categoryID: '102', 
+    name: 'Dean Razorback Guitar White', 
+    description: 'Description of Product B', 
+    price: 29.99, 
+    stock: 5, 
+    imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg' 
   };
 
   public faTrash: IconDefinition = faTrash;
   public faEdit: IconDefinition = faEdit;
+  public faImage: IconDefinition = faImage;
 
   constructor(private route: ActivatedRoute) { }
 
@@ -46,5 +47,22 @@ export class ProductDetailComponent {
 
   onUpdate() {
     console.log('Updating product:', this.product);
+  }
+
+  triggerImageInput(): void {
+    const fileInput = document.getElementById('imageInput') as HTMLInputElement;
+    fileInput.click();
+  }
+
+  onImageChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        // this.product.imageUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 }

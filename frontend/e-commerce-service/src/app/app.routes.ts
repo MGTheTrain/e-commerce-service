@@ -13,6 +13,7 @@ import { ReviewListComponent } from './components/review-management/review-list/
 import { ReviewDetailComponent } from './components/review-management/review-detail/review-detail.component';
 import { UserListComponent } from './components/user-management/user-list/user-list.component';
 import { ResetPasswordComponent } from './components/user-management/reset-password/reset-password.component';
+import { CartListComponent } from './components/shopping-cart/cart-list/cart-list.component';
 
 const routes: Routes = [
     { path: 'user/registration', component: UserRegistrationComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
     { path: '', redirectTo: '/products', pathMatch: 'full' }, // Default route redirects to product list
     { path: 'orders', component: OrderListComponent },
     { path: 'orders/:orderId', component: OrderDetailComponent },
+    { path: 'cart', component: CartListComponent },
     { path: 'reviews', component: ReviewListComponent },
     { path: 'reviews/:reviewId', component: ReviewDetailComponent },
     { path: '**', component: PageNotFoundComponent },

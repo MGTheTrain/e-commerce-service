@@ -16,7 +16,9 @@
       <div class="col-md-4" *ngFor="let review of filteredReviews()">
         <div class="card mb-4 shadow-sm card-hover">
           <div class="card-body">
-            <h5 class="card-title">Review {{ review.reviewID }}</h5>
+            <p class="card-text"><strong>Review ID:</strong> {{ review.reviewID }}</p>
+            <p class="card-text"><strong>Product ID:</strong> {{ review.productID }}</p>
+            <p class="card-text"><strong>User ID:</strong> {{ review.userID }}</p>
             <p class="card-text"><strong>Rating:</strong> {{ review.rating }}</p>
             <p class="card-text"><strong>Comment:</strong> {{ review.comment }}</p>
             <p class="card-text"><strong>Review Date:</strong> {{ review.reviewDate | date }}</p>

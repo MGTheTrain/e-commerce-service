@@ -20,13 +20,18 @@
     </div>
   </div>
   
-  <ul class="list-group">
-    <li *ngFor="let order of filteredOrders()" class="list-group-item">
-      <div><strong>Order ID:</strong> {{ order.orderID }}</div>
-      <div><strong>User ID:</strong> {{ order.userID }}</div>
-      <div><strong>Order Date:</strong> {{ order.orderDate | date }}</div>
-      <div><strong>Total Amount:</strong> ${{ order.totalAmount?.toFixed(2) }}</div>
-      <div><strong>Order Status:</strong> {{ order.orderStatus }}</div>
-    </li>
-  </ul>
+
+  <div class="row">
+    <div class="col-md-4" *ngFor="let order of filteredOrders()">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <p class="card-text"><strong>Order ID:</strong> {{ order.orderID }}</p>
+          <p class="card-text"><strong>User ID:</strong> {{ order.userID }}</p>
+          <p class="card-text"><strong>Order Date:</strong> {{ order.orderDate | date }}</p>
+          <p class="card-text"><strong>Total Amount:</strong> ${{ order.totalAmount?.toFixed(2) }}</p>
+          <p class="card-text"><strong>Order Status:</strong> {{ order.orderStatus }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

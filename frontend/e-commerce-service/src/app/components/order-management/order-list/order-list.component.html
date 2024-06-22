@@ -25,11 +25,11 @@
     <div class="col-md-4" *ngFor="let order of filteredOrders()" (click)="handleOrderClick(order)">
       <div class="card mb-4 shadow-sm card-hover">
         <div class="card-body">
-          <p class="card-text"><strong>Order ID:</strong> {{ order.orderID }}</p>
-          <p class="card-text"><strong>User ID:</strong> {{ order.userID }}</p>
-          <p class="card-text"><strong>Order Date:</strong> {{ order.orderDate | date }}</p>
-          <p class="card-text"><strong>Total Amount:</strong> ${{ order.totalAmount?.toFixed(2) }}</p>
-          <p class="card-text"><strong>Order Status:</strong> {{ order.orderStatus }}</p>
+          <p class="card-text">Order ID: {{ order.orderID }}</p>
+          <p class="card-text">User ID: {{ order.userID }}</p>
+          <p class="card-text">Order Date: {{ order.orderDate | date }}</p>
+          <p class="card-text">Total Amount: ${{ order.totalAmount?.toFixed(2) }}</p>
+          <p class="card-text">Order Status: {{ order.orderStatus }}</p>
         </div>
       </div>
     </div>

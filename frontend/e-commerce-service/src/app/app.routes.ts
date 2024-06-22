@@ -19,8 +19,9 @@ const routes: Routes = [
     { path: 'user/login', component: UserLoginComponent },
     { path: 'user/profile', component: UserProfileComponent },
     { path: 'user', component: UserListComponent },
-    { path: '', component: ProductListComponent },
-    { path: ':productId', component: ProductDetailComponent },
+    { path: 'products', component: ProductListComponent },
+    { path: 'products/:productId', component: ProductDetailComponent },
+    { path: '', redirectTo: '/products', pathMatch: 'full' }, // Default route redirects to product list
     { path: 'orders', component: OrderListComponent },
     { path: 'orders/:orderId', component: OrderDetailComponent },
     { path: 'cart', component: CartComponent },

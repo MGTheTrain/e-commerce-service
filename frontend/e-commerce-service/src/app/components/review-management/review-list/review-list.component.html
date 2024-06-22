@@ -1,1 +1,33 @@
-<p>review-list works!</p>
+<div class="container mt-4">
+    <div class="row mb-3 justify-content-center">
+      <div class="col-md-4">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="search-icon">
+                <fa-icon [icon]="faSearch"></fa-icon>
+                </span>
+            </div>
+            <input type="text" class="form-control" placeholder="Search products" [(ngModel)]="searchText">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-link" (click)="toggleSortDirection()">
+          Sort by {{ sortBy }} {{ sortDirection === 'asc' ? '▲' : '▼' }}
+        </button>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-4 shadow-sm" *ngFor="let review of filteredReviews()">
+          <div class="card-body">
+            <h5 class="card-title">Review {{ review.reviewID }}</h5>
+            <p class="card-text"><strong>Rating:</strong> {{ review.rating }}</p>
+            <p class="card-text"><strong>Comment:</strong> {{ review.comment }}</p>
+            <p class="card-text"><strong>Review Date:</strong> {{ review.reviewDate | date }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

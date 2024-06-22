@@ -10,8 +10,6 @@
  * Do not edit the class manually.
  */
 
-export interface ProblemDetails extends null<String, any> { 
-  [key: string]: any;
-
-
+export interface ProblemDetails {
+  [key: string]: any; // Define properties as needed
 }

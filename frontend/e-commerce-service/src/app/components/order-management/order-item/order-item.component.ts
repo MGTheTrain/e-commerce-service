@@ -30,7 +30,7 @@ export class OrderItemComponent {
   };
 
   ngOnInit(): void {
-    // GET api/v1/orders/:orderId/item request
+    // GET api/v1/orders/:orderId/item
     // GET api/v1/product/:productId
   }
 

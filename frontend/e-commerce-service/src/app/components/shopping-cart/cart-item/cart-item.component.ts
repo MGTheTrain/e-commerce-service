@@ -30,7 +30,7 @@ export class CartItemComponent {
   };
 
   ngOnInit(): void {
-    // GET api/v1/cart/:cartId/item request
+    // GET api/v1/cart/:cartId/item
     // GET api/v1/product/:productId
   }
 

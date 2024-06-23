@@ -59,9 +59,11 @@ You can find instructions on applicable commands for the frontend source code in
 
 ### Local docker compose setup
 
-You can start the web front-end and back-end using the command `docker compose up -d --build`. 
+You can start the web front-end and back-end using the command:
 
----
+```sh
+docker compose up -d --build .
+``` 
 
 To view the web backend, open a browser and go to `localhost:5000/swagger/index.html`. Results should resemble:
 
@@ -71,5 +73,8 @@ To view the web frontend, open a browser and go to `localhost:4200`. Results sho
 
 ![Web frontend including mock data](./docs/test/web-frontend-including-mock-data.PNG)
 
----
-You can remove all Docker resources with `docker compose down -v`.
+You can remove all Docker resources with:
+
+```sh
+docker compose down -v
+```

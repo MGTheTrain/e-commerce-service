@@ -50,17 +50,22 @@ export class OrderListComponent {
 
   filteredOrders() {
     return this.orders.filter(order => {
-      // Convert orderDate to string for easier text matching
       const orderDateString = order.orderDate?.toLocaleDateString() || '';
-      // Check if searchText exists in any order property
-      return (
-        Object.values(order).some(val => 
-          typeof val === 'string' && val.toLowerCase().includes(this.searchText.toLowerCase())) ||
-        orderDateString.includes(this.searchText.toLowerCase())
-      ) &&
-        (!this.filterOption || order.orderStatus === this.filterOption)
+      const userName = this.getUserName(order.userID)?.toLowerCase() || '';
+      const searchTextLower = this.searchText.toLowerCase();
+  
+      const matchesOrderValues = Object.values(order).some(val =>
+        typeof val === 'string' && val.toLowerCase().includes(searchTextLower)
+      );
+  
+      const matchesOrderDate = orderDateString.includes(searchTextLower);
+      const matchesUserName = userName.includes(searchTextLower);
+      const matchesFilterOption = !this.filterOption || order.orderStatus === this.filterOption;
+  
+      return (matchesOrderValues || matchesOrderDate || matchesUserName) && matchesFilterOption;
     });
   }
+  
   handleOrderClick(order: OrderResponseDTO): void {
     this.router.navigate(['/orders', order.orderID]);
   }

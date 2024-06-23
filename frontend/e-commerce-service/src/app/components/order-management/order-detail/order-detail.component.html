@@ -1,38 +1,51 @@
 <div class="container mt-4">
   <h2 class="text-center mb-4">Order Details</h2>
-  <form class="text-center">
-    <div class="form-group mb-3">
-      <input type="text" placeholder="User Name" class="form-control" id="userName" name="userName" [(ngModel)]="user.userName" disabled>
-    </div>
-    <div class="form-group mb-3">
-      <input type="text" placeholder="Order Date" class="form-control" id="orderDate" name="orderDate" [(ngModel)]="order.orderDate" disabled>
-    </div>
-    <div class="form-group mb-3">
-      <input type="number" placeholder="Total Amount" class="form-control" id="totalAmount" name="totalAmount" [(ngModel)]="order.totalAmount" disabled>
-    </div>
-    <div class="form-group mb-3">
-      <select placeholder="Order Status" class="form-control" id="orderStatus" name="orderStatus" [(ngModel)]="order.orderStatus">
-        <option value="pending">Pending</option>
-        <option value="shipped">Shipped</option>
-        <option value="delivered">Delivered</option>
-      </select>
-    </div>
-
-    <div class="row">
-      <div class="col-md-4" *ngFor="let item of orderItems">
-        <app-order-item [orderItem]="item"></app-order-item>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form class="border border-dark rounded p-4">
+        <div class="form-group mb-3">
+        <label for="reviewId"><strong>Order Id</strong></label>
+        <input type="text" placeholder="Order Id" class="form-control" id="orderId" name="orderId" [(ngModel)]="order.orderID" disabled>
       </div>
-    </div>
+      <div class="form-group mb-3">
+        <label for="reviewId"><strong>User Name</strong></label>
+        <input type="text" placeholder="User Name" class="form-control" id="userName" name="userName" [(ngModel)]="user.userName" disabled>
+      </div>
+      <div class="form-group mb-3">
+        <label for="reviewId"><strong>Order Date</strong></label>
+        <input type="text" placeholder="Order Date" class="form-control" id="orderDate" name="orderDate" [(ngModel)]="order.orderDate" disabled>
+      </div>
+      <div class="form-group mb-3">
+        <label for="reviewId"><strong>Total Amount</strong></label>
+        <input type="number" placeholder="Total Amount" class="form-control" id="totalAmount" name="totalAmount" [(ngModel)]="order.totalAmount" disabled>
+      </div>
+      <div class="form-group mb-3">
+        <label for="reviewId"><strong>Order Status</strong></label>
+        <select placeholder="Order Status" class="form-control" id="orderStatus" name="orderStatus" [(ngModel)]="order.orderStatus">
+          <option value="pending">Pending</option>
+          <option value="shipped">Shipped</option>
+          <option value="delivered">Delivered</option>
+        </select>
+      </div>
 
-    <hr>
-    <div class="form-group mb-4">
-      <button type="button" class="btn btn-danger mr-2" (click)="onDelete()">
-        <fa-icon [icon]="faTrash"></fa-icon> Delete Order
-      </button>
-      <span class="mx-2"></span>
-      <button type="button" class="btn btn-primary" (click)="onUpdate()">
-        <fa-icon [icon]="faEdit"></fa-icon> Update Order
-      </button>
-    </div>
-  </form>
+      <label for="reviewId"><strong>Order Items</strong></label>
+      <div class="row">
+        <div class="col-md-4" *ngFor="let item of orderItems">
+          <app-order-item [orderItem]="item"></app-order-item>
+        </div>
+      </div>
+
+      <hr>
+      <div class="form-group mb-4">
+        <button type="button" class="btn btn-danger mr-2" (click)="onDelete()">
+          <fa-icon [icon]="faTrash"></fa-icon> Delete Order
+        </button>
+        <span class="mx-2"></span>
+        <button type="button" class="btn btn-primary" (click)="onUpdate()">
+          <fa-icon [icon]="faEdit"></fa-icon> Update Order
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 </div>

@@ -17,8 +17,8 @@
         <div class="card mb-4 shadow-sm card-hover">
           <div class="card-body">
             <p class="card-text">Review ID: {{ review.reviewID }}</p>
-            <p class="card-text">Product ID: {{ review.productID }}</p>
-            <p class="card-text">User ID: {{ review.userID }}</p>
+            <p class="card-text">Product Name: {{ getProductName(review.productID) }}</p>
+            <p class="card-text">User Name: {{ getUserName(review.userID) }}</p>
             <p class="card-text">Rating: {{ review.rating }}</p>
             <p class="card-text">Comment: {{ review.comment }}</p>
             <p class="card-text">Review Date: {{ review.reviewDate | date }}</p>

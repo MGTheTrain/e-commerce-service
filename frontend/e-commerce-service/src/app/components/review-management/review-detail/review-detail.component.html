@@ -4,6 +4,10 @@
     <div class="col-md-6">
       <form class="border border-dark rounded p-4">
         <div class="form-group mb-3">
+          <label for="reviewId"><strong>Review Id</strong></label>
+          <input type="text" placeholder="Review Id" class="form-control" id="reviewId" name="reviewId" [(ngModel)]="review.reviewID" disabled>
+        </div>
+        <div class="form-group mb-3">
           <label for="productName"><strong>Product Name</strong></label>
           <input type="text" placeholder="Product Name" class="form-control" id="productName" name="productName" [(ngModel)]="product.name" disabled>
         </div>

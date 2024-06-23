@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-list',
@@ -25,6 +26,12 @@ export class UserListComponent {
   public faSearch: IconDefinition = faSearch;
   public searchText: string = '';
 
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    // GET api/v1/users
+  }
+
   filteredUsers() {
     return this.users.filter(user => {
       return (
@@ -35,4 +42,7 @@ export class UserListComponent {
     });
   }
 
+  handleUserClick(user: UserResponseDTO): void {
+    this.router.navigate(['/user', user.userID]);
+  }
 }

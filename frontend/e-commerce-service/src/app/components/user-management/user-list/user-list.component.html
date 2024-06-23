@@ -13,7 +13,7 @@
     </div>
   
     <div class="row">
-      <div class="col-md-4" *ngFor="let user of filteredUsers()">
+      <div class="col-md-4" *ngFor="let user of filteredUsers()" (click)="handleUserClick(user)">
         <div class="card mb-4 shadow-sm card-hover">
           <div class="card-body">
             <h5 class="card-title">{{ user.userName }}</h5>

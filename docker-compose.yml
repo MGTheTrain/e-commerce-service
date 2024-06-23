@@ -24,6 +24,13 @@ services:
       - "5000:8080/tcp"
 
   # FE
+  e-commerce-service-mocked:
+    image: ecommerce-service:0.1.0
+    build:
+      context: .
+      dockerfile: frontend/e-commerce-service-mocked/Dockerfile
+    ports:
+      - "4200:80/tcp"
 
 volumes:
   postgres-db:

@@ -4,17 +4,22 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CartItemComponent } from '../cart-item/cart-item.component';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Icon, IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faEdit, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [ FormsModule, CommonModule, CartItemComponent ],
+  imports: [ FormsModule, CommonModule, CartItemComponent, FontAwesomeModule ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
 export class CartComponent {
   private subscription: Subscription | null = null;
+  public faEdit: IconDefinition = faEdit;
+  public faShoppingCart: IconDefinition = faShoppingCart;
 
   @Input() cart: CartResponseDTO = {
     cartID: 'cart1',
@@ -37,7 +42,7 @@ export class CartComponent {
     imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
   };
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.subscription = this.route.params.subscribe(params => {
@@ -47,13 +52,24 @@ export class CartComponent {
       // GET /api/v1/cart/:userId/items
       // GET /api/v1/products/:productId
    });
+   this.calculateTotalAmount();
   }
 
-  onUpdateCart(): void {
+  handleUpdateCartClick(): void {
     console.log('Updating cart:', this.cart);
+    // pop up window
+    this.router.navigate(['/']);
   }
 
-  onCheckout(): void {
+  handleCheckoutClick(): void {
     console.log('Checking out cart:', this.cart);
+  }
+
+  calculateTotalAmount(): void {
+    this.cart.totalAmount = this.cartItems.reduce((total, item) => {
+      const quantity = item.quantity ?? 0;
+      const price = item.price ?? 0;
+      return total + (quantity * price);
+    }, 0);
   }
 }

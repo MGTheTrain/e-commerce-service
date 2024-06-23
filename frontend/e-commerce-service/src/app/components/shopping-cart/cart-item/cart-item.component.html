@@ -1,10 +1,15 @@
 <div class="card mb-3 card-hover">
     <div class="card-body">
       <img [src]="product.imageUrl" class="card-img-top fixed-size-img" alt="Product Image">
+      <label><strong>Product Name</strong></label>
       <p class="card-text">{{ product.name }} </p>
-      <p class="card-text">Quantity: <input type="number" [(ngModel)]="cartItem.quantity"></p>
-      <p class="card-text">Price: ${{ cartItem.price }}</p>
-      <button class="btn btn-danger" (click)="onRemoveCartItem()">Remove</button>
+      <label><strong>Quantity</strong></label>
+      <p class="card-text"><input type="number" [(ngModel)]="cartItem.quantity"></p>
+      <label><strong>Price</strong></label>
+      <p class="card-text">${{ cartItem.price }}</p>
+      <button type="button" class="btn btn-danger mr-2" (click)="handleDeleteItemClick()">
+        <fa-icon [icon]="faTrash"></fa-icon> Delete Item
+      </button>
     </div>
   </div>
   

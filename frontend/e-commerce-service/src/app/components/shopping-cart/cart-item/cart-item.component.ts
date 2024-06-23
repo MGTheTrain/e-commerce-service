@@ -2,11 +2,14 @@ import { Component, Input } from '@angular/core';
 import { CartItemResponseDTO, ProductResponseDTO } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-cart-item',
   standalone: true,
-  imports: [ FormsModule, CommonModule ],
+  imports: [ FormsModule, CommonModule, FontAwesomeModule ],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.css'
 })
@@ -29,17 +32,15 @@ export class CartItemComponent {
     imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
   };
 
+  public faTrash: IconDefinition = faTrash;
+  public faEdit: IconDefinition = faEdit;
+
   ngOnInit(): void {
     // GET api/v1/cart/:cartId/item
     // GET api/v1/product/:productId
   }
 
-  onUpdateQuantity(newQuantity: number): void {
-    this.cartItem.quantity = newQuantity;
-    console.log('Updated quantity:', newQuantity);
-  }
-
-  onRemoveCartItem(): void {
+  handleDeleteItemClick(): void {
     console.log('Removing cart item:', this.cartItem);
   }
 }

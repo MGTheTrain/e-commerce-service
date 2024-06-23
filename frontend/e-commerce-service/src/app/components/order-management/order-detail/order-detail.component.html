@@ -30,13 +30,13 @@
 
       <label for="reviewId"><strong>Order Items</strong></label>
       <div class="row">
-        <div class="col-md-4" *ngFor="let item of orderItems">
+        <div class="col-md-6" *ngFor="let item of orderItems">
           <app-order-item [orderItem]="item"></app-order-item>
         </div>
       </div>
 
       <hr>
-      <div class="form-group mb-4">
+      <div class="form-group mb-4 text-center">
         <button type="button" class="btn btn-danger mr-2" (click)="onDelete()">
           <fa-icon [icon]="faTrash"></fa-icon> Delete Order
         </button>

@@ -53,6 +53,7 @@ export class OrderListComponent {
       const orderDateString = order.orderDate?.toLocaleDateString() || '';
       const userName = this.getUserName(order.userID)?.toLowerCase() || '';
       const searchTextLower = this.searchText.toLowerCase();
+      const totlaAmountString = order.totalAmount?.toString() || '';
   
       const matchesOrderValues = Object.values(order).some(val =>
         typeof val === 'string' && val.toLowerCase().includes(searchTextLower)
@@ -60,9 +61,10 @@ export class OrderListComponent {
   
       const matchesOrderDate = orderDateString.includes(searchTextLower);
       const matchesUserName = userName.includes(searchTextLower);
+      const matchesTotalAmount = totlaAmountString.includes(searchTextLower); 
       const matchesFilterOption = !this.filterOption || order.orderStatus === this.filterOption;
   
-      return (matchesOrderValues || matchesOrderDate || matchesUserName) && matchesFilterOption;
+      return (matchesOrderValues || matchesOrderDate || matchesUserName || matchesTotalAmount) && matchesFilterOption;
     });
   }
   

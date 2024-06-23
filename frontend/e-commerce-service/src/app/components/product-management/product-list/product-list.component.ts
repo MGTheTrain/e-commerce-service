@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductResponseDTO } from '../../../generated/api';
+import { ProductResponseDTO } from '../../../generated';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';

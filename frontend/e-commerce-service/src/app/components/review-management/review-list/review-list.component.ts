@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ReviewResponseDTO } from '../../../generated/api';
+import { ReviewResponseDTO } from '../../../generated';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';

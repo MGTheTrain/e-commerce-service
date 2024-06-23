@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ReviewResponseDTO } from '../../../generated/api';
+import { ReviewResponseDTO } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FormsModule } from '@angular/forms';

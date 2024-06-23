@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { UserResponseDTO } from '../../../generated/api';
+import { UserResponseDTO } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute } from '@angular/router';

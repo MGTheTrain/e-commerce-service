@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/free-brands-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { OrderResponseDTO, UserResponseDTO } from '../../../generated/api';
+import { OrderResponseDTO, UserResponseDTO } from '../../../generated';
 import { Router } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CartResponseDTO } from '../../../generated/api';
+import { CartResponseDTO } from '../../../generated';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';

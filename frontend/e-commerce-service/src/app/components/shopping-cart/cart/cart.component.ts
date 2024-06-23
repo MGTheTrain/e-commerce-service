@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CartItemResponseDTO, CartResponseDTO, ProductResponseDTO } from '../../../generated/api';
+import { CartItemResponseDTO, CartResponseDTO, ProductResponseDTO } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CartItemComponent } from '../cart-item/cart-item.component';

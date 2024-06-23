@@ -4,15 +4,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faShoppingCart, faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
-  standalone: true, 
-  imports: [ CommonModule, FormsModule, FontAwesomeModule ], 
+  standalone: true,
+  imports: [CommonModule, FormsModule, FontAwesomeModule],
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css'] // Correct the styleUrl to styleUrls, it's plural
+  styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent {
   products: ProductResponseDTO[] = [
@@ -24,14 +24,17 @@ export class ProductListComponent {
   ];
 
   public faSearch: IconDefinition = faSearch;
+  public faShoppingCart: IconDefinition = faShoppingCart;
+  public faSignIn: IconDefinition = faSignIn;
   public searchText: string = '';
+  public isLoggedIn: boolean = false;
 
   constructor(private router: Router) {}
 
   filteredProducts() {
     return this.products.filter(product => {
       return (
-        Object.values(product).some(val => 
+        Object.values(product).some(val =>
           typeof val === 'string' && val.toLowerCase().includes(this.searchText.toLowerCase())
         ) ||
         product.price?.toString().includes(this.searchText.toLowerCase()) ||
@@ -46,5 +49,17 @@ export class ProductListComponent {
 
   handleCartAddToCartClick(product: ProductResponseDTO): void {
     console.log('About to handle cart added');
+  }
+
+  handleLoginClick(): void {
+    this.router.navigate(['/user/login']);
+  }
+
+  handleLogoutClick(): void {
+    console.log('Handle logout');
+  }
+
+  handleCartClick(): void {
+    console.log('Navigating to cart');
   }
 }

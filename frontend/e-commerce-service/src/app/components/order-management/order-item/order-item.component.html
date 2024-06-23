@@ -2,8 +2,11 @@
     <div class="card-body card-hover">
         <img [src]="product.imageUrl" class="card-img-top fixed-size-img" alt="Product Image">
         <p class="card-text">{{ product.name }} </p>
-        <p class="card-text">Quantity: {{ orderItem.quantity }}</p>
-        <p class="card-text">Price: {{ orderItem.price }}</p>
+        <p class="card-text">Quantity: <input type="number" [(ngModel)]="orderItem.quantity"></p>
+        <p class="card-text">Price: ${{ orderItem.price }}</p>
+        <button type="submit" class="btn btn-danger mr-2">
+            <fa-icon [icon]="faTrash"></fa-icon> Delete Item
+        </button>
     </div>
 </div>
   

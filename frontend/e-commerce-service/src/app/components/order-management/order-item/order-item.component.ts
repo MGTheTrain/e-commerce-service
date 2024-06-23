@@ -2,15 +2,20 @@ import { Component, Input } from '@angular/core';
 import { OrderItemResponseDTO, ProductResponseDTO } from '../../../generated/api';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-order-item',
   standalone: true,
-  imports: [ FormsModule, CommonModule ],
+  imports: [ FormsModule, CommonModule, FontAwesomeModule ],
   templateUrl: './order-item.component.html',
   styleUrls: ['./order-item.component.css']
 })
 export class OrderItemComponent {
+  public faTrash: IconDefinition = faTrash;
+  
   @Input() orderItem: OrderItemResponseDTO = {
     orderItemID: '',
     orderID: '',

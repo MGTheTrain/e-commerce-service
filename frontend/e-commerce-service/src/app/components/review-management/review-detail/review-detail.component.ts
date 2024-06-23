@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ReviewResponseDTO } from '../../../generated';
+import { ProductResponseDTO, ReviewResponseDTO, UserResponseDTO } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FormsModule } from '@angular/forms';
@@ -25,6 +25,23 @@ export class ReviewDetailComponent {
     rating: 4,
     comment: 'Great product!',
     reviewDate: new Date('2023-06-01')
+  };
+
+  user: UserResponseDTO = { 
+    userID: '1', 
+    userName: 'John Doe', 
+    email: 'john.doe@example.com', 
+    role: 'Admin' 
+  };
+
+  product: ProductResponseDTO = { 
+    productID: '1', 
+    categoryID: '101', 
+    name: 'Dean Razorback Guitar Blue', 
+    description: 'Description of Product A', 
+    price: 49.99, 
+    stock: 10, 
+    imageUrl: 'https://s.yimg.com/ny/api/res/1.2/jVphTvtt1LwM3foboVcs_w--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02MDA-/https://media.zenfs.com/en-US/homerun/consequence_of_sound_458/830585263f74148d1ac63c91bfe6e2f4' 
   };
   
   public faTrash: IconDefinition = faTrash;

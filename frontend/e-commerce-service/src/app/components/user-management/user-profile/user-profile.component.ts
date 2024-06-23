@@ -18,12 +18,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 export class UserProfileComponent {
   private subscription: Subscription | null = null;
 
-  @Input() user: UserResponseDTO = {
-    userID: '1',
-    userName: 'John Doe',
-    email: 'john.doe@example.com',
-    role: 'user'
-  };
+  @Input() user: UserResponseDTO = { userID: '1', userName: 'John Doe', email: 'john.doe@example.com', role: 'Admin' };
   
   public faTrash: IconDefinition = faTrash;
   public faEdit: IconDefinition = faEdit;

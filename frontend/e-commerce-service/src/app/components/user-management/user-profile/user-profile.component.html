@@ -2,21 +2,14 @@
     <h2 class="text-center mb-4">User Profile</h2>
     <form class="text-center">
       <div class="form-group mb-3">
-        <label for="userID">User ID:</label>
-        <input type="text" class="form-control" id="userID" name="userID" [(ngModel)]="user.userID" disabled>
+        <input type="text" placeholder="Username" class="form-control" id="userName" name="userName" [(ngModel)]="user.userName">
       </div>
       <div class="form-group mb-3">
-        <label for="userName">Username:</label>
-        <input type="text" class="form-control" id="userName" name="userName" [(ngModel)]="user.userName">
+        <input type="email" placeholder="Email" class="form-control" id="email" name="email" [(ngModel)]="user.email">
       </div>
-      <div class="form-group mb-3">
-        <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email">
-      </div>
-      <div class="form-group mb-3">
-        <label for="role">Role:</label>
-        <input type="text" class="form-control" id="role" name="role" [(ngModel)]="user.role">
-      </div>
+      <!-- <div class="form-group mb-3">
+        <input type="text" placeholder="Role" class="form-control" id="role" name="role" [(ngModel)]="user.role">
+      </div> -->
       <div class="form-group mb-4">
         <button type="button" class="btn btn-danger" (click)="onDelete()">
           <fa-icon [icon]="faTrash"></fa-icon> Delete User

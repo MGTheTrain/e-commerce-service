@@ -1,0 +1,29 @@
+<div class="container mt-4">
+  <div class="row mb-3 justify-content-center">
+    <div class="col-md-4">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="search-icon">
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </span>
+        </div>
+        <input type="text" class="form-control" placeholder="Search orders" [(ngModel)]="searchText">
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="row">
+    <div class="col-md-4" *ngFor="let order of filteredOrders()" (click)="handleOrderClick(order)">
+      <div class="card mb-4 shadow-sm card-hover">
+        <div class="card-body">
+          <p class="card-text">Order ID: {{ order.orderID }}</p>
+          <p class="card-text">User Name: {{ getUserName(order.userID) }}</p>
+          <p class="card-text">Order Date: {{ order.orderDate | date }}</p>
+          <p class="card-text">Total Amount: ${{ order.totalAmount?.toFixed(2) }}</p>
+          <p class="card-text">Order Status: {{ order.orderStatus }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

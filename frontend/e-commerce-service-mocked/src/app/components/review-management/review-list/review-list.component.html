@@ -1,0 +1,30 @@
+<div class="container mt-4">
+    <div class="row mb-3 justify-content-center">
+      <div class="col-md-4">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="search-icon">
+                <fa-icon [icon]="faSearch"></fa-icon>
+                </span>
+            </div>
+            <input type="text" class="form-control" placeholder="Search reviews" [(ngModel)]="searchText">
+        </div>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-4" *ngFor="let review of filteredReviews()" (click)="handleReviewClick(review)">
+        <div class="card mb-4 shadow-sm card-hover">
+          <div class="card-body">
+            <p class="card-text">Review ID: {{ review.reviewID }}</p>
+            <p class="card-text">Product Name: {{ getProductName(review.productID) }}</p>
+            <p class="card-text">User Name: {{ getUserName(review.userID) }}</p>
+            <p class="card-text">Rating: {{ review.rating }}</p>
+            <p class="card-text">Comment: {{ review.comment }}</p>
+            <p class="card-text">Review Date: {{ review.reviewDate | date }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

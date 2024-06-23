@@ -1,0 +1,11 @@
+/* Disable resizing for all textareas */
+textarea {
+    resize: none;
+  }
+  
+  /* Or, to hide the resize handle */
+  textarea {
+    resize: none;
+    overflow: hidden;
+  }
+  

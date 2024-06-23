@@ -1,24 +1,29 @@
 <div class="container mt-4">
   <h2 class="text-center mb-4">Review Details</h2>
-  <form class="text-center">
-    <div class="row justify-content-center">
-      <div class="col-md-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form class="border border-dark rounded p-4">
         <div class="form-group mb-3">
+          <label for="productName"><strong>Product Name</strong></label>
           <input type="text" placeholder="Product Name" class="form-control" id="productName" name="productName" [(ngModel)]="product.name" disabled>
         </div>
         <div class="form-group mb-3">
+          <label for="userName"><strong>User Name</strong></label>
           <input type="text" placeholder="Username" class="form-control" id="userName" name="userName" [(ngModel)]="user.userName" disabled>
         </div>
         <div class="form-group mb-3">
+          <label for="reviewDate"><strong>Review Date</strong></label>
           <input type="text" placeholder="Review Date" class="form-control" id="reviewDate" name="reviewDate" [(ngModel)]="review.reviewDate" disabled>
         </div>
         <div class="form-group mb-3">
+          <label for="rating"><strong>Rating</strong></label>
           <input type="number" placeholder="Rating" class="form-control" id="rating" name="rating" [(ngModel)]="review.rating">
         </div>
         <div class="form-group mb-3">
+          <label for="comment"><strong>Review Comment</strong></label>
           <textarea class="form-control" placeholder="Comment" id="comment" name="comment" [(ngModel)]="review.comment"></textarea>
         </div>
-        <div class="form-group mb-4">
+        <div class="form-group mb-4 text-center">
           <button type="button" class="btn btn-danger" (click)="onDelete()">
             <fa-icon [icon]="faTrash"></fa-icon> Delete Review
           </button>
@@ -27,7 +32,7 @@
             <fa-icon [icon]="faEdit"></fa-icon> Update Review
           </button>
         </div>
-      </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>

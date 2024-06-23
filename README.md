@@ -69,7 +69,7 @@ To view the web backend, open a browser and go to `localhost:5000/swagger/index.
 
 ![Swagger UI trough Docker](./docs/api-design/swagger-ui-trough-docker.PNG)
 
-To view the web frontend (**NOTE:** Currently, the web frontend is only handling mocked data, and navigation between components is not fully covered. For more information on existing routes, refer to [app.routes.ts](./frontend/e-commerce-service-mocked/src/app/app.routes.ts)), open a browser and go to `localhost:4200`. Results should resemble:
+To view the web frontend (**NOTE:** Currently the web frontend is only handling mocked data and navigation between components is not fully covered. For more information on existing routes refer to [app.routes.ts](./frontend/e-commerce-service-mocked/src/app/app.routes.ts)), open a browser and go to `localhost:4200`. Results should resemble:
 
 ![Web frontend including mock data](./docs/test/web-frontend-including-mock-data.PNG)
 

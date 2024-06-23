@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.0] - 12-06-2024
+## [0.1.0] - 23-06-2024
 
-TBD
+- Established initial project setup, including API design and entity-relationship diagrams.
+- Implemented and tested the initial web backend, adhering to the design.
+- Developed the initial web frontend with mocked data.

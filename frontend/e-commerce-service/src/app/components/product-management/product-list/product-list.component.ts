@@ -40,7 +40,11 @@ export class ProductListComponent {
     });
   }
 
-  handleProductClick(product: ProductResponseDTO): void {
+  handleViewClick(product: ProductResponseDTO): void {
     this.router.navigate(['/products', product.productID]);
+  }
+
+  handleCartAddToCartClick(product: ProductResponseDTO): void {
+    console.log('About to handle cart added');
   }
 }

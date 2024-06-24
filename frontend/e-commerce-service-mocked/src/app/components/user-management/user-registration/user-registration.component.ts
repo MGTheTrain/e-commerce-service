@@ -39,6 +39,11 @@ export class UserRegistrationComponent {
   }
 
   onRegister(): void {
+    if (this.password !== this.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+    
     // Simulate a registration process
     // You would typically have a service to handle the actual registration process
     // For now, we will just set the isLoggedIn flag in local storage

@@ -9,11 +9,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { OrderItemComponent } from '../order-item/order-item.component';
 import { v4 as uuidv4 } from 'uuid';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-order-detail',
   standalone: true,
-  imports: [FormsModule, CommonModule, FontAwesomeModule, OrderItemComponent],
+  imports: [FormsModule, CommonModule, FontAwesomeModule, OrderItemComponent, HeaderComponent],
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.css']
 })

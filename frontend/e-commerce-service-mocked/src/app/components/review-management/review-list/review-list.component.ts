@@ -7,11 +7,12 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-review-list',
   standalone: true,
-  imports: [ CommonModule, FormsModule, FontAwesomeModule ],
+  imports: [ CommonModule, FormsModule, FontAwesomeModule, HeaderComponent ],
   templateUrl: './review-list.component.html',
   styleUrl: './review-list.component.css'
 })

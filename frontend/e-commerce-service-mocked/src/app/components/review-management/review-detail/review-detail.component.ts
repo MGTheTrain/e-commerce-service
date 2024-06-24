@@ -7,11 +7,12 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-review-detail',
   standalone: true,
-  imports: [ FormsModule, CommonModule, FontAwesomeModule ],
+  imports: [ FormsModule, CommonModule, FontAwesomeModule, HeaderComponent ],
   templateUrl: './review-detail.component.html',
   styleUrls: ['./review-detail.component.css']
 })

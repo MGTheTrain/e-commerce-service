@@ -2,15 +2,13 @@ import { Component } from '@angular/core';
 import { ProductResponseDTO } from '../../../generated';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faSearch, faShoppingCart, faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, FontAwesomeModule],
+  imports: [ CommonModule, FormsModule, HeaderComponent ],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
@@ -23,25 +21,7 @@ export class ProductListComponent {
     { productID: '5', categoryID: '102', name: 'Gibson Les Paul Black', description: 'Description of Product E', price: 199.99, stock: 8, imageUrl: 'https://morningsideschoolofmusic.co.uk/wp-content/uploads/2022/05/Gibson-Guitars-1024x576.jpg' },
   ];
 
-  public faSearch: IconDefinition = faSearch;
-  public faShoppingCart: IconDefinition = faShoppingCart;
-  public faSignIn: IconDefinition = faSignIn;
-  public searchText: string = '';
-  public isLoggedIn: boolean = false;
-
   constructor(private router: Router) {}
-
-  filteredProducts() {
-    return this.products.filter(product => {
-      return (
-        Object.values(product).some(val =>
-          typeof val === 'string' && val.toLowerCase().includes(this.searchText.toLowerCase())
-        ) ||
-        product.price?.toString().includes(this.searchText.toLowerCase()) ||
-        product.stock?.toString().includes(this.searchText.toLowerCase())
-      );
-    });
-  }
 
   handleViewClick(product: ProductResponseDTO): void {
     this.router.navigate(['/products', product.productID]);
@@ -49,17 +29,5 @@ export class ProductListComponent {
 
   handleCartAddToCartClick(product: ProductResponseDTO): void {
     console.log('About to handle cart added');
-  }
-
-  handleLoginClick(): void {
-    this.router.navigate(['/user/login']);
-  }
-
-  handleLogoutClick(): void {
-    console.log('Handle logout');
-  }
-
-  handleCartClick(): void {
-    console.log('Navigating to cart');
   }
 }

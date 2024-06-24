@@ -71,7 +71,7 @@ To view the web backend, open a browser and go to `localhost:5000/swagger/index.
 
 To view the web frontend (**NOTE:** Currently the web frontend is only handling mocked data and navigation between components is not fully covered. For more information on existing routes refer to [app.routes.ts](./frontend/e-commerce-service-mocked/src/app/app.routes.ts)), open a browser and go to `localhost:4200`. Results should resemble:
 
-![Web frontend including mock data](./docs/test/web-frontend-including-mock-data.PNG)
+![Web frontend with mock data](./docs/test/web-frontend-with-mock-data.PNG)
 
 You can remove all Docker resources with:
 

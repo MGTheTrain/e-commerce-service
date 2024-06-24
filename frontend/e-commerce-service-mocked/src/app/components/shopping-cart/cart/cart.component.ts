@@ -37,7 +37,7 @@ export class CartComponent {
     categoryID: '1',
     name: 'Dean Razorback Guitar',
     description: 'Product Description',
-    price: 99.99,
+    price: 3999.99,
     stock: 10,
     imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
   };

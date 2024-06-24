@@ -7,11 +7,12 @@ import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [FormsModule, CommonModule, FontAwesomeModule],
+  imports: [FormsModule, CommonModule, FontAwesomeModule, HeaderComponent],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })

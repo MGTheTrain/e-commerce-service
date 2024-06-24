@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faApple, faGoogle, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
@@ -25,8 +26,18 @@ export class UserLoginComponent {
   public faApple: IconDefinition = faApple;
   public faGoogle: IconDefinition = faGoogle;
 
+  constructor(private router: Router) {}
+
   onLogin(): void {
-    console.log('Logging in with', this.email, this.password);
+    // Simulate a login process
+    // You would typically have a service to handle the actual login process
+    // For now, we will just set the isLoggedIn flag in local storage
+    localStorage.setItem('isLoggedIn', 'true');
+    this.router.navigate(['/']);
+  }
+
+  handleLogoClick(): void {
+    this.router.navigate(['/']);
   }
 
   onSSOLogin(provider: string): void {

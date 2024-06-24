@@ -6,11 +6,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [ CommonModule, FormsModule, FontAwesomeModule ],
+  imports: [ CommonModule, FormsModule, FontAwesomeModule, HeaderComponent ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })

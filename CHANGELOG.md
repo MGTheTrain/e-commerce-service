@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 24-06-2024
+
+### Updated
+
+- Revise the web frontend using mocked data to include a header component shared by other components, simulate login/logout and registration processes and improve navigation.
+
 ## [0.1.0] - 23-06-2024
+
+### Added
 
 - Established initial project setup, including API design and entity-relationship diagrams.
 - Implemented and tested the initial web backend, adhering to the design.

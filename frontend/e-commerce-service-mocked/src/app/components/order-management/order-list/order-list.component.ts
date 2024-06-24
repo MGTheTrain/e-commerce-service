@@ -7,11 +7,12 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { OrderResponseDTO, UserResponseDTO } from '../../../generated';
 import { Router } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-order-list',
   standalone: true,
-  imports: [ FormsModule, CommonModule, FontAwesomeModule ],
+  imports: [ FormsModule, CommonModule, FontAwesomeModule, HeaderComponent ],
   templateUrl: './order-list.component.html',
   styleUrl: './order-list.component.css'
 })

@@ -7,11 +7,12 @@ import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [ FormsModule, CommonModule, FontAwesomeModule ],
+  imports: [ FormsModule, CommonModule, FontAwesomeModule, HeaderComponent ],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css']
 })
@@ -23,7 +24,7 @@ export class ProductDetailComponent {
     categoryID: '102', 
     name: 'Dean Razorback Guitar White', 
     description: 'Description of Product B', 
-    price: 29.99, 
+    price: 2999.99, 
     stock: 5, 
     imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg' 
   };

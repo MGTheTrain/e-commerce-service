@@ -1,3 +1,14 @@
+.ecommerce-logo {
+  width: 100px;
+  height: 100px;
+  margin-top: 10px;
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+}
+
 .container {
   margin-top: 4rem;
 }

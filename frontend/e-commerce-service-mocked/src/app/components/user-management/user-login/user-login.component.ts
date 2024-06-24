@@ -36,6 +36,10 @@ export class UserLoginComponent {
     this.router.navigate(['/']);
   }
 
+  handleLogoClick(): void {
+    this.router.navigate(['/']);
+  }
+
   onSSOLogin(provider: string): void {
     console.log('Logging in with', provider);
   }

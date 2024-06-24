@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password',
@@ -15,6 +16,12 @@ import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 export class ResetPasswordComponent {
   email: string = '';
   public faSignInAlt: IconDefinition = faSignInAlt;
+
+  constructor(private router: Router) {}
+
+  handleLogoClick(): void {
+    this.router.navigate(['/']);
+  }
 
   onSubmit(): void {
     console.log('Reset password for email:', this.email);

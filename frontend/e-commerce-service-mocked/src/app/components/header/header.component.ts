@@ -23,15 +23,29 @@ export class HeaderComponent {
 
   constructor(private router: Router) {}
 
+  ngOnInit(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+    } else {
+      this.isLoggedIn = false;
+    }
+  }
+
   handleLogoClick(): void {
     this.router.navigate(['/']);
   }
+
   handleLoginClick(): void {
     this.router.navigate(['/user/login']);
   }
 
   handleLogoutClick(): void {
-    console.log('Handle logout');
+    // Simulate a logout process
+    // You would typically have a service to handle the actual logout process
+    // For now, we will just remove the isLoggedIn flag from local storage
+    localStorage.removeItem('isLoggedIn');
+    this.isLoggedIn = false;
+    this.router.navigate(['/']);
   }
 
   handleCartClick(): void {

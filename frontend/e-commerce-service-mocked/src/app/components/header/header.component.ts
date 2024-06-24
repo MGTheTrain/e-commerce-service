@@ -23,6 +23,9 @@ export class HeaderComponent {
 
   constructor(private router: Router) {}
 
+  handleLogoClick(): void {
+    this.router.navigate(['/']);
+  }
   handleLoginClick(): void {
     this.router.navigate(['/user/login']);
   }

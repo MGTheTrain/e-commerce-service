@@ -28,7 +28,7 @@ def product_id(category_id):
         'categoryID': category_id,
         'name': "New Test Product",
         'description': "This is another test product.",
-        'price': 49.99,
+        'price': 4999.99,
         'stock': 20,
         'imageUrl': "http://example.com/new-test-product.jpg"
     }
@@ -85,7 +85,7 @@ def test_create_product(category_id):
         'categoryID': category_id,
         'name': "New Test Product",
         'description': "This is another test product.",
-        'price': 49.99,
+        'price': 4999.99,
         'stock': 20,
         'imageUrl': "http://example.com/new-test-product.jpg"
     }

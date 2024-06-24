@@ -40,7 +40,7 @@ export class ReviewDetailComponent {
     categoryID: '101', 
     name: 'Dean Razorback Guitar Blue', 
     description: 'Description of Product A', 
-    price: 49.99, 
+    price: 4999.99, 
     stock: 10, 
     imageUrl: 'https://s.yimg.com/ny/api/res/1.2/jVphTvtt1LwM3foboVcs_w--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02MDA-/https://media.zenfs.com/en-US/homerun/consequence_of_sound_458/830585263f74148d1ac63c91bfe6e2f4' 
   };

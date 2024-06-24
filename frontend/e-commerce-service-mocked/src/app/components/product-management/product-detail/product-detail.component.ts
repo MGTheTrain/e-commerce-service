@@ -24,7 +24,7 @@ export class ProductDetailComponent {
     categoryID: '102', 
     name: 'Dean Razorback Guitar White', 
     description: 'Description of Product B', 
-    price: 29.99, 
+    price: 2999.99, 
     stock: 5, 
     imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg' 
   };

@@ -33,6 +33,20 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
+        public async Task<IEnumerable<Cart>?> GetAllCarts()
+        {
+            _logger.LogInformation("Fetching all carts");
+            try
+            {
+                return await _context.Carts.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching all carts");
+                return await Task.FromResult<IEnumerable<Cart>?>(null);
+            }
+        }
+
         public async Task<Cart?> CreateCart(Cart cart)
         {
             _logger.LogInformation("Creating new cart for UserID: {UserId}", cart.UserID);

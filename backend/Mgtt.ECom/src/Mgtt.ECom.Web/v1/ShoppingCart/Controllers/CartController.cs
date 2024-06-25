@@ -91,6 +91,32 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         }
 
         /// <summary>
+        /// Retrieves all carts.
+        /// </summary>
+        /// <returns>A list of all carts.</returns>
+        /// <response code="200">Returns a list of all carts.</response>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CartResponseDTO>))]
+        public async Task<ActionResult<IEnumerable<CartResponseDTO>>> GetAllCarts()
+        {
+            var carts = await _cartService.GetAllCarts();
+            var cartDTOs = new List<CartResponseDTO>();
+
+            foreach (var cart in carts)
+            {
+                cartDTOs.Add(new CartResponseDTO
+                {
+                    CartID = cart.CartID,
+                    UserID = cart.UserID,
+                    TotalAmount = cart.TotalAmount
+                });
+            }
+
+            return Ok(cartDTOs);
+        }
+
+
+        /// <summary>
         /// Updates an existing cart.
         /// </summary>
         /// <param name="cartId">The ID of the cart user.</param>

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CartResponseDTO, UserResponseDTO } from '../../../generated';
+import { CartResponseDTO, CartService, UserResponseDTO } from '../../../generated';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -8,11 +8,12 @@ import { CartItemComponent } from '../cart-item/cart-item.component';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-cart-list',
   standalone: true,
-  imports: [ FormsModule, CommonModule, CartItemComponent, FontAwesomeModule ],
+  imports: [ FormsModule, CommonModule, CartItemComponent, FontAwesomeModule, HeaderComponent ],
   templateUrl: './cart-list.component.html',
   styleUrl: './cart-list.component.css'
 })
@@ -39,10 +40,17 @@ export class CartListComponent {
   public searchText: string = '';
   public filterOption: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cartService: CartService) {}
 
   ngOnInit(): void {
-    // GET /api/v1/cart optionally with filter
+    this.cartService.apiV1CartsGet().subscribe(
+      (data: CartResponseDTO[]) => {
+        this.carts = data;
+      },
+      error => {
+        console.error('Error fetching carts', error);
+      }
+    );
   }
 
   filteredCarts() {

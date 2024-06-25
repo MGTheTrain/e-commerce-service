@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
-import { ProductResponseDTO, ReviewResponseDTO, UserResponseDTO } from '../../../generated';
+import { ProductResponseDTO, ReviewResponseDTO, ReviewService, UserResponseDTO } from '../../../generated';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { HeaderComponent } from '../../header/header.component';
@@ -12,7 +9,7 @@ import { HeaderComponent } from '../../header/header.component';
 @Component({
   selector: 'app-review-list',
   standalone: true,
-  imports: [ CommonModule, FormsModule, FontAwesomeModule, HeaderComponent ],
+  imports: [ CommonModule, FormsModule, HeaderComponent ],
   templateUrl: './review-list.component.html',
   styleUrl: './review-list.component.css'
 })
@@ -41,10 +38,18 @@ export class ReviewListComponent {
     { productID: '5', categoryID: '102', name: 'Gibson Les Paul Black', description: 'Description of Product E', price: 999.99, stock: 8, imageUrl: 'https://morningsideschoolofmusic.co.uk/wp-content/uploads/2022/05/Gibson-Guitars-1024x576.jpg' },
   ];
 
-  public faSearch: IconDefinition = faSearch;
-  public searchText: string = '';
+  constructor(private router: Router, private reviewService: ReviewService) {}
 
-  constructor(private router: Router) {}
+  ngOnInit(): void {
+    this.reviewService.apiV1ReviewsGet().subscribe(
+      (data: ReviewResponseDTO[]) => {
+        this.reviews = data;
+      },
+      error => {
+        console.error('Error fetching reviews', error);
+      }
+    );
+  }
 
   getUserName(userID: string | undefined): string | undefined {
     const user = this.users.find(user => user.userID === userID);
@@ -55,16 +60,6 @@ export class ReviewListComponent {
     const product = this.products.find(product => product.productID === productID);
     return product ? product.name
      : 'Unknown User';
-  }
-
-  filteredReviews() {
-    return this.reviews.filter(review => {
-      return (
-        Object.values(review).some(val => 
-          typeof val === 'string' && val.toLowerCase().includes(this.searchText.toLowerCase())
-        )
-      );
-    })
   }
 
   handleReviewClick(review: ReviewResponseDTO): void {

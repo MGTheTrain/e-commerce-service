@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
-import { UserResponseDTO } from '../../../generated';
+import { UserResponseDTO, UserService } from '../../../generated';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [ CommonModule, FormsModule, FontAwesomeModule, HeaderComponent ],
+  imports: [ CommonModule, FormsModule, HeaderComponent ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })
@@ -24,23 +21,17 @@ export class UserListComponent {
     { userID: '5', userName: 'Chris Lee', email: 'chris.lee@example.com', role: 'User' },
   ];
 
-  public faSearch: IconDefinition = faSearch;
-  public searchText: string = '';
-
-  constructor(private router: Router) {}
+  constructor(private router: Router, private userService: UserService) {}
 
   ngOnInit(): void {
-    // GET api/v1/users
-  }
-
-  filteredUsers() {
-    return this.users.filter(user => {
-      return (
-        Object.values(user).some(val => 
-          typeof val === 'string' && val.toLowerCase().includes(this.searchText.toLowerCase())
-        )
-      );
-    });
+    this.userService.apiV1UsersGet().subscribe(
+      (data: UserResponseDTO[]) => {
+        this.users = data;
+      },
+      error => {
+        console.error('Error fetching users', error);
+      }
+    );
   }
 
   handleUserClick(user: UserResponseDTO): void {

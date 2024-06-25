@@ -21,33 +21,6 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         }
 
         /// <summary>
-        /// Retrieves all reviews.
-        /// </summary>
-        /// <returns>A list of all reviews.</returns>
-        /// <response code="200">Returns a list of all reviews.</response>
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
-        public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetAllreviews()
-        {
-            var reviews = await _reviewService.GetAllReviews();
-            var reviewDTOs = new List<ReviewResponseDTO>();
-
-            foreach (var review in reviews)
-            {
-                reviewDTOs.Add(new ReviewResponseDTO
-                {
-                    ProductID = review.ProductID,
-                    UserID = review.UserID,
-                    Rating = review.Rating,
-                    Comment = review.Comment,
-                    ReviewDate = review.ReviewDate
-                });
-            }
-
-            return Ok(reviewDTOs);
-        }
-
-        /// <summary>
         /// Creates a new review.
         /// </summary>
         /// <param name="reviewDTO">The review data transfer object containing review details.</param>
@@ -122,6 +95,33 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
             };
 
             return Ok(reviewDTO);
+        }
+
+        /// <summary>
+        /// Retrieves all reviews.
+        /// </summary>
+        /// <returns>A list of all reviews.</returns>
+        /// <response code="200">Returns a list of all reviews.</response>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
+        public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetAllReviews()
+        {
+            var reviews = await _reviewService.GetAllReviews();
+            var reviewDTOs = new List<ReviewResponseDTO>();
+
+            foreach (var review in reviews)
+            {
+                reviewDTOs.Add(new ReviewResponseDTO
+                {
+                    ProductID = review.ProductID,
+                    UserID = review.UserID,
+                    Rating = review.Rating,
+                    Comment = review.Comment,
+                    ReviewDate = review.ReviewDate
+                });
+            }
+
+            return Ok(reviewDTOs);
         }
 
         /// <summary>

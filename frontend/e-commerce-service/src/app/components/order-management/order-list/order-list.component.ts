@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/free-brands-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { OrderResponseDTO, UserResponseDTO } from '../../../generated';
+import { OrderResponseDTO, OrderService, UserResponseDTO } from '../../../generated';
 import { Router } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { HeaderComponent } from '../../header/header.component';
@@ -37,11 +37,17 @@ export class OrderListComponent {
   public searchText: string = '';
   public filterOption: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private orderService: OrderService) {}
 
   ngOnInit(): void {
-    // GET api/v1/orders
-    // GET api/v1/user/:userId
+    this.orderService.apiV1OrdersGet().subscribe(
+      (data: OrderResponseDTO[]) => {
+        this.orders = data;
+      },
+      error => {
+        console.error('Error fetching products', error);
+      }
+    );
   }
 
   getUserName(userID: string | undefined): string | undefined {

@@ -33,6 +33,20 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
+        public async Task<IEnumerable<User>?> GetAllUsers()
+        {
+            _logger.LogInformation("Fetching all users");
+            try
+            {
+                return await _context.Users.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching all users");
+                return await Task.FromResult<IEnumerable<User>?>(null);
+            }
+        }
+
         public async Task<User?> GetUserByEmail(string email)
         {
             _logger.LogInformation("Fetching user by email: {Email}", email);

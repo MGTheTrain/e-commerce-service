@@ -34,6 +34,20 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
+        public async Task<IEnumerable<Review>?> GetAllReviews()
+        {
+            _logger.LogInformation("Fetching all reviews");
+            try
+            {
+                return await _context.Reviews.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching all reviews");
+                return await Task.FromResult<IEnumerable<Review>?>(null);
+            }
+        }
+
         public async Task<IEnumerable<Review>?> GetReviewsByProductId(Guid productId)
         {
             _logger.LogInformation("Fetching reviews by Product ID: {ProductId}", productId);

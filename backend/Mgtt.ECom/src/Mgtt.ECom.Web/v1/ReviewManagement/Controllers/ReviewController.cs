@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mgtt.ECom.Web.v1.ReviewManagement.DTOs;
 using static System.Collections.Specialized.BitVector32;
+using Mgtt.ECom.Web.v1.UserManagement.DTOs;
 
 namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
 {
@@ -17,6 +18,33 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         public ReviewController(IReviewService reviewService)
         {
             _reviewService = reviewService;
+        }
+
+        /// <summary>
+        /// Retrieves all reviews.
+        /// </summary>
+        /// <returns>A list of all reviews.</returns>
+        /// <response code="200">Returns a list of all reviews.</response>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
+        public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetAllreviews()
+        {
+            var reviews = await _reviewService.GetAllReviews();
+            var reviewDTOs = new List<ReviewResponseDTO>();
+
+            foreach (var review in reviews)
+            {
+                reviewDTOs.Add(new ReviewResponseDTO
+                {
+                    ProductID = review.ProductID,
+                    UserID = review.UserID,
+                    Rating = review.Rating,
+                    Comment = review.Comment,
+                    ReviewDate = review.ReviewDate
+                });
+            }
+
+            return Ok(reviewDTOs);
         }
 
         /// <summary>

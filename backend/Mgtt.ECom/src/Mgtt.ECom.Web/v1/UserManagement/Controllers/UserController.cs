@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Mgtt.ECom.Web.v1.userManagement.DTOs;
 
 namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
 {
@@ -16,6 +17,32 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         public UserController(IUserService userService)
         {
             _userService = userService;
+        }
+
+        /// <summary>
+        /// Retrieves all users.
+        /// </summary>
+        /// <returns>A list of all users.</returns>
+        /// <response code="200">Returns a list of all users.</response>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserResponseDTO>))]
+        public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetAllusers()
+        {
+            var users = await _userService.GetAllUsers();
+            var userDTOs = new List<UserResponseDTO>();
+
+            foreach (var user in users)
+            {
+                userDTOs.Add(new UserResponseDTO
+                {
+                    UserID = user.UserID,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Role = user.Role,
+                });
+            }
+
+            return Ok(userDTOs);
         }
 
         /// <summary>

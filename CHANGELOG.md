@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Configure the [web frontend](./frontend/e-commerce-service/) to use Swagger-generated services with `HttpClient` in the components
 - Enable CORS in the [web backend](./backend/Mgtt.ECom/)
 
+### Updated
+
+- Updated interfaces, implementations and HTTP endpoints in the web backend
+
 ## [0.2.0] - 24-06-2024
 
 ### Updated

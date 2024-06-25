@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Mgtt.ECom.Web.v1.userManagement.DTOs;
+using Mgtt.ECom.Web.v1.UserManagement.DTOs;
 
 namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
 {

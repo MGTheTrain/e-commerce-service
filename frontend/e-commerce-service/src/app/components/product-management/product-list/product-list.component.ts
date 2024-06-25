@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductResponseDTO } from '../../../generated';
+import { ProductResponseDTO, ProductService } from '../../../generated';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -21,7 +21,18 @@ export class ProductListComponent {
     { productID: '5', categoryID: '102', name: 'Gibson Les Paul Black', description: 'Description of Product E', price: 999.99, stock: 8, imageUrl: 'https://morningsideschoolofmusic.co.uk/wp-content/uploads/2022/05/Gibson-Guitars-1024x576.jpg' },
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private productService: ProductService) {}
+
+  ngOnInit(): void {
+    this.productService.apiV1ProductsGet().subscribe(
+      (data: ProductResponseDTO[]) => {
+        this.products = data;
+      },
+      error => {
+        console.error('Error fetching products', error);
+      }
+    );
+  }
 
   handleViewClick(product: ProductResponseDTO): void {
     this.router.navigate(['/products', product.productID]);

@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Updated
 
-- Updated interfaces, implementations and HTTP endpoints in the web backend
+- Updated interfaces, implementations and HTTP endpoints in the [web backend](./backend/Mgtt.ECom/)
 
 ## [0.2.0] - 24-06-2024
 

@@ -7,42 +7,46 @@
         <form>
           <div class="form-group mb-3">
             <label><strong>Product Name</strong></label>
-            <input type="text" placeholder="Product Name" class="form-control" id="name" name="name" [(ngModel)]="product.name">
+            <input type="text" placeholder="Product Name" class="form-control" id="name" name="name" [(ngModel)]="product.name" [disabled]="!isEditing">
           </div>
           <div class="form-group mb-3">
             <label><strong>Category Id</strong></label>
-            <input type="text" placeholder="Category ID" class="form-control" id="categoryID" name="categoryID" [(ngModel)]="product.categoryID">
+            <input type="text" placeholder="Category ID" class="form-control" id="categoryID" name="categoryID" [(ngModel)]="product.categoryID" [disabled]="!isEditing">
           </div>
           <div class="form-group mb-3">
             <label><strong>Product Description</strong></label>
-            <textarea placeholder="Description" class="form-control" id="description" name="description" [(ngModel)]="product.description"></textarea>
+            <textarea placeholder="Description" class="form-control" id="description" name="description" [(ngModel)]="product.description" [disabled]="!isEditing"></textarea>
           </div>
           <div class="form-group mb-3">
             <label><strong>Price</strong></label>
-            <input type="number" placeholder="Price" class="form-control" id="price" name="price" [(ngModel)]="product.price">
+            <input type="number" placeholder="Price" class="form-control" id="price" name="price" [(ngModel)]="product.price" [disabled]="!isEditing">
           </div>
           <div class="form-group mb-3">
             <label><strong>Stock</strong></label>
-            <input type="number" placeholder="Stock" class="form-control" id="stock" name="stock" [(ngModel)]="product.stock">
+            <input type="number" placeholder="Stock" class="form-control" id="stock" name="stock" [(ngModel)]="product.stock" [disabled]="!isEditing">
           </div>
           <div class="row">
-              <div class="card mb-4 shadow-sm card-hover">
-                <img [src]="product.imageUrl" class="card-img-top fixed-size-img" alt="Product Image">
-              </div>
-              <div class="form-group mt-2 text-center">
-                <input type="file" (change)="onImageChange($event)" id="imageInput" hidden>
-                <button type="button" class="btn btn-outline-secondary w-100" (click)="triggerImageInput()">
-                  <fa-icon [icon]="faImage"></fa-icon> Replace Image
-                </button>
-              </div>
+            <div class="card mb-4 shadow-sm card-hover">
+              <img [src]="product.imageUrl" class="card-img-top fixed-size-img" alt="Product Image">
+            </div>
+            <div class="form-group mt-2 text-center">
+              <input type="file" (change)="onImageChange($event)" id="imageInput" hidden>
+              <button type="button" class="btn btn-outline-secondary w-100" (click)="triggerImageInput()" [disabled]="!isEditing">
+                <fa-icon [icon]="faImage"></fa-icon> Replace Image
+              </button>
+            </div>
           </div>
           <hr>
           <div class="form-group mb-4 text-center">
-            <button type="submit" class="btn btn-danger" (click)="handleDeleteProductClick()">
+            <button type="button" class="btn btn-secondary" (click)="handleEditClick()">
+              <fa-icon [icon]="faEdit"></fa-icon> Edit
+            </button>
+            <span class="mx-2"></span>
+            <button type="submit" class="btn btn-danger" (click)="handleDeleteProductClick()" [disabled]="!isEditing">
               <fa-icon [icon]="faTrash"></fa-icon> Delete Product
             </button>
             <span class="mx-2"></span>
-            <button type="button" class="btn btn-primary" (click)="handleUpdateProductClick()">
+            <button type="button" class="btn btn-primary" (click)="handleUpdateProductClick()" [disabled]="!isEditing">
               <fa-icon [icon]="faEdit"></fa-icon> Update Product
             </button>
           </div>

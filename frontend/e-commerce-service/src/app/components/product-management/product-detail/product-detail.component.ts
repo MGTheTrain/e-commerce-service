@@ -32,6 +32,7 @@ export class ProductDetailComponent {
   public faTrash: IconDefinition = faTrash;
   public faEdit: IconDefinition = faEdit;
   public faImage: IconDefinition = faImage;
+  public isEditing: boolean = false;
 
   constructor(private route: ActivatedRoute) { }
 
@@ -40,6 +41,10 @@ export class ProductDetailComponent {
       let id = params['productId'];
       this.product.productID = id;
    });
+  }
+
+  handleEditClick(): void {
+    this.isEditing = !this.isEditing;
   }
 
   handleDeleteProductClick() {

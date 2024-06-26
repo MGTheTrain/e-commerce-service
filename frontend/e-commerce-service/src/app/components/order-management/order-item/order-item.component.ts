@@ -15,6 +15,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 })
 export class OrderItemComponent {
   public faTrash: IconDefinition = faTrash;
+  @Input() public isEditing: boolean = false;
   
   @Input() orderItem: OrderItemResponseDTO = {
     orderItemID: '',

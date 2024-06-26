@@ -43,6 +43,7 @@ export class OrderDetailComponent implements OnInit {
 
   public faTrash: IconDefinition = faTrash;
   public faEdit: IconDefinition = faEdit;
+  public isEditing: boolean = false;
 
   constructor(private route: ActivatedRoute) { }
 
@@ -52,6 +53,10 @@ export class OrderDetailComponent implements OnInit {
       this.order.orderID = id;
     });
     this.calculateTotalAmount();
+  }
+
+  handleEditClick(): void {
+    this.isEditing = !this.isEditing;
   }
 
   calculateTotalAmount(): void {

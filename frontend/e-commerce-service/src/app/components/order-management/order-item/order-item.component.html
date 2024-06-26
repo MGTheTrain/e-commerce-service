@@ -4,11 +4,11 @@
       <p class="card-text">{{ product.name }}</p>
       <div class="form-group mb-0">
         <label class="mb-0"><strong>Quantity</strong></label>
-        <input type="number" class="form-control" [(ngModel)]="orderItem.quantity">
+        <input type="number" class="form-control" [(ngModel)]="orderItem.quantity" [disabled]="!isEditing">
       </div>
       <label class="mb-0"><strong>Price</strong></label>
       <p class="card-text">${{ orderItem.price }}</p>
-      <button type="submit" class="btn btn-danger mr-2">
+      <button type="submit" class="btn btn-danger mr-2" [disabled]="!isEditing">
         <fa-icon [icon]="faTrash"></fa-icon> Delete Item
       </button>
     </div>

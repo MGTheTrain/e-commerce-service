@@ -22,7 +22,7 @@
         </div>
         <div class="form-group mb-3">
           <label><strong>Order Status</strong></label>
-          <select placeholder="Order Status" class="form-control" id="orderStatus" name="orderStatus" [(ngModel)]="order.orderStatus">
+          <select placeholder="Order Status" class="form-control" id="orderStatus" name="orderStatus" [(ngModel)]="order.orderStatus" [disabled]="!isEditing">
             <option value="pending">Pending</option>
             <option value="shipped">Shipped</option>
             <option value="delivered">Delivered</option>
@@ -32,17 +32,21 @@
         <label><strong>Order Items</strong></label>
         <div class="row">
           <div class="col-md-6" *ngFor="let item of orderItems">
-            <app-order-item [orderItem]="item"></app-order-item>
+            <app-order-item [orderItem]="item" [isEditing]="isEditing"></app-order-item>
           </div>
         </div>
 
         <hr>
         <div class="form-group mb-4 text-center">
-          <button type="button" class="btn btn-danger mr-2" (click)="handleDeleteOrderClick()">
+          <button type="button" class="btn btn-secondary" (click)="handleEditClick()">
+            <fa-icon [icon]="faEdit"></fa-icon> {{ isEditing ? 'Cancel' : 'Edit' }}
+          </button>
+          <span class="mx-2"></span>
+          <button type="button" class="btn btn-danger mr-2" (click)="handleDeleteOrderClick()" [disabled]="!isEditing">
             <fa-icon [icon]="faTrash"></fa-icon> Delete Order
           </button>
           <span class="mx-2"></span>
-          <button type="button" class="btn btn-primary" (click)="handleUpdateOrderClick()">
+          <button type="button" class="btn btn-primary" (click)="handleUpdateOrderClick()" [disabled]="!isEditing">
             <fa-icon [icon]="faEdit"></fa-icon> Update Order
           </button>
         </div>

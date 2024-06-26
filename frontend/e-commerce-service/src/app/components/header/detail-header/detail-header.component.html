@@ -1,0 +1,15 @@
+<div class="row mb-3 justify-content-center">
+    <div class="col-md-8 text-center">
+      <img src="assets/e-commerce-logo.png" class="ecommerce-logo" (click)="handleLogoClick()">
+
+    <button *ngIf="!isLoggedIn" type="button" class="btn btn-primary" (click)="handleLoginClick()">
+        <fa-icon [icon]="faSignIn"></fa-icon> Login
+    </button>
+    <span class="mx-2"></span>
+    <button *ngIf="isLoggedIn" type="button" class="btn btn-danger" (click)="handleLogoutClick()">
+        <fa-icon [icon]="faSignIn"></fa-icon> Logout
+    </button>
+    </div>
+    <div style="height: 20px;"></div>
+    <hr>
+</div>

@@ -8,11 +8,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Icon, IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { DetailHeaderComponent } from '../../header/detail-header/detail-header.component';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [ FormsModule, CommonModule, CartItemComponent, FontAwesomeModule ],
+  imports: [ FormsModule, CommonModule, CartItemComponent, FontAwesomeModule, DetailHeaderComponent ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })

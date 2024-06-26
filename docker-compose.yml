@@ -23,12 +23,12 @@ services:
     ports:
       - "5000:8080/tcp"
 
-  # # Frontend with mocked data
-  # e-commerce-service-mocked:
+  # # Frontend
+  # e-commerce-service:
   #   image: ecommerce-service-fe:0.1.0
   #   build:
   #     context: .
-  #     dockerfile: frontend/e-commerce-service-mocked/Dockerfile
+  #     dockerfile: frontend/e-commerce-service/Dockerfile
   #   ports:
   #     - "4200:80/tcp"
 

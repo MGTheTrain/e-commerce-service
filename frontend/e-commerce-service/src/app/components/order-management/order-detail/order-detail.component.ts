@@ -62,11 +62,11 @@ export class OrderDetailComponent implements OnInit {
     }, 0);
   }
 
-  onDelete(): void {    
+  handleDeleteOrderClick(): void {    
     console.log('Deleting order:', this.order);    
   }
 
-  onUpdate(): void {    
+  handleUpdateOrderClick(): void {    
     console.log('Updating order:', this.order);    
   }
 }

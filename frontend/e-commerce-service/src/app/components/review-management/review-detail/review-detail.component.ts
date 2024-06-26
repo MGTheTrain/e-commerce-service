@@ -57,11 +57,11 @@ export class ReviewDetailComponent {
    });
   }
 
-  onDelete(): void {    
+  handleDeleteReviewClick(): void {    
     console.log('Deleting review:', this.review);    
   }
 
-  onUpdate(): void {    
+  handleUpdateReviewClick(): void {    
     console.log('Updating review:', this.review);    
   }
 }

@@ -42,11 +42,11 @@ export class ProductDetailComponent {
    });
   }
 
-  onDelete() {
+  handleDeleteProductClick() {
     console.log('Deleting product with ID:', this.product.productID);
   }
 
-  onUpdate() {
+  handleUpdateProductClick() {
     console.log('Updating product:', this.product);
   }
 

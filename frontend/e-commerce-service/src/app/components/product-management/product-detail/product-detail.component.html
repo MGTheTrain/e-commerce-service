@@ -39,7 +39,7 @@
           <hr>
           <div class="form-group mb-4 text-center">
             <button type="button" class="btn btn-secondary" (click)="handleEditClick()">
-              <fa-icon [icon]="faEdit"></fa-icon> Edit
+              <fa-icon [icon]="faEdit"></fa-icon> {{ isEditing ? 'Cancel' : 'Edit' }}
             </button>
             <span class="mx-2"></span>
             <button type="submit" class="btn btn-danger" (click)="handleDeleteProductClick()" [disabled]="!isEditing">

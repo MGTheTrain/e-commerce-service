@@ -4,10 +4,10 @@
       <label><strong>Product Name</strong></label>
       <p class="card-text">{{ product.name }} </p>
       <label><strong>Quantity</strong></label>
-      <p class="card-text"><input type="number" [(ngModel)]="cartItem.quantity"></p>
+      <p class="card-text"><input type="number" [(ngModel)]="cartItem.quantity" [disabled]="!isEditing"></p>
       <label><strong>Price</strong></label>
       <p class="card-text">${{ cartItem.price }}</p>
-      <button type="button" class="btn btn-danger mr-2" (click)="handleDeleteItemClick()">
+      <button type="button" class="btn btn-danger mr-2" (click)="handleDeleteItemClick()" [disabled]="!isEditing">
         <fa-icon [icon]="faTrash"></fa-icon> Delete Item
       </button>
     </div>

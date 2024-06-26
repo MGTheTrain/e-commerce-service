@@ -20,6 +20,7 @@ export class CartComponent {
   private subscription: Subscription | null = null;
   public faEdit: IconDefinition = faEdit;
   public faShoppingCart: IconDefinition = faShoppingCart;
+  public isEditing: boolean = false;
 
   @Input() cart: CartResponseDTO = {
     cartID: 'cart1',
@@ -53,6 +54,10 @@ export class CartComponent {
       // GET /api/v1/products/:productId
    });
    this.calculateTotalAmount();
+  }
+
+  handleEditClick(): void {
+    this.isEditing = !this.isEditing;
   }
 
   handleUpdateCartClick(): void {

@@ -34,6 +34,7 @@ export class CartItemComponent {
 
   public faTrash: IconDefinition = faTrash;
   public faEdit: IconDefinition = faEdit;
+  @Input() public isEditing: boolean = false;
 
   ngOnInit(): void {
     // GET api/v1/cart/:cartId/item

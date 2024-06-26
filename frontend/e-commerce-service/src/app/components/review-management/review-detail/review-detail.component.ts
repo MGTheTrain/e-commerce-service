@@ -47,6 +47,7 @@ export class ReviewDetailComponent {
   
   public faTrash: IconDefinition = faTrash;
   public faEdit: IconDefinition = faEdit;
+  public isEditing: boolean = false;
 
   constructor(private route: ActivatedRoute) { }
 
@@ -55,6 +56,10 @@ export class ReviewDetailComponent {
       let id = params['reviewId'];
       this.review.reviewID = id;
    });
+  }
+
+  handleEditClick(): void {
+    this.isEditing = !this.isEditing;
   }
 
   handleDeleteReviewClick(): void {    

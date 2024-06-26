@@ -23,18 +23,22 @@
         </div>
         <div class="form-group mb-3">
           <label><strong>Rating</strong></label>
-          <input type="number" placeholder="Rating" class="form-control" id="rating" name="rating" [(ngModel)]="review.rating">
+          <input type="number" placeholder="Rating" class="form-control" id="rating" name="rating" [(ngModel)]="review.rating" [disabled]="!isEditing">
         </div>
         <div class="form-group mb-3">
           <label><strong>Review Comment</strong></label>
-          <textarea class="form-control" placeholder="Comment" id="comment" name="comment" [(ngModel)]="review.comment"></textarea>
+          <textarea class="form-control" placeholder="Comment" id="comment" name="comment" [(ngModel)]="review.comment" [disabled]="!isEditing"></textarea>
         </div>
         <div class="form-group mb-4 text-center">
-          <button type="button" class="btn btn-danger" (click)="handleDeleteReviewClick()">
+          <button type="button" class="btn btn-secondary" (click)="handleEditClick()">
+            <fa-icon [icon]="faEdit"></fa-icon> Edit
+          </button>
+          <span class="mx-2"></span>
+          <button type="button" class="btn btn-danger" (click)="handleDeleteReviewClick()" [disabled]="!isEditing">
             <fa-icon [icon]="faTrash"></fa-icon> Delete Review
           </button>
           <span class="mx-2"></span>
-          <button type="button" class="btn btn-primary" (click)="handleUpdateReviewClick()">
+          <button type="button" class="btn btn-primary" (click)="handleUpdateReviewClick()" [disabled]="!isEditing">
             <fa-icon [icon]="faEdit"></fa-icon> Update Review
           </button>
         </div>

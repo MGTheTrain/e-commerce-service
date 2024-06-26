@@ -14,6 +14,9 @@ import { ReviewDetailComponent } from './components/review-management/review-det
 import { UserListComponent } from './components/user-management/user-list/user-list.component';
 import { ResetPasswordComponent } from './components/user-management/reset-password/reset-password.component';
 import { CartListComponent } from './components/shopping-cart/cart-list/cart-list.component';
+import { ProductCreationComponent } from './components/product-management/product-creation/product-creation.component';
+import { OrderCreationComponent } from './components/order-management/order-creation/order-creation.component';
+import { ReviewCreationComponent } from './components/review-management/review-creation/review-creation.component';
 
 const routes: Routes = [
     { path: 'user/registration', component: UserRegistrationComponent },
@@ -23,12 +26,15 @@ const routes: Routes = [
     { path: 'user/:userId/cart', component: CartComponent },
     { path: 'user', component: UserListComponent },
     { path: 'products', component: ProductListComponent },
+    { path: 'products/creation', component: ProductCreationComponent },
     { path: 'products/:productId', component: ProductDetailComponent },
     { path: '', redirectTo: '/products', pathMatch: 'full' }, // Default route redirects to product list
     { path: 'orders', component: OrderListComponent },
+    { path: 'orders/creation', component: OrderCreationComponent },
     { path: 'orders/:orderId', component: OrderDetailComponent },
     { path: 'cart', component: CartListComponent },
     { path: 'reviews', component: ReviewListComponent },
+    { path: 'reviews/creation', component: ReviewCreationComponent },
     { path: 'reviews/:reviewId', component: ReviewDetailComponent },
     { path: '**', component: PageNotFoundComponent },
 ];

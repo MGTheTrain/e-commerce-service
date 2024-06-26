@@ -1,8 +1,10 @@
 <div class="container mt-4">
-  <app-header></app-header>
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="container mt-4 border border-dark rounded p-4">
+        <button type="button" class="btn btn-link mb-3" (click)="handleNavigateBackClick()">
+          <fa-icon [icon]="faArrowLeft"></fa-icon> Back to Orders
+        </button>
         <h2 class="text-center mb-4">Order Details</h2>
           <div class="form-group mb-3">
           <label><strong>Order Id</strong></label>

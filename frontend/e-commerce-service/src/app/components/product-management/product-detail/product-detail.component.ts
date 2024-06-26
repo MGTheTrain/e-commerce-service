@@ -1,18 +1,17 @@
 import { Component } from '@angular/core';
 import { ProductResponseDTO } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faEdit, faTrash, faImage } from '@fortawesome/free-solid-svg-icons';
-import { ActivatedRoute } from '@angular/router';
+import { faEdit, faTrash, faImage, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [ FormsModule, CommonModule, FontAwesomeModule, HeaderComponent ],
+  imports: [ FormsModule, CommonModule, FontAwesomeModule ],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css']
 })
@@ -32,15 +31,20 @@ export class ProductDetailComponent {
   public faTrash: IconDefinition = faTrash;
   public faEdit: IconDefinition = faEdit;
   public faImage: IconDefinition = faImage;
+  public faArrowLeft: IconDefinition = faArrowLeft;
   public isEditing: boolean = false;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.subscription = this.route.params.subscribe(params => {
       let id = params['productId'];
       this.product.productID = id;
    });
+  }
+
+  handleNavigateBackClick(): void {
+    this.router.navigate(['/products']);
   }
 
   handleEditClick(): void {

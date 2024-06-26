@@ -1,9 +1,11 @@
 <div class="container mt-4">
-<app-header></app-header>
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <div class="container mt-4 border border-dark rounded p-4">
-        <h2 class="text-center mb-4">Review Details</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="container mt-4 border border-dark rounded p-4">
+      <button type="button" class="btn btn-link mb-3" (click)="handleNavigateBackClick()">
+        <fa-icon [icon]="faArrowLeft"></fa-icon> Back to Reviews
+      </button>
+      <h2 class="text-center mb-4">Review Details</h2>
       <form>
         <div class="form-group mb-3">
           <label><strong>Review Id</strong></label>

@@ -3,18 +3,17 @@ import { OrderItemResponseDTO, OrderResponseDTO, UserResponseDTO } from '../../.
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { OrderItemComponent } from '../order-item/order-item.component';
 import { v4 as uuidv4 } from 'uuid';
-import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-order-detail',
   standalone: true,
-  imports: [FormsModule, CommonModule, FontAwesomeModule, OrderItemComponent, HeaderComponent],
+  imports: [FormsModule, CommonModule, FontAwesomeModule, OrderItemComponent],
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.css']
 })
@@ -43,9 +42,10 @@ export class OrderDetailComponent implements OnInit {
 
   public faTrash: IconDefinition = faTrash;
   public faEdit: IconDefinition = faEdit;
+  public faArrowLeft: IconDefinition = faArrowLeft;
   public isEditing: boolean = false;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.subscription = this.route.params.subscribe(params => {
@@ -53,6 +53,10 @@ export class OrderDetailComponent implements OnInit {
       this.order.orderID = id;
     });
     this.calculateTotalAmount();
+  }
+
+  handleNavigateBackClick(): void {
+    this.router.navigate(['/orders']);
   }
 
   handleEditClick(): void {

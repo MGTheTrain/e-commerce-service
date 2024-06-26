@@ -1,18 +1,17 @@
 import { Component, Input } from '@angular/core';
 import { ProductResponseDTO, ReviewResponseDTO, UserResponseDTO } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-review-detail',
   standalone: true,
-  imports: [ FormsModule, CommonModule, FontAwesomeModule, HeaderComponent ],
+  imports: [ FormsModule, CommonModule, FontAwesomeModule ],
   templateUrl: './review-detail.component.html',
   styleUrls: ['./review-detail.component.css']
 })
@@ -47,15 +46,20 @@ export class ReviewDetailComponent {
   
   public faTrash: IconDefinition = faTrash;
   public faEdit: IconDefinition = faEdit;
+  public faArrowLeft: IconDefinition = faArrowLeft;
   public isEditing: boolean = false;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.subscription = this.route.params.subscribe(params => {
       let id = params['reviewId'];
       this.review.reviewID = id;
    });
+  }
+
+  handleNavigateBackClick(): void {
+    this.router.navigate(['/reviews']);
   }
 
   handleEditClick(): void {

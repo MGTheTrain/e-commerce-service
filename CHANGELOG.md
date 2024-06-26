@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated interfaces, implementations and HTTP endpoints in the [web backend](./backend/Mgtt.ECom/)
 
+### Deleted
+
+- Remove **web frontend using mocked data**
+
 ## [0.2.0] - 24-06-2024
 
 ### Updated

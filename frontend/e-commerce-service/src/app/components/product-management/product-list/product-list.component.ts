@@ -24,6 +24,7 @@ export class ProductListComponent {
     { productID: '5', categoryID: '102', name: 'Gibson Les Paul Black', description: 'Description of Product E', price: 999.99, stock: 8, imageUrl: 'https://morningsideschoolofmusic.co.uk/wp-content/uploads/2022/05/Gibson-Guitars-1024x576.jpg' },
   ];
 
+  public isLoggedIn: boolean = false;
   public faPlus: IconDefinition = faPlus;
 
   constructor(private router: Router, private productService: ProductService) {}

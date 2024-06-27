@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -17,7 +17,19 @@ export class DetailHeaderComponent {
   public faSearch: IconDefinition = faSearch;
   public faSignIn: IconDefinition = faSignIn;
   
-  public isLoggedIn: boolean = false;
+  @Output() isLoggedInChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  private _isLoggedIn: boolean = false;
+
+  @Input()
+  set isLoggedIn(value: boolean) {
+    this._isLoggedIn = value;
+    this.isLoggedInChange.emit(value); // Emitting value change
+  }
+
+  get isLoggedIn(): boolean {
+    return this._isLoggedIn;
+  }
 
   constructor(private router: Router) {}
 

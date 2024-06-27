@@ -28,14 +28,14 @@ export class ReviewDetailComponent {
     reviewDate: new Date('2023-06-01')
   };
 
-  user: UserResponseDTO = { 
+  @Input() user: UserResponseDTO = { 
     userID: '1', 
     userName: 'John Doe', 
     email: 'john.doe@example.com', 
     role: 'Admin' 
   };
 
-  product: ProductResponseDTO = { 
+  @Input() product: ProductResponseDTO = { 
     productID: '1', 
     categoryID: '101', 
     name: 'Dean Razorback Guitar Blue', 

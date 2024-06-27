@@ -15,7 +15,6 @@ import { UserListComponent } from './components/user-management/user-list/user-l
 import { ResetPasswordComponent } from './components/user-management/reset-password/reset-password.component';
 import { CartListComponent } from './components/shopping-cart/cart-list/cart-list.component';
 import { ProductCreationComponent } from './components/product-management/product-creation/product-creation.component';
-import { OrderCreationComponent } from './components/order-management/order-creation/order-creation.component';
 import { ReviewCreationComponent } from './components/review-management/review-creation/review-creation.component';
 
 const routes: Routes = [
@@ -29,7 +28,7 @@ const routes: Routes = [
     { path: 'products/creation', component: ProductCreationComponent },
     { path: 'products/:productId', component: ProductDetailComponent },
     { path: 'orders', component: OrderListComponent },
-    { path: 'orders/creation', component: OrderCreationComponent },
+    // { path: 'orders/creation', component: OrderCreationComponent }, // order will be created trough the cart
     { path: 'orders/:orderId', component: OrderDetailComponent },
     { path: 'carts', component: CartListComponent },
     { path: 'reviews', component: ReviewListComponent },

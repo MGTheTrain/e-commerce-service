@@ -42,6 +42,7 @@ export class ReviewListComponent {
   ];
 
   public faPlus: IconDefinition = faPlus;
+  public isLoggedIn: boolean = false;
 
   constructor(private router: Router, private reviewService: ReviewService) {}
 

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faArrowLeft, faEdit, faImage } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faImage, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ProductResponseDTO } from '../../../generated';
 
 @Component({
@@ -25,7 +25,7 @@ export class ProductCreationComponent {
     imageUrl: 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg' 
   };
 
-  public faEdit: IconDefinition = faEdit;
+  public faPlus: IconDefinition = faPlus;
   public faImage: IconDefinition = faImage;
   public faArrowLeft: IconDefinition = faArrowLeft;
   public isEditing: boolean = false;

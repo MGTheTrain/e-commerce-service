@@ -28,7 +28,6 @@ const routes: Routes = [
     { path: 'products', component: ProductListComponent },
     { path: 'products/creation', component: ProductCreationComponent },
     { path: 'products/:productId', component: ProductDetailComponent },
-    { path: '', redirectTo: '/products', pathMatch: 'full' }, // Default route redirects to product list
     { path: 'orders', component: OrderListComponent },
     { path: 'orders/creation', component: OrderCreationComponent },
     { path: 'orders/:orderId', component: OrderDetailComponent },
@@ -36,6 +35,7 @@ const routes: Routes = [
     { path: 'reviews', component: ReviewListComponent },
     { path: 'reviews/creation', component: ReviewCreationComponent },
     { path: 'reviews/:reviewId', component: ReviewDetailComponent },
+    { path: '', redirectTo: '/products', pathMatch: 'full' }, // Default route redirects to product list
     { path: '**', component: PageNotFoundComponent },
 ];
 

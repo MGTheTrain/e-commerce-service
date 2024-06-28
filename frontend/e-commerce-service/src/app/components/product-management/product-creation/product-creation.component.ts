@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faArrowLeft, faImage, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { ProductResponseDTO } from '../../../generated';
+import { ProductRequestDTO, ProductResponseDTO, ProductService } from '../../../generated';
 
 @Component({
   selector: 'app-product-creation',
@@ -15,9 +15,8 @@ import { ProductResponseDTO } from '../../../generated';
   styleUrl: './product-creation.component.css'
 })
 export class ProductCreationComponent {
-  product: ProductResponseDTO = { 
-    productID: '', 
-    categoryID: '', 
+  productRequest: ProductRequestDTO = { 
+    categoryID: '', // TBD: remove Category entity
     name: '', 
     description: '', 
     price: 0, 
@@ -30,14 +29,21 @@ export class ProductCreationComponent {
   public faArrowLeft: IconDefinition = faArrowLeft;
   public isEditing: boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private productService: ProductService) { }
 
   handleNavigateBackClick(): void {
     this.router.navigate(['/products']);
   }
 
   handleCreateProductClick(): void {
-    console.log('Create product');
+    this.productService.apiV1ProductsPost(this.productRequest).subscribe(
+      (data: ProductResponseDTO) => {
+        console.log('Created product', data);
+      },
+      error => {
+        console.error('Error creating product', error);
+      }
+    ); 
   }
 
   triggerImageInput(): void {

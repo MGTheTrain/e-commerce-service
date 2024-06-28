@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductResponseDTO, ProductService } from '../../../generated';
+import { ProductResponseDTO, ProductRequestDTO, ProductService } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrash, faImage, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -69,7 +69,7 @@ export class ProductDetailComponent {
           this.router.navigate(['/products']);
         },
         error => {
-          console.error('Error fetching product with id', productID, error);
+          console.error('Error deleting product with id', productID, error);
         }
       );
     } else {
@@ -78,7 +78,29 @@ export class ProductDetailComponent {
   }
 
   handleUpdateProductClick() {
-    console.log('Updating product:', this.product);
+    const productID = this.product.productID;
+    if (productID) {
+      let productRequest: ProductRequestDTO = {
+        categoryID: this.product.categoryID!, 
+        name: this.product.name!, 
+        description: this.product.description!, 
+        price: this.product.price!, 
+        stock: this.product.stock!, 
+        imageUrl: this.product.imageUrl! 
+      };
+
+      this.productService.apiV1ProductsProductIdPut(productID, productRequest).subscribe(
+        () => {
+          console.error('Successfully updated product with id', productID);
+          this.router.navigate(['/products']);
+        },
+        error => {
+          console.error('Error updating product with id', productID, error);
+        }
+      );
+    } else {
+      console.error('Product ID is undefined');
+    }
   }
 
   triggerImageInput(): void {

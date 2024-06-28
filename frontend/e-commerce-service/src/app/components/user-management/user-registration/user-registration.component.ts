@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UserResponseDTO } from '../../../generated';
+import { UserRequestDTO, UserResponseDTO, UserService } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -16,11 +16,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./user-registration.component.css']
 })
 export class UserRegistrationComponent {
-  public user: UserResponseDTO = {
+  public userRequest: UserRequestDTO = {
     userName: '',
+    password: '',
     email: '',
+    role: 'User',
   };
-  public password: string = '';
   public confirmPassword: string = '';
   public hidePassword: boolean = true;
   public hideConfirmPassword: boolean = true;
@@ -32,23 +33,31 @@ export class UserRegistrationComponent {
   public faEye: IconDefinition = faEye;
   public faEyeSlash: IconDefinition = faEyeSlash;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private userService: UserService) {}
 
   handleLogoClick(): void {
     this.router.navigate(['/']);
   }
 
-  onRegister(): void {
-    if (this.password !== this.confirmPassword) {
+  handleRegisterClick(): void {
+    if (this.userRequest.password !== this.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-    
-    // Simulate a registration process
-    // You would typically have a service to handle the actual registration process
-    // For now, we will just set the isLoggedIn flag in local storage
-    localStorage.setItem('isLoggedIn', 'true');
-    this.router.navigate(['/']);
+
+    this.userService.apiV1UsersRegisterPost(this.userRequest).subscribe(
+      (data: UserResponseDTO) => {
+        console.log('Registered user', data);
+        // Simulate a registration process
+        // You would typically have a service to handle the actual registration process
+        // For now, we will just set the isLoggedIn flag in local storage
+        localStorage.setItem('isLoggedIn', 'true');
+        this.router.navigate(['/']);
+      },
+      error => {
+        console.error('Error registering user', error);
+      }
+    ); 
   }
 
   togglePasswordVisibility(): void {

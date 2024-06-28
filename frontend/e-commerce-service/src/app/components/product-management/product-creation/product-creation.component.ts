@@ -39,6 +39,7 @@ export class ProductCreationComponent {
     this.productService.apiV1ProductsPost(this.productRequest).subscribe(
       (data: ProductResponseDTO) => {
         console.log('Created product', data);
+        this.router.navigate(['/products']);
       },
       error => {
         console.error('Error creating product', error);

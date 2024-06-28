@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductResponseDTO } from '../../../generated';
+import { ProductResponseDTO, ProductService } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrash, faImage, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -34,12 +34,21 @@ export class ProductDetailComponent {
   public faArrowLeft: IconDefinition = faArrowLeft;
   public isEditing: boolean = false;
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute, private productService: ProductService) { }
 
   ngOnInit(): void {
     this.subscription = this.route.params.subscribe(params => {
       let id = params['productId'];
       this.product.productID = id;
+
+      this.productService.apiV1ProductsProductIdGet(id).subscribe(
+        (data: ProductResponseDTO) => {
+          this.product = data;
+        },
+        error => {
+          console.error('Error fetching product with id', id, error);
+        }
+      );
    });
   }
 
@@ -52,7 +61,20 @@ export class ProductDetailComponent {
   }
 
   handleDeleteProductClick() {
-    console.log('Deleting product with ID:', this.product.productID);
+    const productID = this.product.productID;
+    if (productID) {
+      this.productService.apiV1ProductsProductIdDelete(productID).subscribe(
+        () => {
+          console.error('Successfully deleted product with id', productID);
+          this.router.navigate(['/products']);
+        },
+        error => {
+          console.error('Error fetching product with id', productID, error);
+        }
+      );
+    } else {
+      console.error('Product ID is undefined');
+    }
   }
 
   handleUpdateProductClick() {

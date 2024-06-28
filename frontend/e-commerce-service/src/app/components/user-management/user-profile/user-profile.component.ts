@@ -85,9 +85,26 @@ export class UserProfileComponent {
   }
 
   handleUpdateUserClick(): void {    
+    if (this.password.length == 0 || this.confirmPassword.length == 0) {
+      alert("Password fields empty!");
+      return;
+    }
+    
+    if (this.password !== this.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
     const userID = this.user.userID;
     if (userID) {
-      this.userService.apiV1UsersIdPut(userID).subscribe(
+      let userRequest: UserRequestDTO = {
+        userName: this.user.userName!,
+        password: this.password,
+        email: this.user.email!,
+        role: 'User',
+      };
+
+      this.userService.apiV1UsersIdPut(userID, userRequest).subscribe(
         (data: UserResponseDTO) => {
           console.error('Successfully updated user with id', userID);
           this.router.navigate(['/user']);

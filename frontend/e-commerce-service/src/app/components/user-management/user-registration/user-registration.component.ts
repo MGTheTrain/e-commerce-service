@@ -40,6 +40,11 @@ export class UserRegistrationComponent {
   }
 
   handleRegisterClick(): void {
+    if (this.userRequest.password.length == 0 || this.confirmPassword.length == 0) {
+      alert("Password fields empty!");
+      return;
+    }
+
     if (this.userRequest.password !== this.confirmPassword) {
       alert("Passwords do not match!");
       return;

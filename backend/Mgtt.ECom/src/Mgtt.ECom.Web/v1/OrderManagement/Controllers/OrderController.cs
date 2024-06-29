@@ -8,7 +8,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.OrderManagement;
-    using Mgtt.ECom.Web.v1.OrderManagement.DTOs;
+    using Mgtt.ECom.Web.V1.OrderManagement.DTOs;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 

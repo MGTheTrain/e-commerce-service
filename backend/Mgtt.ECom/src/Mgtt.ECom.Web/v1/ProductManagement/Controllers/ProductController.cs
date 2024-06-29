@@ -8,7 +8,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.ProductManagement;
-    using Mgtt.ECom.Web.v1.ProductManagement.DTOs;
+    using Mgtt.ECom.Web.V1.ProductManagement.DTOs;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/v1/products")]

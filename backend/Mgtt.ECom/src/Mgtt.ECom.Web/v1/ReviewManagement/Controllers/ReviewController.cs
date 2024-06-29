@@ -8,8 +8,8 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.ReviewManagement;
-    using Mgtt.ECom.Web.v1.ReviewManagement.DTOs;
-    using Mgtt.ECom.Web.v1.UserManagement.DTOs;
+    using Mgtt.ECom.Web.V1.ReviewManagement.DTOs;
+    using Mgtt.ECom.Web.V1.UserManagement.DTOs;
     using Microsoft.AspNetCore.Mvc;
     using static System.Collections.Specialized.BitVector32;
 

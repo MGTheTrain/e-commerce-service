@@ -194,7 +194,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <response code="204">If the review was successfully updated.</response>
         /// <response code="400">If the review data is invalid.</response>
         /// <response code="404">If the review is not found.</response>
-        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpPut("{reviewId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReviewResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -243,7 +243,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <param name="reviewId">The ID of the review to delete.</param>
         /// <response code="204">If the review was successfully deleted.</response>
         /// <response code="404">If the review is not found.</response>
-        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpDelete("{reviewId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

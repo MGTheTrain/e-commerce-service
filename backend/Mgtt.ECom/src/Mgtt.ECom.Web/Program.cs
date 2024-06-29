@@ -1,5 +1,5 @@
 // <copyright file="Program.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// Copyright (c) MGTheTrain. All rights reserved.
 // </copyright>
 
 using System.Reflection;

@@ -1,5 +1,5 @@
 // <copyright file="UserResponseDTO.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// Copyright (c) MGTheTrain. All rights reserved.
 // </copyright>
 
 namespace Mgtt.ECom.Web.V1.UserManagement.DTOs

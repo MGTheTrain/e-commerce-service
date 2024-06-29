@@ -11,23 +11,33 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      
     - name: Setup dotnet
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.x'
+    
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        
     - name: Install dotnet-format
       shell: bash
       run: dotnet tool install -g dotnet-format
+      
+    - name: Install Angular CLI
+      run: npm install -g @angular/cli
+      
     - name: Auto-format
-      shell: bash
-      run: find . -type f -name '*.csproj' -execdir dotnet format {} \;
-    # Typescript ?
+      run: |
+        find . -type f -name '*.csproj' -execdir dotnet format {} \;
+        cd ./frontend/e-commerce-service
+        ng lint --fix
+        
     - name: Check diffs
-      shell: bash
       run: |
         status=$(git status --porcelain=v1)
         if [[ -n "$status" ]]; then
           git diff
           exit 1
         fi
-    # auto-format Typescript 

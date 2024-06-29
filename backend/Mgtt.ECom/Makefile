@@ -9,7 +9,7 @@ TEST_DIR = test
 SMOKE_TEST_DIR = smoke-test
 
 # Commands
-.PHONY: start-docker-cmp stop-docker-cmp test test-individual smoke-test run clean docs format-and-lint
+.PHONY: start-docker-cmp stop-docker-cmp test test-individual smoke-test run clean format-and-lint
 
 start-docker-cmp:
 	cd devops/docker-compose && docker-compose up -d --build
@@ -56,11 +56,7 @@ clean:
 	rm -rf ${SMOKE_TEST_DIR}/report.html
 	find $(SRC_DIR) $(TEST_DIR) -type d \( -name 'obj' -o -name 'bin' \) -exec rm -rf {} +
 
-# Build and serve documentation
-docs:
-	cd docs/Mgtt.ECom && jekyll serve && echo "Visit in a browser of choice localhost:4000"
-
 # Format and lint C# files
 format-and-lint:
-	cd devops/scripts && ./format_and_lint.sh
+	find . -type f -name '*.csproj' -execdir dotnet format {} \;
 

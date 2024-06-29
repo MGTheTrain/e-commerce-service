@@ -1,0 +1,34 @@
+name: Check Git diffs
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-diffs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+    - name: Install dotnet-format
+      shell: bash
+      run: dotnet tool install -g dotnet-format
+    - name: Auto-format
+      shell: bash
+      run: find . -type f -name '*.csproj' -execdir dotnet format {} \;
+    # Typescript ?
+    - name: Check diffs
+      shell: bash
+      run: |
+        status=$(git status --porcelain=v1)
+        if [[ -n "$status" ]]; then
+          git diff
+          exit 1
+        fi
+    # auto-format Typescript 
+    

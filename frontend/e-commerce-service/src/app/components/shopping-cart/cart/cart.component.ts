@@ -6,7 +6,7 @@ import { CartItemComponent } from '../cart-item/cart-item.component';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { Icon, IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { DetailHeaderComponent } from '../../header/detail-header/detail-header.component';
 

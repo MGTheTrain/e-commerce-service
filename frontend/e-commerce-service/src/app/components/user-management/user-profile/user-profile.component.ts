@@ -106,7 +106,7 @@ export class UserProfileComponent implements OnInit {
 
       this.userService.apiV1UsersIdPut(userID, userRequest).subscribe(
         (data: UserResponseDTO) => {
-          console.error('Successfully updated user with id', userID);
+          console.error('Successfully updated user', data ,' with id', userID);
           this.router.navigate(['/user']);
         },
         error => {

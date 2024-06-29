@@ -49,6 +49,6 @@ export class ProductListComponent implements OnInit {
   }
 
   handleCartAddToCartClick(product: ProductResponseDTO): void {
-    console.log('About to handle cart added');
+    console.log('About to handle cart added', product);
   }
 }

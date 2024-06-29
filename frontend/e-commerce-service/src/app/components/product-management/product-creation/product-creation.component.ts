@@ -55,12 +55,12 @@ export class ProductCreationComponent {
   onImageChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        // this.product.imageUrl = e.target.result;
-      };
-      // reader.readAsDataURL(file);
+      // const file = input.files[0];
+      // const reader = new FileReader();
+      // reader.onload = (e: any) => {
+      //   // this.product.imageUrl = e.target.result;
+      // };
+      // // reader.readAsDataURL(file);
     }
   }
 }

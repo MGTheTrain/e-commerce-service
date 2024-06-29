@@ -15,7 +15,7 @@ jobs:
         with:
           TEST_WORKING_DIRECTORY: ./backend/Mgtt.ECom/test
       # Typescript test?
-  create-git-tags-from-version-file-job:
+  create-git-tags-from-version-file:
     runs-on: ubuntu-latest
     needs: [test]
     steps:

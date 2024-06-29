@@ -3,7 +3,7 @@ name: Auto-formatting and linting
 on: [push]
 
 jobs:
-  build:
+  format-and-lint:
     runs-on: ubuntu-latest
 
     steps:

@@ -53,7 +53,7 @@ namespace Mgtt.ECom.Web.V1.UserManagement.Controllers
             {
                 return this.BadRequest(); // preferable return a proper
 
-                                     // response DTO with proper error message
+                // response DTO with proper error message
             }
 
             var userResponseDTO = new UserResponseDTO
@@ -129,7 +129,7 @@ namespace Mgtt.ECom.Web.V1.UserManagement.Controllers
         /// <response code="204">If the user was successfully updated.</response>
         /// <response code="404">If the user is not found.</response>
         /// <response code="400">If the user data is invalid.</response>
-        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -175,7 +175,7 @@ namespace Mgtt.ECom.Web.V1.UserManagement.Controllers
         /// <param name="id">The ID of the user to delete.</param>
         /// <response code="204">If the user was successfully deleted.</response>
         /// <response code="404">If the user is not found.</response>
-        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

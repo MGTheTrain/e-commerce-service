@@ -127,7 +127,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <response code="204">If the cart was successfully updated.</response>
         /// <response code="404">If the cart is not found.</response>
         /// <response code="400">If the cart data is invalid.</response>
-        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpPut("{cartId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -170,7 +170,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <param name="cartId">The ID of the cart.</param>
         /// <response code="204">If the cart was successfully deleted.</response>
         /// <response code="404">If the cart is not found.</response>
-        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpDelete("{cartId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -301,7 +301,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <response code="204">If the cart item was successfully updated.</response>
         /// <response code="404">If the cart item is not found.</response>
         /// <response code="400">If the cart item data is invalid.</response>
-        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpPut("{cartId}/items/{itemId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartItemResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -350,7 +350,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <param name="itemId">The ID of the cart item to delete.</param>
         /// <response code="204">If the cart item was successfully deleted.</response>
         /// <response code="404">If the cart item is not found.</response>
-        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpDelete("{cartId}/items/{itemId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

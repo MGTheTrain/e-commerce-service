@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(
         name: customCORSName,
-                        policy =>
+        policy =>
                         {
                             policy.WithOrigins("http://localhost:4200")
                                 .AllowAnyHeader()
@@ -65,7 +65,7 @@ builder.Services.AddSwaggerGen(c =>
           {
               Type = ReferenceType.SecurityScheme,
               Id = "Bearer"
-          }
+          },
         },
         new string[] { }
     },

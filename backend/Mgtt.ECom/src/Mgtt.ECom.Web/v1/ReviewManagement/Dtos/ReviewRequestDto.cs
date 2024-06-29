@@ -1,5 +1,5 @@
 // <copyright file="ReviewRequestDto.cs" company="PlaceholderCompany">
-// Copyright (c) MGTheTrain. All rights reserved.
+// Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
 namespace Mgtt.ECom.Web.V1.ReviewManagement.DTOs

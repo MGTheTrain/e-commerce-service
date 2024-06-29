@@ -1,5 +1,5 @@
 // <copyright file="Program.cs" company="PlaceholderCompany">
-// Copyright (c) MGTheTrain. All rights reserved.
+// Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
 using System.Reflection;
@@ -64,7 +64,7 @@ builder.Services.AddSwaggerGen(c =>
           Reference = new OpenApiReference
           {
               Type = ReferenceType.SecurityScheme,
-              Id = "Bearer"
+              Id = "Bearer",
           },
         },
         new string[] { }

@@ -1,5 +1,5 @@
 // <copyright file="CartService.cs" company="PlaceholderCompany">
-// Copyright (c) MGTheTrain. All rights reserved.
+// Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
 namespace Mgtt.ECom.Application.Services

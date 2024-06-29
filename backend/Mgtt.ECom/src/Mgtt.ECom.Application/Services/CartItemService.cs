@@ -1,102 +1,106 @@
-using Mgtt.ECom.Domain.ShoppingCart;
-using Mgtt.ECom.Persistence.DataAccess;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+// <copyright file="CartItemService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.Application.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Mgtt.ECom.Domain.ShoppingCart;
+    using Mgtt.ECom.Persistence.DataAccess;
+    using Microsoft.Extensions.Logging;
+
     public class CartItemService : ICartItemService
     {
-        private readonly PsqlDbContext _context;
-        private readonly ILogger<CartItemService> _logger;
+        private readonly PsqlDbContext context;
+        private readonly ILogger<CartItemService> logger;
 
         public CartItemService(PsqlDbContext context, ILogger<CartItemService> logger)
         {
-            _context = context;
-            _logger = logger;
+            this.context = context;
+            this.logger = logger;
         }
 
         public async Task<CartItem?> GetCartItemById(Guid cartItemId)
         {
-            _logger.LogInformation("Fetching cart item by ID: {CartItemId}", cartItemId);
+            this.logger.LogInformation("Fetching cart item by ID: {CartItemId}", cartItemId);
             try
             {
-                return await Task.FromResult(_context.CartItems.Find(cartItemId));
+                return await Task.FromResult(this.context.CartItems.Find(cartItemId));
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error fetching cart item by ID: {CartItemId}", cartItemId);
+                this.logger.LogError(ex, "Error fetching cart item by ID: {CartItemId}", cartItemId);
                 return await Task.FromResult<CartItem?>(null);
             }
         }
 
         public async Task<IEnumerable<CartItem>?> GetCartItemsByCartId(Guid cartId)
         {
-            _logger.LogInformation("Fetching cart items by CartID: {CartId}", cartId);
+            this.logger.LogInformation("Fetching cart items by CartID: {CartId}", cartId);
             try
             {
-                return await Task.FromResult(_context.CartItems.Where(ci => ci.CartID == cartId).ToList());
+                return await Task.FromResult(this.context.CartItems.Where(ci => ci.CartID == cartId).ToList());
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error fetching cart items by CartID: {CartId}", cartId);
+                this.logger.LogError(ex, "Error fetching cart items by CartID: {CartId}", cartId);
                 return await Task.FromResult<IEnumerable<CartItem>?>(null);
             }
         }
 
         public async Task<CartItem?> CreateCartItem(CartItem cartItem)
         {
-            _logger.LogInformation("Creating cart item for CartID: {CartId}", cartItem.CartID);
+            this.logger.LogInformation("Creating cart item for CartID: {CartId}", cartItem.CartID);
             try
             {
-                _context.CartItems.Add(cartItem);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Cart item created successfully for CartID: {CartId}", cartItem.CartID);
+                this.context.CartItems.Add(cartItem);
+                await this.context.SaveChangesAsync();
+                this.logger.LogInformation("Cart item created successfully for CartID: {CartId}", cartItem.CartID);
                 return await Task.FromResult<CartItem?>(cartItem);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating cart item for CartID: {CartId}", cartItem.CartID);
+                this.logger.LogError(ex, "Error creating cart item for CartID: {CartId}", cartItem.CartID);
                 return await Task.FromResult<CartItem?>(null);
             }
         }
 
         public async Task<CartItem?> UpdateCartItem(CartItem cartItem)
         {
-            _logger.LogInformation("Updating cart item with ID: {CartItemId}", cartItem.CartItemID);
+            this.logger.LogInformation("Updating cart item with ID: {CartItemId}", cartItem.CartItemID);
             try
             {
-                _context.CartItems.Update(cartItem);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Cart item updated successfully with ID: {CartItemId}", cartItem.CartItemID);
+                this.context.CartItems.Update(cartItem);
+                await this.context.SaveChangesAsync();
+                this.logger.LogInformation("Cart item updated successfully with ID: {CartItemId}", cartItem.CartItemID);
                 return await Task.FromResult<CartItem?>(cartItem);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating cart item with ID: {CartItemId}", cartItem.CartItemID);
+                this.logger.LogError(ex, "Error updating cart item with ID: {CartItemId}", cartItem.CartItemID);
                 return await Task.FromResult<CartItem?>(null);
             }
         }
 
         public async Task DeleteCartItem(Guid cartItemId)
         {
-            _logger.LogInformation("Deleting cart item with ID: {CartItemId}", cartItemId);
+            this.logger.LogInformation("Deleting cart item with ID: {CartItemId}", cartItemId);
             try
             {
-                var cartItem = await _context.CartItems.FindAsync(cartItemId);
+                var cartItem = await this.context.CartItems.FindAsync(cartItemId);
                 if (cartItem != null)
                 {
-                    _context.CartItems.Remove(cartItem);
-                    await _context.SaveChangesAsync();
-                    _logger.LogInformation("Cart item deleted successfully with ID: {CartItemId}", cartItemId);
+                    this.context.CartItems.Remove(cartItem);
+                    await this.context.SaveChangesAsync();
+                    this.logger.LogInformation("Cart item deleted successfully with ID: {CartItemId}", cartItemId);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting cart item with ID: {CartItemId}", cartItemId);
+                this.logger.LogError(ex, "Error deleting cart item with ID: {CartItemId}", cartItemId);
             }
         }
     }

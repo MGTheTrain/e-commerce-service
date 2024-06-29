@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UserRequestDTO, UserResponseDTO, UserService } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faArrowLeft, faEdit, faEye, faEyeSlash, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -16,7 +16,7 @@ import { DetailHeaderComponent } from '../../header/detail-header/detail-header.
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
-export class UserProfileComponent {
+export class UserProfileComponent implements OnInit {
   private subscription: Subscription | null = null;
 
   @Input() user: UserResponseDTO = { 
@@ -41,7 +41,7 @@ export class UserProfileComponent {
 
   ngOnInit(): void {
     this.subscription = this.route.params.subscribe(params => {
-      let id = params['userId'];
+      const id = params['userId'];
       this.user.userID = id;
 
       this.userService.apiV1UsersIdGet(id).subscribe(
@@ -97,7 +97,7 @@ export class UserProfileComponent {
 
     const userID = this.user.userID;
     if (userID) {
-      let userRequest: UserRequestDTO = {
+      const userRequest: UserRequestDTO = {
         userName: this.user.userName!,
         password: this.password,
         email: this.user.email!,
@@ -106,7 +106,7 @@ export class UserProfileComponent {
 
       this.userService.apiV1UsersIdPut(userID, userRequest).subscribe(
         (data: UserResponseDTO) => {
-          console.error('Successfully updated user with id', userID);
+          console.error('Successfully updated user', data ,' with id', userID);
           this.router.navigate(['/user']);
         },
         error => {

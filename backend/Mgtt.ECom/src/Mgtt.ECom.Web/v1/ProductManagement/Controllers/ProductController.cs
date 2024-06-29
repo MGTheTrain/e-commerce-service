@@ -1,21 +1,25 @@
-using Microsoft.AspNetCore.Mvc;
-using Mgtt.ECom.Domain.ProductManagement;
-using Mgtt.ECom.Web.v1.ProductManagement.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+// <copyright file="ProductController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
-namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
+namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Mgtt.ECom.Domain.ProductManagement;
+    using Mgtt.ECom.Web.V1.ProductManagement.DTOs;
+    using Microsoft.AspNetCore.Mvc;
+
     [Route("api/v1/products")]
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IProductService _productService;
+        private readonly IProductService productService;
 
         public ProductController(IProductService productService)
         {
-            _productService = productService;
+            this.productService = productService;
         }
 
         /// <summary>
@@ -30,9 +34,9 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateProduct(ProductRequestDTO productDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             var product = new Product
@@ -42,13 +46,13 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
                 Description = productDTO.Description,
                 Price = productDTO.Price,
                 Stock = productDTO.Stock,
-                ImageUrl = productDTO.ImageUrl
+                ImageUrl = productDTO.ImageUrl,
             };
 
-            var action = await _productService.CreateProduct(product);
+            var action = await this.productService.CreateProduct(product);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var productResponseDTO = new ProductResponseDTO
@@ -59,10 +63,10 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
                 Description = product.Description,
                 Price = product.Price,
                 Stock = product.Stock,
-                ImageUrl = product.ImageUrl
+                ImageUrl = product.ImageUrl,
             };
 
-            return CreatedAtAction(nameof(CreateProduct), productResponseDTO);
+            return this.CreatedAtAction(nameof(this.CreateProduct), productResponseDTO);
         }
 
         /// <summary>
@@ -74,7 +78,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductResponseDTO>))]
         public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAllProducts()
         {
-            var products = await _productService.GetAllProducts();
+            var products = await this.productService.GetAllProducts();
             var productDTOs = new List<ProductResponseDTO>();
 
             foreach (var product in products)
@@ -87,11 +91,11 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
                     Description = product.Description,
                     Price = product.Price,
                     Stock = product.Stock,
-                    ImageUrl = product.ImageUrl
+                    ImageUrl = product.ImageUrl,
                 });
             }
 
-            return Ok(productDTOs);
+            return this.Ok(productDTOs);
         }
 
         /// <summary>
@@ -106,11 +110,11 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductResponseDTO>> GetProductById(Guid productId)
         {
-            var product = await _productService.GetProductById(productId);
+            var product = await this.productService.GetProductById(productId);
 
             if (product == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var productDTO = new ProductResponseDTO
@@ -121,10 +125,10 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
                 Description = product.Description,
                 Price = product.Price,
                 Stock = product.Stock,
-                ImageUrl = product.ImageUrl
+                ImageUrl = product.ImageUrl,
             };
 
-            return Ok(productDTO);
+            return this.Ok(productDTO);
         }
 
         /// <summary>
@@ -142,16 +146,16 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateProduct(Guid productId, ProductRequestDTO productDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var product = await _productService.GetProductById(productId);
+            var product = await this.productService.GetProductById(productId);
 
             if (product == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             product.CategoryID = productDTO.CategoryID;
@@ -161,10 +165,10 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
             product.Stock = productDTO.Stock;
             product.ImageUrl = productDTO.ImageUrl;
 
-            var action = await _productService.UpdateProduct(product);
+            var action = await this.productService.UpdateProduct(product);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var productResponseDTO = new ProductResponseDTO
@@ -175,10 +179,10 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
                 Description = product.Description,
                 Price = product.Price,
                 Stock = product.Stock,
-                ImageUrl = product.ImageUrl
+                ImageUrl = product.ImageUrl,
             };
 
-            return Ok(productResponseDTO);
+            return this.Ok(productResponseDTO);
         }
 
         /// <summary>
@@ -193,16 +197,16 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteProduct(Guid productId)
         {
-            var product = await _productService.GetProductById(productId);
+            var product = await this.productService.GetProductById(productId);
 
             if (product == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            await _productService.DeleteProduct(productId);
+            await this.productService.DeleteProduct(productId);
 
-            return NoContent();
+            return this.NoContent();
         }
     }
 }

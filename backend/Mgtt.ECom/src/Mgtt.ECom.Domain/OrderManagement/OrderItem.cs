@@ -1,9 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+// <copyright file="OrderItem.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.Domain.OrderManagement
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// Represents an order item in the e-commerce system.
     /// </summary>
@@ -11,11 +15,11 @@ namespace Mgtt.ECom.Domain.OrderManagement
     {
         public OrderItem()
         {
-            OrderItemID = Guid.NewGuid();
-            OrderID = Guid.Empty;
-            ProductID = Guid.Empty;
-            Quantity = 1;
-            Price = 0.01f;
+            this.OrderItemID = Guid.NewGuid();
+            this.OrderID = Guid.Empty;
+            this.ProductID = Guid.Empty;
+            this.Quantity = 1;
+            this.Price = 0.01f;
         }
 
         [Required]
@@ -38,31 +42,32 @@ namespace Mgtt.ECom.Domain.OrderManagement
         /// <summary>
         /// Validates the properties of the OrderItem object.
         /// </summary>
+        /// <returns></returns>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (OrderItemID == Guid.Empty)
+            if (this.OrderItemID == Guid.Empty)
             {
-                yield return new ValidationResult($"{nameof(OrderItemID)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.OrderItemID)} can't be empty");
             }
 
-            if (OrderID == Guid.Empty)
+            if (this.OrderID == Guid.Empty)
             {
-                yield return new ValidationResult($"{nameof(OrderID)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.OrderID)} can't be empty");
             }
 
-            if (ProductID == Guid.Empty)
+            if (this.ProductID == Guid.Empty)
             {
-                yield return new ValidationResult($"{nameof(ProductID)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.ProductID)} can't be empty");
             }
 
-            if (Quantity <= 0)
+            if (this.Quantity <= 0)
             {
-                yield return new ValidationResult($"{nameof(Quantity)} must be greater than zero");
+                yield return new ValidationResult($"{nameof(this.Quantity)} must be greater than zero");
             }
 
-            if (Price <= 0)
+            if (this.Price <= 0)
             {
-                yield return new ValidationResult($"{nameof(Price)} must be greater than zero");
+                yield return new ValidationResult($"{nameof(this.Price)} must be greater than zero");
             }
 
             yield return ValidationResult.Success;

@@ -1,4 +1,6 @@
-// Incorporate required dependencies from the infrastructure, persistence, domain and application layer
+// <copyright file="Program.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 using System.Reflection;
 using Mgtt.ECom.Application.Services;
@@ -16,8 +18,9 @@ var builder = WebApplication.CreateBuilder(args);
 var customCORSName = "AllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: customCORSName,
-                        policy =>
+    options.AddPolicy(
+        name: customCORSName,
+        policy =>
                         {
                             policy.WithOrigins("http://localhost:4200")
                                 .AllowAnyHeader()
@@ -37,12 +40,12 @@ builder.Services.AddSwaggerGen(c =>
         Contact = new OpenApiContact
         {
             Name = "Marvin Gajek",
-            Email = "placeholder@gmail.com"
+            Email = "placeholder@gmail.com",
         },
         License = new OpenApiLicense
         {
             Name = "MgTheTrain License",
-            Url = new Uri("https://github.com/MGTheTrain/multi-media-management-service")
+            Url = new Uri("https://github.com/MGTheTrain/multi-media-management-service"),
         },
         Description = @"API documentation for the e-commerce-service",
     });
@@ -51,20 +54,21 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Description = "Add JWT with Bearer here",
         Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey
+        Type = SecuritySchemeType.ApiKey,
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
     {
         new OpenApiSecurityScheme
         {
           Reference = new OpenApiReference
           {
               Type = ReferenceType.SecurityScheme,
-              Id = "Bearer"
-          }
+              Id = "Bearer",
           },
-          new string[] { }
-        }
+        },
+        new string[] { }
+    },
     });
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
@@ -95,12 +99,12 @@ using (var scope = app.Services.CreateScope())
 
 // if (app.Environment.IsDevelopment())
 // {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
+
 // }
 
 // Incorporate additional middleware if necessary
-
 app.UseRouting();
 app.UseCors(customCORSName);
 app.UseAuthorization();

@@ -1,24 +1,28 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Mgtt.ECom.Domain.OrderManagement;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Mgtt.ECom.Web.v1.OrderManagement.DTOs;
+// <copyright file="OrderController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
-namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
+namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Mgtt.ECom.Domain.OrderManagement;
+    using Mgtt.ECom.Web.V1.OrderManagement.DTOs;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+
     [Route("api/v1/orders")]
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly IOrderService _orderService;
-        private readonly IOrderItemService _orderItemService;
+        private readonly IOrderService orderService;
+        private readonly IOrderItemService orderItemService;
 
         public OrderController(IOrderService orderService, IOrderItemService orderItemService)
         {
-            _orderService = orderService;
-            _orderItemService = orderItemService;
+            this.orderService = orderService;
+            this.orderItemService = orderItemService;
         }
 
         /// <summary>
@@ -33,9 +37,9 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateOrder(OrderRequestDTO orderDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             var order = new Order
@@ -43,13 +47,13 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 UserID = orderDTO.UserID,
                 OrderDate = DateTime.UtcNow,
                 TotalAmount = orderDTO.TotalAmount,
-                OrderStatus = orderDTO.OrderStatus
+                OrderStatus = orderDTO.OrderStatus,
             };
 
-            var action = await _orderService.CreateOrder(order);
+            var action = await this.orderService.CreateOrder(order);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var orderResponseDTO = new OrderResponseDTO
@@ -58,10 +62,10 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 UserID = order.UserID,
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
-                OrderStatus = order.OrderStatus
+                OrderStatus = order.OrderStatus,
             };
 
-            return CreatedAtAction(nameof(CreateOrder),orderResponseDTO);
+            return this.CreatedAtAction(nameof(this.CreateOrder), orderResponseDTO);
         }
 
         /// <summary>
@@ -73,7 +77,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrderResponseDTO>))]
         public async Task<ActionResult<IEnumerable<OrderResponseDTO>>> GetOrders()
         {
-            var orders = await _orderService.GetOrdersByUserId(Guid.NewGuid()); // Example for demo
+            var orders = await this.orderService.GetOrdersByUserId(Guid.NewGuid()); // Example for demo
             var orderDTOs = new List<OrderResponseDTO>();
 
             foreach (var order in orders)
@@ -84,11 +88,11 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                     UserID = order.UserID,
                     OrderDate = order.OrderDate,
                     TotalAmount = order.TotalAmount,
-                    OrderStatus = order.OrderStatus
+                    OrderStatus = order.OrderStatus,
                 });
             }
 
-            return Ok(orderDTOs);
+            return this.Ok(orderDTOs);
         }
 
         /// <summary>
@@ -103,11 +107,11 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<OrderResponseDTO>> GetOrderById(Guid orderId)
         {
-            var order = await _orderService.GetOrderById(orderId);
+            var order = await this.orderService.GetOrderById(orderId);
 
             if (order == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var orderDTO = new OrderResponseDTO
@@ -116,10 +120,10 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 UserID = order.UserID,
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
-                OrderStatus = order.OrderStatus
+                OrderStatus = order.OrderStatus,
             };
 
-            return Ok(orderDTO);
+            return this.Ok(orderDTO);
         }
 
         /// <summary>
@@ -137,25 +141,25 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateOrder(Guid orderId, OrderRequestDTO orderDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var order = await _orderService.GetOrderById(orderId);
+            var order = await this.orderService.GetOrderById(orderId);
 
             if (order == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             order.TotalAmount = orderDTO.TotalAmount;
             order.OrderStatus = orderDTO.OrderStatus;
 
-            var action = await _orderService.UpdateOrder(order);
+            var action = await this.orderService.UpdateOrder(order);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var orderResponseDTO = new OrderResponseDTO
@@ -164,10 +168,10 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 UserID = order.UserID,
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
-                OrderStatus = order.OrderStatus
+                OrderStatus = order.OrderStatus,
             };
 
-            return Ok(orderResponseDTO);
+            return this.Ok(orderResponseDTO);
         }
 
         /// <summary>
@@ -182,16 +186,16 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteOrder(Guid orderId)
         {
-            var order = await _orderService.GetOrderById(orderId);
+            var order = await this.orderService.GetOrderById(orderId);
 
             if (order == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            await _orderService.DeleteOrder(orderId);
+            await this.orderService.DeleteOrder(orderId);
 
-            return NoContent();
+            return this.NoContent();
         }
 
         /// <summary>
@@ -207,9 +211,9 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateOrderItem(Guid orderId, OrderItemRequestDTO orderItemDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             var orderItem = new OrderItem
@@ -217,13 +221,13 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 OrderID = orderId,
                 ProductID = orderItemDTO.ProductID,
                 Quantity = orderItemDTO.Quantity,
-                Price = orderItemDTO.Price
+                Price = orderItemDTO.Price,
             };
 
-            var action = await _orderItemService.CreateOrderItem(orderItem);
+            var action = await this.orderItemService.CreateOrderItem(orderItem);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var orderItemResponseDTO = new OrderItemResponseDTO
@@ -232,10 +236,10 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 OrderID = orderItem.OrderID,
                 ProductID = orderItem.ProductID,
                 Quantity = orderItem.Quantity,
-                Price = orderItem.Price
+                Price = orderItem.Price,
             };
 
-            return CreatedAtAction(nameof(CreateOrderItem),orderItemResponseDTO);
+            return this.CreatedAtAction(nameof(this.CreateOrderItem), orderItemResponseDTO);
         }
 
         /// <summary>
@@ -250,7 +254,7 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<OrderItemResponseDTO>>> GetOrderItemsByOrderId(Guid orderId)
         {
-            var orderItems = await _orderItemService.GetOrderItemsByOrderId(orderId);
+            var orderItems = await this.orderItemService.GetOrderItemsByOrderId(orderId);
             var orderItemDTOs = new List<OrderItemResponseDTO>();
 
             foreach (var orderItem in orderItems)
@@ -261,11 +265,11 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                     OrderID = orderItem.OrderID,
                     ProductID = orderItem.ProductID,
                     Quantity = orderItem.Quantity,
-                    Price = orderItem.Price
+                    Price = orderItem.Price,
                 });
             }
 
-            return Ok(orderItemDTOs);
+            return this.Ok(orderItemDTOs);
         }
 
         /// <summary>
@@ -281,10 +285,10 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<OrderItemResponseDTO>> GetOrderItemById(Guid orderId, Guid itemId)
         {
-            var orderItem = await _orderItemService.GetOrderItemById(itemId);
+            var orderItem = await this.orderItemService.GetOrderItemById(itemId);
             if (orderItem == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var orderItemResponseDTO = new OrderItemResponseDTO
@@ -293,10 +297,10 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 OrderID = orderItem.OrderID,
                 ProductID = orderItem.ProductID,
                 Quantity = orderItem.Quantity,
-                Price = orderItem.Price
+                Price = orderItem.Price,
             };
 
-            return Ok(orderItemResponseDTO);
+            return this.Ok(orderItemResponseDTO);
         }
 
         /// <summary>
@@ -315,26 +319,26 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateOrderItem(Guid orderId, Guid itemId, OrderItemRequestDTO orderItemDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var orderItem = await _orderItemService.GetOrderItemById(itemId);
+            var orderItem = await this.orderItemService.GetOrderItemById(itemId);
 
             if (orderItem == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             orderItem.ProductID = orderItemDTO.ProductID;
             orderItem.Quantity = orderItemDTO.Quantity;
             orderItem.Price = orderItemDTO.Price;
 
-            var action = await _orderItemService.UpdateOrderItem(orderItem);
+            var action = await this.orderItemService.UpdateOrderItem(orderItem);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var orderItemResponseDTO = new OrderItemResponseDTO
@@ -343,10 +347,10 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
                 OrderID = orderItem.OrderID,
                 ProductID = orderItem.ProductID,
                 Quantity = orderItem.Quantity,
-                Price = orderItem.Price
+                Price = orderItem.Price,
             };
 
-            return Ok(orderItemResponseDTO);
+            return this.Ok(orderItemResponseDTO);
         }
 
         /// <summary>
@@ -362,16 +366,16 @@ namespace Mgtt.ECom.Web.v1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteOrderItem(Guid orderId, Guid itemId)
         {
-            var orderItem = await _orderItemService.GetOrderItemById(itemId);
+            var orderItem = await this.orderItemService.GetOrderItemById(itemId);
 
             if (orderItem == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            await _orderItemService.DeleteOrderItem(itemId);
+            await this.orderItemService.DeleteOrderItem(itemId);
 
-            return NoContent();
+            return this.NoContent();
         }
     }
 }

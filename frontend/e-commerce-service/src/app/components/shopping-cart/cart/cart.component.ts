@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CartItemResponseDTO, CartResponseDTO, ProductResponseDTO } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -6,7 +6,7 @@ import { CartItemComponent } from '../cart-item/cart-item.component';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { Icon, IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { DetailHeaderComponent } from '../../header/detail-header/detail-header.component';
 
@@ -17,7 +17,7 @@ import { DetailHeaderComponent } from '../../header/detail-header/detail-header.
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
-export class CartComponent {
+export class CartComponent implements OnInit {
   private subscription: Subscription | null = null;
   public faEdit: IconDefinition = faEdit;
   public faShoppingCart: IconDefinition = faShoppingCart;
@@ -48,7 +48,7 @@ export class CartComponent {
 
   ngOnInit(): void {
     this.subscription = this.route.params.subscribe(params => {
-      let id = params['userId'];
+      const id = params['userId'];
       this.cart.userID = id;
 
       // GET /api/v1/cart/:userId/items

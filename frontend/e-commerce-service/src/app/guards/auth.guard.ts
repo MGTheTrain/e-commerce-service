@@ -14,6 +14,7 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
     const userId = route.params['userId'];
+    console.log(state);
     // const loggedInUserId = this.authService.getUserId();
 
     // if (userId && loggedInUserId && userId === loggedInUserId) {

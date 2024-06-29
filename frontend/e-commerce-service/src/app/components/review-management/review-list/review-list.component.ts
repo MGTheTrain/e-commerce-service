@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ProductResponseDTO, ReviewResponseDTO, ReviewService, UserResponseDTO } from '../../../generated';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,7 +16,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   templateUrl: './review-list.component.html',
   styleUrl: './review-list.component.css'
 })
-export class ReviewListComponent {
+export class ReviewListComponent implements OnInit {
   @Input() reviews: ReviewResponseDTO[] = [
     { reviewID: uuidv4(), productID: '1', userID: '1', rating: 4, comment: 'Great product!', reviewDate: new Date('2023-06-01') },
     { reviewID: uuidv4(), productID: '4', userID: '2', rating: 5, comment: 'Excellent service!', reviewDate: new Date('2023-06-02') },

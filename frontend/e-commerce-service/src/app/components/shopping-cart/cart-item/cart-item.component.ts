@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CartItemResponseDTO, ProductResponseDTO } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.css'
 })
-export class CartItemComponent {
+export class CartItemComponent implements OnInit {
   @Input() cartItem: CartItemResponseDTO = {
     cartItemID: '1',
     cartID: 'cart1',
@@ -36,10 +36,10 @@ export class CartItemComponent {
   public faEdit: IconDefinition = faEdit;
   @Input() public isEditing: boolean = false;
 
-  ngOnInit(): void {
-    // GET api/v1/cart/:cartId/item
-    // GET api/v1/product/:productId
-  }
+  // ngOnInit(): void {
+  //   // GET api/v1/cart/:cartId/item
+  //   // GET api/v1/product/:productId
+  // }
 
   handleDeleteItemClick(): void {
     console.log('Removing cart item:', this.cartItem);

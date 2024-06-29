@@ -53,7 +53,7 @@ clean:
 	rm -rf ${DOCS_DIR}/Mgtt.ECom/.jekyll-cache
 	rm -rf ${SMOKE_TEST_DIR}/__pycache__
 	rm -rf ${SMOKE_TEST_DIR}/assets
-	rm ${SMOKE_TEST_DIR}/report.html
+	rm -rf ${SMOKE_TEST_DIR}/report.html
 	find $(SRC_DIR) $(TEST_DIR) -type d \( -name 'obj' -o -name 'bin' \) -exec rm -rf {} +
 
 # Build and serve documentation

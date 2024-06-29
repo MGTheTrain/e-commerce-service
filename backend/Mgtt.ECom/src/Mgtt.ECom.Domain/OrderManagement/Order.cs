@@ -1,9 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+// <copyright file="Order.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.Domain.OrderManagement
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// Represents an order in the e-commerce system.
     /// </summary>
@@ -11,11 +15,11 @@ namespace Mgtt.ECom.Domain.OrderManagement
     {
         public Order()
         {
-            OrderID = Guid.NewGuid();
-            UserID = Guid.Empty;
-            OrderDate = DateTime.UtcNow;
-            TotalAmount = 0.01f;
-            OrderStatus = "InProgress";
+            this.OrderID = Guid.NewGuid();
+            this.UserID = Guid.Empty;
+            this.OrderDate = DateTime.UtcNow;
+            this.TotalAmount = 0.01f;
+            this.OrderStatus = "InProgress";
         }
 
         [Required]
@@ -38,31 +42,32 @@ namespace Mgtt.ECom.Domain.OrderManagement
         /// <summary>
         /// Validates the properties of the Order object.
         /// </summary>
+        /// <returns></returns>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (OrderID == Guid.Empty)
+            if (this.OrderID == Guid.Empty)
             {
-                yield return new ValidationResult($"{nameof(OrderID)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.OrderID)} can't be empty");
             }
 
-            if (UserID == Guid.Empty)
+            if (this.UserID == Guid.Empty)
             {
-                yield return new ValidationResult($"{nameof(UserID)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.UserID)} can't be empty");
             }
 
-            if (OrderDate == default(DateTime))
+            if (this.OrderDate == default(DateTime))
             {
-                yield return new ValidationResult($"{nameof(OrderDate)} can't be default value");
+                yield return new ValidationResult($"{nameof(this.OrderDate)} can't be default value");
             }
 
-            if (TotalAmount <= 0)
+            if (this.TotalAmount <= 0)
             {
-                yield return new ValidationResult($"{nameof(TotalAmount)} must be greater than zero");
+                yield return new ValidationResult($"{nameof(this.TotalAmount)} must be greater than zero");
             }
 
-            if (string.IsNullOrEmpty(OrderStatus))
+            if (string.IsNullOrEmpty(this.OrderStatus))
             {
-                yield return new ValidationResult($"{nameof(OrderStatus)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.OrderStatus)} can't be empty");
             }
 
             yield return ValidationResult.Success;

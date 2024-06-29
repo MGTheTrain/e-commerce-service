@@ -1,117 +1,121 @@
-using Mgtt.ECom.Domain.ProductManagement;
-using Mgtt.ECom.Persistence.DataAccess;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+// <copyright file="ProductService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.Application.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Mgtt.ECom.Domain.ProductManagement;
+    using Mgtt.ECom.Persistence.DataAccess;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
+
     public class ProductService : IProductService
     {
-        private readonly PsqlDbContext _context;
-        private readonly ILogger<ProductService> _logger;
+        private readonly PsqlDbContext context;
+        private readonly ILogger<ProductService> logger;
 
         public ProductService(PsqlDbContext context, ILogger<ProductService> logger)
         {
-            _context = context;
-            _logger = logger;
+            this.context = context;
+            this.logger = logger;
         }
 
         public async Task<Product?> GetProductById(Guid productId)
         {
-            _logger.LogInformation("Fetching product by ID: {ProductId}", productId);
+            this.logger.LogInformation("Fetching product by ID: {ProductId}", productId);
             try
             {
-                return await _context.Products.FindAsync(productId);
+                return await this.context.Products.FindAsync(productId);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error fetching product by ID: {ProductId}", productId);
+                this.logger.LogError(ex, "Error fetching product by ID: {ProductId}", productId);
                 return await Task.FromResult<Product?>(null);
             }
         }
 
         public async Task<IEnumerable<Product>?> GetAllProducts()
         {
-            _logger.LogInformation("Fetching all products");
+            this.logger.LogInformation("Fetching all products");
             try
             {
-                return await _context.Products.ToListAsync();
+                return await this.context.Products.ToListAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error fetching all products");
+                this.logger.LogError(ex, "Error fetching all products");
                 return await Task.FromResult<IEnumerable<Product>?>(null);
             }
         }
 
         public async Task<IEnumerable<Product>> GetProductsByCategory(Guid categoryId)
         {
-            _logger.LogInformation("Fetching products by Category ID: {CategoryId}", categoryId);
+            this.logger.LogInformation("Fetching products by Category ID: {CategoryId}", categoryId);
             try
             {
-                return await _context.Products.Where(p => p.CategoryID == categoryId).ToListAsync();
+                return await this.context.Products.Where(p => p.CategoryID == categoryId).ToListAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error fetching products by Category ID: {CategoryId}", categoryId);
+                this.logger.LogError(ex, "Error fetching products by Category ID: {CategoryId}", categoryId);
                 return await Task.FromResult<IEnumerable<Product>?>(null);
             }
         }
 
         public async Task<Product?> CreateProduct(Product product)
         {
-            _logger.LogInformation("Creating new product: {ProductName}", product.Name);
+            this.logger.LogInformation("Creating new product: {ProductName}", product.Name);
             try
             {
-                _context.Products.Add(product);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Product created successfully: {ProductId}", product.ProductID);
+                this.context.Products.Add(product);
+                await this.context.SaveChangesAsync();
+                this.logger.LogInformation("Product created successfully: {ProductId}", product.ProductID);
                 return await Task.FromResult<Product?>(product);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating product: {ProductName}", product.Name);
+                this.logger.LogError(ex, "Error creating product: {ProductName}", product.Name);
                 return await Task.FromResult<Product?>(null);
             }
         }
 
         public async Task<Product?> UpdateProduct(Product product)
         {
-            _logger.LogInformation("Updating product: {ProductId}", product.ProductID);
+            this.logger.LogInformation("Updating product: {ProductId}", product.ProductID);
             try
             {
-                _context.Products.Update(product);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Product updated successfully: {ProductId}", product.ProductID);
+                this.context.Products.Update(product);
+                await this.context.SaveChangesAsync();
+                this.logger.LogInformation("Product updated successfully: {ProductId}", product.ProductID);
                 return await Task.FromResult<Product?>(product);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating product: {ProductId}", product.ProductID);
+                this.logger.LogError(ex, "Error updating product: {ProductId}", product.ProductID);
                 return await Task.FromResult<Product?>(null);
             }
         }
 
         public async Task DeleteProduct(Guid productId)
         {
-            _logger.LogInformation("Deleting product: {ProductId}", productId);
+            this.logger.LogInformation("Deleting product: {ProductId}", productId);
             try
             {
-                var product = await _context.Products.FindAsync(productId);
+                var product = await this.context.Products.FindAsync(productId);
                 if (product != null)
                 {
-                    _context.Products.Remove(product);
-                    await _context.SaveChangesAsync();
-                    _logger.LogInformation("Product deleted successfully: {ProductId}", productId);
+                    this.context.Products.Remove(product);
+                    await this.context.SaveChangesAsync();
+                    this.logger.LogInformation("Product deleted successfully: {ProductId}", productId);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting product: {ProductId}", productId);
+                this.logger.LogError(ex, "Error deleting product: {ProductId}", productId);
             }
         }
     }

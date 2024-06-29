@@ -1,22 +1,26 @@
-using Mgtt.ECom.Web.v1.UserManagement.DTOs;
-using Mgtt.ECom.Domain.UserManagement;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
-using Mgtt.ECom.Web.v1.UserManagement.DTOs;
+// <copyright file="UserController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
-namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
+namespace Mgtt.ECom.Web.V1.UserManagement.Controllers
 {
+    using System;
+    using System.Threading.Tasks;
+    using Mgtt.ECom.Domain.UserManagement;
+    using Mgtt.ECom.Web.V1.UserManagement.DTOs;
+    using Mgtt.ECom.Web.V1.UserManagement.DTOs;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+
     [Route("api/v1/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IUserService userService;
 
         public UserController(IUserService userService)
         {
-            _userService = userService;
+            this.userService = userService;
         }
 
         /// <summary>
@@ -31,9 +35,9 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserResponseDTO>> Register(UserRequestDTO userRequest)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             var user = new User
@@ -41,14 +45,15 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
                 UserName = userRequest.UserName,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(userRequest.Password),
                 Email = userRequest.Email,
-                Role = userRequest.Role
+                Role = userRequest.Role,
             };
 
-            var action = await _userService.CreateUser(user);
+            var action = await this.userService.CreateUser(user);
             if (action == null)
             {
-                return BadRequest(); // preferable return a proper
-                                     // response DTO with proper error message
+                return this.BadRequest(); // preferable return a proper
+
+                // response DTO with proper error message
             }
 
             var userResponseDTO = new UserResponseDTO
@@ -56,10 +61,10 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
                 UserID = user.UserID,
                 UserName = user.UserName,
                 Email = user.Email,
-                Role = user.Role
+                Role = user.Role,
             };
 
-            return CreatedAtAction(nameof(Register), userResponseDTO);
+            return this.CreatedAtAction(nameof(this.Register), userResponseDTO);
         }
 
         /// <summary>
@@ -74,19 +79,20 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserResponseDTO>> GetUserById(Guid id)
         {
-            var user = await _userService.GetUserById(id);
+            var user = await this.userService.GetUserById(id);
             if (user == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
+
             var userResponse = new UserResponseDTO
             {
                 UserID = user.UserID,
                 UserName = user.UserName,
                 Email = user.Email,
-                Role = user.Role
+                Role = user.Role,
             };
-            return Ok(userResponse);
+            return this.Ok(userResponse);
         }
 
         /// <summary>
@@ -98,7 +104,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserResponseDTO>))]
         public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetAllUsers()
         {
-            var users = await _userService.GetAllUsers();
+            var users = await this.userService.GetAllUsers();
             var userDTOs = new List<UserResponseDTO>();
 
             foreach (var user in users)
@@ -112,7 +118,7 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
                 });
             }
 
-            return Ok(userDTOs);
+            return this.Ok(userDTOs);
         }
 
         /// <summary>
@@ -123,21 +129,22 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         /// <response code="204">If the user was successfully updated.</response>
         /// <response code="404">If the user is not found.</response>
         /// <response code="400">If the user data is invalid.</response>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateUser(Guid id, UserRequestDTO userRequest)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var user = await _userService.GetUserById(id);
+            var user = await this.userService.GetUserById(id);
             if (user == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             user.UserName = userRequest.UserName;
@@ -145,10 +152,10 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             user.Email = userRequest.Email;
             user.Role = userRequest.Role;
 
-            var action = await _userService.UpdateUser(user);
+            var action = await this.userService.UpdateUser(user);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var userResponseDTO = new UserResponseDTO
@@ -156,10 +163,10 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
                 UserID = user.UserID,
                 UserName = user.UserName,
                 Email = user.Email,
-                Role = user.Role
+                Role = user.Role,
             };
 
-            return Ok(userResponseDTO);
+            return this.Ok(userResponseDTO);
         }
 
         /// <summary>
@@ -168,20 +175,21 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         /// <param name="id">The ID of the user to delete.</param>
         /// <response code="204">If the user was successfully deleted.</response>
         /// <response code="404">If the user is not found.</response>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
-            var user = await _userService.GetUserById(id);
+            var user = await this.userService.GetUserById(id);
             if (user == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            await _userService.DeleteUser(id);
+            await this.userService.DeleteUser(id);
 
-            return NoContent();
+            return this.NoContent();
         }
     }
 }

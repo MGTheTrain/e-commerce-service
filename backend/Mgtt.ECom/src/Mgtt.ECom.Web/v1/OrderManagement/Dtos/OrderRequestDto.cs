@@ -1,8 +1,12 @@
-using System;
-using System.ComponentModel.DataAnnotations;
+// <copyright file="OrderRequestDto.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
-namespace Mgtt.ECom.Web.v1.OrderManagement.DTOs
+namespace Mgtt.ECom.Web.V1.OrderManagement.DTOs
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
     public class OrderRequestDTO
     {
         [Required]

@@ -50,7 +50,7 @@ export class OrderDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscription = this.route.params.subscribe(params => {
-      let id = params['orderId'];
+      const id = params['orderId'];
       this.order.orderID = id;
     });
     this.calculateTotalAmount();

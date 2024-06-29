@@ -1,131 +1,135 @@
-using Mgtt.ECom.Domain.ReviewManagement;
-using Mgtt.ECom.Persistence.DataAccess;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+// <copyright file="ReviewService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.Application.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Mgtt.ECom.Domain.ReviewManagement;
+    using Mgtt.ECom.Persistence.DataAccess;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
+
     public class ReviewService : IReviewService
     {
-        private readonly PsqlDbContext _context;
-        private readonly ILogger<ReviewService> _logger;
+        private readonly PsqlDbContext context;
+        private readonly ILogger<ReviewService> logger;
 
         public ReviewService(PsqlDbContext context, ILogger<ReviewService> logger)
         {
-            _context = context;
-            _logger = logger;
+            this.context = context;
+            this.logger = logger;
         }
 
         public async Task<Review?> GetReviewById(Guid reviewId)
         {
-            _logger.LogInformation("Fetching review by ID: {ReviewId}", reviewId);
+            this.logger.LogInformation("Fetching review by ID: {ReviewId}", reviewId);
             try
             {
-                return await _context.Reviews.FindAsync(reviewId);
+                return await this.context.Reviews.FindAsync(reviewId);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error fetching review by ID: {ReviewId}", reviewId);
+                this.logger.LogError(ex, "Error fetching review by ID: {ReviewId}", reviewId);
                 return await Task.FromResult<Review?>(null);
             }
         }
 
         public async Task<IEnumerable<Review>?> GetAllReviews()
         {
-            _logger.LogInformation("Fetching all reviews");
+            this.logger.LogInformation("Fetching all reviews");
             try
             {
-                return await _context.Reviews.ToListAsync();
+                return await this.context.Reviews.ToListAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error fetching all reviews");
+                this.logger.LogError(ex, "Error fetching all reviews");
                 return await Task.FromResult<IEnumerable<Review>?>(null);
             }
         }
 
         public async Task<IEnumerable<Review>?> GetReviewsByProductId(Guid productId)
         {
-            _logger.LogInformation("Fetching reviews by Product ID: {ProductId}", productId);
+            this.logger.LogInformation("Fetching reviews by Product ID: {ProductId}", productId);
             try
             {
-                return await _context.Reviews.Where(r => r.ProductID == productId).ToListAsync();
+                return await this.context.Reviews.Where(r => r.ProductID == productId).ToListAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error fetching reviews by Product ID: {ProductId}", productId);
+                this.logger.LogError(ex, "Error fetching reviews by Product ID: {ProductId}", productId);
                 return await Task.FromResult<IEnumerable<Review>?>(null);
             }
         }
 
         public async Task<IEnumerable<Review>?> GetReviewsByUserId(Guid userId)
         {
-            _logger.LogInformation("Fetching reviews by User ID: {UserId}", userId);
+            this.logger.LogInformation("Fetching reviews by User ID: {UserId}", userId);
             try
             {
-                return await _context.Reviews.Where(r => r.UserID == userId).ToListAsync();
+                return await this.context.Reviews.Where(r => r.UserID == userId).ToListAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error fetching reviews by User ID: {UserId}", userId);
+                this.logger.LogError(ex, "Error fetching reviews by User ID: {UserId}", userId);
                 return await Task.FromResult<IEnumerable<Review>?>(null);
             }
         }
 
         public async Task<Review?> CreateReview(Review review)
         {
-            _logger.LogInformation("Creating new review for Product ID: {ProductId}, User ID: {UserId}", review.ProductID, review.UserID);
+            this.logger.LogInformation("Creating new review for Product ID: {ProductId}, User ID: {UserId}", review.ProductID, review.UserID);
             try
             {
-                _context.Reviews.Add(review);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Review created successfully: {ReviewId}", review.ReviewID);
+                this.context.Reviews.Add(review);
+                await this.context.SaveChangesAsync();
+                this.logger.LogInformation("Review created successfully: {ReviewId}", review.ReviewID);
                 return await Task.FromResult<Review?>(review);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating review for Product ID: {ProductId}, User ID: {UserId}", review.ProductID, review.UserID);
+                this.logger.LogError(ex, "Error creating review for Product ID: {ProductId}, User ID: {UserId}", review.ProductID, review.UserID);
                 return await Task.FromResult<Review?>(null);
             }
         }
 
         public async Task<Review?> UpdateReview(Review review)
         {
-            _logger.LogInformation("Updating review: {ReviewId}", review.ReviewID);
+            this.logger.LogInformation("Updating review: {ReviewId}", review.ReviewID);
             try
             {
-                _context.Reviews.Update(review);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Review updated successfully: {ReviewId}", review.ReviewID);
+                this.context.Reviews.Update(review);
+                await this.context.SaveChangesAsync();
+                this.logger.LogInformation("Review updated successfully: {ReviewId}", review.ReviewID);
                 return await Task.FromResult<Review?>(review);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating review: {ReviewId}", review.ReviewID);
+                this.logger.LogError(ex, "Error updating review: {ReviewId}", review.ReviewID);
                 return await Task.FromResult<Review?>(null);
             }
         }
 
         public async Task DeleteReview(Guid reviewId)
         {
-            _logger.LogInformation("Deleting review: {ReviewId}", reviewId);
+            this.logger.LogInformation("Deleting review: {ReviewId}", reviewId);
             try
             {
-                var review = await _context.Reviews.FindAsync(reviewId);
+                var review = await this.context.Reviews.FindAsync(reviewId);
                 if (review != null)
                 {
-                    _context.Reviews.Remove(review);
-                    await _context.SaveChangesAsync();
-                    _logger.LogInformation("Review deleted successfully: {ReviewId}", reviewId);
+                    this.context.Reviews.Remove(review);
+                    await this.context.SaveChangesAsync();
+                    this.logger.LogInformation("Review deleted successfully: {ReviewId}", reviewId);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting review: {ReviewId}", reviewId);
+                this.logger.LogError(ex, "Error deleting review: {ReviewId}", reviewId);
             }
         }
     }

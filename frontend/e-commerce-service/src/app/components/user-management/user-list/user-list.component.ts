@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserResponseDTO, UserService } from '../../../generated';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +12,7 @@ import { HeaderComponent } from '../../header/header.component';
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })
-export class UserListComponent {
+export class UserListComponent implements OnInit {
   users: UserResponseDTO[] = [
     { userID: '1', userName: 'John Doe', email: 'john.doe@example.com', role: 'Admin' },
     { userID: '2', userName: 'Jane Smith', email: 'jane.smith@example.com', role: 'User' },

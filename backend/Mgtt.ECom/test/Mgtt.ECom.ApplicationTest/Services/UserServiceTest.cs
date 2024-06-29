@@ -1,20 +1,24 @@
-using Mgtt.ECom.Application.Services;
-using Mgtt.ECom.Domain.UserManagement;
-using Mgtt.ECom.Persistence.DataAccess;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Moq;
-using System;
-using System.Threading.Tasks;
-using Xunit;
+// <copyright file="UserServiceTest.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.ApplicationTest.Services
 {
+    using System;
+    using System.Threading.Tasks;
+    using Mgtt.ECom.Application.Services;
+    using Mgtt.ECom.Domain.UserManagement;
+    using Mgtt.ECom.Persistence.DataAccess;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
+    using Moq;
+    using Xunit;
+
     public class UserServiceTests : IDisposable
     {
-        private readonly PsqlDbContext _context;
-        private readonly UserService _userService;
-        private readonly ILogger<UserService> _logger;
+        private readonly PsqlDbContext context;
+        private readonly UserService userService;
+        private readonly ILogger<UserService> logger;
 
         public UserServiceTests()
         {
@@ -23,21 +27,21 @@ namespace Mgtt.ECom.ApplicationTest.Services
                 .EnableSensitiveDataLogging() // Enable sensitive data logging to see entity key values
                 .Options;
 
-            _context = new PsqlDbContext(options);
+            this.context = new PsqlDbContext(options);
 
             // Initialize any required properties like Role in the in-memory context
-            _context.Users.Add(new User { UserName = "TestUser", Email = "testuser@example.com", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), Role = "User" });
-            _context.SaveChanges();
+            this.context.Users.Add(new User { UserName = "TestUser", Email = "testuser@example.com", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"), Role = "User" });
+            this.context.SaveChanges();
 
             // Mock ILogger
             var loggerMock = new Mock<ILogger<UserService>>();
 
-            _userService = new UserService(_context, loggerMock.Object);
+            this.userService = new UserService(this.context, loggerMock.Object);
         }
 
         public void Dispose()
         {
-            _context.Dispose();
+            this.context.Dispose();
         }
 
         [Fact]
@@ -47,8 +51,8 @@ namespace Mgtt.ECom.ApplicationTest.Services
             var user = new User { UserName = "TestUser2", Email = "testuser2@example.com", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password") };
 
             // Act
-            await _userService.CreateUser(user);
-            var result = await _userService.GetUserById(user.UserID);
+            await this.userService.CreateUser(user);
+            var result = await this.userService.GetUserById(user.UserID);
 
             // Assert
             Assert.NotNull(result);
@@ -61,12 +65,12 @@ namespace Mgtt.ECom.ApplicationTest.Services
         {
             // Arrange
             var user = new User { UserName = "TestUser3", Email = "testuser3@example.com", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password") };
-            await _userService.CreateUser(user);
+            await this.userService.CreateUser(user);
 
             // Act
             user.UserName = "UpdatedUser";
-            await _userService.UpdateUser(user);
-            var updatedUser = await _userService.GetUserById(user.UserID);
+            await this.userService.UpdateUser(user);
+            var updatedUser = await this.userService.GetUserById(user.UserID);
 
             // Assert
             Assert.NotNull(updatedUser);
@@ -78,11 +82,11 @@ namespace Mgtt.ECom.ApplicationTest.Services
         {
             // Arrange
             var user = new User { UserName = "TestUser4", Email = "testuser4@example.com", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password") };
-            await _userService.CreateUser(user);
+            await this.userService.CreateUser(user);
 
             // Act
-            await _userService.DeleteUser(user.UserID);
-            var deletedUser = await _userService.GetUserById(user.UserID);
+            await this.userService.DeleteUser(user.UserID);
+            var deletedUser = await this.userService.GetUserById(user.UserID);
 
             // Assert
             Assert.Null(deletedUser);
@@ -93,10 +97,10 @@ namespace Mgtt.ECom.ApplicationTest.Services
         {
             // Arrange
             var user = new User { UserName = "TestUser5", Email = "testuser5@example.com", PasswordHash = BCrypt.Net.BCrypt.HashPassword("password") };
-            await _userService.CreateUser(user);
+            await this.userService.CreateUser(user);
 
             // Act
-            var isValid = await _userService.ValidateUser("testuser5@example.com", "password");
+            var isValid = await this.userService.ValidateUser("testuser5@example.com", "password");
 
             // Assert
             Assert.True(isValid);

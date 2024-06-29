@@ -1,9 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+// <copyright file="Cart.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.Domain.ShoppingCart
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// Represents a shopping cart in the e-commerce system.
     /// </summary>
@@ -11,9 +15,9 @@ namespace Mgtt.ECom.Domain.ShoppingCart
     {
         public Cart()
         {
-            CartID = Guid.NewGuid();
-            UserID = Guid.Empty;
-            TotalAmount = 0.0f;
+            this.CartID = Guid.NewGuid();
+            this.UserID = Guid.Empty;
+            this.TotalAmount = 0.0f;
         }
 
         [Required]
@@ -29,21 +33,22 @@ namespace Mgtt.ECom.Domain.ShoppingCart
         /// <summary>
         /// Validates the properties of the Cart object.
         /// </summary>
+        /// <returns></returns>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (CartID == Guid.Empty)
+            if (this.CartID == Guid.Empty)
             {
-                yield return new ValidationResult($"{nameof(CartID)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.CartID)} can't be empty");
             }
 
-            if (UserID == Guid.Empty)
+            if (this.UserID == Guid.Empty)
             {
-                yield return new ValidationResult($"{nameof(UserID)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.UserID)} can't be empty");
             }
 
-            if (TotalAmount < 0)
+            if (this.TotalAmount < 0)
             {
-                yield return new ValidationResult($"{nameof(TotalAmount)} can't be negative");
+                yield return new ValidationResult($"{nameof(this.TotalAmount)} can't be negative");
             }
 
             yield return ValidationResult.Success;

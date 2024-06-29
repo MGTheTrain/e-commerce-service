@@ -1,10 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Mgtt.ECom.Domain.UserManagement;
+// <copyright file="Review.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.Domain.ReviewManagement
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using Mgtt.ECom.Domain.UserManagement;
+
     /// <summary>
     /// Represents a product review in the e-commerce system.
     /// </summary>
@@ -12,12 +16,12 @@ namespace Mgtt.ECom.Domain.ReviewManagement
     {
         public Review()
         {
-            ReviewID = Guid.NewGuid();
-            ProductID = Guid.Empty;
-            UserID = Guid.Empty;
-            Rating = 3;
-            Comment = string.Empty;
-            ReviewDate = DateTime.UtcNow;
+            this.ReviewID = Guid.NewGuid();
+            this.ProductID = Guid.Empty;
+            this.UserID = Guid.Empty;
+            this.Rating = 3;
+            this.Comment = string.Empty;
+            this.ReviewDate = DateTime.UtcNow;
         }
 
         public Guid ReviewID { get; internal set; }
@@ -41,31 +45,32 @@ namespace Mgtt.ECom.Domain.ReviewManagement
         /// <summary>
         /// Validates the properties of the Review object.
         /// </summary>
+        /// <returns></returns>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (ReviewID == Guid.Empty)
+            if (this.ReviewID == Guid.Empty)
             {
-                yield return new ValidationResult($"{nameof(ReviewID)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.ReviewID)} can't be empty");
             }
 
-            if (ProductID == Guid.Empty)
+            if (this.ProductID == Guid.Empty)
             {
-                yield return new ValidationResult($"{nameof(ProductID)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.ProductID)} can't be empty");
             }
 
-            if (UserID == Guid.Empty)
+            if (this.UserID == Guid.Empty)
             {
-                yield return new ValidationResult($"{nameof(UserID)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.UserID)} can't be empty");
             }
 
-            if (Rating < 1 || Rating > 5)
+            if (this.Rating < 1 || this.Rating > 5)
             {
-                yield return new ValidationResult($"{nameof(Rating)} must be between 1 and 5");
+                yield return new ValidationResult($"{nameof(this.Rating)} must be between 1 and 5");
             }
 
-            if (ReviewDate == default(DateTime))
+            if (this.ReviewDate == default(DateTime))
             {
-                yield return new ValidationResult($"{nameof(ReviewDate)} can't be default value");
+                yield return new ValidationResult($"{nameof(this.ReviewDate)} can't be default value");
             }
 
             yield return ValidationResult.Success;

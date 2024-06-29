@@ -1,12 +1,16 @@
-using System;
-using System.Linq;
-using Mgtt.ECom.Domain.UserManagement;
-using Mgtt.ECom.Persistence.DataAccess;
-using Microsoft.EntityFrameworkCore;
-using Xunit;
+// <copyright file="PsqlDbContextTest.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.PersistenceTest.DataAccess
 {
+    using System;
+    using System.Linq;
+    using Mgtt.ECom.Domain.UserManagement;
+    using Mgtt.ECom.Persistence.DataAccess;
+    using Microsoft.EntityFrameworkCore;
+    using Xunit;
+
     public class PsqlDbContextTests
     {
         private DbContextOptions<PsqlDbContext> GetInMemoryDbContextOptions()
@@ -20,7 +24,7 @@ namespace Mgtt.ECom.PersistenceTest.DataAccess
         public void Can_Create_Read_Update_Delete_User()
         {
             // Arrange
-            var options = GetInMemoryDbContextOptions();
+            var options = this.GetInMemoryDbContextOptions();
 
             using (var context = new PsqlDbContext(options))
             {
@@ -29,7 +33,7 @@ namespace Mgtt.ECom.PersistenceTest.DataAccess
                     UserName = "JohnDoe",
                     PasswordHash = "hashedpassword",
                     Email = "john.doe@example.com",
-                    Role = "Admin"
+                    Role = "Admin",
                 };
 
                 // Act

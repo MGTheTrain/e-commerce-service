@@ -1,14 +1,22 @@
-using System;
-using System.ComponentModel.DataAnnotations;
+// <copyright file="OrderItemResponseDto.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
-namespace Mgtt.ECom.Web.v1.OrderManagement.DTOs
+namespace Mgtt.ECom.Web.V1.OrderManagement.DTOs
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
     public class OrderItemResponseDTO
     {
         public Guid OrderItemID { get; set; }
+
         public Guid OrderID { get; set; }
+
         public Guid ProductID { get; set; }
+
         public int Quantity { get; set; }
+
         public float Price { get; set; }
     }
 }

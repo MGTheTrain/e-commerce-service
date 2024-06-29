@@ -1,25 +1,29 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Mgtt.ECom.Domain.ShoppingCart;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Mgtt.ECom.Web.v1.ShoppingCart.DTOs;
-using static System.Collections.Specialized.BitVector32;
+// <copyright file="CartController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
-namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
+namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Mgtt.ECom.Domain.ShoppingCart;
+    using Mgtt.ECom.Web.v1.ShoppingCart.DTOs;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using static System.Collections.Specialized.BitVector32;
+
     [Route("api/v1/carts")]
     [ApiController]
     public class CartController : ControllerBase
     {
-        private readonly ICartService _cartService;
-        private readonly ICartItemService _cartItemService;
+        private readonly ICartService cartService;
+        private readonly ICartItemService cartItemService;
 
         public CartController(ICartService cartService, ICartItemService cartItemService)
         {
-            _cartService = cartService;
-            _cartItemService = cartItemService;
+            this.cartService = cartService;
+            this.cartItemService = cartItemService;
         }
 
         /// <summary>
@@ -34,31 +38,31 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCart(CartRequestDTO cartDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             var cart = new Cart
             {
                 UserID = cartDTO.UserID,
-                TotalAmount = cartDTO.TotalAmount
+                TotalAmount = cartDTO.TotalAmount,
             };
 
-            var action = await _cartService.CreateCart(cart);
+            var action = await this.cartService.CreateCart(cart);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var cartResponseDTO = new CartResponseDTO
             {
                 CartID = cart.CartID,
                 UserID = cart.UserID,
-                TotalAmount = cart.TotalAmount
+                TotalAmount = cart.TotalAmount,
             };
 
-            return CreatedAtAction(nameof(CreateCart), cartResponseDTO);
+            return this.CreatedAtAction(nameof(this.CreateCart), cartResponseDTO);
         }
 
         /// <summary>
@@ -73,21 +77,21 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CartResponseDTO>> GetCartById(Guid cartId)
         {
-            var cart = await _cartService.GetCartById(cartId);
+            var cart = await this.cartService.GetCartById(cartId);
 
             if (cart == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var cartResponseDto = new CartResponseDTO // utilize auto-mapper for optimization
             {
                 CartID = cart.CartID,
                 UserID = cart.UserID,
-                TotalAmount = cart.TotalAmount
+                TotalAmount = cart.TotalAmount,
             };
 
-            return Ok(cartResponseDto);
+            return this.Ok(cartResponseDto);
         }
 
         /// <summary>
@@ -99,7 +103,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CartResponseDTO>))]
         public async Task<ActionResult<IEnumerable<CartResponseDTO>>> GetAllCarts()
         {
-            var carts = await _cartService.GetAllCarts();
+            var carts = await this.cartService.GetAllCarts();
             var cartDTOs = new List<CartResponseDTO>();
 
             foreach (var cart in carts)
@@ -108,13 +112,12 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
                 {
                     CartID = cart.CartID,
                     UserID = cart.UserID,
-                    TotalAmount = cart.TotalAmount
+                    TotalAmount = cart.TotalAmount,
                 });
             }
 
-            return Ok(cartDTOs);
+            return this.Ok(cartDTOs);
         }
-
 
         /// <summary>
         /// Updates an existing cart.
@@ -124,40 +127,41 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <response code="204">If the cart was successfully updated.</response>
         /// <response code="404">If the cart is not found.</response>
         /// <response code="400">If the cart data is invalid.</response>
+        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
         [HttpPut("{cartId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateCartById(Guid cartId, CartRequestDTO cartDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var cart = await _cartService.GetCartById(cartId);
+            var cart = await this.cartService.GetCartById(cartId);
 
             if (cart == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             cart.TotalAmount = cartDTO.TotalAmount;
 
-            var action = await _cartService.UpdateCart(cart);
+            var action = await this.cartService.UpdateCart(cart);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var cartResponseDto = new CartResponseDTO
             {
                 CartID = cart.CartID,
                 UserID = cart.UserID,
-                TotalAmount = cart.TotalAmount
+                TotalAmount = cart.TotalAmount,
             };
 
-            return Ok(cartResponseDto);
+            return this.Ok(cartResponseDto);
         }
 
         /// <summary>
@@ -166,21 +170,22 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <param name="cartId">The ID of the cart.</param>
         /// <response code="204">If the cart was successfully deleted.</response>
         /// <response code="404">If the cart is not found.</response>
+        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
         [HttpDelete("{cartId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCartById(Guid cartId)
         {
-            var cart = await _cartService.GetCartById(cartId);
+            var cart = await this.cartService.GetCartById(cartId);
 
             if (cart == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            await _cartService.DeleteCart(cart.CartID);
+            await this.cartService.DeleteCart(cart.CartID);
 
-            return NoContent();
+            return this.NoContent();
         }
 
         /// <summary>
@@ -196,9 +201,9 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCartItem(Guid cartId, CartItemRequestDTO cartItemDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             var cartItem = new CartItem
@@ -206,13 +211,13 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
                 CartID = cartId,
                 ProductID = cartItemDTO.ProductID,
                 Quantity = cartItemDTO.Quantity,
-                Price = cartItemDTO.Price
+                Price = cartItemDTO.Price,
             };
 
-            var action = await _cartItemService.CreateCartItem(cartItem);
+            var action = await this.cartItemService.CreateCartItem(cartItem);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var cartItemResponseDTO = new CartItemResponseDTO
@@ -221,10 +226,10 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
                 CartID = cartItem.CartID,
                 ProductID = cartItem.ProductID,
                 Quantity = cartItem.Quantity,
-                Price = cartItem.Price
+                Price = cartItem.Price,
             };
 
-            return CreatedAtAction(nameof(CreateCartItem), cartItemResponseDTO);
+            return this.CreatedAtAction(nameof(this.CreateCartItem), cartItemResponseDTO);
         }
 
         /// <summary>
@@ -237,7 +242,7 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CartItemResponseDTO>))]
         public async Task<ActionResult<IEnumerable<CartItemResponseDTO>>> GetCartItemsByCartId(Guid cartId)
         {
-            var cartItems = await _cartItemService.GetCartItemsByCartId(cartId);
+            var cartItems = await this.cartItemService.GetCartItemsByCartId(cartId);
             var cartItemDTOs = new List<CartItemResponseDTO>();
 
             foreach (var cartItem in cartItems)
@@ -248,11 +253,11 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
                     CartID = cartItem.CartID,
                     ProductID = cartItem.ProductID,
                     Quantity = cartItem.Quantity,
-                    Price = cartItem.Price
+                    Price = cartItem.Price,
                 });
             }
 
-            return Ok(cartItemDTOs);
+            return this.Ok(cartItemDTOs);
         }
 
         /// <summary>
@@ -268,11 +273,11 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CartItemResponseDTO>> GetCartItemById(Guid cartId, Guid itemId)
         {
-            var cartItem = await _cartItemService.GetCartItemById(itemId);
+            var cartItem = await this.cartItemService.GetCartItemById(itemId);
 
             if (cartItem == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var cartItemResponseDto = new CartItemResponseDTO
@@ -281,10 +286,10 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
                 CartID = cartItem.CartID,
                 ProductID = cartItem.ProductID,
                 Quantity = cartItem.Quantity,
-                Price = cartItem.Price
+                Price = cartItem.Price,
             };
 
-            return Ok(cartItemResponseDto);
+            return this.Ok(cartItemResponseDto);
         }
 
         /// <summary>
@@ -296,22 +301,23 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <response code="204">If the cart item was successfully updated.</response>
         /// <response code="404">If the cart item is not found.</response>
         /// <response code="400">If the cart item data is invalid.</response>
+        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
         [HttpPut("{cartId}/items/{itemId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartItemResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateCartItem(Guid cartId, Guid itemId, CartItemRequestDTO cartItemDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var cartItem = await _cartItemService.GetCartItemById(itemId);
+            var cartItem = await this.cartItemService.GetCartItemById(itemId);
 
             if (cartItem == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             cartItem.CartID = cartItemDTO.CartID;
@@ -319,10 +325,10 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
             cartItem.Quantity = cartItemDTO.Quantity;
             cartItem.Price = cartItemDTO.Price;
 
-            var action = await _cartItemService.UpdateCartItem(cartItem);
+            var action = await this.cartItemService.UpdateCartItem(cartItem);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var cartItemResponseDto = new CartItemResponseDTO
@@ -331,10 +337,10 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
                 CartID = cartItem.CartID,
                 ProductID = cartItem.ProductID,
                 Quantity = cartItem.Quantity,
-                Price = cartItem.Price
+                Price = cartItem.Price,
             };
 
-            return Ok(cartItemResponseDto);
+            return this.Ok(cartItemResponseDto);
         }
 
         /// <summary>
@@ -344,21 +350,22 @@ namespace Mgtt.ECom.Web.v1.ShoppingCart.Controllers
         /// <param name="itemId">The ID of the cart item to delete.</param>
         /// <response code="204">If the cart item was successfully deleted.</response>
         /// <response code="404">If the cart item is not found.</response>
+        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
         [HttpDelete("{cartId}/items/{itemId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCartItem(Guid cartId, Guid itemId)
         {
-            var cartItem = await _cartItemService.GetCartItemById(itemId);
+            var cartItem = await this.cartItemService.GetCartItemById(itemId);
 
             if (cartItem == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            await _cartItemService.DeleteCartItem(itemId);
+            await this.cartItemService.DeleteCartItem(itemId);
 
-            return NoContent();
+            return this.NoContent();
         }
     }
 }

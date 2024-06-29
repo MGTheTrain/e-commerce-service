@@ -1,4 +1,8 @@
-namespace Mgtt.ECom.Web.v1.ProductManagement.DTOs
+// <copyright file="ProductResponseDTO.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace Mgtt.ECom.Web.V1.ProductManagement.DTOs
 {
     public class ProductResponseDTO
     {

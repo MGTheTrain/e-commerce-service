@@ -1,9 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+// <copyright file="Product.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.Domain.ProductManagement
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// Represents a product in the e-commerce system.
     /// </summary>
@@ -11,13 +15,13 @@ namespace Mgtt.ECom.Domain.ProductManagement
     {
         public Product()
         {
-            ProductID = Guid.NewGuid();
-            CategoryID = Guid.Empty;
-            Name = string.Empty;
-            Description = string.Empty;
-            Price = 0.01f;
-            Stock = 0;
-            ImageUrl = string.Empty;
+            this.ProductID = Guid.NewGuid();
+            this.CategoryID = Guid.Empty;
+            this.Name = string.Empty;
+            this.Description = string.Empty;
+            this.Price = 0.01f;
+            this.Stock = 0;
+            this.ImageUrl = string.Empty;
         }
 
         [Required]
@@ -46,26 +50,27 @@ namespace Mgtt.ECom.Domain.ProductManagement
         /// <summary>
         /// Validates the properties of the Product object.
         /// </summary>
+        /// <returns></returns>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (ProductID == Guid.Empty)
+            if (this.ProductID == Guid.Empty)
             {
-                yield return new ValidationResult($"{nameof(ProductID)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.ProductID)} can't be empty");
             }
 
-            if (string.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(this.Name))
             {
-                yield return new ValidationResult($"{nameof(Name)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.Name)} can't be empty");
             }
 
-            if (Price <= 0)
+            if (this.Price <= 0)
             {
-                yield return new ValidationResult($"{nameof(Price)} must be greater than zero");
+                yield return new ValidationResult($"{nameof(this.Price)} must be greater than zero");
             }
 
-            if (Stock < 0)
+            if (this.Stock < 0)
             {
-                yield return new ValidationResult($"{nameof(Stock)} can't be negative");
+                yield return new ValidationResult($"{nameof(this.Stock)} can't be negative");
             }
 
             yield return ValidationResult.Success;

@@ -1,10 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Xunit;
+// <copyright file="UserTest.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.DomainTest.User
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using Xunit;
+
     public class UserTests
     {
         [Fact]
@@ -16,7 +20,7 @@ namespace Mgtt.ECom.DomainTest.User
                 UserName = "JohnDoe",
                 PasswordHash = "hashedpassword",
                 Email = "john.doe@example.com",
-                Role = "Admin"
+                Role = "Admin",
             };
 
             // Act
@@ -42,7 +46,7 @@ namespace Mgtt.ECom.DomainTest.User
                 UserName = userName,
                 PasswordHash = passwordHash,
                 Email = email,
-                Role = role
+                Role = role,
             };
 
             // Act

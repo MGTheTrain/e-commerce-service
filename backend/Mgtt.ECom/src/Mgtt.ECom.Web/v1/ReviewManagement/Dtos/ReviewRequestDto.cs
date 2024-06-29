@@ -1,8 +1,12 @@
-using System;
-using System.ComponentModel.DataAnnotations;
+// <copyright file="ReviewRequestDto.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
-namespace Mgtt.ECom.Web.v1.ReviewManagement.DTOs
+namespace Mgtt.ECom.Web.V1.ReviewManagement.DTOs
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
     public class ReviewRequestDTO
     {
         [Required]

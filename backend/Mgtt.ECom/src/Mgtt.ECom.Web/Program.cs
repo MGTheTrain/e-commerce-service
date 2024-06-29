@@ -13,6 +13,18 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var customCORSName = "AllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: customCORSName,
+                        policy =>
+                        {
+                            policy.WithOrigins("http://localhost:4200")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                        });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -90,6 +102,7 @@ using (var scope = app.Services.CreateScope())
 // Incorporate additional middleware if necessary
 
 app.UseRouting();
+app.UseCors(customCORSName);
 app.UseAuthorization();
 
 app.MapControllers();

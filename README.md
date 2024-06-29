@@ -13,30 +13,44 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
 
 ## Features
 
-| **Domain**             | **Feature**                                | **Description**                                                             |
-|------------------------|--------------------------------------------|-----------------------------------------------------------------------------|
-| **User Management**    | User Registration & Authentication         | Securely handle user sign-up, login, and role management.                   |
-|                        | User Profile Management                    | Manage user details such as username, email, and password.                  |
-| **Product Management** | Product Catalog                            | Create, read, update, and delete (CRUD) operations for products.            |
-|                        | Category Management                        | Organize products into categories for easier navigation and searchability.  |
-| **Order Management**   | Order Processing                           | Manage customer orders from creation to completion.                         |
-|                        | Order Items                                | Handle individual items within an order, including quantity and price details. |
-| **Shopping Cart**      | Cart Functionality                         | Allow users to add products to their cart, view cart contents, and update quantities. |
-|                        | Cart Persistence                           | Ensure cart contents persist across user sessions.                          |
-| **Review Management**  | Product Reviews                            | Enable users to write reviews for products, rate them, and provide feedback. |
-|                        | Review Moderation                          | Manage and moderate user reviews to maintain quality and trustworthiness.   |
+- **User Management**
+  - User Registration & Authentication
+    - [ ] Securely handle user sign-up, login, and role management.
+    - [ ] Communicate with IAM provider APIs like Auth0
+  - User Profile Management
+    - [ ] Manage user details such as username, email, and password.
+
+- **Product Management**
+  - Product Catalog
+    - [x] Create, read, update, and delete (CRUD) operations for products.
+  - ~~Category Management~~
+    - ~~Organize products into categories for easier navigation and searchability.~~
+
+- **Order Management**
+  - Order Processing
+    - [ ] Manage customer orders from creation to completion.
+    - [ ] Incorporate payment APIs like PayPal or Stripe
+  - Order Items
+    - [ ] Handle individual items within an order, including quantity and price details.
+
+- **Shopping Cart**
+  - Cart Functionality
+    - [ ] Allow users to add products to their cart, view cart contents, and update quantities.
+  - Cart Persistence
+    - [ ] Ensure cart contents persist across user sessions.
+
+- **Review Management**
+  - Product Reviews
+    - [ ] Enable users to write reviews for products, rate them, and provide feedback.
+  - Review Moderation
+    - [ ] Manage and moderate user reviews to maintain quality and trustworthiness.
+
 
 **NOTE:** Also consider checking out the [entity relationship diagram](./docs/diagrams/entity-relationship-diagram.mmd)
 
-## API Structure
+## Web API Structure
 
-| Domain                | Interfaces & Services                                                                 | DTOs                                                                                 | Controllers        | Endpoints                                                                                                         |
-|-----------------------|----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|--------------------|------------------------------------------------------------------------------------------------------------------|
-| **User Management**   | `IUserService`, `UserService`                                                          | `UserRequestDTO`, `UserResponseDTO`, `LoginRequestDTO`, `LoginResponseDTO`           | `UserController`   | `POST /api/v1/users/register`, `POST /api/v1/users/login`, `GET /api/v1/users/{userId}`, `PUT /api/v1/users/{userId}`, `DELETE /api/v1/users/{userId}` |
-| **Product Management**| `IProductService`, `ProductService`, `ICategoryService`, `CategoryService`             | `ProductRequestDTO`, `ProductResponseDTO`, `CategoryRequestDTO`, `CategoryResponseDTO` | `ProductController`, `CategoryController` | `POST /api/v1/products`, `GET /api/v1/products`, `GET /api/v1/products/{productId}`, `PUT /api/v1/products/{productId}`, `DELETE /api/v1/products/{productId}`, `POST /api/v1/categories`, `GET /api/v1/categories`, `GET /api/v1/categories/{categoryId}`, `PUT /api/v1/categories/{categoryId}`, `DELETE /api/v1/categories/{categoryId}` |
-| **Order Management**  | `IOrderService`, `OrderService`, `IOrderItemService`, `OrderItemService`               | `OrderRequestDTO`, `OrderResponseDTO`, `OrderItemRequestDTO`, `OrderItemResponseDTO` | `OrderController`  | `POST /api/v1/orders`, `GET /api/v1/orders`, `GET /api/v1/orders/{orderId}`, `PUT /api/v1/orders/{orderId}`, `DELETE /api/v1/orders/{orderId}`, `POST /api/v1/orders/{orderId}/items`, `GET /api/v1/orders/{orderId}/items`, `GET /api/v1/orders/{orderId}/items/{itemId}`, `PUT /api/v1/orders/{orderId}/items/{itemId}`, `DELETE /api/v1/orders/{orderId}/items/{itemId}` |
-| **Shopping Cart**     | `ICartService`, `CartService`, `ICartItemService`, `CartItemService`                   | `CartRequestDTO`, `CartResponseDTO`, `CartItemRequestDTO`, `CartItemResponseDTO`     | `CartController`   | `POST /api/v1/carts`, `GET /api/v1/carts/{cartId}`, `PUT /api/v1/carts/{cartId}`, `DELETE /api/v1/carts/{cartId}`, `POST /api/v1/carts/{cartId}/items`, `GET /api/v1/carts/{cartId}/items`, `GET /api/v1/carts/{cartId}/items/{itemId}`, `PUT /api/v1/carts/{cartId}/items/{itemId}`, `DELETE /api/v1/cart/{cartId}/items/{itemId}`                                      |
-| **Review Management** | `IReviewService`, `ReviewService`                                                      | `ReviewRequestDTO`, `ReviewResponseDTO`                                              | `ReviewController` | `POST /api/v1/reviews`, `GET /api/v1/reviews`, `GET /api/v1/reviews/{reviewId}`, `PUT /api/v1/reviews/{reviewId}`, `DELETE /api/v1/reviews/{reviewId}` |
+Explore different versions of the Web API architecture [here](./docs/api-design/web-api-structure/).
 
 Copy contents of the [swagger.json](./docs/api-design/swagger.json) to the [Swagger Online editor](https://editor.swagger.io/).
 Results should resemble following snippet:
@@ -69,7 +83,7 @@ To view the web backend, open a browser and go to `localhost:5000/swagger/index.
 
 ![Swagger UI trough Docker](./docs/api-design/swagger-ui-trough-docker.PNG)
 
-To view the web frontend (**NOTE:** Currently the web frontend is only handling mocked data and navigation between components is not fully covered. For more information on existing routes refer to [app.routes.ts](./frontend/e-commerce-service-mocked/src/app/app.routes.ts)), open a browser and go to `localhost:4200`. Results should resemble:
+To view the web frontend, open a browser and go to `localhost:4200`. Results should resemble:
 
 ![Web frontend with mock data](./docs/test/web-frontend-with-mock-data.PNG)
 

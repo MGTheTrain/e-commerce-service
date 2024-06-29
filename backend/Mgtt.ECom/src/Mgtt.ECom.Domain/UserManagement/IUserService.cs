@@ -3,6 +3,7 @@ namespace Mgtt.ECom.Domain.UserManagement;
 
 public interface IUserService
 {
+    Task<IEnumerable<User>?> GetAllUsers();
     Task<User?> GetUserById(Guid userId);
     Task<User?> GetUserByEmail(string email);
     Task<User?> CreateUser(User user);

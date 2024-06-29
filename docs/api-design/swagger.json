@@ -83,6 +83,43 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Retrieves all carts.",
+        "responses": {
+          "200": {
+            "description": "Returns a list of all carts.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CartResponseDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CartResponseDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CartResponseDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/carts/{cartId}": {
@@ -2064,6 +2101,43 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "Retrieves all reviews.",
+        "responses": {
+          "200": {
+            "description": "Returns a list of all reviews.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewResponseDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewResponseDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewResponseDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/reviews/{reviewId}": {
@@ -2376,6 +2450,76 @@
         }
       }
     },
+    "/api/v1/users/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Registers a new user.",
+        "requestBody": {
+          "description": "The user data transfer object containing user details.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns the newly created user.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the user data is invalid.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/users/{id}": {
       "get": {
         "tags": [
@@ -2584,69 +2728,38 @@
         }
       }
     },
-    "/api/v1/users/register": {
-      "post": {
+    "/api/v1/users": {
+      "get": {
         "tags": [
           "User"
         ],
-        "summary": "Registers a new user.",
-        "requestBody": {
-          "description": "The user data transfer object containing user details.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRequestDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRequestDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRequestDTO"
-              }
-            }
-          }
-        },
+        "summary": "Retrieves all users.",
         "responses": {
-          "201": {
-            "description": "Returns the newly created user.",
+          "200": {
+            "description": "Returns a list of all users.",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserResponseDTO"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponseDTO"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserResponseDTO"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponseDTO"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserResponseDTO"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "If the user data is invalid.",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponseDTO"
+                  }
                 }
               }
             }

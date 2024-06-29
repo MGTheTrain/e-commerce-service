@@ -10,5 +10,11 @@
         "ghcr.io/devcontainers/features/java:1": {}
     },
     "postCreateCommand": "wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.57/swagger-codegen-cli-3.0.57.jar -O /tmp/swagger-codegen-cli.jar && npm install -g swagger-codegen-cli",
+    // Store latest swagger.json file from web backend in docs/api-design/ directory, then
+    // generate HTTP services from Swagger API descriptions using Swagger CodeGen by running: 
+    // java -jar /tmp/swagger-codegen-cli.jar generate \
+    // -i docs/api-design/swagger.json \
+    // -l typescript-angular \
+    // -o /workspaces/e-commerce-service/frontend/e-commerce-service/src/app/generated
     "remoteUser": "root"
 }

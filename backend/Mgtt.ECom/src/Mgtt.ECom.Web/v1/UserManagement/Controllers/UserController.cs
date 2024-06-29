@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Mgtt.ECom.Web.v1.UserManagement.DTOs;
 
 namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
 {
@@ -16,33 +17,6 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
         public UserController(IUserService userService)
         {
             _userService = userService;
-        }
-
-        /// <summary>
-        /// Retrieves a user by their ID.
-        /// </summary>
-        /// <param name="id">The ID of the user.</param>
-        /// <returns>The user with the specified ID.</returns>
-        /// <response code="200">Returns the user with the specified ID.</response>
-        /// <response code="404">If the user is not found.</response>
-        [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponseDTO))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<UserResponseDTO>> GetUserById(Guid id)
-        {
-            var user = await _userService.GetUserById(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            var userResponse = new UserResponseDTO
-            {
-                UserID = user.UserID,
-                UserName = user.UserName,
-                Email = user.Email,
-                Role = user.Role
-            };
-            return Ok(userResponse);
         }
 
         /// <summary>
@@ -86,6 +60,59 @@ namespace Mgtt.ECom.Web.v1.UserManagement.Controllers
             };
 
             return CreatedAtAction(nameof(Register), userResponseDTO);
+        }
+
+        /// <summary>
+        /// Retrieves a user by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the user.</param>
+        /// <returns>The user with the specified ID.</returns>
+        /// <response code="200">Returns the user with the specified ID.</response>
+        /// <response code="404">If the user is not found.</response>
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<UserResponseDTO>> GetUserById(Guid id)
+        {
+            var user = await _userService.GetUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var userResponse = new UserResponseDTO
+            {
+                UserID = user.UserID,
+                UserName = user.UserName,
+                Email = user.Email,
+                Role = user.Role
+            };
+            return Ok(userResponse);
+        }
+
+        /// <summary>
+        /// Retrieves all users.
+        /// </summary>
+        /// <returns>A list of all users.</returns>
+        /// <response code="200">Returns a list of all users.</response>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserResponseDTO>))]
+        public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetAllUsers()
+        {
+            var users = await _userService.GetAllUsers();
+            var userDTOs = new List<UserResponseDTO>();
+
+            foreach (var user in users)
+            {
+                userDTOs.Add(new UserResponseDTO
+                {
+                    UserID = user.UserID,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Role = user.Role,
+                });
+            }
+
+            return Ok(userDTOs);
         }
 
         /// <summary>

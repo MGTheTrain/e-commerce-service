@@ -31,4 +31,3 @@ jobs:
           exit 1
         fi
     # auto-format Typescript 
-    

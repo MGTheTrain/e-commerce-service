@@ -1,0 +1,17 @@
+name: Auto-format and lint
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Auto-formatting C# files
+      uses: MGTheTrain/public-github-actions/.github/actions/auto-formatting-for-csharp@main
+      with:
+        GH_TOKEN: ${{ inputs.GH_TOKEN }}
+    # auto-format Typescript 
+    

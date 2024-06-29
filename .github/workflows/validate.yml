@@ -32,7 +32,7 @@ jobs:
       run: |
         find . -type f -name '*.csproj' -execdir dotnet format {} \;
         cd ./frontend/e-commerce-service
-        ng lint
+        ng lint --fix
         
     - name: Check diffs
       run: |

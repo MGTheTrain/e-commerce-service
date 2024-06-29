@@ -1,4 +1,4 @@
-name: Auto-format and lint
+name: Auto-formatting and linting
 
 on: [push]
 

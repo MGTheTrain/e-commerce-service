@@ -1,22 +1,26 @@
-using Microsoft.AspNetCore.Mvc;
-using Mgtt.ECom.Domain.ProductManagement;
-using Mgtt.ECom.Web.v1.ProductManagement.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using static System.Collections.Specialized.BitVector32;
+// <copyright file="CategoryController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
-namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
+namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Mgtt.ECom.Domain.ProductManagement;
+    using Mgtt.ECom.Web.v1.ProductManagement.DTOs;
+    using Microsoft.AspNetCore.Mvc;
+    using static System.Collections.Specialized.BitVector32;
+
     [Route("api/v1/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly ICategoryService _categoryService;
+        private readonly ICategoryService categoryService;
 
         public CategoryController(ICategoryService categoryService)
         {
-            _categoryService = categoryService;
+            this.categoryService = categoryService;
         }
 
         /// <summary>
@@ -31,31 +35,31 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCategory(CategoryRequestDTO categoryDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             var category = new Category
             {
                 Name = categoryDTO.Name,
-                Description = categoryDTO.Description
+                Description = categoryDTO.Description,
             };
 
-            var action = await _categoryService.CreateCategory(category);
+            var action = await this.categoryService.CreateCategory(category);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var categoryResponseDTO = new CategoryResponseDTO
             {
                 CategoryID = category.CategoryID,
                 Name = category.Name,
-                Description = category.Description
+                Description = category.Description,
             };
 
-            return CreatedAtAction(nameof(CreateCategory), categoryResponseDTO);
+            return this.CreatedAtAction(nameof(this.CreateCategory), categoryResponseDTO);
         }
 
         /// <summary>
@@ -67,7 +71,7 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryResponseDTO>))]
         public async Task<ActionResult<IEnumerable<CategoryResponseDTO>>> GetAllCategories()
         {
-            var categories = await _categoryService.GetAllCategories();
+            var categories = await this.categoryService.GetAllCategories();
             var categoryDTOs = new List<CategoryResponseDTO>();
 
             foreach (var category in categories)
@@ -76,11 +80,11 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
                 {
                     CategoryID = category.CategoryID,
                     Name = category.Name,
-                    Description = category.Description
+                    Description = category.Description,
                 });
             }
 
-            return Ok(categoryDTOs);
+            return this.Ok(categoryDTOs);
         }
 
         /// <summary>
@@ -95,21 +99,21 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CategoryResponseDTO>> GetCategoryById(Guid categoryId)
         {
-            var category = await _categoryService.GetCategoryById(categoryId);
+            var category = await this.categoryService.GetCategoryById(categoryId);
 
             if (category == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var categoryDTO = new CategoryResponseDTO
             {
                 CategoryID = category.CategoryID,
                 Name = category.Name,
-                Description = category.Description
+                Description = category.Description,
             };
 
-            return Ok(categoryDTO);
+            return this.Ok(categoryDTO);
         }
 
         /// <summary>
@@ -127,35 +131,35 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateCategory(Guid categoryId, CategoryRequestDTO categoryDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var category = await _categoryService.GetCategoryById(categoryId);
+            var category = await this.categoryService.GetCategoryById(categoryId);
 
             if (category == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             category.Name = categoryDTO.Name;
             category.Description = categoryDTO.Description;
 
-            var action = await _categoryService.UpdateCategory(category);
+            var action = await this.categoryService.UpdateCategory(category);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var categoryResponseDTO = new CategoryResponseDTO
             {
                 CategoryID = category.CategoryID,
                 Name = category.Name,
-                Description = category.Description
+                Description = category.Description,
             };
 
-            return Ok(categoryResponseDTO);
+            return this.Ok(categoryResponseDTO);
         }
 
         /// <summary>
@@ -170,16 +174,16 @@ namespace Mgtt.ECom.Web.v1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCategory(Guid categoryId)
         {
-            var existingCategory = await _categoryService.GetCategoryById(categoryId);
+            var existingCategory = await this.categoryService.GetCategoryById(categoryId);
 
             if (existingCategory == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            await _categoryService.DeleteCategory(categoryId);
+            await this.categoryService.DeleteCategory(categoryId);
 
-            return NoContent();
+            return this.NoContent();
         }
     }
 }

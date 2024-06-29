@@ -1,9 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+// <copyright file="User.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.Domain.UserManagement
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// Represents a user in the e-commerce system.
     /// </summary>
@@ -11,11 +15,11 @@ namespace Mgtt.ECom.Domain.UserManagement
     {
         public User()
         {
-            UserID = Guid.NewGuid();
-            UserName = string.Empty;
-            PasswordHash = string.Empty;
-            Email = string.Empty;
-            Role = string.Empty;
+            this.UserID = Guid.NewGuid();
+            this.UserName = string.Empty;
+            this.PasswordHash = string.Empty;
+            this.Email = string.Empty;
+            this.Role = string.Empty;
         }
 
         [Required]
@@ -39,31 +43,32 @@ namespace Mgtt.ECom.Domain.UserManagement
         /// <summary>
         /// Validates the properties of the User object.
         /// </summary>
+        /// <returns></returns>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (UserID == Guid.Empty)
+            if (this.UserID == Guid.Empty)
             {
-                yield return new ValidationResult($"{nameof(UserID)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.UserID)} can't be empty");
             }
 
-            if (string.IsNullOrEmpty(UserName))
+            if (string.IsNullOrEmpty(this.UserName))
             {
-                yield return new ValidationResult($"{nameof(UserName)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.UserName)} can't be empty");
             }
 
-            if (string.IsNullOrEmpty(PasswordHash))
+            if (string.IsNullOrEmpty(this.PasswordHash))
             {
-                yield return new ValidationResult($"{nameof(PasswordHash)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.PasswordHash)} can't be empty");
             }
 
-            if (string.IsNullOrEmpty(Email))
+            if (string.IsNullOrEmpty(this.Email))
             {
-                yield return new ValidationResult($"{nameof(Email)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.Email)} can't be empty");
             }
 
-            if (string.IsNullOrEmpty(Role))
+            if (string.IsNullOrEmpty(this.Role))
             {
-                yield return new ValidationResult($"{nameof(Role)} can't be empty");
+                yield return new ValidationResult($"{nameof(this.Role)} can't be empty");
             }
 
             yield return ValidationResult.Success;

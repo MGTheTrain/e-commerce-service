@@ -1,23 +1,27 @@
-using Microsoft.AspNetCore.Mvc;
-using Mgtt.ECom.Domain.ReviewManagement;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Mgtt.ECom.Web.v1.ReviewManagement.DTOs;
-using static System.Collections.Specialized.BitVector32;
-using Mgtt.ECom.Web.v1.UserManagement.DTOs;
+// <copyright file="ReviewController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
-namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
+namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Mgtt.ECom.Domain.ReviewManagement;
+    using Mgtt.ECom.Web.v1.ReviewManagement.DTOs;
+    using Mgtt.ECom.Web.v1.UserManagement.DTOs;
+    using Microsoft.AspNetCore.Mvc;
+    using static System.Collections.Specialized.BitVector32;
+
     [Route("api/v1/reviews")]
     [ApiController]
     public class ReviewController : ControllerBase
     {
-        private readonly IReviewService _reviewService;
+        private readonly IReviewService reviewService;
 
         public ReviewController(IReviewService reviewService)
         {
-            _reviewService = reviewService;
+            this.reviewService = reviewService;
         }
 
         /// <summary>
@@ -32,9 +36,9 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateReview(ReviewRequestDTO reviewDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             var review = new Review
@@ -43,13 +47,13 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
                 UserID = reviewDTO.UserID,
                 Rating = reviewDTO.Rating,
                 Comment = reviewDTO.Comment,
-                ReviewDate = DateTime.UtcNow
+                ReviewDate = DateTime.UtcNow,
             };
 
-            var action = await _reviewService.CreateReview(review);
+            var action = await this.reviewService.CreateReview(review);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var reviewResponseDTO = new ReviewResponseDTO
@@ -59,10 +63,10 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
                 UserID = review.UserID,
                 Rating = review.Rating,
                 Comment = review.Comment,
-                ReviewDate = review.ReviewDate
+                ReviewDate = review.ReviewDate,
             };
 
-            return CreatedAtAction(nameof(CreateReview), reviewResponseDTO);
+            return this.CreatedAtAction(nameof(this.CreateReview), reviewResponseDTO);
         }
 
         /// <summary>
@@ -77,11 +81,11 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ReviewResponseDTO>> GetReviewById(Guid reviewId)
         {
-            var review = await _reviewService.GetReviewById(reviewId);
+            var review = await this.reviewService.GetReviewById(reviewId);
 
             if (review == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var reviewDTO = new ReviewResponseDTO
@@ -91,10 +95,10 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
                 UserID = review.UserID,
                 Rating = review.Rating,
                 Comment = review.Comment,
-                ReviewDate = review.ReviewDate
+                ReviewDate = review.ReviewDate,
             };
 
-            return Ok(reviewDTO);
+            return this.Ok(reviewDTO);
         }
 
         /// <summary>
@@ -106,7 +110,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
         public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetAllReviews()
         {
-            var reviews = await _reviewService.GetAllReviews();
+            var reviews = await this.reviewService.GetAllReviews();
             var reviewDTOs = new List<ReviewResponseDTO>();
 
             foreach (var review in reviews)
@@ -117,11 +121,11 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
                     UserID = review.UserID,
                     Rating = review.Rating,
                     Comment = review.Comment,
-                    ReviewDate = review.ReviewDate
+                    ReviewDate = review.ReviewDate,
                 });
             }
 
-            return Ok(reviewDTOs);
+            return this.Ok(reviewDTOs);
         }
 
         /// <summary>
@@ -134,7 +138,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
         public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetReviewsByProductId(Guid productId)
         {
-            var reviews = await _reviewService.GetReviewsByProductId(productId);
+            var reviews = await this.reviewService.GetReviewsByProductId(productId);
             var reviewDTOs = new List<ReviewResponseDTO>();
 
             foreach (var review in reviews)
@@ -146,11 +150,11 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
                     UserID = review.UserID,
                     Rating = review.Rating,
                     Comment = review.Comment,
-                    ReviewDate = review.ReviewDate
+                    ReviewDate = review.ReviewDate,
                 });
             }
 
-            return Ok(reviewDTOs);
+            return this.Ok(reviewDTOs);
         }
 
         /// <summary>
@@ -163,7 +167,7 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
         public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetReviewsByUserId(Guid userId)
         {
-            var reviews = await _reviewService.GetReviewsByUserId(userId);
+            var reviews = await this.reviewService.GetReviewsByUserId(userId);
             var reviewDTOs = new List<ReviewResponseDTO>();
 
             foreach (var review in reviews)
@@ -175,11 +179,11 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
                     UserID = review.UserID,
                     Rating = review.Rating,
                     Comment = review.Comment,
-                    ReviewDate = review.ReviewDate
+                    ReviewDate = review.ReviewDate,
                 });
             }
 
-            return Ok(reviewDTOs);
+            return this.Ok(reviewDTOs);
         }
 
         /// <summary>
@@ -190,22 +194,23 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         /// <response code="204">If the review was successfully updated.</response>
         /// <response code="400">If the review data is invalid.</response>
         /// <response code="404">If the review is not found.</response>
+        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
         [HttpPut("{reviewId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReviewResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateReview(Guid reviewId, ReviewRequestDTO reviewDTO)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            var review = await _reviewService.GetReviewById(reviewId);
+            var review = await this.reviewService.GetReviewById(reviewId);
 
             if (review == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             review.ProductID = reviewDTO.ProductID;
@@ -213,10 +218,10 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
             review.Rating = reviewDTO.Rating;
             review.Comment = reviewDTO.Comment;
 
-            var action =await _reviewService.UpdateReview(review);
+            var action = await this.reviewService.UpdateReview(review);
             if (action == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             var reviewResponseDTO = new ReviewResponseDTO
@@ -226,10 +231,10 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
                 UserID = review.UserID,
                 Rating = review.Rating,
                 Comment = review.Comment,
-                ReviewDate = review.ReviewDate
+                ReviewDate = review.ReviewDate,
             };
 
-            return Ok(reviewResponseDTO);
+            return this.Ok(reviewResponseDTO);
         }
 
         /// <summary>
@@ -238,21 +243,22 @@ namespace Mgtt.ECom.Web.v1.ReviewManagement.Controllers
         /// <param name="reviewId">The ID of the review to delete.</param>
         /// <response code="204">If the review was successfully deleted.</response>
         /// <response code="404">If the review is not found.</response>
+        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
         [HttpDelete("{reviewId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteReview(Guid reviewId)
         {
-            var review = await _reviewService.GetReviewById(reviewId);
+            var review = await this.reviewService.GetReviewById(reviewId);
 
             if (review == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            await _reviewService.DeleteReview(reviewId);
+            await this.reviewService.DeleteReview(reviewId);
 
-            return NoContent();
+            return this.NoContent();
         }
     }
 }

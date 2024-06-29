@@ -1,7 +1,11 @@
-using System.ComponentModel.DataAnnotations;
+// <copyright file="UserRequestDTO.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
-namespace Mgtt.ECom.Web.v1.UserManagement.DTOs
+namespace Mgtt.ECom.Web.V1.UserManagement.DTOs
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class UserRequestDTO
     {
         [Required]

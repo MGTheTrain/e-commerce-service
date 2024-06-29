@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Setup [Github workflows](./.github/workflows/)
+- Setup eslint for [web frontend](./frontend/e-commerce-service/)
+
+### Removed 
+
+- Remove unused directories in [web backend](./backend/Mgtt.ECom/)
 
 ## [0.3.0] - 29-06-2024
 

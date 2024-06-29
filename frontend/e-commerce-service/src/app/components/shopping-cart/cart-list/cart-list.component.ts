@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CartResponseDTO, CartService, UserResponseDTO } from '../../../generated';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
@@ -14,7 +14,7 @@ import { HeaderComponent } from '../../header/header.component';
   templateUrl: './cart-list.component.html',
   styleUrl: './cart-list.component.css'
 })
-export class CartListComponent {
+export class CartListComponent implements OnInit {
   @Input() carts: CartResponseDTO[] = [
     {
       cartID: uuidv4(),

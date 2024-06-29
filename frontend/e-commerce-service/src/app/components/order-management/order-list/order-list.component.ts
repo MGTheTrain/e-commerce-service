@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/free-brands-svg-icons';
@@ -16,7 +16,7 @@ import { HeaderComponent } from '../../header/header.component';
   templateUrl: './order-list.component.html',
   styleUrl: './order-list.component.css'
 })
-export class OrderListComponent {
+export class OrderListComponent implements OnInit {
   orders: OrderResponseDTO[] = [
     { orderID: uuidv4(), userID: '1', orderDate: new Date('2023-06-01'), totalAmount: 250.75, orderStatus: 'pending' },
     { orderID: uuidv4(), userID: '2', orderDate: new Date('2024-06-10'), totalAmount: 150.50, orderStatus: 'shipped' },

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ProductResponseDTO, ReviewResponseDTO, UserResponseDTO } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faArrowLeft, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -16,7 +16,7 @@ import { DetailHeaderComponent } from '../../header/detail-header/detail-header.
   templateUrl: './review-detail.component.html',
   styleUrls: ['./review-detail.component.css']
 })
-export class ReviewDetailComponent {
+export class ReviewDetailComponent implements OnInit {
   private subscription: Subscription | null = null;
 
   @Input() review: ReviewResponseDTO = {
@@ -54,7 +54,7 @@ export class ReviewDetailComponent {
 
   ngOnInit(): void {
     this.subscription = this.route.params.subscribe(params => {
-      let id = params['reviewId'];
+      const id = params['reviewId'];
       this.review.reviewID = id;
    });
   }

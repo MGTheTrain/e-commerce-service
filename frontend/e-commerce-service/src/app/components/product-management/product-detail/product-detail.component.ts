@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductResponseDTO, ProductRequestDTO, ProductService } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrash, faImage, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +15,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css']
 })
-export class ProductDetailComponent {
+export class ProductDetailComponent implements OnInit {
   private subscription: Subscription | null = null;
 
   product: ProductResponseDTO = { 
@@ -38,7 +38,7 @@ export class ProductDetailComponent {
 
   ngOnInit(): void {
     this.subscription = this.route.params.subscribe(params => {
-      let id = params['productId'];
+      const id = params['productId'];
       this.product.productID = id;
 
       this.productService.apiV1ProductsProductIdGet(id).subscribe(
@@ -80,7 +80,7 @@ export class ProductDetailComponent {
   handleUpdateProductClick() {
     const productID = this.product.productID;
     if (productID) {
-      let productRequest: ProductRequestDTO = {
+      const productRequest: ProductRequestDTO = {
         categoryID: this.product.categoryID!, 
         name: this.product.name!, 
         description: this.product.description!, 

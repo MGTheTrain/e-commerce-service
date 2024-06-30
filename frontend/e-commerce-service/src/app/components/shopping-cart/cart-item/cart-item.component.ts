@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CartItemResponseDTO, ProductResponseDTO } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.css'
 })
-export class CartItemComponent implements OnInit {
+export class CartItemComponent {
   @Input() cartItem: CartItemResponseDTO = {
     cartItemID: '1',
     cartID: 'cart1',

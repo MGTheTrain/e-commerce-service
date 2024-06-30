@@ -9,15 +9,18 @@ Admin --> UC2["Manage All Products"]
 Admin --> UC3["Manage All Orders"]
 Admin --> UC4["Manage All Reviews"]
 Admin --> UC5["Manage All Shopping Carts"]
+Admin --> UC6["Logout"]
 
-LoggedInUser --> UC6["Add, Update, Remove Own Reviews"]
-LoggedInUser --> UC7["Add, Update, Remove Items in Own Cart"]
-LoggedInUser --> UC8["Browse Products"]
-LoggedInUser --> UC9["Read Reviews"]
+LoggedInUser --> UC7["Add, Update, Remove Own Reviews"]
+LoggedInUser --> UC8["Add, Update, Remove Items in Own Cart"]
+LoggedInUser --> UC9["Browse Products"]
+LoggedInUser --> UC10["Read Reviews"]
+LoggedInUser --> UC11["Logout"]
 
-Viewer --> UC10["Browse Products"]
-Viewer --> UC11["Read Reviews"]
-Viewer --> UC12["Register as User"]
+Viewer --> UC12["Browse Products"]
+Viewer --> UC13["Read Reviews"]
+Viewer --> UC14["Register as User"]
+Viewer --> UC15["Login"]
 
 classDef actor fill:#ADD8E6,stroke:#333,stroke-width:2px;
 class Admin,LoggedInUser,Viewer actor;

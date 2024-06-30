@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '@auth0/auth0-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faSearch, faSignIn } from '@fortawesome/free-solid-svg-icons';
@@ -31,9 +32,27 @@ export class DetailHeaderComponent implements OnInit {
     return this._isLoggedIn;
   }
 
-  constructor(private router: Router) {}
+  public accessToken: string = ''; 
+
+  constructor(private router: Router, public auth: AuthService) {}
 
   ngOnInit(): void {
+    this.auth.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
+      this.isLoggedIn = isAuthenticated;
+
+      if (isAuthenticated) {
+        this.auth.getAccessTokenSilently().subscribe(
+          (accessToken: string) => {
+            this.accessToken = accessToken;
+            console.log(this.accessToken)
+          },
+          (error) => {
+            console.error('Error getting access token:', error);
+          }
+        );
+      }
+    });
+
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
     } else {
@@ -46,10 +65,12 @@ export class DetailHeaderComponent implements OnInit {
   }
 
   handleLoginClick(): void {
-    this.router.navigate(['/user/login']);
+    // this.router.navigate(['/user/login']);
+    this.auth.loginWithRedirect();
   }
 
   handleLogoutClick(): void {
+    this.auth.logout();
     // Simulate a logout process
     // You would typically have a service to handle the actual logout process
     // For now, we will just remove the isLoggedIn flag from local storage

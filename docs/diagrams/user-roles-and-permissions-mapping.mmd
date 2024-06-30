@@ -1,0 +1,28 @@
+graph TD;
+
+Admin["Admin"]
+LoggedInUser["Logged In User"]
+Viewer["Viewer"]
+
+permission1["manage:users\nManage Users"]
+permission2["manage:products\nManage Products"]
+permission3["manage:orders\nManage Orders"]
+permission4["manage:reviews\nManage Reviews"]
+permission5["manage:carts\nManage Carts"]
+permission6["manage:own-review\nManage Own Review"]
+permission7["manage:own-cart\nManage Own Cart"]
+
+Admin --> permission1
+Admin --> permission2
+Admin --> permission3
+Admin --> permission4
+Admin --> permission5
+
+LoggedInUser --> permission6
+LoggedInUser --> permission7
+
+Viewer --> permission8["view:products\nView Products"]
+Viewer --> permission9["view:reviews\nView Reviews"]
+
+classDef permission fill:#ADD8E6,stroke:#333,stroke-width:2px;
+class permission1,permission2,permission3,permission4,permission5,permission6,permission7,permission8,permission9 permission;

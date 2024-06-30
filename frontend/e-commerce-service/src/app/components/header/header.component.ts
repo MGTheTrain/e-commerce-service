@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, Output, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
@@ -20,20 +20,7 @@ export class HeaderComponent implements OnInit {
   public faSignIn: IconDefinition = faSignIn;
 
   public searchText: string = ""; 
-  @Output() isLoggedInChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  private _isLoggedIn: boolean = false;
-
-  @Input()
-  set isLoggedIn(value: boolean) {
-    this._isLoggedIn = value;
-    this.isLoggedInChange.emit(value); // Emitting value change
-  }
-
-  get isLoggedIn(): boolean {
-    return this._isLoggedIn;
-  }
-
+  public isLoggedIn: boolean = false;
   public accessToken: string | null = ''; 
 
   constructor(private router: Router, public auth: AuthService) {}
@@ -44,10 +31,10 @@ export class HeaderComponent implements OnInit {
       this.accessToken = localStorage.getItem("accessToken");
     } else {
       this.isLoggedIn = false;
+      this.accessToken = '';
       this.auth.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
-        localStorage.setItem('isLoggedIn', 'true');
-  
         if (isAuthenticated) {
+          localStorage.setItem('isLoggedIn', 'true');
           this.auth.getAccessTokenSilently().subscribe(
             (accessToken: string) => {
               localStorage.setItem("accessToken", accessToken);
@@ -76,6 +63,7 @@ export class HeaderComponent implements OnInit {
     // You would typically have a service to handle the actual logout process
     // For now, we will just remove the isLoggedIn flag from local storage
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('accessToken');
     this.isLoggedIn = false;
     this.router.navigate(['/']);
   }

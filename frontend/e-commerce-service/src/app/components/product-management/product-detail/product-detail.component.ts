@@ -53,7 +53,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   handleNavigateBackClick(): void {
-    this.router.navigate(['/products']);
+    this.router.navigate(['/']);
   }
 
   handleEditClick(): void {
@@ -66,7 +66,7 @@ export class ProductDetailComponent implements OnInit {
       this.productService.apiV1ProductsProductIdDelete(productID).subscribe(
         () => {
           console.error('Successfully deleted product with id', productID);
-          this.router.navigate(['/products']);
+          this.router.navigate(['/']);
         },
         error => {
           console.error('Error deleting product with id', productID, error);
@@ -92,7 +92,7 @@ export class ProductDetailComponent implements OnInit {
       this.productService.apiV1ProductsProductIdPut(productID, productRequest).subscribe(
         () => {
           console.error('Successfully updated product with id', productID);
-          this.router.navigate(['/products']);
+          this.router.navigate(['/']);
         },
         error => {
           console.error('Error updating product with id', productID, error);

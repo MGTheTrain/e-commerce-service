@@ -32,14 +32,14 @@ export class ProductCreationComponent {
   constructor(private router: Router, private productService: ProductService) { }
 
   handleNavigateBackClick(): void {
-    this.router.navigate(['/products']);
+    this.router.navigate(['/']);
   }
 
   handleCreateProductClick(): void {
     this.productService.apiV1ProductsPost(this.productRequest).subscribe(
       (data: ProductResponseDTO) => {
         console.log('Created product', data);
-        this.router.navigate(['/products']);
+        this.router.navigate(['/']);
       },
       error => {
         console.error('Error creating product', error);

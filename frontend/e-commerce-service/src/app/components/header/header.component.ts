@@ -34,31 +34,30 @@ export class HeaderComponent implements OnInit {
     return this._isLoggedIn;
   }
 
-  public accessToken: string = ''; 
+  public accessToken: string | null = ''; 
 
   constructor(private router: Router, public auth: AuthService) {}
 
   ngOnInit(): void {
-    this.auth.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
-      this.isLoggedIn = isAuthenticated;
-
-      if (isAuthenticated) {
-        this.auth.getAccessTokenSilently().subscribe(
-          (accessToken: string) => {
-            this.accessToken = accessToken;
-            console.log(this.accessToken)
-          },
-          (error) => {
-            console.error('Error getting access token:', error);
-          }
-        );
-      }
-    });
-
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
+      this.accessToken = localStorage.getItem("accessToken");
     } else {
       this.isLoggedIn = false;
+      this.auth.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
+        localStorage.setItem('isLoggedIn', 'true');
+  
+        if (isAuthenticated) {
+          this.auth.getAccessTokenSilently().subscribe(
+            (accessToken: string) => {
+              localStorage.setItem("accessToken", accessToken);
+            },
+            (error) => {
+              console.error('Error getting access token:', error);
+            }
+          );
+        }
+      });
     }
   }
 

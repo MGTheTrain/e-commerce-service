@@ -6,8 +6,8 @@
 
 - [Summary](#summary)
 - [Features](#features)
-- [API Structure](#api-structure)
 - [Getting Started](#getting-started)
+- [Documentation](#documentation)
 
 ## Summary
 
@@ -51,15 +51,6 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
 
 **NOTE:** Also consider checking out the [entity relationship diagram](./docs/diagrams/entity-relationship-diagram.mmd)
 
-## Web API Structure
-
-Explore different versions of the Web API architecture [here](./docs/api-design/web-api-structure/). For more details on the use case overview [checkout following diagram](./docs/diagrams/use-case-overview.mmd). For more details on user roles and permissions [checkout following diagram](./docs/diagrams/user-roles-and-permissions-mapping.mmd)
-
-Copy contents of the [swagger.json](./docs/api-design/swagger.json) to the [Swagger Online editor](https://editor.swagger.io/).
-Results should resemble following snippet:
-
-![swagger-ui-results.PNG](./docs/api-design/swagger-ui-results.PNG)
-
 ## Getting Started
 
 ### Preconditions
@@ -95,3 +86,12 @@ You can remove all Docker resources with:
 ```sh
 docker compose down -v
 ```
+
+## Documentation
+
+Explore different versions of the Web API architecture [here](./docs/api-design/web-api-structure/). For more details on the use case overview [checkout following diagram](./docs/diagrams/use-case-overview.mmd). For more details on user roles and permissions [checkout following diagram](./docs/diagrams/user-roles-and-permissions-mapping.mmd)
+
+Copy contents of the [swagger.json](./docs/api-design/swagger.json) to the [Swagger Online editor](https://editor.swagger.io/).
+Results should resemble following snippet:
+
+![swagger-ui-results.PNG](./docs/api-design/swagger-ui-results.PNG)

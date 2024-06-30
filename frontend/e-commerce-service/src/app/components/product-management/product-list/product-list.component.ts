@@ -24,12 +24,21 @@ export class ProductListComponent implements OnInit {
     { productID: '5', categoryID: '102', name: 'Gibson Les Paul Black', description: 'Description of Product E', price: 999.99, stock: 8, imageUrl: 'https://morningsideschoolofmusic.co.uk/wp-content/uploads/2022/05/Gibson-Guitars-1024x576.jpg' },
   ];
 
-  public isLoggedIn: boolean = false;
   public faPlus: IconDefinition = faPlus;
+  public isLoggedIn: boolean = false;
+  public accessToken: string | null = ''; 
 
   constructor(private router: Router, private productService: ProductService) {}
 
   ngOnInit(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+      this.accessToken = localStorage.getItem("accessToken");
+      console.log("accessToken: ", this.accessToken);
+    } else {
+      this.isLoggedIn = false;
+      this.accessToken = '';
+    }
     this.productService.apiV1ProductsGet().subscribe(
       (data: ProductResponseDTO[]) => {
         this.products = data;

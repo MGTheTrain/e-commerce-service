@@ -36,10 +36,21 @@ export class OrderListComponent implements OnInit {
   public faSearch: IconDefinition = faSearch;
   public searchText: string = '';
   public filterOption: string = '';
+  public isLoggedIn: boolean = false;
+  public accessToken: string | null = ''; 
 
   constructor(private router: Router, private orderService: OrderService) {}
 
   ngOnInit(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+      this.accessToken = localStorage.getItem("accessToken");
+      console.log("accessToken: ", this.accessToken);
+    } else {
+      this.isLoggedIn = false;
+      this.accessToken = '';
+    }
+    
     this.orderService.apiV1OrdersGet().subscribe(
       (data: OrderResponseDTO[]) => {
         this.orders = data;

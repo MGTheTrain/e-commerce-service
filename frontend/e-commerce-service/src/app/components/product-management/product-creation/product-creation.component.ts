@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -14,7 +14,7 @@ import { ProductRequestDTO, ProductResponseDTO, ProductService } from '../../../
   templateUrl: './product-creation.component.html',
   styleUrl: './product-creation.component.css'
 })
-export class ProductCreationComponent {
+export class ProductCreationComponent implements OnInit {
   productRequest: ProductRequestDTO = { 
     categoryID: '', // TBD: remove Category entity
     name: '', 
@@ -29,7 +29,21 @@ export class ProductCreationComponent {
   public faArrowLeft: IconDefinition = faArrowLeft;
   public isEditing: boolean = false;
 
+  public isLoggedIn: boolean = false;
+  public accessToken: string | null = ''; 
+
   constructor(private router: Router, private productService: ProductService) { }
+
+  ngOnInit(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+      this.accessToken = localStorage.getItem("accessToken");
+      console.log("accessToken: ", this.accessToken);
+    } else {
+      this.isLoggedIn = false;
+      this.accessToken = '';
+    }
+  }
 
   handleNavigateBackClick(): void {
     this.router.navigate(['/']);

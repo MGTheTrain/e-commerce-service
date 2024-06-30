@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { OrderItemResponseDTO, ProductResponseDTO } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   templateUrl: './order-item.component.html',
   styleUrls: ['./order-item.component.css']
 })
-export class OrderItemComponent {
+export class OrderItemComponent implements OnInit {
   public faTrash: IconDefinition = faTrash;
   @Input() public isEditing: boolean = false;
   
@@ -35,10 +35,19 @@ export class OrderItemComponent {
     imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
   };
 
-  // ngOnInit(): void {
-  //   // GET api/v1/orders/:orderId/item
-  //   // GET api/v1/product/:productId
-  // }
+  public isLoggedIn: boolean = false;
+  public accessToken: string | null = ''; 
+
+  ngOnInit(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+      this.accessToken = localStorage.getItem("accessToken");
+      console.log("accessToken: ", this.accessToken);
+    } else {
+      this.isLoggedIn = false;
+      this.accessToken = '';
+    }
+  }
 
   constructor() { }
 }

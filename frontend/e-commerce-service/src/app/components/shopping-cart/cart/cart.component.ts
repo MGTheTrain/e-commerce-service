@@ -44,9 +44,21 @@ export class CartComponent implements OnInit {
     imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
   };
 
+  public isLoggedIn: boolean = false;
+  public accessToken: string | null = ''; 
+
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+      this.accessToken = localStorage.getItem("accessToken");
+      console.log("accessToken: ", this.accessToken);
+    } else {
+      this.isLoggedIn = false;
+      this.accessToken = '';
+    }
+
     this.subscription = this.route.params.subscribe(params => {
       const id = params['userId'];
       this.cart.userID = id;

@@ -26,7 +26,7 @@ jobs:
         working-directory: ./frontend/e-commerce-service
 
       - name: Test TypeScript
-        run: npm run test -- --watch=false
+        run: ng test --browsers ChromeHeadless
         working-directory: ./frontend/e-commerce-service
 
       - name: Initialize CodeQL

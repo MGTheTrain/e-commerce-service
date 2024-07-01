@@ -35,10 +35,9 @@ export class OrderItemComponent implements OnInit {
     imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
   };
 
-  // ngOnInit(): void {
-  //   // GET api/v1/orders/:orderId/item
-  //   // GET api/v1/product/:productId
-  // }
+  ngOnInit(): void {
+    console.log("TBD");
+  }
 
   constructor() { }
 }

@@ -29,8 +29,17 @@ jobs:
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
 
-      - name: Perform CodeQL Analysis
+      - name: Perform CodeQL Analysis for C#
         uses: github/codeql-action/analyze@v3
+        with:
+          languages: 'csharp'
+          additional-analysis-path: /home/runner/work/e-commerce-service/results/csharp.sarif
+
+      - name: Perform CodeQL Analysis for JavaScript
+        uses: github/codeql-action/analyze@v3
+        with:
+          languages: 'javascript'
+          additional-analysis-path: /home/runner/work/e-commerce-service/results/javascript.sarif
 
       - name: Upload SARIF files
         uses: github/codeql-action/upload-sarif@v3

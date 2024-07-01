@@ -23,11 +23,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./frontend
+        working-directory: ./frontend/e-commerce-service
 
       - name: Test TypeScript
         run: npm run test -- --watch=false
-        working-directory: ./frontend
+        working-directory: ./frontend/e-commerce-service
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3

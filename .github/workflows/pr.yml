@@ -33,12 +33,14 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           languages: 'csharp'
+          category: 'codeql-csharp-analysis'
           additional-analysis-path: /home/runner/work/e-commerce-service/results/csharp.sarif
 
       - name: Perform CodeQL Analysis for JavaScript
         uses: github/codeql-action/analyze@v3
         with:
           languages: 'javascript'
+          category: 'codeql-javascript-analysis'
           additional-analysis-path: /home/runner/work/e-commerce-service/results/javascript.sarif
 
       - name: Upload SARIF files

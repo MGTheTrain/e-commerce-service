@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserRegistrationComponent } from './user-registration.component';
+import { UserService } from '../../../generated';
 
 describe('UserRegistrationComponent', () => {
   let component: UserRegistrationComponent;
@@ -8,10 +9,16 @@ describe('UserRegistrationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserRegistrationComponent]
+      imports: [
+        HttpClientTestingModule, 
+        UserRegistrationComponent
+      ],
+      providers: [
+        UserService
+      ]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(UserRegistrationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

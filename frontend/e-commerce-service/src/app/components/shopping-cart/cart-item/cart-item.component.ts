@@ -36,10 +36,9 @@ export class CartItemComponent implements OnInit {
   public faEdit: IconDefinition = faEdit;
   @Input() public isEditing: boolean = false;
 
-  // ngOnInit(): void {
-  //   // GET api/v1/cart/:cartId/item
-  //   // GET api/v1/product/:productId
-  // }
+  ngOnInit(): void {
+    console.log("TBD");
+  }
 
   handleDeleteItemClick(): void {
     console.log('Removing cart item:', this.cartItem);

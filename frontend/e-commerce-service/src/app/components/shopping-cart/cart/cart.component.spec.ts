@@ -1,6 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CartComponent } from './cart.component';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+
+class ActivatedRouteStub {
+  params = of({ id: 1 }); // some mocked data
+}
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -8,10 +14,16 @@ describe('CartComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CartComponent]
+      imports: [
+        HttpClientTestingModule,
+        CartComponent
+      ],
+      providers: [
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub }
+      ]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(CartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

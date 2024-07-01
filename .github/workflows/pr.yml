@@ -9,12 +9,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Test
+        uses: actions/checkout@v3
+
+      - name: Test C#
         uses: MGTheTrain/public-github-actions/.github/actions/test-csharp-repository@main
         with:
           TEST_WORKING_DIRECTORY: ./backend/Mgtt.ECom/test
-        # env: 
-        #   AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
-      # Typescript test?
-      
+
+      - name: Test TypeScript
+        uses: MGTheTrain/public-github-actions/.github/actions/test-ng-typescript-repository@main
+        with:
+          WORKING_DIRECTORY: ./frontend/e-commerce-service
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: 'csharp, javascript'
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          languages: 'csharp, javascript'
+
+      - name: Package and Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: e-commerce-service-artifacts
+          path: |
+            /home/runner/work/e-commerce-service/results/csharp.sarif
+            /home/runner/work/e-commerce-service/results/javascript.sarif

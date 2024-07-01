@@ -37,8 +37,8 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: |
-            ./results/csharp.sarif
-            ./results/javascript.sarif
+            /home/runner/work/e-commerce-service/results/csharp.sarif
+            /home/runner/work/e-commerce-service/results/javascript.sarif
       # Typescript test?
   create-git-tags-from-version-file:
     runs-on: ubuntu-latest

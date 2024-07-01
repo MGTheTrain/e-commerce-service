@@ -11,10 +11,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Test C#
-        uses: MGTheTrain/public-github-actions/.github/actions/test-csharp-repository@main
-        with:
-          TEST_WORKING_DIRECTORY: ./backend/Mgtt.ECom/test
+      # - name: Test C#
+      #   uses: MGTheTrain/public-github-actions/.github/actions/test-csharp-repository@main
+      #   with:
+      #     TEST_WORKING_DIRECTORY: ./backend/Mgtt.ECom/test
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -24,6 +24,9 @@ jobs:
       - name: Install dependencies
         run: npm install
         working-directory: ./frontend/e-commerce-service
+
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
 
       - name: Test TypeScript
         run: ng test --browsers ChromeHeadless

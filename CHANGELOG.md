@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 01-07-2024
+
+### Updated
+
+- Integrated CodeQL into the workflow
+
+### Fixed
+
+- Resolved issues with TypeScript tests
+
 ## [0.4.0] - 29-06-2024
 
 ### Added

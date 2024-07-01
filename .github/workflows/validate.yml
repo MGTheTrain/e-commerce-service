@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       
     - name: Setup dotnet
       uses: actions/setup-dotnet@v3
@@ -28,13 +29,16 @@ jobs:
     - name: Install Angular CLI
       run: npm install -g @angular/cli
       
-    - name: Auto-format
+    - name: Auto-format C#
       run: |
         find . -type f -name '*.csproj' -execdir dotnet format {} \;
-        cd ./frontend/e-commerce-service
+
+    - name: Auto-format ng TypeScript
+      run: | 
         npm i
         ng lint --fix
-        
+      working-directory: ./frontend/e-commerce-service
+
     - name: Check diffs
       run: |
         status=$(git status --porcelain=v1)

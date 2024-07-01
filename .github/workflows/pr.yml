@@ -29,7 +29,7 @@ jobs:
         run: npm install -g @angular/cli
 
       - name: Test TypeScript
-        run: ng test --browsers ChromeHeadless
+        run: ng test --browsers ChromeHeadless --watch=false
         working-directory: ./frontend/e-commerce-service
 
       - name: Initialize CodeQL

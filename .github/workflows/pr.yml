@@ -33,3 +33,11 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           languages: 'csharp, javascript'
+
+      - name: Package and Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: e-commerce-service-artifacts
+          path: |
+            /home/runner/work/e-commerce-service/results/csharp.sarif
+            /home/runner/work/e-commerce-service/results/javascript.sarif

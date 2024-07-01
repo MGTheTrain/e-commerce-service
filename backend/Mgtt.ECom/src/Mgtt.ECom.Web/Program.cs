@@ -10,10 +10,44 @@ using Mgtt.ECom.Domain.ReviewManagement;
 using Mgtt.ECom.Domain.ShoppingCart;
 using Mgtt.ECom.Domain.UserManagement;
 using Mgtt.ECom.Persistence.DataAccess;
+using Mgtt.ECom.Web.V1.OrderManagement.Handlers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.Authority = builder.Configuration["Auth0:Domain"];
+    options.Audience = builder.Configuration["Auth0:Audience"];
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("manage:users", policy =>
+        policy.Requirements.Add(new HasPermissionRequirement("manage:users")));
+    options.AddPolicy("manage:products", policy =>
+        policy.Requirements.Add(new HasPermissionRequirement("manage:products")));
+    options.AddPolicy("manage:orders", policy =>
+        policy.Requirements.Add(new HasPermissionRequirement("manage:orders")));
+    options.AddPolicy("manage:reviews", policy =>
+        policy.Requirements.Add(new HasPermissionRequirement("manage:reviews")));
+    options.AddPolicy("manage:carts", policy =>
+        policy.Requirements.Add(new HasPermissionRequirement("manage:carts")));
+    options.AddPolicy("manage:own-review", policy =>
+        policy.Requirements.Add(new HasPermissionRequirement("manage:own-review")));
+    options.AddPolicy("manage:own-cart", policy =>
+        policy.Requirements.Add(new HasPermissionRequirement("manage:own-cart")));
+});
+
+
+builder.Services.AddSingleton<IAuthorizationHandler, HasPermissionHandler>();
 
 var customCORSName = "AllowSpecificOrigins";
 builder.Services.AddCors(options =>
@@ -107,6 +141,7 @@ app.UseSwaggerUI();
 // Incorporate additional middleware if necessary
 app.UseRouting();
 app.UseCors(customCORSName);
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

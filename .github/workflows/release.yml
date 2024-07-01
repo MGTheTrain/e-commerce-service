@@ -41,7 +41,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: /home/runner/work/e-commerce-service/results/csharp.sarif
-          category: 'codeql-csharp-analysis'
+          category: 'codeql-csharp-upload'
 
       - name: Perform CodeQL Analysis for JavaScript
         uses: github/codeql-action/analyze@v3
@@ -54,7 +54,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: /home/runner/work/e-commerce-service/results/javascript.sarif
-          category: 'codeql-javascript-analysis'
+          category: 'codeql-javascript-upload'
 
   create-git-tags-from-version-file:
     runs-on: ubuntu-latest

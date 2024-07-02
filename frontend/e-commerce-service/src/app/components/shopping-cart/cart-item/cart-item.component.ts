@@ -37,17 +37,11 @@ export class CartItemComponent implements OnInit {
   @Input() public isEditing: boolean = false;
 
   public isLoggedIn: boolean = false;
-  public accessToken: string | null = ''; 
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
-      this.accessToken = localStorage.getItem("accessToken");
-      console.log("accessToken: ", this.accessToken);
-    } else {
-      this.isLoggedIn = false;
-      this.accessToken = '';
-    }
+    } 
   }
 
   handleDeleteItemClick(): void {

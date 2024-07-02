@@ -51,19 +51,13 @@ export class ReviewDetailComponent implements OnInit {
   public isEditing: boolean = false;
 
   public isLoggedIn: boolean = false;
-  public accessToken: string | null = ''; 
 
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
-      this.accessToken = localStorage.getItem("accessToken");
-      console.log("accessToken: ", this.accessToken);
-    } else {
-      this.isLoggedIn = false;
-      this.accessToken = '';
-    }
+    } 
     
     this.subscription = this.route.params.subscribe(params => {
       const id = params['reviewId'];

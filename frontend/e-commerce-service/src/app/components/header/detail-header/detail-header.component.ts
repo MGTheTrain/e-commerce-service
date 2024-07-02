@@ -19,17 +19,14 @@ export class DetailHeaderComponent implements OnInit {
   public faSignIn: IconDefinition = faSignIn;
   
   public isLoggedIn: boolean = false;
-  public accessToken: string | null = ''; 
 
   constructor(private router: Router, public auth: AuthService) {}
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
-      this.accessToken = localStorage.getItem("accessToken");
     } else {
       this.isLoggedIn = false;
-      this.accessToken = '';
     }
   }
 

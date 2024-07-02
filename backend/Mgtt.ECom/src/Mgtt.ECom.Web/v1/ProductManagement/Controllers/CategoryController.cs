@@ -13,6 +13,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
     using static System.Collections.Specialized.BitVector32;
 
     [Route("api/v1/categories")]
+    [Authorize("manage:products")]
     [ApiController]
     public class CategoryController : ControllerBase
     {

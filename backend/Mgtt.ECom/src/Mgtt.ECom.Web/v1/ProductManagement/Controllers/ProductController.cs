@@ -12,6 +12,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/v1/products")]
+    [Authorize("manage:products")]
     [ApiController]
     public class ProductController : ControllerBase
     {

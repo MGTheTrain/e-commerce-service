@@ -14,6 +14,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
     using static System.Collections.Specialized.BitVector32;
 
     [Route("api/v1/reviews")]
+    [Authorize("manage:reviews")]
     [ApiController]
     public class ReviewController : ControllerBase
     {

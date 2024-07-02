@@ -14,6 +14,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
     using static System.Collections.Specialized.BitVector32;
 
     [Route("api/v1/carts")]
+    [Authorize("manage:carts")]
     [ApiController]
     public class CartController : ControllerBase
     {

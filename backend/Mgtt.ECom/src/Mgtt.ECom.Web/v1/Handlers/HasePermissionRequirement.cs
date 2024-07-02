@@ -1,14 +1,18 @@
-using Microsoft.AspNetCore.Authorization;
+// <copyright file="HasePermissionRequirement.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.Web.V1.OrderManagement.Handlers
 {
+    using Microsoft.AspNetCore.Authorization;
+
     public class HasPermissionRequirement : IAuthorizationRequirement
     {
         public string Permission { get; }
 
         public HasPermissionRequirement(string permission)
-        {            
-            Permission = permission ?? throw new ArgumentNullException(nameof(permission));;
+        {
+            this.Permission = permission ?? throw new ArgumentNullException(nameof(permission));
         }
     }
 }

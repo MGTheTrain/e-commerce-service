@@ -46,7 +46,6 @@ builder.Services.AddAuthorization(options =>
         policy.Requirements.Add(new HasPermissionRequirement("manage:own-cart")));
 });
 
-
 builder.Services.AddSingleton<IAuthorizationHandler, HasPermissionHandler>();
 
 var customCORSName = "AllowSpecificOrigins";

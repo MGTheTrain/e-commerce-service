@@ -1,7 +1,11 @@
-using Microsoft.AspNetCore.Authorization;
+// <copyright file="HasPermissionHandler.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Mgtt.ECom.Web.V1.OrderManagement.Handlers
 {
+    using Microsoft.AspNetCore.Authorization;
+
     public class HasPermissionHandler : AuthorizationHandler<HasPermissionRequirement>
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, HasPermissionRequirement requirement)

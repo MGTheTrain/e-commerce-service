@@ -57,7 +57,7 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
 ### Preconditions
 
 - [Install Docker Engine](https://docs.docker.com/engine/install/)
-- Auth0 instance and expertise in creating necessary resources (roles, permissions, applications, APIs). **TBD:** Deployment of Auth0 resources for web backend and web frontend using Terraform 
+- Auth0 instance and expertise in creating necessary resources (roles, permissions, applications, APIs). **TBD:** Deployment of Auth0 resources using Terraform  required by web backend and web frontend
 
 ### Backend
 

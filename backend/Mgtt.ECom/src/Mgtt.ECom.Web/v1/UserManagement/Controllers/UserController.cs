@@ -13,6 +13,7 @@ namespace Mgtt.ECom.Web.V1.UserManagement.Controllers
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/v1/users")]
+    [Authorize("manage:users")]
     [ApiController]
     public class UserController : ControllerBase
     {

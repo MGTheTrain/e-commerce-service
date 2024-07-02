@@ -3,9 +3,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CartComponent } from './cart.component';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { AuthModule } from '@auth0/auth0-angular'; 
+import { environment } from '../../../../../environments/environment';
 
 class ActivatedRouteStub {
-  params = of({ id: 1 }); // some mocked data
+  params = of({ id: 1 }); 
 }
 
 describe('CartComponent', () => {
@@ -16,13 +18,20 @@ describe('CartComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        CartComponent
+        AuthModule.forRoot({
+          domain: environment.auth0.domain,
+          clientId: environment.auth0.clientId,
+          authorizationParams: {
+            redirect_uri: window.location.origin,
+            audience: environment.auth0.audience,
+          }
+        })
       ],
       providers: [
+        CartComponent,
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ]
-    })
-    .compileComponents();
+    }).compileComponents(); 
 
     fixture = TestBed.createComponent(CartComponent);
     component = fixture.componentInstance;

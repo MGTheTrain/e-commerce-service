@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
+import { AuthModule } from '@auth0/auth0-angular';
+import { environment } from '../../../../environments/environment';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -8,7 +10,17 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent]
+      imports: [
+        HeaderComponent,
+        AuthModule.forRoot({
+          domain: environment.auth0.domain,
+          clientId: environment.auth0.clientId,
+          authorizationParams: {
+            redirect_uri: window.location.origin,
+            audience: environment.auth0.audience,
+          }
+        })
+      ]
     })
     .compileComponents();
     

@@ -9,6 +9,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.ShoppingCart;
     using Mgtt.ECom.Web.V1.ShoppingCart.DTOs;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using static System.Collections.Specialized.BitVector32;

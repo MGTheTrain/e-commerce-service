@@ -9,6 +9,7 @@ namespace Mgtt.ECom.Web.V1.UserManagement.Controllers
     using Mgtt.ECom.Domain.UserManagement;
     using Mgtt.ECom.Web.V1.UserManagement.DTOs;
     using Mgtt.ECom.Web.V1.UserManagement.DTOs;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 

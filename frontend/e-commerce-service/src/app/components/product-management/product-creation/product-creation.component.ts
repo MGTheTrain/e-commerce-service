@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -14,7 +14,7 @@ import { ProductRequestDTO, ProductResponseDTO, ProductService } from '../../../
   templateUrl: './product-creation.component.html',
   styleUrl: './product-creation.component.css'
 })
-export class ProductCreationComponent {
+export class ProductCreationComponent implements OnInit {
   productRequest: ProductRequestDTO = { 
     categoryID: '', // TBD: remove Category entity
     name: '', 
@@ -29,17 +29,25 @@ export class ProductCreationComponent {
   public faArrowLeft: IconDefinition = faArrowLeft;
   public isEditing: boolean = false;
 
+  public isLoggedIn: boolean = false;
+
   constructor(private router: Router, private productService: ProductService) { }
 
+  ngOnInit(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+    } 
+  }
+
   handleNavigateBackClick(): void {
-    this.router.navigate(['/products']);
+    this.router.navigate(['/']);
   }
 
   handleCreateProductClick(): void {
     this.productService.apiV1ProductsPost(this.productRequest).subscribe(
       (data: ProductResponseDTO) => {
         console.log('Created product', data);
-        this.router.navigate(['/products']);
+        this.router.navigate(['/']);
       },
       error => {
         console.error('Error creating product', error);

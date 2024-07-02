@@ -7,11 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 02-07-2024
+
+### Added
+
+- [Feature] User Registration & Authentication
+    - [x] Securely handle user sign-up, login, and role management.
+    - [x] Communicate with IAM provider APIs like Auth0.
+    - Consider OIDC trough `auth0-angular` npm package in web frontend
+    - Consider RBAC in web backend trough `Microsoft.AspNetCore.Authentication.JwtBearer` nuget package
+
 ## [0.5.0] - 01-07-2024
 
 ### Updated
 
-- Integrated CodeQL into the workflow
+- Integrated CodeQL into [PR](./.github/workflows/pr.yml) and [release](./.github/workflows/release.yml) workflows
 
 ### Fixed
 

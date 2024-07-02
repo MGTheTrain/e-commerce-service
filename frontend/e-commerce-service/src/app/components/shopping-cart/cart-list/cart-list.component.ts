@@ -33,9 +33,15 @@ export class CartListComponent implements OnInit {
     { userID: '2', userName: 'Jane Smith', email: 'jane.smith@example.com', role: 'User' }
   ];
 
+  public isLoggedIn: boolean = false;
+
   constructor(private router: Router, private cartService: CartService) {}
 
   ngOnInit(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+    } 
+
     this.cartService.apiV1CartsGet().subscribe(
       (data: CartResponseDTO[]) => {
         this.carts = data;

@@ -25,16 +25,16 @@ services:
     ports:
       - "5000:8080/tcp"
 
-  # # Frontend
-  # e-commerce-service:
-  #   image: ecommerce-service-fe:0.1.0
-  #   build:
-  #     context: .
-  #     dockerfile: frontend/e-commerce-service/Dockerfile
-  #   depends_on:
-  #     - postgres
-  #   ports:
-  #     - "4200:80/tcp"
+  # Frontend
+  e-commerce-service:
+    image: ecommerce-service-fe:0.1.0
+    build:
+      context: .
+      dockerfile: frontend/e-commerce-service/Dockerfile
+    depends_on:
+      - postgres
+    ports:
+      - "4200:80/tcp"
 
 volumes:
   postgres-db:

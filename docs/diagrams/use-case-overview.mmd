@@ -1,0 +1,26 @@
+graph TD;
+
+Admin["Admin"]
+LoggedInUser["Logged In User"]
+Viewer["Viewer"]
+
+Admin --> UC1["Manage All User Accounts"]
+Admin --> UC2["Manage All Products"]
+Admin --> UC3["Manage All Orders"]
+Admin --> UC4["Manage All Reviews"]
+Admin --> UC5["Manage All Shopping Carts"]
+Admin --> UC6["Logout"]
+
+LoggedInUser --> UC7["Add, Update, Remove Own Reviews"]
+LoggedInUser --> UC8["Add, Update, Remove Items in Own Cart"]
+LoggedInUser --> UC9["Browse Products"]
+LoggedInUser --> UC10["Read Reviews"]
+LoggedInUser --> UC11["Logout"]
+
+Viewer --> UC12["Browse Products"]
+Viewer --> UC13["Read Reviews"]
+Viewer --> UC14["Register as User"]
+Viewer --> UC15["Login"]
+
+classDef actor fill:#ADD8E6,stroke:#333,stroke-width:2px;
+class Admin,LoggedInUser,Viewer actor;

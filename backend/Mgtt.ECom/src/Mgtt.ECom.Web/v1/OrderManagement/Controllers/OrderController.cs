@@ -9,10 +9,12 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.OrderManagement;
     using Mgtt.ECom.Web.V1.OrderManagement.DTOs;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/v1/orders")]
+    [Authorize("manage:orders")]
     [ApiController]
     public class OrderController : ControllerBase
     {

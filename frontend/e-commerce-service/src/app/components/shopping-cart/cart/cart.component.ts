@@ -44,9 +44,15 @@ export class CartComponent implements OnInit {
     imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
   };
 
+  public isLoggedIn: boolean = false;
+
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+    } 
+
     this.subscription = this.route.params.subscribe(params => {
       const id = params['userId'];
       this.cart.userID = id;

@@ -9,10 +9,12 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.ProductManagement;
     using Mgtt.ECom.Web.V1.ProductManagement.DTOs;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using static System.Collections.Specialized.BitVector32;
 
     [Route("api/v1/categories")]
+    [Authorize("manage:products")]
     [ApiController]
     public class CategoryController : ControllerBase
     {

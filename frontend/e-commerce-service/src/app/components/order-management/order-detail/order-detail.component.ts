@@ -46,9 +46,15 @@ export class OrderDetailComponent implements OnInit {
   public faArrowLeft: IconDefinition = faArrowLeft;
   public isEditing: boolean = false;
 
+  public isLoggedIn: boolean = false;
+
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+    } 
+
     this.subscription = this.route.params.subscribe(params => {
       const id = params['orderId'];
       this.order.orderID = id;

@@ -35,8 +35,12 @@ export class OrderItemComponent implements OnInit {
     imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
   };
 
+  public isLoggedIn: boolean = false;
+
   ngOnInit(): void {
-    console.log("TBD");
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+    } 
   }
 
   constructor() { }

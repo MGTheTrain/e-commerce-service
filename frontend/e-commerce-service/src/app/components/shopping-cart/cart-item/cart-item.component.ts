@@ -36,8 +36,12 @@ export class CartItemComponent implements OnInit {
   public faEdit: IconDefinition = faEdit;
   @Input() public isEditing: boolean = false;
 
+  public isLoggedIn: boolean = false;
+
   ngOnInit(): void {
-    console.log("TBD");
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+    } 
   }
 
   handleDeleteItemClick(): void {

@@ -34,9 +34,15 @@ export class ProductDetailComponent implements OnInit {
   public faArrowLeft: IconDefinition = faArrowLeft;
   public isEditing: boolean = false;
 
+  public isLoggedIn: boolean = false;
+
   constructor(private router: Router, private route: ActivatedRoute, private productService: ProductService) { }
 
   ngOnInit(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+    } 
+
     this.subscription = this.route.params.subscribe(params => {
       const id = params['productId'];
       this.product.productID = id;
@@ -53,7 +59,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   handleNavigateBackClick(): void {
-    this.router.navigate(['/products']);
+    this.router.navigate(['/']);
   }
 
   handleEditClick(): void {
@@ -66,7 +72,7 @@ export class ProductDetailComponent implements OnInit {
       this.productService.apiV1ProductsProductIdDelete(productID).subscribe(
         () => {
           console.error('Successfully deleted product with id', productID);
-          this.router.navigate(['/products']);
+          this.router.navigate(['/']);
         },
         error => {
           console.error('Error deleting product with id', productID, error);
@@ -92,7 +98,7 @@ export class ProductDetailComponent implements OnInit {
       this.productService.apiV1ProductsProductIdPut(productID, productRequest).subscribe(
         () => {
           console.error('Successfully updated product with id', productID);
-          this.router.navigate(['/products']);
+          this.router.navigate(['/']);
         },
         error => {
           console.error('Error updating product with id', productID, error);

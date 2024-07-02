@@ -42,11 +42,16 @@ export class ReviewListComponent implements OnInit {
   ];
 
   public faPlus: IconDefinition = faPlus;
+
   public isLoggedIn: boolean = false;
 
   constructor(private router: Router, private reviewService: ReviewService) {}
 
   ngOnInit(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+    } 
+
     this.reviewService.apiV1ReviewsGet().subscribe(
       (data: ReviewResponseDTO[]) => {
         this.reviews = data;

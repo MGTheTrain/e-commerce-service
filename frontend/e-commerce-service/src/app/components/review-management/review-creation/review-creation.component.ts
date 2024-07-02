@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +15,7 @@ import { DetailHeaderComponent } from '../../header/detail-header/detail-header.
   templateUrl: './review-creation.component.html',
   styleUrl: './review-creation.component.css'
 })
-export class ReviewCreationComponent {
+export class ReviewCreationComponent implements OnInit {
   @Input() review: ReviewResponseDTO = {
     reviewID: '1',
     productID: '1',
@@ -45,7 +45,15 @@ export class ReviewCreationComponent {
   public faPlus: IconDefinition = faPlus;
   public faArrowLeft: IconDefinition = faArrowLeft;
 
+  public isLoggedIn: boolean = false;
+
   constructor(private router: Router) { }
+
+  ngOnInit(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.isLoggedIn = true;
+    } 
+  }
 
   handleNavigateBackClick(): void {
     this.router.navigate(['/reviews']);

@@ -2,7 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Mgtt.ECom.Web.V1.OrderManagement.Handlers
+namespace Mgtt.ECom.Web.Handlers
 {
     using Microsoft.AspNetCore.Authorization;
 

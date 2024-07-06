@@ -13,7 +13,6 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/v1/products")]
-    [Authorize("manage:products")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -32,6 +31,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="201">Returns the newly created product.</response>
         /// <response code="400">If the product data is invalid.</response>
         [HttpPost]
+        [Authorize("manage:products")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProductResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateProduct(ProductRequestDTO productDTO)
@@ -143,6 +143,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="400">If the product data is invalid.</response>
         /// <response code="404">If the product is not found.</response>
         [HttpPut("{productId}")]
+        [Authorize("manage:products")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -195,6 +196,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="204">If the product was successfully deleted.</response>
         /// <response code="404">If the product is not found.</response>
         [HttpDelete("{productId}")]
+        [Authorize("manage:products")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteProduct(Guid productId)

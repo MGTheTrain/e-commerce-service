@@ -14,7 +14,6 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
     using static System.Collections.Specialized.BitVector32;
 
     [Route("api/v1/categories")]
-    [Authorize("manage:products")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -33,6 +32,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="201">Returns the newly created category.</response>
         /// <response code="400">If the category data is invalid.</response>
         [HttpPost]
+        [Authorize("manage:products")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CategoryResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCategory(CategoryRequestDTO categoryDTO)
@@ -128,6 +128,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="400">If the category data is invalid.</response>
         /// <response code="404">If the category is not found.</response>
         [HttpPut("{categoryId}")]
+        [Authorize("manage:products")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -172,6 +173,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="204">If the category was successfully deleted.</response>
         /// <response code="404">If the category is not found.</response>
         [HttpDelete("{categoryId}")]
+        [Authorize("manage:products")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCategory(Guid categoryId)

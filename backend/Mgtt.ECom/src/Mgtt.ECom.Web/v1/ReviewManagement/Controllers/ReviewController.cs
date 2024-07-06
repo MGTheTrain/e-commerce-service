@@ -15,7 +15,6 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
     using static System.Collections.Specialized.BitVector32;
 
     [Route("api/v1/reviews")]
-    [Authorize("manage:reviews")]
     [ApiController]
     public class ReviewController : ControllerBase
     {
@@ -34,6 +33,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <response code="201">Returns the newly created review.</response>
         /// <response code="400">If the review data is invalid.</response>
         [HttpPost]
+        [Authorize("manage:reviews")]
         [Authorize("manage:own-review")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReviewResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -199,6 +199,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <response code="404">If the review is not found.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpPut("{reviewId}")]
+        [Authorize("manage:reviews")]
         [Authorize("manage:own-review")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReviewResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -249,6 +250,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <response code="404">If the review is not found.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpDelete("{reviewId}")]
+        [Authorize("manage:reviews")]
         [Authorize("manage:own-review")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

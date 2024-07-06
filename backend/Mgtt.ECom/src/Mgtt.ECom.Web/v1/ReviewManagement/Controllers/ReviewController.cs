@@ -30,17 +30,17 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <returns>True if the user has the permission and valid reviews; otherwise, false.</returns>
         private async Task<bool> CheckManageOwnReviewPermission()
         {
-            var permissionsClaim = this.User.FindFirst("permissions");
-            if(permissionsClaim!.Value.Split(' ').Contains("manage:reviews"))
+            var permissionsClaims = this.User.FindAll("permissions");
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:reviews")))
             {
                 return true;
             }
-            else if (permissionsClaim!.Value.Split(' ').Contains("manage:own-review"))
+            else if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-review")))
             {
                 var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
                 if (userIdClaim != null)
                 {
-                    var userId = Guid.Parse(userIdClaim.Value);
+                    var userId = userIdClaim.Value;
                     var userReviews = await this.reviewService.GetReviewsByUserId(userId);
                     if (userReviews != null)
                     {
@@ -61,8 +61,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <response code="401">If the user is not authenticated.</response>
         /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPost]
-        [Authorize("manage:reviews")]
-        [Authorize("manage:own-review")]
+        [Authorize(Policy="manage:reviews-and-own-review")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReviewResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -208,8 +207,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <response code="403">If the user is not allowed to manage the resource.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpPut("{reviewId}")]
-        [Authorize("manage:reviews")]
-        [Authorize("manage:own-review")]
+        [Authorize(Policy="manage:reviews-and-own-review")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReviewResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -269,8 +267,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <response code="403">If the user is not allowed to manage the resource.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpDelete("{reviewId}")]
-        [Authorize("manage:reviews")]
-        [Authorize("manage:own-review")]
+        [Authorize(Policy="manage:reviews-and-own-review")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteReview(Guid reviewId)

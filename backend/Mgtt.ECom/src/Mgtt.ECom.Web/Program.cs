@@ -44,6 +44,11 @@ builder.Services.AddAuthorization(options =>
         policy.Requirements.Add(new HasPermissionRequirement("manage:own-review")));
     options.AddPolicy("manage:own-cart", policy =>
         policy.Requirements.Add(new HasPermissionRequirement("manage:own-cart")));
+
+    options.AddPolicy("manage:reviews-and-own-review", policy =>
+    {
+        policy.RequireClaim("permissions", "manage:reviews", "manage:own-review");
+    });
 });
 
 builder.Services.AddSingleton<IAuthorizationHandler, HasPermissionHandler>();

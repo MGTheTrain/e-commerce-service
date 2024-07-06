@@ -7,13 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 06-07-2024
+
+### Added
+
+- [Feature] Shopping Cart
+  - Cart Functionality
+    - [x] Ensure cart contents persist across user sessions
+  - Cart Persistence
+    - [x] Ensure cart contents persist across user sessions.
+- [Feature] Review Management
+  - Product Reviews
+    - [x] Enable users to write reviews for products, rate them, and provide feedback.
+
+### Updated
+
+- Relocate Authorize attributes to the relevant HTTP controller endpoints in the [web backend](./backend/Mgtt.ECom/)
+
 ## [0.6.0] - 02-07-2024
 
 ### Added
 
-- [Feature] User Registration & Authentication
-    - [x] Securely handle user sign-up, login, and role management.
-    - [x] Communicate with IAM provider APIs like Auth0.
+- [Feature] User Management
+    - User Registration & Authentication
+        - [x] Securely handle user sign-up, login, and role management.
+        - [x] Communicate with IAM provider APIs like Auth0.
     - Consider OIDC trough `auth0-angular` npm package in web frontend
     - Consider RBAC in web backend trough `Microsoft.AspNetCore.Authentication.JwtBearer` nuget package
 

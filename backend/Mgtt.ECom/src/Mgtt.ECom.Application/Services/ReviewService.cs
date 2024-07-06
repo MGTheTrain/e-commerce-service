@@ -66,7 +66,7 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
-        public async Task<IEnumerable<Review>?> GetReviewsByUserId(Guid userId)
+        public async Task<IEnumerable<Review>?> GetReviewsByUserId(string userId)
         {
             this.logger.LogInformation("Fetching reviews by User ID: {UserId}", userId);
             try

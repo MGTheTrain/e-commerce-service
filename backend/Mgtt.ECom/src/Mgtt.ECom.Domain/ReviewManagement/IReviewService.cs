@@ -12,7 +12,7 @@ public interface IReviewService
 
     Task<IEnumerable<Review>?> GetReviewsByProductId(Guid productId);
 
-    Task<IEnumerable<Review>?> GetReviewsByUserId(Guid userId);
+    Task<IEnumerable<Review>?> GetReviewsByUserId(string userId);
 
     Task<Review?> CreateReview(Review review);
 

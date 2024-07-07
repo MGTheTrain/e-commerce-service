@@ -15,8 +15,8 @@ public class PsqlDbContext : DbContext
     /// Comment this line out when initially creating first migration with 
     /// `dotnet-ef migrations add InitialCreate --output-dir Migrations`
     /// <\remark>
-    // public PsqlDbContext(DbContextOptions<PsqlDbContext> options) : base(options)
-    // { }
+    public PsqlDbContext(DbContextOptions<PsqlDbContext> options) : base(options)
+    { }
 
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }

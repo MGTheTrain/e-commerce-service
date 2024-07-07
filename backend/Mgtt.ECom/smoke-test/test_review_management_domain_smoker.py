@@ -22,8 +22,8 @@ def review_id():
         'rating': 4,
         'comment': "This is another test review."
     }
-    response = requests.post(url, json=body)
-    print('Create Review Response:', response.status_code, headers=headers)
+    response = requests.post(url, json=body, headers=headers)
+    print('Create Review Response:', response.status_code)
     assert response.status_code == 201
     return response.json().get('reviewID')
 
@@ -64,8 +64,8 @@ def test_delete_review(review_id):
     headers = {
         'Authorization': f'Bearer {BEARER_TOKEN}'
     }
-    response = requests.delete(url)
-    print('Delete Review Response:', response.status_code, headers=headers)
+    response = requests.delete(url, headers=headers)
+    print('Delete Review Response:', response.status_code)
     assert response.status_code == 204
 
     # Verify the review was deleted

@@ -19,7 +19,6 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
   - User Registration & Authentication
     - [x] Securely handle user sign-up, login, and role management.
     - [x] Communicate with IAM provider APIs like Auth0.
-    - [ ] Securely store and manage username / password credentials in own store
     - [ ] Configuring authorization URLs with Auth0 as the central IAM system for external IdPs (e.g. Apple, Microsoft, Google).
   - User Profile Management
     - [ ] Manage user details such as username, email, and password.

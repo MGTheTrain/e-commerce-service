@@ -74,7 +74,8 @@ Run smoke tests:
 
 ```sh
 pip install -r requirements.txt # install pip depdencies
-export API_BASE_URL='http://localhost:5056/api/v1' # Substitute the value if it differs
+export API_BASE_URL='http://localhost:5000/api/v1' # Substitute the value if it differs
+export BEARER_TOKEN='<your Auth0 access token>'
 # all
 make smoke-test
 # Individual tests

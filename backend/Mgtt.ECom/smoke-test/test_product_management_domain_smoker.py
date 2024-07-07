@@ -4,6 +4,7 @@ import pytest
 import os
 
 API_BASE_URL = os.getenv('API_BASE_URL', 'http://localhost/api/v1')
+BEARER_TOKEN = os.getenv('BEARER_TOKEN', '')
 TEST_CATEGORY_NAME = "Test Category"
 TEST_CATEGORY_DESCRIPTION = "This is a test category."
 TEST_PRODUCT_NAME = "Test Product"
@@ -15,6 +16,9 @@ TEST_PRODUCT_IMAGE_URL = "http://example.com/test-product.jpg"
 @pytest.fixture(scope="module")
 def product_id():
     url = f"{API_BASE_URL}/products"
+    headers = {
+        'Authorization': f'Bearer {BEARER_TOKEN}'
+    }
     body = {
         'categories': [str(uuid.uuid4())],  # Example: List of category IDs
         'name': "New Test Product",
@@ -23,13 +27,16 @@ def product_id():
         'stock': 20,
         'imageUrl': "http://example.com/new-test-product.jpg"
     }
-    response = requests.post(url, json=body)
+    response = requests.post(url, json=body, headers=headers)
     print('Create Product Response:', response.status_code)
     assert response.status_code == 201
     return response.json().get('productID')
 
 def test_create_product():
     url = f"{API_BASE_URL}/products"
+    headers = {
+        'Authorization': f'Bearer {BEARER_TOKEN}'
+    }
     body = {
         'categories': [str(uuid.uuid4())],  # Example: List of category IDs
         'name': "New Test Product",
@@ -38,7 +45,7 @@ def test_create_product():
         'stock': 20,
         'imageUrl': "http://example.com/new-test-product.jpg"
     }
-    response = requests.post(url, json=body)
+    response = requests.post(url, json=body, headers=headers)
     print('Create Product Response:', response.status_code)
     assert response.status_code == 201
     assert 'productID' in response.json()
@@ -59,6 +66,9 @@ def test_get_product_by_id(product_id):
 
 def test_update_product(product_id):
     url = f"{API_BASE_URL}/products/{product_id}"
+    headers = {
+        'Authorization': f'Bearer {BEARER_TOKEN}'
+    }
     body = {
         'categories': [str(uuid.uuid4())],  # Example: List of new category IDs
         'name': "Updated Test Product",
@@ -67,7 +77,7 @@ def test_update_product(product_id):
         'stock': 15,
         'imageUrl': "http://example.com/updated-test-product.jpg"
     }
-    response = requests.put(url, json=body)
+    response = requests.put(url, json=body, headers=headers)
     print('Update Product Response:', response.status_code)
     assert response.status_code == 200
     updated_product = response.json()
@@ -79,7 +89,10 @@ def test_update_product(product_id):
 
 def test_delete_product(product_id):
     url = f"{API_BASE_URL}/products/{product_id}"
-    response = requests.delete(url)
+    headers = {
+        'Authorization': f'Bearer {BEARER_TOKEN}'
+    }
+    response = requests.delete(url, headers=headers)
     print('Delete Product Response:', response.status_code)
     assert response.status_code == 204
 

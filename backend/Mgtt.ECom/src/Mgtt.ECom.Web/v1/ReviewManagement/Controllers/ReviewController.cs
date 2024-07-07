@@ -25,10 +25,11 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         }
 
         /// <summary>
-        /// Checks if the user has either "manage:reviews" or "manage:own-review" permission and validates their reviews if applicable.
+        /// Determines if the user has the "manage:reviews" or "manage:own-review" permission, and if applicable, validates the user's reviews.
         /// </summary>
-        /// <returns>True if the user has the permission and valid reviews; otherwise, false.</returns>
-        private async Task<bool> CheckManageOwnReviewPermission()
+        /// <param name="isCreateOperation">Indicates whether the operation is a creation operation.</param>
+        /// <returns>True if the user has the required permissions and, if necessary, has valid reviews; otherwise, false.</returns>
+        private async Task<bool> CheckManageOwnReviewPermission(bool isCreateOperation)
         {
             var permissionsClaims = this.User.FindAll("permissions");
             if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:reviews")))
@@ -37,16 +38,24 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             }
             else if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-review")))
             {
-                var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
-                if (userIdClaim != null)
+                if (!isCreateOperation)
                 {
-                    var userId = userIdClaim.Value;
-                    var userReviews = await this.reviewService.GetReviewsByUserId(userId);
-                    if (userReviews != null)
+                    var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
+                    if (userIdClaim != null)
                     {
-                        return true;
+                        var userId = userIdClaim.Value;
+                        var userReviews = await this.reviewService.GetReviewsByUserId(userId);
+                        if (userReviews!.Count() > 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                 }
+                return true;
             } 
             return false;
         }
@@ -73,7 +82,8 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
-            var checkManageOwnReviewPermission = await CheckManageOwnReviewPermission();
+            var isCreateOperation = true;
+            var checkManageOwnReviewPermission = await CheckManageOwnReviewPermission(isCreateOperation);
             if(!checkManageOwnReviewPermission)
             {
                 return Forbid();
@@ -155,6 +165,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             {
                 reviewDTOs.Add(new ReviewResponseDTO
                 {
+                    ReviewID = review.ReviewID,
                     ProductID = review.ProductID,
                     UserID = review.UserID,
                     Rating = review.Rating,
@@ -220,8 +231,9 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
-            var checkManageOwnReviewPermission = await CheckManageOwnReviewPermission();
-            if(!checkManageOwnReviewPermission)
+            var isCreateOperation = false;
+            var checkManageOwnReviewPermission = await CheckManageOwnReviewPermission(isCreateOperation);
+            if (!checkManageOwnReviewPermission)
             {
                 return Forbid();
             }
@@ -272,8 +284,9 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteReview(Guid reviewId)
         {
-            var checkManageOwnReviewPermission = await CheckManageOwnReviewPermission();
-            if(!checkManageOwnReviewPermission)
+            var isCreateOperation = false;
+            var checkManageOwnReviewPermission = await CheckManageOwnReviewPermission(isCreateOperation);
+            if (!checkManageOwnReviewPermission)
             {
                 return Forbid();
             }

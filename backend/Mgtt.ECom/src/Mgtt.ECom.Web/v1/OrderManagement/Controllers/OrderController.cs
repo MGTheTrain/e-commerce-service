@@ -71,15 +71,15 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         }
 
         /// <summary>
-        /// Retrieves all orders.
+        /// Retrieves all orders by user id.
         /// </summary>
         /// <returns>A list of all orders.</returns>
         /// <response code="200">Returns a list of all orders.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrderResponseDTO>))]
-        public async Task<ActionResult<IEnumerable<OrderResponseDTO>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<OrderResponseDTO>>> GetOrdersByUserId(string userId)
         {
-            var orders = await this.orderService.GetOrdersByUserId(Guid.NewGuid()); // Example for demo
+            var orders = await this.orderService.GetOrdersByUserId(userId); 
             var orderDTOs = new List<OrderResponseDTO>();
 
             foreach (var order in orders)

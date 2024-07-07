@@ -8,7 +8,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.DTOs
     {
         public Guid ProductID { get; set; }
 
-        public Guid CategoryID { get; set; }
+        public List<string>? Categories { get; set; }
 
         public string Name { get; set; }
 

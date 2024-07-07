@@ -26,8 +26,6 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
 - **Product Management**
   - Product Catalog
     - [x] Create, read, update, and delete (CRUD) operations for products.
-  - ~~Category Management~~
-    - ~~Organize products into categories for easier navigation and searchability.~~
 
 - **Order Management**
   - Order Processing

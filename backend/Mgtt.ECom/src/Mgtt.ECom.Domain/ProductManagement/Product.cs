@@ -16,7 +16,7 @@ namespace Mgtt.ECom.Domain.ProductManagement
         public Product()
         {
             this.ProductID = Guid.NewGuid();
-            this.CategoryID = Guid.Empty;
+            this.Categories = new List<string>();
             this.Name = string.Empty;
             this.Description = string.Empty;
             this.Price = 0.01f;
@@ -28,7 +28,7 @@ namespace Mgtt.ECom.Domain.ProductManagement
         public Guid ProductID { get; internal set; }
 
         [Required]
-        public Guid CategoryID { get; set; }
+        public List<string>? Categories { get; set; }
 
         [Required]
         [StringLength(100)]

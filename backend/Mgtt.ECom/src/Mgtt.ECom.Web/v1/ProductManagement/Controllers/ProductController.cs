@@ -43,7 +43,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
 
             var product = new Product
             {
-                CategoryID = productDTO.CategoryID,
+                Categories = productDTO.Categories,
                 Name = productDTO.Name,
                 Description = productDTO.Description,
                 Price = productDTO.Price,
@@ -60,7 +60,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             var productResponseDTO = new ProductResponseDTO
             {
                 ProductID = product.ProductID,
-                CategoryID = product.CategoryID,
+                Categories = product.Categories,
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
@@ -88,7 +88,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                 productDTOs.Add(new ProductResponseDTO
                 {
                     ProductID = product.ProductID,
-                    CategoryID = product.CategoryID,
+                    Categories = product.Categories,
                     Name = product.Name,
                     Description = product.Description,
                     Price = product.Price,
@@ -122,7 +122,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             var productDTO = new ProductResponseDTO
             {
                 ProductID = product.ProductID,
-                CategoryID = product.CategoryID,
+                Categories = product.Categories,
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
@@ -161,7 +161,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                 return this.NotFound();
             }
 
-            product.CategoryID = productDTO.CategoryID;
+            product.Categories = productDTO.Categories;
             product.Name = productDTO.Name;
             product.Description = productDTO.Description;
             product.Price = productDTO.Price;
@@ -177,7 +177,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             var productResponseDTO = new ProductResponseDTO
             {
                 ProductID = product.ProductID,
-                CategoryID = product.CategoryID,
+                Categories = product.Categories,
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,

@@ -123,7 +123,6 @@ var dbContext = builder.Services.AddDbContext<DbContext, PsqlDbContext>(options 
 
 builder.Services.AddTransient<IOrderItemService, OrderItemService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
-builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IReviewService, ReviewService>();
 builder.Services.AddTransient<ICartService, CartService>();

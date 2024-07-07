@@ -12,8 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Updated
 
 - Modify authorization policies and adjust `Authorize attributes` for HTTP controller endpoints in the [web backend](./backend/Mgtt.ECom/)
-- Update [smoke tests](./backend/Mgtt.ECom/smoke-test/) to align with the latest HTTP controller endpoints, incorporating bearer tokens.
+- Update [smoke tests](./backend/Mgtt.ECom/smoke-test/) to align with the latest HTTP controller endpoints incorporating bearer tokens.
 - Modify [api-design](./docs/api-design/) and [diagrams](./docs/diagrams/)
+- Modify [web frontend](./frontend/e-commerce-service/) to align with changes in the web backend incorporating bearer tokens
 - Replace [swagger generated Swagger-generated services](./frontend/e-commerce-service/src/app/generated/)
 
 ### Removed

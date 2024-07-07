@@ -18,13 +18,13 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly IOrderService _orderService;
-        private readonly IOrderItemService _orderItemService;
+        private readonly IOrderService orderService;
+        private readonly IOrderItemService orderItemService;
 
         public OrderController(IOrderService orderService, IOrderItemService orderItemService)
         {
-            this._orderService = orderService;
-            this._orderItemService = orderItemService;
+            this.orderService = orderService;
+            this.orderItemService = orderItemService;
         }
 
         /// <summary>
@@ -36,22 +36,25 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         private async Task<string?> CheckManageOwnOrderPermission(bool isCreateOperation, Guid orderId)
         {
             var permissionsClaims = this.User.FindAll("permissions");
-            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:orders")) || 
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:orders")) ||
                 permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-order")))
             {
                 var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
                 var userId = userIdClaim!.Value;
                 if (!isCreateOperation && orderId != Guid.Empty)
                 {
-                    var userCarts = await this._orderService.GetOrdersByUserId(userId);
+                    var userCarts = await this.orderService.GetOrdersByUserId(userId);
                     if (userCarts!.Where(x => x.OrderID == orderId).FirstOrDefault() != null)
                     {
                         return userId;
                     }
+
                     return null;
                 }
+
                 return userId;
-            } 
+            }
+
             return null;
         }
 
@@ -62,10 +65,14 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <returns>The newly created order.</returns>
         /// <response code="201">Returns the newly created order.</response>
         /// <response code="400">If the order data is invalid.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPost]
-        [Authorize(Policy="manage:orders-and-own-order")]
+        [Authorize(Policy = "manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(OrderResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> CreateOrder(OrderRequestDTO orderDTO)
         {
             if (!this.ModelState.IsValid)
@@ -75,9 +82,9 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
 
             var isCreateOperation = true;
             var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, Guid.Empty);
-            if(userId == null)
+            if (userId == null)
             {
-                return Forbid();
+                return this.Forbid();
             }
 
             var order = new Order
@@ -88,7 +95,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderStatus = orderDTO.OrderStatus,
             };
 
-            var action = await this._orderService.CreateOrder(order);
+            var action = await this.orderService.CreateOrder(order);
             if (action == null)
             {
                 return this.BadRequest();
@@ -105,7 +112,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
 
             return this.CreatedAtAction(nameof(this.CreateOrder), orderResponseDTO);
         }
-        
+
         /// <summary>
         /// Retrieves an order by its ID.
         /// </summary>
@@ -113,13 +120,17 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <returns>The order with the specified ID.</returns>
         /// <response code="200">Returns the order with the specified ID.</response>
         /// <response code="404">If the order is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpGet("{orderId}")]
         [Authorize("manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<ActionResult<OrderResponseDTO>> GetOrderById(Guid orderId)
         {
-            var order = await this._orderService.GetOrderById(orderId);
+            var order = await this.orderService.GetOrderById(orderId);
 
             if (order == null)
             {
@@ -147,11 +158,15 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <response code="204">If the order was successfully updated.</response>
         /// <response code="400">If the order data is invalid.</response>
         /// <response code="404">If the order is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPut("{orderId}")]
-        [Authorize(Policy="manage:orders-and-own-order")]
+        [Authorize(Policy = "manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderRequestDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UpdateOrder(Guid orderId, OrderRequestDTO orderDTO)
         {
             if (!this.ModelState.IsValid)
@@ -161,12 +176,12 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
 
             var isCreateOperation = false;
             var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
-            if(userId == null)
+            if (userId == null)
             {
-                return Forbid();
+                return this.Forbid();
             }
 
-            var order = await this._orderService.GetOrderById(orderId);
+            var order = await this.orderService.GetOrderById(orderId);
 
             if (order == null)
             {
@@ -176,7 +191,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             order.TotalAmount = orderDTO.TotalAmount;
             order.OrderStatus = orderDTO.OrderStatus;
 
-            var action = await this._orderService.UpdateOrder(order);
+            var action = await this.orderService.UpdateOrder(order);
             if (action == null)
             {
                 return this.BadRequest();
@@ -201,27 +216,31 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <returns>No content response if successful.</returns>
         /// <response code="204">If the order was successfully deleted.</response>
         /// <response code="404">If the order is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpDelete("{orderId}")]
-        [Authorize(Policy="manage:orders-and-own-order")]
+        [Authorize(Policy = "manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> DeleteOrder(Guid orderId)
         {
             var isCreateOperation = false;
             var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
-            if(userId == null)
+            if (userId == null)
             {
-                return Forbid();
+                return this.Forbid();
             }
 
-            var order = await this._orderService.GetOrderById(orderId);
+            var order = await this.orderService.GetOrderById(orderId);
 
             if (order == null)
             {
                 return this.NotFound();
             }
 
-            await this._orderService.DeleteOrder(orderId);
+            await this.orderService.DeleteOrder(orderId);
 
             return this.NoContent();
         }
@@ -234,10 +253,14 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <returns>The newly created order item.</returns>
         /// <response code="201">Returns the newly created order item.</response>
         /// <response code="400">If the order item data is invalid.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPost("{orderId}/items")]
-        [Authorize(Policy="manage:orders-and-own-order")]
+        [Authorize(Policy = "manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(OrderItemResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> CreateOrderItem(Guid orderId, OrderItemRequestDTO orderItemDTO)
         {
             if (!this.ModelState.IsValid)
@@ -247,9 +270,9 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
 
             var isCreateOperation = false; // false because we are verifying the order resource which consists of order items
             var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
-            if(userId == null)
+            if (userId == null)
             {
-                return Forbid();
+                return this.Forbid();
             }
 
             var orderItem = new OrderItem
@@ -260,7 +283,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 Price = orderItemDTO.Price,
             };
 
-            var action = await this._orderItemService.CreateOrderItem(orderItem);
+            var action = await this.orderItemService.CreateOrderItem(orderItem);
             if (action == null)
             {
                 return this.BadRequest();
@@ -285,20 +308,24 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <returns>A list of all order items within the specified order.</returns>
         /// <response code="200">Returns a list of all order items within the specified order.</response>
         /// <response code="404">If the order items are not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpGet("{orderId}/items")]
-        [Authorize(Policy="manage:orders-and-own-order")]
+        [Authorize(Policy = "manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrderItemResponseDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<ActionResult<IEnumerable<OrderItemResponseDTO>>> GetOrderItemsByOrderId(Guid orderId)
         {
             var isCreateOperation = false;
             var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
-            if(userId == null)
+            if (userId == null)
             {
-                return Forbid();
+                return this.Forbid();
             }
 
-            var orderItems = await this._orderItemService.GetOrderItemsByOrderId(orderId);
+            var orderItems = await this.orderItemService.GetOrderItemsByOrderId(orderId);
             var orderItemDTOs = new List<OrderItemResponseDTO>();
 
             foreach (var orderItem in orderItems)
@@ -324,20 +351,24 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <returns>The order item with the specified ID within the specified order.</returns>
         /// <response code="200">Returns the order item with the specified ID within the specified order.</response>
         /// <response code="404">If the order item is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpGet("{orderId}/items/{itemId}")]
-        [Authorize(Policy="manage:orders-and-own-order")]
+        [Authorize(Policy = "manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderItemResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<ActionResult<OrderItemResponseDTO>> GetOrderItemById(Guid orderId, Guid itemId)
         {
             var isCreateOperation = false;
             var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
-            if(userId == null)
+            if (userId == null)
             {
-                return Forbid();
+                return this.Forbid();
             }
 
-            var orderItem = await this._orderItemService.GetOrderItemById(itemId);
+            var orderItem = await this.orderItemService.GetOrderItemById(itemId);
             if (orderItem == null)
             {
                 return this.NotFound();
@@ -365,11 +396,15 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <response code="204">If the order item was successfully updated.</response>
         /// <response code="400">If the order item data is invalid.</response>
         /// <response code="404">If the order item is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPut("{orderId}/items/{itemId}")]
-        [Authorize(Policy="manage:orders-and-own-order")]
+        [Authorize(Policy = "manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderItemResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UpdateOrderItem(Guid orderId, Guid itemId, OrderItemRequestDTO orderItemDTO)
         {
             if (!this.ModelState.IsValid)
@@ -379,12 +414,12 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
 
             var isCreateOperation = false;
             var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
-            if(userId == null)
+            if (userId == null)
             {
-                return Forbid();
+                return this.Forbid();
             }
 
-            var orderItem = await this._orderItemService.GetOrderItemById(itemId);
+            var orderItem = await this.orderItemService.GetOrderItemById(itemId);
 
             if (orderItem == null)
             {
@@ -395,7 +430,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             orderItem.Quantity = orderItemDTO.Quantity;
             orderItem.Price = orderItemDTO.Price;
 
-            var action = await this._orderItemService.UpdateOrderItem(orderItem);
+            var action = await this.orderItemService.UpdateOrderItem(orderItem);
             if (action == null)
             {
                 return this.BadRequest();
@@ -421,27 +456,31 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <returns>No content response if successful.</returns>
         /// <response code="204">If the order item was successfully deleted.</response>
         /// <response code="404">If the order item is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpDelete("{orderId}/items/{itemId}")]
-        [Authorize(Policy="manage:orders-and-own-order")]
+        [Authorize(Policy = "manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> DeleteOrderItem(Guid orderId, Guid itemId)
         {
             var isCreateOperation = false;
             var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
-            if(userId == null)
+            if (userId == null)
             {
-                return Forbid();
+                return this.Forbid();
             }
 
-            var orderItem = await this._orderItemService.GetOrderItemById(itemId);
+            var orderItem = await this.orderItemService.GetOrderItemById(itemId);
 
             if (orderItem == null)
             {
                 return this.NotFound();
             }
 
-            await this._orderItemService.DeleteOrderItem(itemId);
+            await this.orderItemService.DeleteOrderItem(itemId);
 
             return this.NoContent();
         }

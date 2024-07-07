@@ -17,11 +17,11 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
     [ApiController]
     public class ReviewController : ControllerBase
     {
-        private readonly IReviewService _reviewService;
+        private readonly IReviewService reviewService;
 
         public ReviewController(IReviewService reviewService)
         {
-            this._reviewService = reviewService;
+            this.reviewService = reviewService;
         }
 
         /// <summary>
@@ -33,22 +33,25 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         private async Task<string?> CheckManageOwnReviewPermission(bool isCreateOperation, Guid reviewId)
         {
             var permissionsClaims = this.User.FindAll("permissions");
-            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:reviews")) || 
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:reviews")) ||
                 permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-review")))
             {
                 var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
                 var userId = userIdClaim!.Value;
                 if (!isCreateOperation && reviewId != Guid.Empty)
-                { 
-                    var userCarts = await this._reviewService.GetReviewsByUserId(userId);
+                {
+                    var userCarts = await this.reviewService.GetReviewsByUserId(userId);
                     if (userCarts!.Where(x => x.ReviewID == reviewId).FirstOrDefault() != null)
                     {
                         return userId;
                     }
+
                     return null;
                 }
+
                 return userId;
-            } 
+            }
+
             return null;
         }
 
@@ -62,7 +65,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <response code="401">If the user is not authenticated.</response>
         /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPost]
-        [Authorize(Policy="manage:reviews-and-own-review")]
+        [Authorize(Policy = "manage:reviews-and-own-review")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReviewResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -76,9 +79,9 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
 
             var isCreateOperation = true;
             var userId = await this.CheckManageOwnReviewPermission(isCreateOperation, Guid.Empty);
-            if(userId == null)
+            if (userId == null)
             {
-                return Forbid();
+                return this.Forbid();
             }
 
             var review = new Review
@@ -90,7 +93,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
                 ReviewDate = DateTime.UtcNow,
             };
 
-            var action = await this._reviewService.CreateReview(review);
+            var action = await this.reviewService.CreateReview(review);
             if (action == null)
             {
                 return this.BadRequest();
@@ -121,7 +124,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ReviewResponseDTO>> GetReviewById(Guid reviewId)
         {
-            var review = await this._reviewService.GetReviewById(reviewId);
+            var review = await this.reviewService.GetReviewById(reviewId);
 
             if (review == null)
             {
@@ -150,7 +153,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
         public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetAllReviews()
         {
-            var reviews = await this._reviewService.GetAllReviews();
+            var reviews = await this.reviewService.GetAllReviews();
             var reviewDTOs = new List<ReviewResponseDTO>();
 
             foreach (var review in reviews)
@@ -179,7 +182,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
         public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetReviewsByProductId(Guid productId)
         {
-            var reviews = await this._reviewService.GetReviewsByProductId(productId);
+            var reviews = await this.reviewService.GetReviewsByProductId(productId);
             var reviewDTOs = new List<ReviewResponseDTO>();
 
             foreach (var review in reviews)
@@ -210,7 +213,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <response code="403">If the user is not allowed to manage the resource.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpPut("{reviewId}")]
-        [Authorize(Policy="manage:reviews-and-own-review")]
+        [Authorize(Policy = "manage:reviews-and-own-review")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReviewResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -227,10 +230,10 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             var userId = await this.CheckManageOwnReviewPermission(isCreateOperation, reviewId);
             if (userId == null)
             {
-                return Forbid();
+                return this.Forbid();
             }
 
-            var review = await this._reviewService.GetReviewById(reviewId);
+            var review = await this.reviewService.GetReviewById(reviewId);
 
             if (review == null)
             {
@@ -242,7 +245,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             review.Rating = reviewDTO.Rating;
             review.Comment = reviewDTO.Comment;
 
-            var action = await this._reviewService.UpdateReview(review);
+            var action = await this.reviewService.UpdateReview(review);
             if (action == null)
             {
                 return this.BadRequest();
@@ -271,26 +274,28 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <response code="403">If the user is not allowed to manage the resource.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpDelete("{reviewId}")]
-        [Authorize(Policy="manage:reviews-and-own-review")]
+        [Authorize(Policy = "manage:reviews-and-own-review")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> DeleteReview(Guid reviewId)
         {
             var isCreateOperation = false;
             var userId = await this.CheckManageOwnReviewPermission(isCreateOperation, reviewId);
             if (userId == null)
             {
-                return Forbid();
+                return this.Forbid();
             }
 
-            var review = await this._reviewService.GetReviewById(reviewId);
+            var review = await this.reviewService.GetReviewById(reviewId);
 
             if (review == null)
             {
                 return this.NotFound();
             }
 
-            await this._reviewService.DeleteReview(reviewId);
+            await this.reviewService.DeleteReview(reviewId);
 
             return this.NoContent();
         }

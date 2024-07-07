@@ -10,7 +10,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.DTOs
     {
         public Guid CartID { get; set; }
 
-        public Guid UserID { get; set; }
+        public string UserID { get; set; }
 
         public float TotalAmount { get; set; }
     }

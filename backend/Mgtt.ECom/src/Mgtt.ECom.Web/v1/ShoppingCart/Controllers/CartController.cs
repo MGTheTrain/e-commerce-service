@@ -6,6 +6,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.ShoppingCart;
     using Mgtt.ECom.Web.V1.ShoppingCart.DTOs;
@@ -15,7 +16,6 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
     using static System.Collections.Specialized.BitVector32;
 
     [Route("api/v1/carts")]
-    [Authorize("manage:carts")]
     [ApiController]
     public class CartController : ControllerBase
     {
@@ -29,6 +29,33 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         }
 
         /// <summary>
+        /// Checks if the user has either "manage:carts" or "manage:own-cart" permission and validates their carts if applicable.
+        /// </summary>
+        /// <returns>True if the user has the permission and valid carts; otherwise, false.</returns>
+        private async Task<bool> CheckManageOwnReviewPermission()
+        {
+            var permissionsClaims = this.User.FindAll("permissions");
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:carts")))
+            {
+                return true;
+            }
+            else if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-cart")))
+            {
+                var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim != null)
+                {
+                    var userId = userIdClaim.Value;
+                    var userReviews = await this.cartService.GetCartById(userId);
+                    if (userReviews != null)
+                    {
+                        return true;
+                    }
+                }
+            } 
+            return false;
+        }
+
+        /// <summary>
         /// Creates a new shopping cart.
         /// </summary>
         /// <param name="cartDTO">The cart data transfer object containing user ID and total amount.</param>
@@ -36,6 +63,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <response code="201">Returns the newly created cart.</response>
         /// <response code="400">If the cart data is invalid.</response>
         [HttpPost]
+        [Authorize("manage:carts")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CartResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCart(CartRequestDTO cartDTO)
@@ -75,7 +103,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <response code="200">Returns the cart with the specified ID.</response>
         /// <response code="404">If the cart is not found.</response>
         [HttpGet("{cartId}")]
-        [Authorize("manage:own-cart")]
+        [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CartResponseDTO>> GetCartById(Guid cartId)
@@ -103,6 +131,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <returns>A list of all carts.</returns>
         /// <response code="200">Returns a list of all carts.</response>
         [HttpGet]
+        [Authorize("manage:carts")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CartResponseDTO>))]
         public async Task<ActionResult<IEnumerable<CartResponseDTO>>> GetAllCarts()
         {
@@ -132,6 +161,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <response code="400">If the cart data is invalid.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpPut("{cartId}")]
+        [Authorize("manage:carts")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -175,6 +205,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <response code="404">If the cart is not found.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpDelete("{cartId}")]
+        [Authorize("manage:carts")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCartById(Guid cartId)
@@ -200,7 +231,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <response code="201">Returns the newly created cart item.</response>
         /// <response code="400">If the cart item data is invalid.</response>
         [HttpPost("{cartId}/items")]
-        [Authorize("manage:own-cart")]
+        [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CartItemResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCartItem(Guid cartId, CartItemRequestDTO cartItemDTO)
@@ -243,7 +274,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <returns>A list of cart items.</returns>
         /// <response code="200">Returns the list of cart items.</response>
         [HttpGet("{cartId}/items")]
-        [Authorize("manage:own-cart")]
+        [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CartItemResponseDTO>))]
         public async Task<ActionResult<IEnumerable<CartItemResponseDTO>>> GetCartItemsByCartId(Guid cartId)
         {
@@ -274,7 +305,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <response code="200">Returns the cart item with the specified ID.</response>
         /// <response code="404">If the cart item is not found.</response>
         [HttpGet("{cartId}/items/{itemId}")]
-        [Authorize("manage:own-cart")]
+        [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartItemResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CartItemResponseDTO>> GetCartItemById(Guid cartId, Guid itemId)
@@ -309,7 +340,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <response code="400">If the cart item data is invalid.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpPut("{cartId}/items/{itemId}")]
-        [Authorize("manage:own-cart")]
+        [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartItemResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -359,7 +390,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <response code="404">If the cart item is not found.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpDelete("{cartId}/items/{itemId}")]
-        [Authorize("manage:own-cart")]
+        [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCartItem(Guid cartId, Guid itemId)

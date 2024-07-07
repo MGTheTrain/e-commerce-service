@@ -16,7 +16,7 @@ namespace Mgtt.ECom.Domain.OrderManagement
         public Order()
         {
             this.OrderID = Guid.NewGuid();
-            this.UserID = Guid.Empty;
+            this.UserID = string.Empty;
             this.OrderDate = DateTime.UtcNow;
             this.TotalAmount = 0.01f;
             this.OrderStatus = "InProgress";
@@ -26,7 +26,7 @@ namespace Mgtt.ECom.Domain.OrderManagement
         public Guid OrderID { get; internal set; }
 
         [Required]
-        public Guid UserID { get; set; }
+        public string UserID { get; set; }
 
         [Required]
         public DateTime OrderDate { get; set; }
@@ -50,7 +50,7 @@ namespace Mgtt.ECom.Domain.OrderManagement
                 yield return new ValidationResult($"{nameof(this.OrderID)} can't be empty");
             }
 
-            if (this.UserID == Guid.Empty)
+            if (this.UserID == string.Empty)
             {
                 yield return new ValidationResult($"{nameof(this.UserID)} can't be empty");
             }

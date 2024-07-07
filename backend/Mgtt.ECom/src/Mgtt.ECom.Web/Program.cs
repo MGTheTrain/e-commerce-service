@@ -8,7 +8,6 @@ using Mgtt.ECom.Domain.OrderManagement;
 using Mgtt.ECom.Domain.ProductManagement;
 using Mgtt.ECom.Domain.ReviewManagement;
 using Mgtt.ECom.Domain.ShoppingCart;
-using Mgtt.ECom.Domain.UserManagement;
 using Mgtt.ECom.Persistence.DataAccess;
 using Mgtt.ECom.Web.Handlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

@@ -7,7 +7,6 @@ namespace Mgtt.ECom.Domain.ReviewManagement
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using Mgtt.ECom.Domain.UserManagement;
 
     /// <summary>
     /// Represents a product review in the e-commerce system.

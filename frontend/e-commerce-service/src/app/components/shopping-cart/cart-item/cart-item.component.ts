@@ -32,6 +32,19 @@ export class CartItemComponent implements OnInit {
     imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
   };
 
+  availableCategories: string[] = [
+    'Acoustic Guitar',
+    'Electric Guitar',
+    'Bass Guitar',
+    'Classical Guitar',
+    '12-String Guitar',
+    '7-String Guitar',
+    'Jazz Guitar',
+    'Blues Guitar',
+    'Metal Guitar',
+    'Rock Guitar'
+  ];
+
   public faTrash: IconDefinition = faTrash;
   public faEdit: IconDefinition = faEdit;
   @Input() public isEditing: boolean = false;

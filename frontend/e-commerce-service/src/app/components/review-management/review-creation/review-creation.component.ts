@@ -34,6 +34,19 @@ export class ReviewCreationComponent implements OnInit {
     stock: 10, 
     imageUrl: 'https://s.yimg.com/ny/api/res/1.2/jVphTvtt1LwM3foboVcs_w--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02MDA-/https://media.zenfs.com/en-US/homerun/consequence_of_sound_458/830585263f74148d1ac63c91bfe6e2f4' 
   };
+
+  availableCategories: string[] = [
+    'Acoustic Guitar',
+    'Electric Guitar',
+    'Bass Guitar',
+    'Classical Guitar',
+    '12-String Guitar',
+    '7-String Guitar',
+    'Jazz Guitar',
+    'Blues Guitar',
+    'Metal Guitar',
+    'Rock Guitar'
+  ];
   
   public faPlus: IconDefinition = faPlus;
   public faArrowLeft: IconDefinition = faArrowLeft;

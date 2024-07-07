@@ -33,6 +33,19 @@ export class ReviewListComponent implements OnInit {
     { productID: '5', categories: ['Electric Guitar'], name: 'Gibson Les Paul Black', description: 'Description of Product E', price: 999.99, stock: 8, imageUrl: 'https://morningsideschoolofmusic.co.uk/wp-content/uploads/2022/05/Gibson-Guitars-1024x576.jpg' },
   ];
 
+  availableCategories: string[] = [
+    'Acoustic Guitar',
+    'Electric Guitar',
+    'Bass Guitar',
+    'Classical Guitar',
+    '12-String Guitar',
+    '7-String Guitar',
+    'Jazz Guitar',
+    'Blues Guitar',
+    'Metal Guitar',
+    'Rock Guitar'
+  ];
+
   public faPlus: IconDefinition = faPlus;
 
   public isLoggedIn: boolean = false;

@@ -13,8 +13,10 @@
             </div>
             <div class="form-group mb-3">
               <label><strong>Categories</strong></label>
-              <input type="text" placeholder="Categories" class="form-control" id="categories" name="categories" [(ngModel)]="productRequest.categories">
-            </div>
+              <select class="form-control" name="categories" [(ngModel)]="productRequest.categories" multiple>
+                <option *ngFor="let category of availableCategories" [value]="category">{{ category }}</option>
+              </select>
+            </div>     
             <div class="form-group mb-3">
               <label><strong>Product Description</strong></label>
               <textarea placeholder="Description" class="form-control" id="description" name="description" [(ngModel)]="productRequest.description"></textarea>

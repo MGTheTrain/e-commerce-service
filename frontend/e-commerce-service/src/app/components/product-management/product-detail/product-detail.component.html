@@ -13,7 +13,9 @@
           </div>
           <div class="form-group mb-3">
             <label><strong>Categories</strong></label>
-            <input type="text" placeholder="Categories" class="form-control" id="categories" name="categories" [(ngModel)]="product.categories" [disabled]="!isEditing">
+            <select class="form-control" name="categories" [(ngModel)]="product.categories" [disabled]="!isEditing" multiple>
+              <option *ngFor="let category of availableCategories" [value]="category">{{ category }}</option>
+            </select>
           </div>
           <div class="form-group mb-3">
             <label><strong>Product Description</strong></label>

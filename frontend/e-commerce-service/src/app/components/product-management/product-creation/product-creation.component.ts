@@ -24,6 +24,19 @@ export class ProductCreationComponent implements OnInit {
     imageUrl: 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg' 
   };
 
+  availableCategories: string[] = [
+    'Acoustic Guitar',
+    'Electric Guitar',
+    'Bass Guitar',
+    'Classical Guitar',
+    '12-String Guitar',
+    '7-String Guitar',
+    'Jazz Guitar',
+    'Blues Guitar',
+    'Metal Guitar',
+    'Rock Guitar'
+  ];
+
   public faPlus: IconDefinition = faPlus;
   public faImage: IconDefinition = faImage;
   public faArrowLeft: IconDefinition = faArrowLeft;

@@ -6,7 +6,7 @@ namespace Mgtt.ECom.PersistenceTest.DataAccess
 {
     using System;
     using System.Linq;
-    using Mgtt.ECom.Domain.UserManagement;
+    using Mgtt.ECom.Domain.ProductManagement;
     using Mgtt.ECom.Persistence.DataAccess;
     using Microsoft.EntityFrameworkCore;
     using Xunit;
@@ -21,48 +21,50 @@ namespace Mgtt.ECom.PersistenceTest.DataAccess
         }
 
         [Fact]
-        public void Can_Create_Read_Update_Delete_User()
+        public void Can_Create_Read_Update_Delete_Product()
         {
             // Arrange
-            var options = this.GetInMemoryDbContextOptions();
+            var options = GetInMemoryDbContextOptions();
 
             using (var context = new PsqlDbContext(options))
             {
-                var user = new User
+                var product = new Product
                 {
-                    UserName = "JohnDoe",
-                    PasswordHash = "hashedpassword",
-                    Email = "john.doe@example.com",
-                    Role = "Admin",
+                    Categories = new System.Collections.Generic.List<string> { "Electronics", "Gadgets" },
+                    Name = "Test Product",
+                    Description = "Product Description",
+                    Price = 99.99f,
+                    Stock = 10,
+                    ImageUrl = "https://example.com/product-image.jpg"
                 };
 
                 // Act
                 // Create
-                context.Users.Add(user);
+                context.Products.Add(product);
                 context.SaveChanges();
 
                 // Read
-                var retrievedUser = context.Users.FirstOrDefault(u => u.UserName == "JohnDoe");
-                Assert.NotNull(retrievedUser);
-                Assert.Equal("JohnDoe", retrievedUser.UserName);
-                Assert.Equal("hashedpassword", retrievedUser.PasswordHash);
-                Assert.Equal("john.doe@example.com", retrievedUser.Email);
-                Assert.Equal("Admin", retrievedUser.Role);
+                var retrievedProduct = context.Products.FirstOrDefault(p => p.Name == "Test Product");
+                Assert.NotNull(retrievedProduct);
+                Assert.Equal("Test Product", retrievedProduct.Name);
+                Assert.Equal(99.99f, retrievedProduct.Price);
+                Assert.Equal(10, retrievedProduct.Stock);
+                Assert.Equal("https://example.com/product-image.jpg", retrievedProduct.ImageUrl);
 
                 // Update
-                retrievedUser.Email = "john.doe@newemail.com";
+                retrievedProduct.Description = "Updated Product Description";
                 context.SaveChanges();
 
-                var updatedUser = context.Users.FirstOrDefault(u => u.UserName == "JohnDoe");
-                Assert.NotNull(updatedUser);
-                Assert.Equal("john.doe@newemail.com", updatedUser.Email);
+                var updatedProduct = context.Products.FirstOrDefault(p => p.Name == "Test Product");
+                Assert.NotNull(updatedProduct);
+                Assert.Equal("Updated Product Description", updatedProduct.Description);
 
                 // Delete
-                context.Users.Remove(updatedUser);
+                context.Products.Remove(updatedProduct);
                 context.SaveChanges();
 
-                var deletedUser = context.Users.FirstOrDefault(u => u.UserName == "JohnDoe");
-                Assert.Null(deletedUser);
+                var deletedProduct = context.Products.FirstOrDefault(p => p.Name == "Test Product");
+                Assert.Null(deletedProduct);
             }
         }
     }

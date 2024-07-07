@@ -19,13 +19,13 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
-        private readonly ICartService cartService;
-        private readonly ICartItemService cartItemService;
+        private readonly ICartService _cartService;
+        private readonly ICartItemService _cartItemService;
 
         public CartController(ICartService cartService, ICartItemService cartItemService)
         {
-            this.cartService = cartService;
-            this.cartItemService = cartItemService;
+            this._cartService = cartService;
+            this._cartItemService = cartItemService;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 var userId = userIdClaim!.Value;
                 if (!isCreateOperation)
                 {
-                    var userCarts = await this.cartService.GetCartsByUserId(userId);
+                    var userCarts = await this._cartService.GetCartsByUserId(userId);
                     if (userCarts!.Count() > 0)
                     {
                         return userId;
@@ -88,7 +88,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 TotalAmount = cartDTO.TotalAmount,
             };
 
-            var action = await this.cartService.CreateCart(cart);
+            var action = await this._cartService.CreateCart(cart);
             if (action == null)
             {
                 return this.BadRequest();
@@ -126,7 +126,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return Forbid();
             }
 
-            var cart = await this.cartService.GetCartById(cartId);
+            var cart = await this._cartService.GetCartById(cartId);
 
             if (cart == null)
             {
@@ -162,7 +162,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return Forbid();
             }
 
-            var carts = await this.cartService.GetAllCarts();
+            var carts = await this._cartService.GetAllCarts();
             var cartDTOs = new List<CartResponseDTO>();
 
             foreach (var cart in carts)
@@ -208,7 +208,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return Forbid();
             }
 
-            var cart = await this.cartService.GetCartById(cartId);
+            var cart = await this._cartService.GetCartById(cartId);
 
             if (cart == null)
             {
@@ -217,7 +217,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
 
             cart.TotalAmount = cartDTO.TotalAmount;
 
-            var action = await this.cartService.UpdateCart(cart);
+            var action = await this._cartService.UpdateCart(cart);
             if (action == null)
             {
                 return this.BadRequest();
@@ -255,14 +255,14 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return Forbid();
             }
 
-            var cart = await this.cartService.GetCartById(cartId);
+            var cart = await this._cartService.GetCartById(cartId);
 
             if (cart == null)
             {
                 return this.NotFound();
             }
 
-            await this.cartService.DeleteCart(cart.CartID);
+            await this._cartService.DeleteCart(cart.CartID);
 
             return this.NoContent();
         }
@@ -303,7 +303,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 Price = cartItemDTO.Price,
             };
 
-            var action = await this.cartItemService.CreateCartItem(cartItem);
+            var action = await this._cartItemService.CreateCartItem(cartItem);
             if (action == null)
             {
                 return this.BadRequest();
@@ -341,7 +341,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return Forbid();
             }
 
-            var cartItems = await this.cartItemService.GetCartItemsByCartId(cartId);
+            var cartItems = await this._cartItemService.GetCartItemsByCartId(cartId);
             var cartItemDTOs = new List<CartItemResponseDTO>();
 
             foreach (var cartItem in cartItems)
@@ -382,7 +382,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return Forbid();
             }
 
-            var cartItem = await this.cartItemService.GetCartItemById(itemId);
+            var cartItem = await this._cartItemService.GetCartItemById(itemId);
 
             if (cartItem == null)
             {
@@ -432,7 +432,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return Forbid();
             }
 
-            var cartItem = await this.cartItemService.GetCartItemById(itemId);
+            var cartItem = await this._cartItemService.GetCartItemById(itemId);
 
             if (cartItem == null)
             {
@@ -444,7 +444,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             cartItem.Quantity = cartItemDTO.Quantity;
             cartItem.Price = cartItemDTO.Price;
 
-            var action = await this.cartItemService.UpdateCartItem(cartItem);
+            var action = await this._cartItemService.UpdateCartItem(cartItem);
             if (action == null)
             {
                 return this.BadRequest();
@@ -485,14 +485,14 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return Forbid();
             }
 
-            var cartItem = await this.cartItemService.GetCartItemById(itemId);
+            var cartItem = await this._cartItemService.GetCartItemById(itemId);
 
             if (cartItem == null)
             {
                 return this.NotFound();
             }
 
-            await this.cartItemService.DeleteCartItem(itemId);
+            await this._cartItemService.DeleteCartItem(itemId);
 
             return this.NoContent();
         }

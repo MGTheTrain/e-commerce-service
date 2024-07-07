@@ -18,13 +18,13 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly IOrderService orderService;
-        private readonly IOrderItemService orderItemService;
+        private readonly IOrderService _orderService;
+        private readonly IOrderItemService _orderItemService;
 
         public OrderController(IOrderService orderService, IOrderItemService orderItemService)
         {
-            this.orderService = orderService;
-            this.orderItemService = orderItemService;
+            this._orderService = orderService;
+            this._orderItemService = orderItemService;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 var userId = userIdClaim!.Value;
                 if (!isCreateOperation)
                 {
-                    var userCarts = await this.orderService.GetOrdersByUserId(userId);
+                    var userCarts = await this._orderService.GetOrdersByUserId(userId);
                     if (userCarts!.Count() > 0)
                     {
                         return userId;
@@ -87,7 +87,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderStatus = orderDTO.OrderStatus,
             };
 
-            var action = await this.orderService.CreateOrder(order);
+            var action = await this._orderService.CreateOrder(order);
             if (action == null)
             {
                 return this.BadRequest();
@@ -118,7 +118,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<OrderResponseDTO>> GetOrderById(Guid orderId)
         {
-            var order = await this.orderService.GetOrderById(orderId);
+            var order = await this._orderService.GetOrderById(orderId);
 
             if (order == null)
             {
@@ -165,7 +165,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 return Forbid();
             }
 
-            var order = await this.orderService.GetOrderById(orderId);
+            var order = await this._orderService.GetOrderById(orderId);
 
             if (order == null)
             {
@@ -175,7 +175,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             order.TotalAmount = orderDTO.TotalAmount;
             order.OrderStatus = orderDTO.OrderStatus;
 
-            var action = await this.orderService.UpdateOrder(order);
+            var action = await this._orderService.UpdateOrder(order);
             if (action == null)
             {
                 return this.BadRequest();
@@ -213,14 +213,14 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 return Forbid();
             }
 
-            var order = await this.orderService.GetOrderById(orderId);
+            var order = await this._orderService.GetOrderById(orderId);
 
             if (order == null)
             {
                 return this.NotFound();
             }
 
-            await this.orderService.DeleteOrder(orderId);
+            await this._orderService.DeleteOrder(orderId);
 
             return this.NoContent();
         }
@@ -259,7 +259,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 Price = orderItemDTO.Price,
             };
 
-            var action = await this.orderItemService.CreateOrderItem(orderItem);
+            var action = await this._orderItemService.CreateOrderItem(orderItem);
             if (action == null)
             {
                 return this.BadRequest();
@@ -297,7 +297,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 return Forbid();
             }
 
-            var orderItems = await this.orderItemService.GetOrderItemsByOrderId(orderId);
+            var orderItems = await this._orderItemService.GetOrderItemsByOrderId(orderId);
             var orderItemDTOs = new List<OrderItemResponseDTO>();
 
             foreach (var orderItem in orderItems)
@@ -336,7 +336,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 return Forbid();
             }
 
-            var orderItem = await this.orderItemService.GetOrderItemById(itemId);
+            var orderItem = await this._orderItemService.GetOrderItemById(itemId);
             if (orderItem == null)
             {
                 return this.NotFound();
@@ -383,7 +383,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 return Forbid();
             }
 
-            var orderItem = await this.orderItemService.GetOrderItemById(itemId);
+            var orderItem = await this._orderItemService.GetOrderItemById(itemId);
 
             if (orderItem == null)
             {
@@ -394,7 +394,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             orderItem.Quantity = orderItemDTO.Quantity;
             orderItem.Price = orderItemDTO.Price;
 
-            var action = await this.orderItemService.UpdateOrderItem(orderItem);
+            var action = await this._orderItemService.UpdateOrderItem(orderItem);
             if (action == null)
             {
                 return this.BadRequest();
@@ -433,14 +433,14 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 return Forbid();
             }
 
-            var orderItem = await this.orderItemService.GetOrderItemById(itemId);
+            var orderItem = await this._orderItemService.GetOrderItemById(itemId);
 
             if (orderItem == null)
             {
                 return this.NotFound();
             }
 
-            await this.orderItemService.DeleteOrderItem(itemId);
+            await this._orderItemService.DeleteOrderItem(itemId);
 
             return this.NoContent();
         }

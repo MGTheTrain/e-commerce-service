@@ -17,11 +17,11 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
     [ApiController]
     public class ReviewController : ControllerBase
     {
-        private readonly IReviewService reviewService;
+        private readonly IReviewService _reviewService;
 
         public ReviewController(IReviewService reviewService)
         {
-            this.reviewService = reviewService;
+            this._reviewService = reviewService;
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
                 var userId = userIdClaim!.Value;
                 if (!isCreateOperation)
                 {
-                    var userCarts = await this.reviewService.GetReviewsByUserId(userId);
+                    var userCarts = await this._reviewService.GetReviewsByUserId(userId);
                     if (userCarts!.Count() > 0)
                     {
                         return userId;
@@ -89,7 +89,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
                 ReviewDate = DateTime.UtcNow,
             };
 
-            var action = await this.reviewService.CreateReview(review);
+            var action = await this._reviewService.CreateReview(review);
             if (action == null)
             {
                 return this.BadRequest();
@@ -120,7 +120,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ReviewResponseDTO>> GetReviewById(Guid reviewId)
         {
-            var review = await this.reviewService.GetReviewById(reviewId);
+            var review = await this._reviewService.GetReviewById(reviewId);
 
             if (review == null)
             {
@@ -149,7 +149,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
         public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetAllReviews()
         {
-            var reviews = await this.reviewService.GetAllReviews();
+            var reviews = await this._reviewService.GetAllReviews();
             var reviewDTOs = new List<ReviewResponseDTO>();
 
             foreach (var review in reviews)
@@ -178,7 +178,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
         public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetReviewsByProductId(Guid productId)
         {
-            var reviews = await this.reviewService.GetReviewsByProductId(productId);
+            var reviews = await this._reviewService.GetReviewsByProductId(productId);
             var reviewDTOs = new List<ReviewResponseDTO>();
 
             foreach (var review in reviews)
@@ -229,7 +229,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
                 return Forbid();
             }
 
-            var review = await this.reviewService.GetReviewById(reviewId);
+            var review = await this._reviewService.GetReviewById(reviewId);
 
             if (review == null)
             {
@@ -241,7 +241,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             review.Rating = reviewDTO.Rating;
             review.Comment = reviewDTO.Comment;
 
-            var action = await this.reviewService.UpdateReview(review);
+            var action = await this._reviewService.UpdateReview(review);
             if (action == null)
             {
                 return this.BadRequest();
@@ -282,14 +282,14 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
                 return Forbid();
             }
 
-            var review = await this.reviewService.GetReviewById(reviewId);
+            var review = await this._reviewService.GetReviewById(reviewId);
 
             if (review == null)
             {
                 return this.NotFound();
             }
 
-            await this.reviewService.DeleteReview(reviewId);
+            await this._reviewService.DeleteReview(reviewId);
 
             return this.NoContent();
         }

@@ -10,9 +10,6 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.DTOs
     public class OrderRequestDTO
     {
         [Required]
-        public string UserID { get; set; }
-
-        [Required]
         public DateTime OrderDate { get; set; }
 
         [Required]

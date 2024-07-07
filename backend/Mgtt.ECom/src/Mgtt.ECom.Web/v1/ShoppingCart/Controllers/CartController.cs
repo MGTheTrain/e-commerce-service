@@ -29,30 +29,30 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         }
 
         /// <summary>
-        /// Checks if the user has either "manage:carts" or "manage:own-cart" permission and validates their carts if applicable.
+        /// Determines if the user has the "manage:carts" or "manage:own-cart" permission, and if applicable, validates the user's carts.
         /// </summary>
-        /// <returns>True if the user has the permission and valid carts; otherwise, false.</returns>
-        private async Task<bool> CheckManageOwnCartPermission()
+        /// <param name="isCreateOperation">Indicates whether the operation is a creation operation.</param>
+        /// <returns>True if the user has the required permissions and, if necessary, has valid carts; otherwise, false.</returns>
+        private async Task<string?> CheckManageOwnCartPermission(bool isCreateOperation)
         {
             var permissionsClaims = this.User.FindAll("permissions");
-            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:carts")))
-            {
-                return true;
-            }
-            else if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-cart")))
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:carts")) || 
+                permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-cart")))
             {
                 var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
-                if (userIdClaim != null)
+                var userId = userIdClaim!.Value;
+                if (!isCreateOperation)
                 {
-                    var userId = userIdClaim.Value;
-                    var userReviews = await this.cartService.GetCartsByUserId(userId);
-                    if (userReviews != null)
+                    var userCarts = await this.cartService.GetCartsByUserId(userId);
+                    if (userCarts!.Count() > 0)
                     {
-                        return true;
+                        return userId;
                     }
+                    return null;
                 }
+                return userId;
             } 
-            return false;
+            return null;
         }
 
         /// <summary>
@@ -62,8 +62,10 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <returns>A newly created cart.</returns>
         /// <response code="201">Returns the newly created cart.</response>
         /// <response code="400">If the cart data is invalid.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPost]
-        [Authorize("manage:carts")]
+        [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CartResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCart(CartRequestDTO cartDTO)
@@ -73,9 +75,16 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
+            var isCreateOperation = true;
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            if(userId == null)
+            {
+                return Forbid();
+            }
+
             var cart = new Cart
             {
-                UserID = cartDTO.UserID,
+                UserID = userId!,
                 TotalAmount = cartDTO.TotalAmount,
             };
 
@@ -102,14 +111,17 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <returns>The cart with the specified ID.</returns>
         /// <response code="200">Returns the cart with the specified ID.</response>
         /// <response code="404">If the cart is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpGet("{cartId}")]
         [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CartResponseDTO>> GetCartById(Guid cartId)
         {
-            var checkManageOwnCartPermission = await CheckManageOwnCartPermission();
-            if(!checkManageOwnCartPermission)
+            var isCreateOperation = false;
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            if(userId == null)
             {
                 return Forbid();
             }
@@ -136,11 +148,20 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// </summary>
         /// <returns>A list of all carts.</returns>
         /// <response code="200">Returns a list of all carts.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpGet]
-        [Authorize("manage:carts")]
+        [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CartResponseDTO>))]
         public async Task<ActionResult<IEnumerable<CartResponseDTO>>> GetAllCarts()
         {
+            var isCreateOperation = false;
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            if(userId == null)
+            {
+                return Forbid();
+            }
+
             var carts = await this.cartService.GetAllCarts();
             var cartDTOs = new List<CartResponseDTO>();
 
@@ -165,9 +186,11 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <response code="204">If the cart was successfully updated.</response>
         /// <response code="404">If the cart is not found.</response>
         /// <response code="400">If the cart data is invalid.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpPut("{cartId}")]
-        [Authorize("manage:carts")]
+        [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -176,6 +199,13 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
+            }
+
+            var isCreateOperation = false;
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            if(userId == null)
+            {
+                return Forbid();
             }
 
             var cart = await this.cartService.GetCartById(cartId);
@@ -209,13 +239,22 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <param name="cartId">The ID of the cart.</param>
         /// <response code="204">If the cart was successfully deleted.</response>
         /// <response code="404">If the cart is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpDelete("{cartId}")]
-        [Authorize("manage:carts")]
+        [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCartById(Guid cartId)
         {
+            var isCreateOperation = false;
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            if(userId == null)
+            {
+                return Forbid();
+            }
+
             var cart = await this.cartService.GetCartById(cartId);
 
             if (cart == null)
@@ -236,6 +275,8 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <returns>A newly created cart item.</returns>
         /// <response code="201">Returns the newly created cart item.</response>
         /// <response code="400">If the cart item data is invalid.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPost("{cartId}/items")]
         [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CartItemResponseDTO))]
@@ -247,8 +288,9 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
-            var checkManageOwnCartPermission = await CheckManageOwnCartPermission();
-            if(!checkManageOwnCartPermission)
+            var isCreateOperation = false; // false because we are verifying the cart resource which consists of cart items
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            if(userId == null)
             {
                 return Forbid();
             }
@@ -285,13 +327,16 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <param name="cartId">The ID of the cart to get items from.</param>
         /// <returns>A list of cart items.</returns>
         /// <response code="200">Returns the list of cart items.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpGet("{cartId}/items")]
         [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CartItemResponseDTO>))]
         public async Task<ActionResult<IEnumerable<CartItemResponseDTO>>> GetCartItemsByCartId(Guid cartId)
         {
-            var checkManageOwnCartPermission = await CheckManageOwnCartPermission();
-            if(!checkManageOwnCartPermission)
+            var isCreateOperation = false;
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            if(userId == null)
             {
                 return Forbid();
             }
@@ -322,14 +367,17 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <returns>The cart item with the specified ID.</returns>
         /// <response code="200">Returns the cart item with the specified ID.</response>
         /// <response code="404">If the cart item is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpGet("{cartId}/items/{itemId}")]
         [Authorize("manage:carts-and-own-cart")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartItemResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CartItemResponseDTO>> GetCartItemById(Guid cartId, Guid itemId)
         {
-            var checkManageOwnCartPermission = await CheckManageOwnCartPermission();
-            if(!checkManageOwnCartPermission)
+            var isCreateOperation = false;
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            if(userId == null)
             {
                 return Forbid();
             }
@@ -362,6 +410,8 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <response code="204">If the cart item was successfully updated.</response>
         /// <response code="404">If the cart item is not found.</response>
         /// <response code="400">If the cart item data is invalid.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpPut("{cartId}/items/{itemId}")]
         [Authorize("manage:carts-and-own-cart")]
@@ -375,8 +425,9 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
-            var checkManageOwnCartPermission = await CheckManageOwnCartPermission();
-            if(!checkManageOwnCartPermission)
+            var isCreateOperation = false;
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            if(userId == null)
             {
                 return Forbid();
             }
@@ -418,6 +469,8 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <param name="itemId">The ID of the cart item to delete.</param>
         /// <response code="204">If the cart item was successfully deleted.</response>
         /// <response code="404">If the cart item is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpDelete("{cartId}/items/{itemId}")]
         [Authorize("manage:carts-and-own-cart")]
@@ -425,8 +478,9 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCartItem(Guid cartId, Guid itemId)
         {
-            var checkManageOwnCartPermission = await CheckManageOwnCartPermission();
-            if(!checkManageOwnCartPermission)
+            var isCreateOperation = false;
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            if(userId == null)
             {
                 return Forbid();
             }

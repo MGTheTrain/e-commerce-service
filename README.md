@@ -86,7 +86,7 @@ docker compose down -v
 
 ## Documentation
 
-Explore the Web API architecture [here](./docs/api-design/web-api-structure.md). For more details on the use case overview [checkout following diagram](./docs/diagrams/use-case-overview.mmd). For more details on user roles and permissions required for RBAC [checkout following diagram](./docs/diagrams/user-roles-and-permissions-mapping.mmd).
+Explore the Web API structure [here](./docs/api-design/web-api-structure.md). For more details on the use case overview [checkout following diagram](./docs/diagrams/use-case-overview.mmd). For more details on user roles and permissions required for RBAC [checkout following diagram](./docs/diagrams/user-roles-and-permissions-mapping.mmd).
 
 Copy contents of the [swagger.json](./docs/api-design/swagger.json) to the [Swagger Online editor](https://editor.swagger.io/).
 Results should resemble following snippet:

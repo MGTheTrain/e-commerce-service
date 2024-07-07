@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { OrderItemResponseDTO, OrderResponseDTO, UserResponseDTO } from '../../../generated';
+import { OrderItemResponseDTO, OrderResponseDTO } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -20,13 +20,6 @@ import { DetailHeaderComponent } from '../../header/detail-header/detail-header.
 })
 export class OrderDetailComponent implements OnInit {
   private subscription: Subscription | null = null;
-
-  @Input() user: UserResponseDTO = { 
-    userID: '1', 
-    userName: 'John Doe', 
-    email: 'john.doe@example.com', 
-    role: 'Admin' 
-  };
 
   @Input() order: OrderResponseDTO = {
     orderID: uuidv4(),

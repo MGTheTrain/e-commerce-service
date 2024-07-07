@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/free-brands-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { OrderResponseDTO, OrderService, UserResponseDTO } from '../../../generated';
+import { OrderResponseDTO, OrderService } from '../../../generated';
 import { Router } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { HeaderComponent } from '../../header/header.component';
@@ -25,14 +25,6 @@ export class OrderListComponent implements OnInit {
     { orderID: uuidv4(), userID: '5', orderDate: new Date('2023-06-25'), totalAmount: 200.20, orderStatus: 'shipped' },
   ];
 
-  users: UserResponseDTO[] = [
-    { userID: '1', userName: 'John Doe', email: 'john.doe@example.com', role: 'Admin' },
-    { userID: '2', userName: 'Jane Smith', email: 'jane.smith@example.com', role: 'User' },
-    { userID: '3', userName: 'Mike Johnson', email: 'mike.johnson@example.com', role: 'User' },
-    { userID: '4', userName: 'Emily Brown', email: 'emily.brown@example.com', role: 'Admin' },
-    { userID: '5', userName: 'Chris Lee', email: 'chris.lee@example.com', role: 'User' },
-  ];
-
   public faSearch: IconDefinition = faSearch;
   public searchText: string = '';
   public filterOption: string = '';
@@ -46,20 +38,20 @@ export class OrderListComponent implements OnInit {
       this.isLoggedIn = true;
     } 
     
-    this.orderService.apiV1OrdersGet().subscribe(
-      (data: OrderResponseDTO[]) => {
-        this.orders = data;
-      },
-      error => {
-        console.error('Error fetching products', error);
-      }
-    );
+    // this.orderService.apiV1OrdersOrderIdGet().subscribe(
+    //   (data: OrderResponseDTO[]) => {
+    //     this.orders = data;
+    //   },
+    //   error => {
+    //     console.error('Error fetching products', error);
+    //   }
+    // );
   }
 
-  getUserName(userID: string | undefined): string | undefined {
-    const user = this.users.find(user => user.userID === userID);
-    return user ? user.userName : 'Unknown User';
-  }
+  // getUserName(userID: string | undefined): string | undefined {
+  //   const user = this.users.find(user => user.userID === userID);
+  //   return user ? user.userName : 'Unknown User';
+  // }
 
   handleOrderClick(order: OrderResponseDTO): void {
     this.router.navigate(['/orders', order.orderID]);

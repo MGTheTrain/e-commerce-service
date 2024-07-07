@@ -20,7 +20,7 @@ export class ProductDetailComponent implements OnInit {
 
   product: ProductResponseDTO = { 
     productID: '2', 
-    categoryID: '102', 
+    categories: ['Electric Guitar'],
     name: 'Dean Razorback Guitar White', 
     description: 'Description of Product B', 
     price: 2999.99, 
@@ -86,8 +86,8 @@ export class ProductDetailComponent implements OnInit {
   handleUpdateProductClick() {
     const productID = this.product.productID;
     if (productID) {
-      const productRequest: ProductRequestDTO = {
-        categoryID: this.product.categoryID!, 
+      const productRequest: ProductRequestDTO = { 
+        categories: this.product.categories!,
         name: this.product.name!, 
         description: this.product.description!, 
         price: this.product.price!, 

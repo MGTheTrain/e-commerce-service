@@ -16,7 +16,7 @@ import { ProductRequestDTO, ProductResponseDTO, ProductService } from '../../../
 })
 export class ProductCreationComponent implements OnInit {
   productRequest: ProductRequestDTO = { 
-    categoryID: '', // TBD: remove Category entity
+    categories: ['Electric Guitar'],
     name: '', 
     description: '', 
     price: 0, 

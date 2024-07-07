@@ -27,7 +27,7 @@ export class OrderItemComponent implements OnInit {
 
   @Input() product: ProductResponseDTO = {
     productID: '1',
-    categoryID: '1',
+    categories: ['Electric Guitar'],
     name: 'Dean Razorback Guitar',
     description: 'Product Description',
     price: 3999.99,

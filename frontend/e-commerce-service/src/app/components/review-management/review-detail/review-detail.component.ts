@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProductResponseDTO, ReviewResponseDTO, UserResponseDTO } from '../../../generated';
+import { ProductResponseDTO, ReviewResponseDTO } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faArrowLeft, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FormsModule } from '@angular/forms';
@@ -28,16 +28,9 @@ export class ReviewDetailComponent implements OnInit {
     reviewDate: new Date('2023-06-01')
   };
 
-  @Input() user: UserResponseDTO = { 
-    userID: '1', 
-    userName: 'John Doe', 
-    email: 'john.doe@example.com', 
-    role: 'Admin' 
-  };
-
   @Input() product: ProductResponseDTO = { 
     productID: '1', 
-    categoryID: '101', 
+    categories: ['Electric Guitar'],
     name: 'Dean Razorback Guitar Blue', 
     description: 'Description of Product A', 
     price: 4999.99, 

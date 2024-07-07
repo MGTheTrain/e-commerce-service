@@ -12,7 +12,7 @@
 
 export interface ProductResponseDTO { 
     productID?: string;
-    categoryID?: string;
+    categories?: Array<string>;
     name?: string;
     description?: string;
     price?: number;

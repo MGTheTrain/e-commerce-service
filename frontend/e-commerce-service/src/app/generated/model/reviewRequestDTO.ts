@@ -12,7 +12,6 @@
 
 export interface ReviewRequestDTO { 
     productID: string;
-    userID: string;
     rating: number;
     comment?: string;
 }

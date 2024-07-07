@@ -11,6 +11,5 @@
  */
 
 export interface CartRequestDTO { 
-    userID: string;
     totalAmount: number;
 }

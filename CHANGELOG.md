@@ -12,8 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - [Feature] Shopping Cart
-  - Cart Functionality
-    - [x] Ensure cart contents persist across user sessions
   - Cart Persistence
     - [x] Ensure cart contents persist across user sessions.
 - [Feature] Review Management

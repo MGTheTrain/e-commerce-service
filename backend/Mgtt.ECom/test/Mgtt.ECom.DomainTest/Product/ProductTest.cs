@@ -33,11 +33,10 @@ namespace Mgtt.ECom.DomainTest.Product
         }
 
         [Theory]
-        [InlineData("11111111-1111-1111-1111-111111111111", null, "", "Product Description", 99.99f, 10, "https://example.com/product-image.jpg", "Categories")]
-        [InlineData("11111111-1111-1111-1111-111111111111", new string[] { "Electronics" }, "", "Product Description", 99.99f, 10, "https://example.com/product-image.jpg", "Name")]
-        [InlineData("11111111-1111-1111-1111-111111111111", new string[] { "Electronics" }, "Test Product", "Product Description", 0.0f, 10, "https://example.com/product-image.jpg", "Price")]
-        [InlineData("11111111-1111-1111-1111-111111111111", new string[] { "Electronics" }, "Test Product", "Product Description", 99.99f, -1, "https://example.com/product-image.jpg", "Stock")]
-        [InlineData("11111111-1111-1111-1111-111111111111", new string[] { "Electronics" }, "Test Product", "Product Description", 99.99f, 10, "", "ImageUrl")]
+        [InlineData(new string[] { "Electronics" }, "", "Product Description", 99.99f, 10, "https://example.com/product-image.jpg", "Name")]
+        [InlineData(new string[] { "Electronics" }, "Test Product", "Product Description", 0.0f, 10, "https://example.com/product-image.jpg", "Price")]
+        [InlineData(new string[] { "Electronics" }, "Test Product", "Product Description", 99.99f, -1, "https://example.com/product-image.jpg", "Stock")]
+        [InlineData(new string[] { "Electronics" }, "Test Product", "Product Description", 99.99f, 10, "", "ImageUrl")]
         public void Product_Validation_Fails_With_Invalid_Data(string[] categories, string name, string description, float price, int stock, string imageUrl, string expectedMemberName)
         {
             // Arrange

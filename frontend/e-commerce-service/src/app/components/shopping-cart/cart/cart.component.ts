@@ -52,14 +52,6 @@ export class CartComponent implements OnInit {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
     } 
-
-    this.subscription = this.route.params.subscribe(params => {
-      const id = params['userId'];
-      this.cart.userID = id;
-
-      // GET /api/v1/cart/:userId/items
-      // GET /api/v1/products/:productId
-   });
    this.calculateTotalAmount();
   }
 

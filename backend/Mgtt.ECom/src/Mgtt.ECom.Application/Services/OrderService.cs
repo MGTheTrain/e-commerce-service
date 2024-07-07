@@ -38,7 +38,7 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
-        public async Task<IEnumerable<Order>?> GetOrdersByUserId(Guid userId)
+        public async Task<IEnumerable<Order>?> GetOrdersByUserId(string userId)
         {
             this.logger.LogInformation("Fetching orders by User ID: {UserId}", userId);
             try

@@ -9,6 +9,7 @@ public interface ICartService
     Task<IEnumerable<Cart>?> GetAllCarts();
 
     Task<Cart?> GetCartById(Guid cartId);
+    Task<IEnumerable<Cart>?> GetCartsByUserId(string userId);
 
     Task<Cart?> CreateCart(Cart cart);
 

@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Relocate Authorize attributes to the relevant HTTP controller endpoints in the [web backend](./backend/Mgtt.ECom/)
 
+### Removed
+
+- Eliminate user domain management as it will be managed through the Auth0 platform
+
 ## [0.6.0] - 02-07-2024
 
 ### Added

@@ -30,8 +30,6 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("manage:users", policy =>
-        policy.Requirements.Add(new HasPermissionRequirement("manage:users")));
     options.AddPolicy("manage:products", policy =>
         policy.Requirements.Add(new HasPermissionRequirement("manage:products")));
     options.AddPolicy("manage:orders", policy =>
@@ -48,6 +46,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("manage:reviews-and-own-review", policy =>
     {
         policy.RequireClaim("permissions", "manage:reviews", "manage:own-review");
+    });
+
+    options.AddPolicy("manage:carts-and-own-cart", policy =>
+    {
+        policy.RequireClaim("permissions", "manage:carts", "manage:own-cart");
     });
 });
 
@@ -125,7 +128,6 @@ builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IReviewService, ReviewService>();
 builder.Services.AddTransient<ICartService, CartService>();
 builder.Services.AddTransient<ICartItemService, CartItemService>();
-builder.Services.AddTransient<IUserService, UserService>();
 
 var app = builder.Build();
 

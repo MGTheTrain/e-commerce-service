@@ -2,7 +2,6 @@
 using Mgtt.ECom.Domain.ProductManagement;
 using Mgtt.ECom.Domain.ReviewManagement;
 using Mgtt.ECom.Domain.ShoppingCart;
-using Mgtt.ECom.Domain.UserManagement;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mgtt.ECom.Persistence.DataAccess;
@@ -19,7 +18,6 @@ public class PsqlDbContext : DbContext
     public PsqlDbContext(DbContextOptions<PsqlDbContext> options) : base(options)
     { }
 
-    public DbSet<User> Users { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Product> Products { get; set; }
@@ -48,11 +46,6 @@ public class PsqlDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>(e =>
-        {
-            e.HasKey(o => o.UserID);
-            e.Property(o => o.UserID).ValueGeneratedOnAdd();
-        });
         modelBuilder.Entity<Order>(e =>
         {
             e.HasKey(o => o.OrderID);

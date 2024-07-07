@@ -9,19 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.7.0] - 07-07-2024
 
-### Added
-
-- [Feature] Shopping Cart
-  - Cart Persistence
-    - [x] Ensure cart contents persist across user sessions.
-- [Feature] Review Management
-  - Product Reviews
-    - [x] Enable users to write reviews for products, rate them and provide feedback.
-
 ### Updated
 
-- Relocate Authorize attributes to the relevant HTTP controller endpoints in the [web backend](./backend/Mgtt.ECom/)
+- Modify authorization policies and adjust `Authorize attributes` for HTTP controller endpoints in the [web backend](./backend/Mgtt.ECom/)
 - Update [smoke tests](./backend/Mgtt.ECom/smoke-test/) to align with the latest HTTP controller endpoints, incorporating bearer tokens.
+- Modify [api-design](./docs/api-design/) and [diagrams](./docs/diagrams/)
 
 ### Removed
 

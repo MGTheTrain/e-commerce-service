@@ -32,8 +32,9 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// Determines if the user has the "manage:carts" or "manage:own-cart" permission, and if applicable, validates the user's carts.
         /// </summary>
         /// <param name="isCreateOperation">Indicates whether the operation is a creation operation.</param>
+        /// <param name="cartId">The cart id to check against.</param>
         /// <returns>True if the user has the required permissions and, if necessary, has valid carts; otherwise, false.</returns>
-        private async Task<string?> CheckManageOwnCartPermission(bool isCreateOperation)
+        private async Task<string?> CheckManageOwnCartPermission(bool isCreateOperation, Guid cartId)
         {
             var permissionsClaims = this.User.FindAll("permissions");
             if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:carts")) || 
@@ -41,10 +42,10 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             {
                 var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
                 var userId = userIdClaim!.Value;
-                if (!isCreateOperation)
+                if (!isCreateOperation && cartId != Guid.Empty)
                 {
                     var userCarts = await this._cartService.GetCartsByUserId(userId);
-                    if (userCarts!.Count() > 0)
+                    if (userCarts!.Where(x => x.CartID == cartId).FirstOrDefault() != null)
                     {
                         return userId;
                     }
@@ -76,7 +77,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             }
 
             var isCreateOperation = true;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, Guid.Empty);
             if(userId == null)
             {
                 return Forbid();
@@ -120,7 +121,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         public async Task<ActionResult<CartResponseDTO>> GetCartById(Guid cartId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
             if(userId == null)
             {
                 return Forbid();
@@ -156,7 +157,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         public async Task<ActionResult<IEnumerable<CartResponseDTO>>> GetAllCarts()
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, Guid.Empty);
             if(userId == null)
             {
                 return Forbid();
@@ -202,7 +203,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             }
 
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
             if(userId == null)
             {
                 return Forbid();
@@ -249,7 +250,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         public async Task<IActionResult> DeleteCartById(Guid cartId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
             if(userId == null)
             {
                 return Forbid();
@@ -289,7 +290,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             }
 
             var isCreateOperation = false; // false because we are verifying the cart resource which consists of cart items
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
             if(userId == null)
             {
                 return Forbid();
@@ -335,7 +336,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         public async Task<ActionResult<IEnumerable<CartItemResponseDTO>>> GetCartItemsByCartId(Guid cartId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
             if(userId == null)
             {
                 return Forbid();
@@ -376,7 +377,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         public async Task<ActionResult<CartItemResponseDTO>> GetCartItemById(Guid cartId, Guid itemId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
             if(userId == null)
             {
                 return Forbid();
@@ -426,7 +427,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             }
 
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
             if(userId == null)
             {
                 return Forbid();
@@ -479,7 +480,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         public async Task<IActionResult> DeleteCartItem(Guid cartId, Guid itemId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation);
+            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
             if(userId == null)
             {
                 return Forbid();

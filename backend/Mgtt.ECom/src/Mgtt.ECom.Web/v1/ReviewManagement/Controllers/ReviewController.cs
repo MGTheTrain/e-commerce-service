@@ -28,8 +28,9 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// Determines if the user has the "manage:reviews" or "manage:own-review" permission, and if applicable, validates the user's reviews.
         /// </summary>
         /// <param name="isCreateOperation">Indicates whether the operation is a creation operation.</param>
+        /// <param name="reviewId">The review id to check against.</param>
         /// <returns>True if the user has the required permissions and, if necessary, has valid reviews; otherwise, false.</returns>
-        private async Task<string?> CheckManageOwnReviewPermission(bool isCreateOperation)
+        private async Task<string?> CheckManageOwnReviewPermission(bool isCreateOperation, Guid reviewId)
         {
             var permissionsClaims = this.User.FindAll("permissions");
             if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:reviews")) || 
@@ -37,10 +38,10 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             {
                 var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
                 var userId = userIdClaim!.Value;
-                if (!isCreateOperation)
-                {
+                if (!isCreateOperation && reviewId != Guid.Empty)
+                { 
                     var userCarts = await this._reviewService.GetReviewsByUserId(userId);
-                    if (userCarts!.Count() > 0)
+                    if (userCarts!.Where(x => x.ReviewID == reviewId).FirstOrDefault() != null)
                     {
                         return userId;
                     }
@@ -74,7 +75,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             }
 
             var isCreateOperation = true;
-            var userId = await this.CheckManageOwnReviewPermission(isCreateOperation);
+            var userId = await this.CheckManageOwnReviewPermission(isCreateOperation, Guid.Empty);
             if(userId == null)
             {
                 return Forbid();
@@ -223,7 +224,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             }
 
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnReviewPermission(isCreateOperation);
+            var userId = await this.CheckManageOwnReviewPermission(isCreateOperation, reviewId);
             if (userId == null)
             {
                 return Forbid();
@@ -276,7 +277,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         public async Task<IActionResult> DeleteReview(Guid reviewId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnReviewPermission(isCreateOperation);
+            var userId = await this.CheckManageOwnReviewPermission(isCreateOperation, reviewId);
             if (userId == null)
             {
                 return Forbid();

@@ -83,7 +83,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             }
 
             var isCreateOperation = true;
-            var checkManageOwnReviewPermission = await CheckManageOwnReviewPermission(isCreateOperation);
+            var checkManageOwnReviewPermission = await this.CheckManageOwnReviewPermission(isCreateOperation);
             if(!checkManageOwnReviewPermission)
             {
                 return Forbid();
@@ -232,7 +232,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             }
 
             var isCreateOperation = false;
-            var checkManageOwnReviewPermission = await CheckManageOwnReviewPermission(isCreateOperation);
+            var checkManageOwnReviewPermission = await this.CheckManageOwnReviewPermission(isCreateOperation);
             if (!checkManageOwnReviewPermission)
             {
                 return Forbid();
@@ -285,7 +285,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         public async Task<IActionResult> DeleteReview(Guid reviewId)
         {
             var isCreateOperation = false;
-            var checkManageOwnReviewPermission = await CheckManageOwnReviewPermission(isCreateOperation);
+            var checkManageOwnReviewPermission = await this.CheckManageOwnReviewPermission(isCreateOperation);
             if (!checkManageOwnReviewPermission)
             {
                 return Forbid();

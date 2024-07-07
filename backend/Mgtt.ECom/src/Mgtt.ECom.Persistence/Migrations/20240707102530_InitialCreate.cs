@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -31,25 +32,12 @@ namespace Mgtt.ECom.Persistence.Migrations
                 columns: table => new
                 {
                     CartID = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserID = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserID = table.Column<string>(type: "text", nullable: false),
                     TotalAmount = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Carts", x => x.CartID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    CategoryID = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.CategoryID);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,7 +60,7 @@ namespace Mgtt.ECom.Persistence.Migrations
                 columns: table => new
                 {
                     OrderID = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserID = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserID = table.Column<string>(type: "text", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     TotalAmount = table.Column<float>(type: "real", nullable: false),
                     OrderStatus = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
@@ -87,7 +75,7 @@ namespace Mgtt.ECom.Persistence.Migrations
                 columns: table => new
                 {
                     ProductID = table.Column<Guid>(type: "uuid", nullable: false),
-                    CategoryID = table.Column<Guid>(type: "uuid", nullable: false),
+                    Categories = table.Column<List<string>>(type: "text[]", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
@@ -105,7 +93,7 @@ namespace Mgtt.ECom.Persistence.Migrations
                 {
                     ReviewID = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductID = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserID = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserID = table.Column<string>(type: "text", nullable: false),
                     Rating = table.Column<int>(type: "integer", nullable: false),
                     Comment = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     ReviewDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -113,21 +101,6 @@ namespace Mgtt.ECom.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reviews", x => x.ReviewID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    UserID = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    Role = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.UserID);
                 });
         }
 
@@ -141,9 +114,6 @@ namespace Mgtt.ECom.Persistence.Migrations
                 name: "Carts");
 
             migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
@@ -154,9 +124,6 @@ namespace Mgtt.ECom.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Reviews");
-
-            migrationBuilder.DropTable(
-                name: "Users");
         }
     }
 }

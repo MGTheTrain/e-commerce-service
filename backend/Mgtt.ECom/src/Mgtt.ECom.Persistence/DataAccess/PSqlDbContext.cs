@@ -15,13 +15,12 @@ public class PsqlDbContext : DbContext
     /// Comment this line out when initially creating first migration with 
     /// `dotnet-ef migrations add InitialCreate --output-dir Migrations`
     /// <\remark>
-    public PsqlDbContext(DbContextOptions<PsqlDbContext> options) : base(options)
-    { }
+    // public PsqlDbContext(DbContextOptions<PsqlDbContext> options) : base(options)
+    // { }
 
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Product> Products { get; set; }
-    public DbSet<Category> Categories { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<Cart> Carts { get; set; }
     public DbSet<CartItem> CartItems { get; set; }
@@ -60,11 +59,6 @@ public class PsqlDbContext : DbContext
         {
             e.HasKey(o => o.ProductID);
             e.Property(o => o.ProductID).ValueGeneratedOnAdd();
-        });
-        modelBuilder.Entity<Category>(e =>
-        {
-            e.HasKey(o => o.CategoryID);
-            e.Property(o => o.CategoryID).ValueGeneratedOnAdd();
         });
         modelBuilder.Entity<Review>(e =>
         {

@@ -22,11 +22,11 @@ namespace Mgtt.ECom.DomainTest.Product
                 Description = "Product Description",
                 Price = 99.99f,
                 Stock = 10,
-                ImageUrl = "https://example.com/product-image.jpg"
+                ImageUrl = "https://example.com/product-image.jpg",
             };
 
             // Act
-            var validationResults = ValidateProduct(product);
+            var validationResults = this.ValidateProduct(product);
 
             // Assert
             Assert.Empty(validationResults);
@@ -38,7 +38,7 @@ namespace Mgtt.ECom.DomainTest.Product
         [InlineData("11111111-1111-1111-1111-111111111111", new string[] { "Electronics" }, "Test Product", "Product Description", 0.0f, 10, "https://example.com/product-image.jpg", "Price")]
         [InlineData("11111111-1111-1111-1111-111111111111", new string[] { "Electronics" }, "Test Product", "Product Description", 99.99f, -1, "https://example.com/product-image.jpg", "Stock")]
         [InlineData("11111111-1111-1111-1111-111111111111", new string[] { "Electronics" }, "Test Product", "Product Description", 99.99f, 10, "", "ImageUrl")]
-        public void Product_Validation_Fails_With_Invalid_Data(string productId, string[] categories, string name, string description, float price, int stock, string imageUrl, string expectedMemberName)
+        public void Product_Validation_Fails_With_Invalid_Data(string[] categories, string name, string description, float price, int stock, string imageUrl, string expectedMemberName)
         {
             // Arrange
             var product = new Mgtt.ECom.Domain.ProductManagement.Product
@@ -48,11 +48,11 @@ namespace Mgtt.ECom.DomainTest.Product
                 Description = description,
                 Price = price,
                 Stock = stock,
-                ImageUrl = imageUrl
+                ImageUrl = imageUrl,
             };
 
             // Act
-            var validationResults = ValidateProduct(product);
+            var validationResults = this.ValidateProduct(product);
 
             // Assert
             Assert.NotEmpty(validationResults);

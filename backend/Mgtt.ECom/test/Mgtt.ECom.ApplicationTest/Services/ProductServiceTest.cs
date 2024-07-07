@@ -16,8 +16,8 @@ namespace Mgtt.ECom.ApplicationTest.Services
 
     public class ProductServiceTests : IDisposable
     {
-        private readonly PsqlDbContext _dbContext;
-        private readonly ProductService _productService;
+        private readonly PsqlDbContext dbContext;
+        private readonly ProductService productService;
 
         public ProductServiceTests()
         {
@@ -25,25 +25,25 @@ namespace Mgtt.ECom.ApplicationTest.Services
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
-            this._dbContext = new PsqlDbContext(options);
+            this.dbContext = new PsqlDbContext(options);
 
             var initialProducts = new List<Product>
             {
                 new Product { Name = "Product 1", Price = 100 },
-                new Product { Name = "Product 2", Price = 200 }
+                new Product { Name = "Product 2", Price = 200 },
             };
 
-            this._dbContext.Products.AddRange(initialProducts);
-            this._dbContext.SaveChanges();
+            this.dbContext.Products.AddRange(initialProducts);
+            this.dbContext.SaveChanges();
 
             var loggerMock = new Mock<ILogger<ProductService>>();
 
-            this._productService = new ProductService(this._dbContext, loggerMock.Object);
+            this.productService = new ProductService(this.dbContext, loggerMock.Object);
         }
 
         public void Dispose()
         {
-            this._dbContext.Dispose();
+            this.dbContext.Dispose();
         }
 
         [Fact]
@@ -53,8 +53,8 @@ namespace Mgtt.ECom.ApplicationTest.Services
             var product = new Product { Name = "New Product", Price = 300 };
 
             // Act
-            await this._productService.CreateProduct(product);
-            var result = await this._productService.GetProductById(product.ProductID);
+            await this.productService.CreateProduct(product);
+            var result = await this.productService.GetProductById(product.ProductID);
 
             // Assert
             Assert.NotNull(result);
@@ -67,12 +67,12 @@ namespace Mgtt.ECom.ApplicationTest.Services
         {
             // Arrange
             var product = new Product { Name = "Product to Update", Price = 400 };
-            await this._productService.CreateProduct(product);
+            await this.productService.CreateProduct(product);
 
             // Act
             product.Name = "Updated Product";
-            await this._productService.UpdateProduct(product);
-            var updatedProduct = await this._productService.GetProductById(product.ProductID);
+            await this.productService.UpdateProduct(product);
+            var updatedProduct = await this.productService.GetProductById(product.ProductID);
 
             // Assert
             Assert.NotNull(updatedProduct);
@@ -84,11 +84,11 @@ namespace Mgtt.ECom.ApplicationTest.Services
         {
             // Arrange
             var product = new Product { Name = "Product to Delete", Price = 500 };
-            await this._productService.CreateProduct(product);
+            await this.productService.CreateProduct(product);
 
             // Act
-            await this._productService.DeleteProduct(product.ProductID);
-            var deletedProduct = await this._productService.GetProductById(product.ProductID);
+            await this.productService.DeleteProduct(product.ProductID);
+            var deletedProduct = await this.productService.GetProductById(product.ProductID);
 
             // Assert
             Assert.Null(deletedProduct);
@@ -98,7 +98,7 @@ namespace Mgtt.ECom.ApplicationTest.Services
         public async Task Test_GetAllProducts()
         {
             // Act
-            var products = await this._productService.GetAllProducts();
+            var products = await this.productService.GetAllProducts();
 
             // Assert
             Assert.NotNull(products);

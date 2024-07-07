@@ -24,7 +24,7 @@ namespace Mgtt.ECom.PersistenceTest.DataAccess
         public void Can_Create_Read_Update_Delete_Product()
         {
             // Arrange
-            var options = GetInMemoryDbContextOptions();
+            var options = this.GetInMemoryDbContextOptions();
 
             using (var context = new PsqlDbContext(options))
             {
@@ -35,7 +35,7 @@ namespace Mgtt.ECom.PersistenceTest.DataAccess
                     Description = "Product Description",
                     Price = 99.99f,
                     Stock = 10,
-                    ImageUrl = "https://example.com/product-image.jpg"
+                    ImageUrl = "https://example.com/product-image.jpg",
                 };
 
                 // Act

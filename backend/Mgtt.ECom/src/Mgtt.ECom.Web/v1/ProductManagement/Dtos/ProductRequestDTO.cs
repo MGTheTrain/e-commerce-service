@@ -9,7 +9,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.DTOs
     public class ProductRequestDTO
     {
         [Required]
-        public Guid CategoryID { get; set; }
+        public List<string>? Categories { get; set; }
 
         [Required]
         [StringLength(100)]

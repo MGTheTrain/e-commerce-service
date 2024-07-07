@@ -7,13 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 07-07-2024
+
+### Updated
+
+- Modify authorization policies and adjust `Authorize attributes` for HTTP controller endpoints in the [web backend](./backend/Mgtt.ECom/)
+- Update [smoke tests](./backend/Mgtt.ECom/smoke-test/) to align with the latest HTTP controller endpoints incorporating bearer tokens.
+- Modify [api-design](./docs/api-design/) and [diagrams](./docs/diagrams/)
+- Modify [web frontend](./frontend/e-commerce-service/) to align with changes in the web backend incorporating bearer tokens
+- Replace [swagger generated Swagger-generated services](./frontend/e-commerce-service/src/app/generated/)
+
+### Removed
+
+- Eliminate user and category domain as it will be managed through the Auth0 platform
+
 ## [0.6.0] - 02-07-2024
 
 ### Added
 
-- [Feature] User Registration & Authentication
-    - [x] Securely handle user sign-up, login, and role management.
-    - [x] Communicate with IAM provider APIs like Auth0.
+- [Feature] User Management
+    - User Registration & Authentication
+        - [x] Securely handle user sign-up, login, and role management.
+        - [x] Communicate with IAM provider APIs like Auth0.
     - Consider OIDC trough `auth0-angular` npm package in web frontend
     - Consider RBAC in web backend trough `Microsoft.AspNetCore.Authentication.JwtBearer` nuget package
 

@@ -11,7 +11,7 @@
  */
 
 export interface ProductRequestDTO { 
-    categoryID: string;
+    categories: Array<string>;
     name: string;
     description?: string;
     price: number;

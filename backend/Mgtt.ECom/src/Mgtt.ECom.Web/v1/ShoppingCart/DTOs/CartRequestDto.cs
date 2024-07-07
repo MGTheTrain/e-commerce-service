@@ -10,9 +10,6 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.DTOs
     public class CartRequestDTO
     {
         [Required]
-        public Guid UserID { get; set; }
-
-        [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Total amount must be non-negative")]
         public float TotalAmount { get; set; }
     }

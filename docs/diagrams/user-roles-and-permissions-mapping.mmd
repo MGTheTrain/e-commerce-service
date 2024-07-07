@@ -10,6 +10,7 @@ permission4["manage:reviews\nManage Reviews"]
 permission5["manage:carts\nManage Carts"]
 permission6["manage:own-review\nManage Own Review"]
 permission7["manage:own-cart\nManage Own Cart"]
+permission8["manage:own-order\nManage Own Order"]
 
 Admin --> permission1
 Admin --> permission2
@@ -19,6 +20,7 @@ Admin --> permission5
 
 LoggedInUser --> permission6
 LoggedInUser --> permission7
+LoggedInUser --> permission8
 
 classDef permission fill:#ADD8E6,stroke:#333,stroke-width:2px;
 class permission1,permission2,permission3,permission4,permission5,permission6,permission7,permission8,permission9 permission;

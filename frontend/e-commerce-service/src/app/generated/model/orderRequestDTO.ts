@@ -11,7 +11,6 @@
  */
 
 export interface OrderRequestDTO { 
-    userID: string;
     orderDate: Date;
     totalAmount: number;
     orderStatus: string;

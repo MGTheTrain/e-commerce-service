@@ -16,7 +16,7 @@ namespace Mgtt.ECom.Domain.ShoppingCart
         public Cart()
         {
             this.CartID = Guid.NewGuid();
-            this.UserID = Guid.Empty;
+            this.UserID = string.Empty;
             this.TotalAmount = 0.0f;
         }
 
@@ -24,7 +24,7 @@ namespace Mgtt.ECom.Domain.ShoppingCart
         public Guid CartID { get; internal set; }
 
         [Required]
-        public Guid UserID { get; set; }
+        public string UserID { get; set; }
 
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Total amount must be non-negative")]
@@ -41,7 +41,7 @@ namespace Mgtt.ECom.Domain.ShoppingCart
                 yield return new ValidationResult($"{nameof(this.CartID)} can't be empty");
             }
 
-            if (this.UserID == Guid.Empty)
+            if (this.UserID == string.Empty)
             {
                 yield return new ValidationResult($"{nameof(this.UserID)} can't be empty");
             }

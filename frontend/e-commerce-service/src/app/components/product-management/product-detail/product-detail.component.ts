@@ -20,13 +20,26 @@ export class ProductDetailComponent implements OnInit {
 
   product: ProductResponseDTO = { 
     productID: '2', 
-    categoryID: '102', 
+    categories: ['Electric Guitar'],
     name: 'Dean Razorback Guitar White', 
     description: 'Description of Product B', 
     price: 2999.99, 
     stock: 5, 
     imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg' 
   };
+  
+  availableCategories: string[] = [
+    'Acoustic Guitar',
+    'Electric Guitar',
+    'Bass Guitar',
+    'Classical Guitar',
+    '12-String Guitar',
+    '7-String Guitar',
+    'Jazz Guitar',
+    'Blues Guitar',
+    'Metal Guitar',
+    'Rock Guitar'
+  ];
 
   public faTrash: IconDefinition = faTrash;
   public faEdit: IconDefinition = faEdit;
@@ -86,8 +99,8 @@ export class ProductDetailComponent implements OnInit {
   handleUpdateProductClick() {
     const productID = this.product.productID;
     if (productID) {
-      const productRequest: ProductRequestDTO = {
-        categoryID: this.product.categoryID!, 
+      const productRequest: ProductRequestDTO = { 
+        categories: this.product.categories!,
         name: this.product.name!, 
         description: this.product.description!, 
         price: this.product.price!, 

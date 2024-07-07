@@ -7,7 +7,6 @@ namespace Mgtt.ECom.Domain.ReviewManagement
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using Mgtt.ECom.Domain.UserManagement;
 
     /// <summary>
     /// Represents a product review in the e-commerce system.
@@ -18,7 +17,7 @@ namespace Mgtt.ECom.Domain.ReviewManagement
         {
             this.ReviewID = Guid.NewGuid();
             this.ProductID = Guid.Empty;
-            this.UserID = Guid.Empty;
+            this.UserID = string.Empty;
             this.Rating = 3;
             this.Comment = string.Empty;
             this.ReviewDate = DateTime.UtcNow;
@@ -30,7 +29,7 @@ namespace Mgtt.ECom.Domain.ReviewManagement
         public Guid ProductID { get; set; }
 
         [Required]
-        public Guid UserID { get; set; }
+        public string UserID { get; set; }
 
         [Required]
         [Range(1, 5, ErrorMessage = "Rating must be between 1 and 5")]
@@ -58,7 +57,7 @@ namespace Mgtt.ECom.Domain.ReviewManagement
                 yield return new ValidationResult($"{nameof(this.ProductID)} can't be empty");
             }
 
-            if (this.UserID == Guid.Empty)
+            if (this.UserID == string.Empty)
             {
                 yield return new ValidationResult($"{nameof(this.UserID)} can't be empty");
             }

@@ -8,9 +8,8 @@ using Mgtt.ECom.Domain.OrderManagement;
 using Mgtt.ECom.Domain.ProductManagement;
 using Mgtt.ECom.Domain.ReviewManagement;
 using Mgtt.ECom.Domain.ShoppingCart;
-using Mgtt.ECom.Domain.UserManagement;
 using Mgtt.ECom.Persistence.DataAccess;
-using Mgtt.ECom.Web.V1.OrderManagement.Handlers;
+using Mgtt.ECom.Web.Handlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -30,8 +29,6 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("manage:users", policy =>
-        policy.Requirements.Add(new HasPermissionRequirement("manage:users")));
     options.AddPolicy("manage:products", policy =>
         policy.Requirements.Add(new HasPermissionRequirement("manage:products")));
     options.AddPolicy("manage:orders", policy =>
@@ -44,6 +41,23 @@ builder.Services.AddAuthorization(options =>
         policy.Requirements.Add(new HasPermissionRequirement("manage:own-review")));
     options.AddPolicy("manage:own-cart", policy =>
         policy.Requirements.Add(new HasPermissionRequirement("manage:own-cart")));
+    options.AddPolicy("manage:own-order", policy =>
+        policy.Requirements.Add(new HasPermissionRequirement("manage:own-order")));
+
+    options.AddPolicy("manage:reviews-and-own-review", policy =>
+    {
+        policy.RequireClaim("permissions", "manage:reviews", "manage:own-review");
+    });
+
+    options.AddPolicy("manage:carts-and-own-cart", policy =>
+    {
+        policy.RequireClaim("permissions", "manage:carts", "manage:own-cart");
+    });
+
+    options.AddPolicy("manage:orders-and-own-order", policy =>
+    {
+        policy.RequireClaim("permissions", "manage:orders", "manage:own-order");
+    });
 });
 
 builder.Services.AddSingleton<IAuthorizationHandler, HasPermissionHandler>();
@@ -115,12 +129,10 @@ var dbContext = builder.Services.AddDbContext<DbContext, PsqlDbContext>(options 
 
 builder.Services.AddTransient<IOrderItemService, OrderItemService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
-builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IReviewService, ReviewService>();
 builder.Services.AddTransient<ICartService, CartService>();
 builder.Services.AddTransient<ICartItemService, CartItemService>();
-builder.Services.AddTransient<IUserService, UserService>();
 
 var app = builder.Build();
 

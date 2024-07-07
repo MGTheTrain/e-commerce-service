@@ -37,6 +37,20 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
+        public async Task<IEnumerable<Cart>?> GetCartsByUserId(string userId)
+        {
+            this.logger.LogInformation("Fetching cart by UserID: {userId}", userId);
+            try
+            {
+                return await this.context.Carts.Where(r => r.UserID == userId).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, "Error fetching cart by UserID: {userId}", userId);
+                return await Task.FromResult<IEnumerable<Cart>?>(null);
+            }
+        }
+
         public async Task<IEnumerable<Cart>?> GetAllCarts()
         {
             this.logger.LogInformation("Fetching all carts");

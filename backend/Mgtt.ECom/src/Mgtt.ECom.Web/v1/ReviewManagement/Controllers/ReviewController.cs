@@ -6,16 +6,14 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.ReviewManagement;
     using Mgtt.ECom.Web.V1.ReviewManagement.DTOs;
-    using Mgtt.ECom.Web.V1.UserManagement.DTOs;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using static System.Collections.Specialized.BitVector32;
 
     [Route("api/v1/reviews")]
-    [Authorize("manage:reviews")]
     [ApiController]
     public class ReviewController : ControllerBase
     {
@@ -27,15 +25,51 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         }
 
         /// <summary>
+        /// Determines if the user has the "manage:reviews" or "manage:own-review" permission, and if applicable, validates the user's reviews.
+        /// </summary>
+        /// <param name="isCreateOperation">Indicates whether the operation is a creation operation.</param>
+        /// <param name="reviewId">The review id to check against.</param>
+        /// <returns>True if the user has the required permissions and, if necessary, has valid reviews; otherwise, false.</returns>
+        private async Task<string?> CheckManageOwnReviewPermission(bool isCreateOperation, Guid reviewId)
+        {
+            var permissionsClaims = this.User.FindAll("permissions");
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:reviews")) ||
+                permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-review")))
+            {
+                var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
+                var userId = userIdClaim!.Value;
+                if (!isCreateOperation && reviewId != Guid.Empty)
+                {
+                    var userCarts = await this.reviewService.GetReviewsByUserId(userId);
+                    if (userCarts!.Where(x => x.ReviewID == reviewId).FirstOrDefault() != null)
+                    {
+                        return userId;
+                    }
+
+                    return null;
+                }
+
+                return userId;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Creates a new review.
         /// </summary>
         /// <param name="reviewDTO">The review data transfer object containing review details.</param>
         /// <returns>The newly created review.</returns>
         /// <response code="201">Returns the newly created review.</response>
         /// <response code="400">If the review data is invalid.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPost]
+        [Authorize(Policy = "manage:reviews-and-own-review")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReviewResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> CreateReview(ReviewRequestDTO reviewDTO)
         {
             if (!this.ModelState.IsValid)
@@ -43,10 +77,17 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
+            var isCreateOperation = true;
+            var userId = await this.CheckManageOwnReviewPermission(isCreateOperation, Guid.Empty);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
             var review = new Review
             {
                 ProductID = reviewDTO.ProductID,
-                UserID = reviewDTO.UserID,
+                UserID = userId,
                 Rating = reviewDTO.Rating,
                 Comment = reviewDTO.Comment,
                 ReviewDate = DateTime.UtcNow,
@@ -119,6 +160,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             {
                 reviewDTOs.Add(new ReviewResponseDTO
                 {
+                    ReviewID = review.ReviewID,
                     ProductID = review.ProductID,
                     UserID = review.UserID,
                     Rating = review.Rating,
@@ -160,35 +202,6 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         }
 
         /// <summary>
-        /// Retrieves reviews by user ID.
-        /// </summary>
-        /// <param name="userId">The ID of the user.</param>
-        /// <returns>A list of reviews by the specified user.</returns>
-        /// <response code="200">Returns a list of reviews by the specified user.</response>
-        [HttpGet("user/{userId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
-        public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetReviewsByUserId(Guid userId)
-        {
-            var reviews = await this.reviewService.GetReviewsByUserId(userId);
-            var reviewDTOs = new List<ReviewResponseDTO>();
-
-            foreach (var review in reviews)
-            {
-                reviewDTOs.Add(new ReviewResponseDTO
-                {
-                    ReviewID = review.ReviewID,
-                    ProductID = review.ProductID,
-                    UserID = review.UserID,
-                    Rating = review.Rating,
-                    Comment = review.Comment,
-                    ReviewDate = review.ReviewDate,
-                });
-            }
-
-            return this.Ok(reviewDTOs);
-        }
-
-        /// <summary>
         /// Updates an existing review.
         /// </summary>
         /// <param name="reviewId">The ID of the review to update.</param>
@@ -196,16 +209,28 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <response code="204">If the review was successfully updated.</response>
         /// <response code="400">If the review data is invalid.</response>
         /// <response code="404">If the review is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpPut("{reviewId}")]
+        [Authorize(Policy = "manage:reviews-and-own-review")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReviewResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UpdateReview(Guid reviewId, ReviewRequestDTO reviewDTO)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
+            }
+
+            var isCreateOperation = false;
+            var userId = await this.CheckManageOwnReviewPermission(isCreateOperation, reviewId);
+            if (userId == null)
+            {
+                return this.Forbid();
             }
 
             var review = await this.reviewService.GetReviewById(reviewId);
@@ -216,7 +241,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             }
 
             review.ProductID = reviewDTO.ProductID;
-            review.UserID = reviewDTO.UserID;
+            review.UserID = userId;
             review.Rating = reviewDTO.Rating;
             review.Comment = reviewDTO.Comment;
 
@@ -245,12 +270,24 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <param name="reviewId">The ID of the review to delete.</param>
         /// <response code="204">If the review was successfully deleted.</response>
         /// <response code="404">If the review is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         [HttpDelete("{reviewId}")]
+        [Authorize(Policy = "manage:reviews-and-own-review")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> DeleteReview(Guid reviewId)
         {
+            var isCreateOperation = false;
+            var userId = await this.CheckManageOwnReviewPermission(isCreateOperation, reviewId);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
             var review = await this.reviewService.GetReviewById(reviewId);
 
             if (review == null)

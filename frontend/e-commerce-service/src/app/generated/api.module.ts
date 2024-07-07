@@ -4,11 +4,9 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { CartService } from './api/cart.service';
-import { CategoryService } from './api/category.service';
 import { OrderService } from './api/order.service';
 import { ProductService } from './api/product.service';
 import { ReviewService } from './api/review.service';
-import { UserService } from './api/user.service';
 
 @NgModule({
   imports:      [],
@@ -16,11 +14,9 @@ import { UserService } from './api/user.service';
   exports:      [],
   providers: [
     CartService,
-    CategoryService,
     OrderService,
     ProductService,
-    ReviewService,
-    UserService ]
+    ReviewService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {

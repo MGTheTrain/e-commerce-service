@@ -16,13 +16,26 @@ import { ProductRequestDTO, ProductResponseDTO, ProductService } from '../../../
 })
 export class ProductCreationComponent implements OnInit {
   productRequest: ProductRequestDTO = { 
-    categoryID: '', // TBD: remove Category entity
+    categories: ['Electric Guitar'],
     name: '', 
     description: '', 
     price: 0, 
     stock: 0, 
     imageUrl: 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg' 
   };
+
+  availableCategories: string[] = [
+    'Acoustic Guitar',
+    'Electric Guitar',
+    'Bass Guitar',
+    'Classical Guitar',
+    '12-String Guitar',
+    '7-String Guitar',
+    'Jazz Guitar',
+    'Blues Guitar',
+    'Metal Guitar',
+    'Rock Guitar'
+  ];
 
   public faPlus: IconDefinition = faPlus;
   public faImage: IconDefinition = faImage;

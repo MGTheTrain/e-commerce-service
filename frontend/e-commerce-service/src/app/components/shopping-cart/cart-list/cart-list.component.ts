@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CartResponseDTO, CartService, UserResponseDTO } from '../../../generated';
+import { CartResponseDTO, CartService } from '../../../generated';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -28,11 +28,6 @@ export class CartListComponent implements OnInit {
     },
   ];
 
-  @Input() users: UserResponseDTO[] = [
-    { userID: '1', userName: 'John Doe', email: 'john.doe@example.com', role: 'Admin' },
-    { userID: '2', userName: 'Jane Smith', email: 'jane.smith@example.com', role: 'User' }
-  ];
-
   public isLoggedIn: boolean = false;
 
   constructor(private router: Router, private cartService: CartService) {}
@@ -52,10 +47,10 @@ export class CartListComponent implements OnInit {
     );
   }
 
-  getUserName(userID: string | undefined): string | undefined {
-    const user = this.users.find(user => user.userID === userID);
-    return user ? user.userName : 'Unknown User';
-  }
+  // getUserName(userID: string | undefined): string | undefined {
+  //   const user = this.users.find(user => user.userID === userID);
+  //   return user ? user.userName : 'Unknown User';
+  // }
 
   handleCartClick(cart: CartResponseDTO): void {
     this.router.navigate(['/user', cart.cartID, 'cart']);

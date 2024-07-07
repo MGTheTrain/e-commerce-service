@@ -52,20 +52,6 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
-        public async Task<IEnumerable<Product>> GetProductsByCategory(Guid categoryId)
-        {
-            this.logger.LogInformation("Fetching products by Category ID: {CategoryId}", categoryId);
-            try
-            {
-                return await this.context.Products.Where(p => p.CategoryID == categoryId).ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "Error fetching products by Category ID: {CategoryId}", categoryId);
-                return await Task.FromResult<IEnumerable<Product>?>(null);
-            }
-        }
-
         public async Task<Product?> CreateProduct(Product product)
         {
             this.logger.LogInformation("Creating new product: {ProductName}", product.Name);

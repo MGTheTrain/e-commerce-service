@@ -2,7 +2,6 @@
 using Mgtt.ECom.Domain.ProductManagement;
 using Mgtt.ECom.Domain.ReviewManagement;
 using Mgtt.ECom.Domain.ShoppingCart;
-using Mgtt.ECom.Domain.UserManagement;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mgtt.ECom.Persistence.DataAccess;
@@ -19,11 +18,9 @@ public class PsqlDbContext : DbContext
     public PsqlDbContext(DbContextOptions<PsqlDbContext> options) : base(options)
     { }
 
-    public DbSet<User> Users { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Product> Products { get; set; }
-    public DbSet<Category> Categories { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<Cart> Carts { get; set; }
     public DbSet<CartItem> CartItems { get; set; }
@@ -48,11 +45,6 @@ public class PsqlDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>(e =>
-        {
-            e.HasKey(o => o.UserID);
-            e.Property(o => o.UserID).ValueGeneratedOnAdd();
-        });
         modelBuilder.Entity<Order>(e =>
         {
             e.HasKey(o => o.OrderID);
@@ -67,11 +59,6 @@ public class PsqlDbContext : DbContext
         {
             e.HasKey(o => o.ProductID);
             e.Property(o => o.ProductID).ValueGeneratedOnAdd();
-        });
-        modelBuilder.Entity<Category>(e =>
-        {
-            e.HasKey(o => o.CategoryID);
-            e.Property(o => o.CategoryID).ValueGeneratedOnAdd();
         });
         modelBuilder.Entity<Review>(e =>
         {

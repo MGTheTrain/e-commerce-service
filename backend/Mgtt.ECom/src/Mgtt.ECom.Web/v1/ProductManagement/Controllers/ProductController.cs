@@ -13,7 +13,6 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/v1/products")]
-    [Authorize("manage:products")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -31,9 +30,14 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <returns>The newly created product.</returns>
         /// <response code="201">Returns the newly created product.</response>
         /// <response code="400">If the product data is invalid.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPost]
+        [Authorize("manage:products")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProductResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> CreateProduct(ProductRequestDTO productDTO)
         {
             if (!this.ModelState.IsValid)
@@ -43,7 +47,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
 
             var product = new Product
             {
-                CategoryID = productDTO.CategoryID,
+                Categories = productDTO.Categories,
                 Name = productDTO.Name,
                 Description = productDTO.Description,
                 Price = productDTO.Price,
@@ -60,7 +64,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             var productResponseDTO = new ProductResponseDTO
             {
                 ProductID = product.ProductID,
-                CategoryID = product.CategoryID,
+                Categories = product.Categories,
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
@@ -88,7 +92,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                 productDTOs.Add(new ProductResponseDTO
                 {
                     ProductID = product.ProductID,
-                    CategoryID = product.CategoryID,
+                    Categories = product.Categories,
                     Name = product.Name,
                     Description = product.Description,
                     Price = product.Price,
@@ -122,7 +126,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             var productDTO = new ProductResponseDTO
             {
                 ProductID = product.ProductID,
-                CategoryID = product.CategoryID,
+                Categories = product.Categories,
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
@@ -142,10 +146,15 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="204">If the product was successfully updated.</response>
         /// <response code="400">If the product data is invalid.</response>
         /// <response code="404">If the product is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPut("{productId}")]
+        [Authorize("manage:products")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UpdateProduct(Guid productId, ProductRequestDTO productDTO)
         {
             if (!this.ModelState.IsValid)
@@ -160,7 +169,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                 return this.NotFound();
             }
 
-            product.CategoryID = productDTO.CategoryID;
+            product.Categories = productDTO.Categories;
             product.Name = productDTO.Name;
             product.Description = productDTO.Description;
             product.Price = productDTO.Price;
@@ -176,7 +185,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             var productResponseDTO = new ProductResponseDTO
             {
                 ProductID = product.ProductID,
-                CategoryID = product.CategoryID,
+                Categories = product.Categories,
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
@@ -194,9 +203,14 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <returns>No content response if successful.</returns>
         /// <response code="204">If the product was successfully deleted.</response>
         /// <response code="404">If the product is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpDelete("{productId}")]
+        [Authorize("manage:products")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> DeleteProduct(Guid productId)
         {
             var product = await this.productService.GetProductById(productId);

@@ -10,8 +10,6 @@ public interface IProductService
 
     Task<IEnumerable<Product>?> GetAllProducts();
 
-    Task<IEnumerable<Product>?> GetProductsByCategory(Guid categoryId);
-
     Task<Product?> CreateProduct(Product product);
 
     Task<Product?> UpdateProduct(Product product);

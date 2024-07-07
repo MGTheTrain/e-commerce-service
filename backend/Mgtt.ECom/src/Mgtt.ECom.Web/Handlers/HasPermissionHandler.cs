@@ -4,8 +4,8 @@
 
 namespace Mgtt.ECom.Web.Handlers
 {
-    using Microsoft.AspNetCore.Authorization;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
 
     /// <summary>
     /// Handles authorization requirements for permissions.

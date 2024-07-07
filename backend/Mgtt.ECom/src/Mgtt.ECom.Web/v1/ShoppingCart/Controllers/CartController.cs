@@ -32,7 +32,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// Checks if the user has either "manage:carts" or "manage:own-cart" permission and validates their carts if applicable.
         /// </summary>
         /// <returns>True if the user has the permission and valid carts; otherwise, false.</returns>
-        private async Task<bool> CheckManageOwnReviewPermission()
+        private async Task<bool> CheckManageOwnCartPermission()
         {
             var permissionsClaims = this.User.FindAll("permissions");
             if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:carts")))
@@ -45,7 +45,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 if (userIdClaim != null)
                 {
                     var userId = userIdClaim.Value;
-                    var userReviews = await this.cartService.GetCartById(userId);
+                    var userReviews = await this.cartService.GetCartsByUserId(userId);
                     if (userReviews != null)
                     {
                         return true;
@@ -108,6 +108,12 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CartResponseDTO>> GetCartById(Guid cartId)
         {
+            var checkManageOwnCartPermission = await CheckManageOwnCartPermission();
+            if(!checkManageOwnCartPermission)
+            {
+                return Forbid();
+            }
+
             var cart = await this.cartService.GetCartById(cartId);
 
             if (cart == null)
@@ -241,6 +247,12 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
+            var checkManageOwnCartPermission = await CheckManageOwnCartPermission();
+            if(!checkManageOwnCartPermission)
+            {
+                return Forbid();
+            }
+
             var cartItem = new CartItem
             {
                 CartID = cartId,
@@ -278,6 +290,12 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CartItemResponseDTO>))]
         public async Task<ActionResult<IEnumerable<CartItemResponseDTO>>> GetCartItemsByCartId(Guid cartId)
         {
+            var checkManageOwnCartPermission = await CheckManageOwnCartPermission();
+            if(!checkManageOwnCartPermission)
+            {
+                return Forbid();
+            }
+
             var cartItems = await this.cartItemService.GetCartItemsByCartId(cartId);
             var cartItemDTOs = new List<CartItemResponseDTO>();
 
@@ -310,6 +328,12 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CartItemResponseDTO>> GetCartItemById(Guid cartId, Guid itemId)
         {
+            var checkManageOwnCartPermission = await CheckManageOwnCartPermission();
+            if(!checkManageOwnCartPermission)
+            {
+                return Forbid();
+            }
+
             var cartItem = await this.cartItemService.GetCartItemById(itemId);
 
             if (cartItem == null)
@@ -349,6 +373,12 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
+            }
+
+            var checkManageOwnCartPermission = await CheckManageOwnCartPermission();
+            if(!checkManageOwnCartPermission)
+            {
+                return Forbid();
             }
 
             var cartItem = await this.cartItemService.GetCartItemById(itemId);
@@ -395,6 +425,12 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCartItem(Guid cartId, Guid itemId)
         {
+            var checkManageOwnCartPermission = await CheckManageOwnCartPermission();
+            if(!checkManageOwnCartPermission)
+            {
+                return Forbid();
+            }
+
             var cartItem = await this.cartItemService.GetCartItemById(itemId);
 
             if (cartItem == null)

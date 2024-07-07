@@ -42,6 +42,8 @@ builder.Services.AddAuthorization(options =>
         policy.Requirements.Add(new HasPermissionRequirement("manage:own-review")));
     options.AddPolicy("manage:own-cart", policy =>
         policy.Requirements.Add(new HasPermissionRequirement("manage:own-cart")));
+    options.AddPolicy("manage:own-order", policy =>
+        policy.Requirements.Add(new HasPermissionRequirement("manage:own-order")));
 
     options.AddPolicy("manage:reviews-and-own-review", policy =>
     {
@@ -51,6 +53,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("manage:carts-and-own-cart", policy =>
     {
         policy.RequireClaim("permissions", "manage:carts", "manage:own-cart");
+    });
+
+    options.AddPolicy("manage:orders-and-own-order", policy =>
+    {
+        policy.RequireClaim("permissions", "manage:orders", "manage:own-order");
     });
 });
 

@@ -6,6 +6,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.OrderManagement;
     using Mgtt.ECom.Web.V1.OrderManagement.DTOs;
@@ -14,7 +15,6 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/v1/orders")]
-    [Authorize("manage:orders")]
     [ApiController]
     public class OrderController : ControllerBase
     {
@@ -28,6 +28,33 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         }
 
         /// <summary>
+        /// Checks if the user has either "manage:orders" or "manage:own-order" permission and validates their orders if applicable.
+        /// </summary>
+        /// <returns>True if the user has the permission and valid orders; otherwise, false.</returns>
+        private async Task<bool> CheckManageOwnOrderPermission()
+        {
+            var permissionsClaims = this.User.FindAll("permissions");
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:orders")))
+            {
+                return true;
+            }
+            else if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-order")))
+            {
+                var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim != null)
+                {
+                    var userId = userIdClaim.Value;
+                    var userReviews = await this.orderService.GetOrdersByUserId(userId);
+                    if (userReviews != null)
+                    {
+                        return true;
+                    }
+                }
+            } 
+            return false;
+        }
+
+        /// <summary>
         /// Creates a new order.
         /// </summary>
         /// <param name="orderDTO">The order data transfer object containing order details.</param>
@@ -35,6 +62,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <response code="201">Returns the newly created order.</response>
         /// <response code="400">If the order data is invalid.</response>
         [HttpPost]
+        [Authorize(Policy="manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(OrderResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateOrder(OrderRequestDTO orderDTO)
@@ -69,34 +97,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
 
             return this.CreatedAtAction(nameof(this.CreateOrder), orderResponseDTO);
         }
-
-        /// <summary>
-        /// Retrieves all orders by user id.
-        /// </summary>
-        /// <returns>A list of all orders.</returns>
-        /// <response code="200">Returns a list of all orders.</response>
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrderResponseDTO>))]
-        public async Task<ActionResult<IEnumerable<OrderResponseDTO>>> GetOrdersByUserId(string userId)
-        {
-            var orders = await this.orderService.GetOrdersByUserId(userId); 
-            var orderDTOs = new List<OrderResponseDTO>();
-
-            foreach (var order in orders)
-            {
-                orderDTOs.Add(new OrderResponseDTO
-                {
-                    OrderID = order.OrderID,
-                    UserID = order.UserID,
-                    OrderDate = order.OrderDate,
-                    TotalAmount = order.TotalAmount,
-                    OrderStatus = order.OrderStatus,
-                });
-            }
-
-            return this.Ok(orderDTOs);
-        }
-
+        
         /// <summary>
         /// Retrieves an order by its ID.
         /// </summary>
@@ -105,6 +106,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <response code="200">Returns the order with the specified ID.</response>
         /// <response code="404">If the order is not found.</response>
         [HttpGet("{orderId}")]
+        [Authorize("manage:orders")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<OrderResponseDTO>> GetOrderById(Guid orderId)
@@ -138,6 +140,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <response code="400">If the order data is invalid.</response>
         /// <response code="404">If the order is not found.</response>
         [HttpPut("{orderId}")]
+        [Authorize(Policy="manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderRequestDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -184,6 +187,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <response code="204">If the order was successfully deleted.</response>
         /// <response code="404">If the order is not found.</response>
         [HttpDelete("{orderId}")]
+        [Authorize(Policy="manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteOrder(Guid orderId)
@@ -209,6 +213,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <response code="201">Returns the newly created order item.</response>
         /// <response code="400">If the order item data is invalid.</response>
         [HttpPost("{orderId}/items")]
+        [Authorize(Policy="manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(OrderItemResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateOrderItem(Guid orderId, OrderItemRequestDTO orderItemDTO)
@@ -252,6 +257,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <response code="200">Returns a list of all order items within the specified order.</response>
         /// <response code="404">If the order items are not found.</response>
         [HttpGet("{orderId}/items")]
+        [Authorize(Policy="manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrderItemResponseDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<OrderItemResponseDTO>>> GetOrderItemsByOrderId(Guid orderId)
@@ -283,6 +289,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <response code="200">Returns the order item with the specified ID within the specified order.</response>
         /// <response code="404">If the order item is not found.</response>
         [HttpGet("{orderId}/items/{itemId}")]
+        [Authorize(Policy="manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderItemResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<OrderItemResponseDTO>> GetOrderItemById(Guid orderId, Guid itemId)
@@ -316,6 +323,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <response code="400">If the order item data is invalid.</response>
         /// <response code="404">If the order item is not found.</response>
         [HttpPut("{orderId}/items/{itemId}")]
+        [Authorize(Policy="manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderItemResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -364,6 +372,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <response code="204">If the order item was successfully deleted.</response>
         /// <response code="404">If the order item is not found.</response>
         [HttpDelete("{orderId}/items/{itemId}")]
+        [Authorize(Policy="manage:orders-and-own-order")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteOrderItem(Guid orderId, Guid itemId)

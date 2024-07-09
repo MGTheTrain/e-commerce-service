@@ -475,17 +475,17 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
-            var cart = await this.cartService.GetCartById(cartId);
-            if (cart == null)
-            {
-                return this.BadRequest();
-            }
-
             var isCreateOperation = false;
             var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var cart = await this.cartService.GetCartById(cartId);
+            if (cart == null)
+            {
+                return this.BadRequest();
             }
 
             var cartItem = await this.cartItemService.GetCartItemById(itemId);

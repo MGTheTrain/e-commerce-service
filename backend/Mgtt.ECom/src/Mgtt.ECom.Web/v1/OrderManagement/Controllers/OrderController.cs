@@ -9,6 +9,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.OrderManagement;
+    using Mgtt.ECom.Domain.ShoppingCart;
     using Mgtt.ECom.Web.V1.OrderManagement.DTOs;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -277,6 +278,12 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
+            var order = await this.orderService.GetOrderById(orderId);
+            if (order == null)
+            {
+                return this.BadRequest();
+            }
+
             var isCreateOperation = false; // false because we are verifying the order resource which consists of order items
             var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
             if (userId == null)
@@ -334,6 +341,12 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 return this.Forbid();
             }
 
+            var order = await this.orderService.GetOrderById(orderId);
+            if (order == null)
+            {
+                return this.BadRequest();
+            }
+
             var orderItems = await this.orderItemService.GetOrderItemsByOrderId(orderId);
             var orderItemDTOs = new List<OrderItemResponseDTO>();
 
@@ -375,6 +388,12 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var order = await this.orderService.GetOrderById(orderId);
+            if (order == null)
+            {
+                return this.BadRequest();
             }
 
             var orderItem = await this.orderItemService.GetOrderItemById(itemId);
@@ -426,6 +445,12 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var order = await this.orderService.GetOrderById(orderId);
+            if (order == null)
+            {
+                return this.BadRequest();
             }
 
             var orderItem = await this.orderItemService.GetOrderItemById(itemId);
@@ -480,6 +505,12 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var order = await this.orderService.GetOrderById(orderId);
+            if (order == null)
+            {
+                return this.BadRequest();
             }
 
             var orderItem = await this.orderItemService.GetOrderItemById(itemId);

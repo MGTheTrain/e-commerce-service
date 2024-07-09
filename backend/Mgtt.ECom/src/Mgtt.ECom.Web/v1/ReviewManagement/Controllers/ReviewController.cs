@@ -30,7 +30,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         /// <param name="isCreateOperation">Indicates whether the operation is a creation operation.</param>
         /// <param name="reviewId">The review id to check against.</param>
         /// <returns>True if the user has the required permissions and, if necessary, has valid reviews; otherwise, false.</returns>
-        private async Task<string?> CheckManageOwnReviewPermission(bool isCreateOperation, Guid reviewId)
+        private async Task<string?> VerifyUserPermissionForReview(bool isCreateOperation, Guid reviewId)
         {
             var permissionsClaims = this.User.FindAll("permissions");
             var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
@@ -87,7 +87,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             }
 
             var isCreateOperation = true;
-            var userId = await this.CheckManageOwnReviewPermission(isCreateOperation, Guid.Empty);
+            var userId = await this.VerifyUserPermissionForReview(isCreateOperation, Guid.Empty);
             if (userId == null)
             {
                 return this.Forbid();
@@ -236,7 +236,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
             }
 
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnReviewPermission(isCreateOperation, reviewId);
+            var userId = await this.VerifyUserPermissionForReview(isCreateOperation, reviewId);
             if (userId == null)
             {
                 return this.Forbid();
@@ -291,7 +291,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         public async Task<IActionResult> DeleteReview(Guid reviewId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnReviewPermission(isCreateOperation, reviewId);
+            var userId = await this.VerifyUserPermissionForReview(isCreateOperation, reviewId);
             if (userId == null)
             {
                 return this.Forbid();

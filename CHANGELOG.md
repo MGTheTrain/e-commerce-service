@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 09-07-2024
+
+### Updated
+
+- Rename and update helper methods for verifying user permissions within controller endpoints of the [web backend](./backend/Mgtt.ECom/)
+- Add missing validation checks for item management in Order and Cart controller endpoints of the [web backend](./backend/Mgtt.ECom/)
+
 ## [0.7.0] - 07-07-2024
 
 ### Updated

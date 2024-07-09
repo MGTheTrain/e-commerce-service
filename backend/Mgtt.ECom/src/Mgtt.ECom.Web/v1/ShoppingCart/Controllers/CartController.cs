@@ -52,6 +52,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                     var cart = await this.cartService.GetCartById(cartId);
                     return cart?.UserID ?? userId;
                 }
+
                 return userId;
             }
 
@@ -320,6 +321,12 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return this.Forbid();
             }
 
+            var cart = await this.cartService.GetCartById(cartId);
+            if (cart == null)
+            {
+                return this.BadRequest();
+            }
+
             var cartItem = new CartItem
             {
                 CartID = cartId,
@@ -368,6 +375,12 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return this.Forbid();
             }
 
+            var cart = await this.cartService.GetCartById(cartId);
+            if (cart == null)
+            {
+                return this.BadRequest();
+            }
+
             var cartItems = await this.cartItemService.GetCartItemsByCartId(cartId);
             var cartItemDTOs = new List<CartItemResponseDTO>();
 
@@ -409,6 +422,12 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var cart = await this.cartService.GetCartById(cartId);
+            if (cart == null)
+            {
+                return this.BadRequest();
             }
 
             var cartItem = await this.cartItemService.GetCartItemById(itemId);
@@ -454,6 +473,12 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
+            }
+
+            var cart = await this.cartService.GetCartById(cartId);
+            if (cart == null)
+            {
+                return this.BadRequest();
             }
 
             var isCreateOperation = false;
@@ -516,6 +541,12 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var cart = await this.cartService.GetCartById(cartId);
+            if (cart == null)
+            {
+                return this.BadRequest();
             }
 
             var cartItem = await this.cartItemService.GetCartItemById(itemId);

@@ -36,22 +36,31 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         private async Task<string?> CheckManageOwnOrderPermission(bool isCreateOperation, Guid orderId)
         {
             var permissionsClaims = this.User.FindAll("permissions");
-            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:orders")) ||
-                permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-order")))
+            var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = userIdClaim?.Value;
+
+            if (userId == null)
             {
-                var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
-                var userId = userIdClaim!.Value;
+                return null;
+            }
+
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:orders")))
+            {
                 if (!isCreateOperation && orderId != Guid.Empty)
                 {
-                    var userCarts = await this.orderService.GetOrdersByUserId(userId);
-                    if (userCarts!.Where(x => x.OrderID == orderId).FirstOrDefault() != null)
-                    {
-                        return userId;
-                    }
-
-                    return null;
+                    var order = await this.orderService.GetOrderById(orderId);
+                    return order?.UserID ?? userId;
                 }
+                return userId;
+            }
 
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-order")))
+            {
+                if (!isCreateOperation && orderId != Guid.Empty)
+                {
+                    var userOrders = await this.orderService.GetOrdersByUserId(userId);
+                    return userOrders?.Any(x => x.OrderID == orderId) == true ? userId : null;
+                }
                 return userId;
             }
 

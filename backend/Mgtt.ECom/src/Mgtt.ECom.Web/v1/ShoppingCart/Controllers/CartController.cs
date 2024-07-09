@@ -37,22 +37,31 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         private async Task<string?> CheckManageOwnCartPermission(bool isCreateOperation, Guid cartId)
         {
             var permissionsClaims = this.User.FindAll("permissions");
-            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:carts")) ||
-                permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-cart")))
+            var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = userIdClaim?.Value;
+
+            if (userId == null)
             {
-                var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
-                var userId = userIdClaim!.Value;
+                return null;
+            }
+
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:carts")))
+            {
+                if (!isCreateOperation && cartId != Guid.Empty)
+                {
+                    var cart = await this.cartService.GetCartById(cartId);
+                    return cart?.UserID ?? userId;
+                }
+                return userId;
+            }
+
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-cart")))
+            {
                 if (!isCreateOperation && cartId != Guid.Empty)
                 {
                     var userCarts = await this.cartService.GetCartsByUserId(userId);
-                    if (userCarts!.Where(x => x.CartID == cartId).FirstOrDefault() != null)
-                    {
-                        return userId;
-                    }
-
-                    return null;
+                    return userCarts?.Any(x => x.CartID == cartId) == true ? userId : null;
                 }
-
                 return userId;
             }
 

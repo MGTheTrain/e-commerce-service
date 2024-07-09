@@ -33,22 +33,31 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         private async Task<string?> CheckManageOwnReviewPermission(bool isCreateOperation, Guid reviewId)
         {
             var permissionsClaims = this.User.FindAll("permissions");
-            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:reviews")) ||
-                permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-review")))
+            var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = userIdClaim?.Value;
+
+            if (userId == null)
             {
-                var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
-                var userId = userIdClaim!.Value;
+                return null;
+            }
+
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:reviews")))
+            {
                 if (!isCreateOperation && reviewId != Guid.Empty)
                 {
-                    var userCarts = await this.reviewService.GetReviewsByUserId(userId);
-                    if (userCarts!.Where(x => x.ReviewID == reviewId).FirstOrDefault() != null)
-                    {
-                        return userId;
-                    }
-
-                    return null;
+                    var review = await this.reviewService.GetReviewById(reviewId);
+                    return review?.UserID ?? userId;
                 }
+                return userId;
+            }
 
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-review")))
+            {
+                if (!isCreateOperation && reviewId != Guid.Empty)
+                {
+                    var userReviews = await this.reviewService.GetReviewsByUserId(userId);
+                    return userReviews?.Any(x => x.ReviewID == reviewId) == true ? userId : null;
+                }
                 return userId;
             }
 

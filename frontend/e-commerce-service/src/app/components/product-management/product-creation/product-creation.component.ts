@@ -6,11 +6,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faArrowLeft, faImage, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ProductRequestDTO, ProductResponseDTO, ProductService } from '../../../generated';
+import { DetailHeaderComponent } from '../../header/detail-header/detail-header.component';
 
 @Component({
   selector: 'app-product-creation',
   standalone: true,
-  imports: [FormsModule, CommonModule, FontAwesomeModule],
+  imports: [FormsModule, CommonModule, FontAwesomeModule, DetailHeaderComponent],
   templateUrl: './product-creation.component.html',
   styleUrl: './product-creation.component.css'
 })

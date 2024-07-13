@@ -7,12 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.8.0] - 09-07-2024
+## [0.8.0] - 13-07-2024
 
 ### Updated
 
 - Rename and update helper methods for verifying user permissions within controller endpoints of the [web backend](./backend/Mgtt.ECom/)
 - Add missing validation checks for item management in Order and Cart controller endpoints of the [web backend](./backend/Mgtt.ECom/)
+- Include [detail header component](./frontend/e-commerce-service/src/app/components/header/detail-header/) in [product creation component](./frontend/e-commerce-service/src/app/components/product-management/product-creation) and [product detail component](./frontend/e-commerce-service/src/app/components/product-management/product-detail)
+- Reload page after setting access token in [header component](./frontend/e-commerce-service/src/app/components/header/)
 
 ## [0.7.0] - 07-07-2024
 

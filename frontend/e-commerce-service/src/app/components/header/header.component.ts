@@ -38,6 +38,7 @@ export class HeaderComponent implements OnInit {
           this.auth.getAccessTokenSilently().subscribe(
             (accessToken: string) => {
               localStorage.setItem("accessToken", accessToken);
+              window.location.reload();
             },
             (error) => {
               console.error('Error getting access token:', error);

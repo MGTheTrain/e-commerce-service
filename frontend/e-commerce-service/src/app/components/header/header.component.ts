@@ -69,6 +69,6 @@ export class HeaderComponent implements OnInit {
   }
 
   handleCartClick(): void {
-    console.log('Navigating to cart');
+    this.router.navigate(['/carts']);
   }
 }

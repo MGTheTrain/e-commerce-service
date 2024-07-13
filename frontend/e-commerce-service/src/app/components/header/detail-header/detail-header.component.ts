@@ -6,6 +6,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faSearch, faSignIn } from '@fortawesome/free-solid-svg-icons';
+import { CartResponseDTO, CartService } from '../../../generated';
 
 @Component({
   selector: 'app-detail-header',
@@ -20,7 +21,7 @@ export class DetailHeaderComponent implements OnInit {
   
   public isLoggedIn: boolean = false;
 
-  constructor(private router: Router, public auth: AuthService) {}
+  constructor(private router: Router, public auth: AuthService, private cartService: CartService) {}
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
@@ -39,8 +40,19 @@ export class DetailHeaderComponent implements OnInit {
   }
 
   handleLogoutClick(): void {
+    const cartId = localStorage.getItem('cartId')?.toString();
+    this.cartService.apiV1CartsCartIdDelete(cartId!).subscribe(
+      (data: CartResponseDTO) => {
+        localStorage.setItem("cartId", data.cartID!.toString());
+      },
+      error => {
+        console.error('Error deleting cart', error);
+      }
+    );
     this.auth.logout();
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('cartId');
     this.isLoggedIn = false;
     this.router.navigate(['/']);
   }

@@ -60,9 +60,6 @@ export class HeaderComponent implements OnInit {
   }
 
   handleLogoutClick(): void {
-    this.auth.logout();
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('accessToken');
     const cartId = localStorage.getItem('cartId')?.toString();
     this.cartService.apiV1CartsCartIdDelete(cartId!).subscribe(
       (data: CartResponseDTO) => {
@@ -72,9 +69,12 @@ export class HeaderComponent implements OnInit {
         console.error('Error deleting cart', error);
       }
     );
+    this.auth.logout();
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('accessToken');
     localStorage.removeItem('cartId');
     this.isLoggedIn = false;
-    // this.router.navigate(['/']);
+    this.router.navigate(['/']);
   }
 
   handleCartClick(): void {

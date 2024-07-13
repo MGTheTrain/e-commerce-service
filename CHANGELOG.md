@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add missing validation checks for item management in Order and Cart controller endpoints of the [web backend](./backend/Mgtt.ECom/)
 - Include [detail header component](./frontend/e-commerce-service/src/app/components/header/detail-header/) in [product creation component](./frontend/e-commerce-service/src/app/components/product-management/product-creation) and [product detail component](./frontend/e-commerce-service/src/app/components/product-management/product-detail)
 - Reload page after setting access token in [header component](./frontend/e-commerce-service/src/app/components/header/)
-- Initialize cart on login and handle cart deletion on logout in [header component](./frontend/e-commerce-service/src/app/components/header/)
+- Initialize cart on login in [product list component](./frontend/e-commerce-service/src/app/components/product-management/product-list/) and handle cart deletion on logout in [header component](./frontend/e-commerce-service/src/app/components/header/)
 
 ## [0.7.0] - 07-07-2024
 

@@ -39,14 +39,7 @@ export class HeaderComponent implements OnInit {
           this.auth.getAccessTokenSilently().subscribe(
             (accessToken: string) => {
               localStorage.setItem("accessToken", accessToken);
-              this.cartService.apiV1CartsPost().subscribe(
-                (data: CartResponseDTO) => {
-                  localStorage.setItem("cartId", data.cartID!.toString());
-                },
-                error => {
-                  console.error('Error creating cart', error);
-                }
-              );
+
               window.location.reload();
             },
             (error) => {
@@ -81,7 +74,7 @@ export class HeaderComponent implements OnInit {
     );
     localStorage.removeItem('cartId');
     this.isLoggedIn = false;
-    this.router.navigate(['/']);
+    // this.router.navigate(['/']);
   }
 
   handleCartClick(): void {

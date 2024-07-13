@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProductResponseDTO, ProductService } from '../../../generated';
+import { CartRequestDTO, CartResponseDTO, CartService, ProductResponseDTO, ProductService } from '../../../generated';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -41,11 +41,25 @@ export class ProductListComponent implements OnInit {
   public isLoggedIn: boolean = false;
   public accessToken: string | null = ''; 
 
-  constructor(private router: Router, private productService: ProductService) {}
+  constructor(private router: Router, private productService: ProductService, private cartService: CartService) {}
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
+
+      if(localStorage.getItem('cartId') === null) {
+        const cartRequestDto: CartRequestDTO = {
+          totalAmount: 0
+        };
+        this.cartService.apiV1CartsPost(cartRequestDto).subscribe(
+          (data: CartResponseDTO) => {
+            localStorage.setItem("cartId", data.cartID!.toString());
+          },
+          error => {
+            console.error('Error creating cart', error);
+          }
+        );
+      }
     } 
     this.productService.apiV1ProductsGet().subscribe(
       (data: ProductResponseDTO[]) => {

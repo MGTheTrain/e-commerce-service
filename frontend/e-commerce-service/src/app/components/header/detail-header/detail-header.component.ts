@@ -35,15 +35,11 @@ export class DetailHeaderComponent implements OnInit {
   }
 
   handleLoginClick(): void {
-    // this.router.navigate(['/user/login']);
     this.auth.loginWithRedirect();
   }
 
   handleLogoutClick(): void {
     this.auth.logout();
-    // Simulate a logout process
-    // You would typically have a service to handle the actual logout process
-    // For now, we will just remove the isLoggedIn flag from local storage
     localStorage.removeItem('isLoggedIn');
     this.isLoggedIn = false;
     this.router.navigate(['/']);

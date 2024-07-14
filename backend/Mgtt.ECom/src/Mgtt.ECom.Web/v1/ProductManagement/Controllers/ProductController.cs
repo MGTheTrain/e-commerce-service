@@ -156,34 +156,44 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         }
 
         /// <summary>
-        /// Retrieves products by user id.
+        /// Retrieves the product associated with a specific user.
         /// </summary>
-        /// <param name="userId">The ID of the user.</param>
-        /// <returns>A list of all products by user id.</returns>
-        /// <response code="200">Returns a list of all products by user id.</response>
-        [HttpGet("user/{userId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductResponseDTO>))]
-        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetProductsByUserId(string userId)
+        /// <param name="productId">The ID of the product.</param>
+        /// <returns>The product by user id.</returns>
+        /// <response code="200">Returns the product by user id.</response>
+        [HttpGet("{productId}/user")]
+        [Authorize("manage:products-and-own-product")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponseDTO))]
+        public async Task<ActionResult<ProductResponseDTO>> GetProductForUser(Guid productId)
         {
-            var products = await this.productService.GetProductsByUserId(userId);
-            var productDTOs = new List<ProductResponseDTO>();
-
-            foreach (var product in products)
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForProduct(isCreateOperation, productId);
+            if (userId == null)
             {
-                productDTOs.Add(new ProductResponseDTO
-                {
-                    ProductID = product.ProductID,
-                    UserID = product.UserID,
-                    Categories = product.Categories,
-                    Name = product.Name,
-                    Description = product.Description,
-                    Price = product.Price,
-                    Stock = product.Stock,
-                    ImageUrl = product.ImageUrl,
-                });
+                return this.Forbid();
             }
 
-            return this.Ok(productDTOs);
+            var products = await this.productService.GetProductsByUserId(userId);
+            var product = products!.FirstOrDefault();
+
+            if (product == null)
+            {
+                return this.NotFound();
+            }
+
+            var productDTO = new ProductResponseDTO
+            {
+                ProductID = product.ProductID,
+                UserID = product.UserID,
+                Categories = product.Categories,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Stock = product.Stock,
+                ImageUrl = product.ImageUrl,
+            };
+
+            return this.Ok(productDTO);
         }
 
         /// <summary>

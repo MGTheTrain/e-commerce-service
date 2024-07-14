@@ -46,16 +46,16 @@
             <button type="button" class="btn btn-secondary" (click)="handleEditClick()">
               <fa-icon [icon]="faEdit"></fa-icon> {{ isEditing ? 'Cancel' : 'Edit' }}
             </button>
-            <span class="mx-2"></span>
-            <button type="submit" class="btn btn-danger" (click)="handleDeleteProductClick()" [disabled]="!isEditing">
+            <span class="mx-2" *ngIf="isEditing"></span>
+            <button type="submit" class="btn btn-danger" (click)="handleDeleteProductClick()" *ngIf="isEditing">
               <fa-icon [icon]="faTrash"></fa-icon> Delete
             </button>
-            <span class="mx-2"></span>
-            <button type="button" class="btn btn-primary" (click)="handleUpdateProductClick()" [disabled]="!isEditing">
+            <span class="mx-2" *ngIf="isEditing"></span>
+            <button type="button" class="btn btn-primary" (click)="handleUpdateProductClick()" *ngIf="isEditing">
               <fa-icon [icon]="faEdit"></fa-icon> Update
             </button>
             <span class="mx-2"></span>
-            <button type="button" class="btn btn-outline-secondary" (click)="handleUpdateProductClick()">
+            <button type="button" class="btn btn-outline-secondary" (click)="handleUpdateProductClick()" *ngIf="!isEditing">
               <fa-icon [icon]="faPlus"></fa-icon> Add to Cart
             </button>
           </div>

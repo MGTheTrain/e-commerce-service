@@ -163,7 +163,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="200">Returns a list of all products by user id.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductResponseDTO>))]
-        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAllProducts(string userId)
+        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetProductsByUserId(string userId)
         {
             var products = await this.productService.GetProductsByUserId(userId);
             var productDTOs = new List<ProductResponseDTO>();

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CartItemResponseDTO, CartResponseDTO, ProductResponseDTO } from '../../../generated';
+import { CartItemResponseDTO, CartResponseDTO, CartService, ProductResponseDTO } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CartItemComponent } from '../cart-item/cart-item.component';
@@ -59,11 +59,25 @@ export class CartComponent implements OnInit {
 
   public isLoggedIn: boolean = false;
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute, private cartService: CartService) { }
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
+
+      if(localStorage.getItem('cartId') === null) {
+        const cartId = localStorage.getItem('cartId')?.toString();
+        this.cartService.apiV1CartsCartIdGet(cartId!).subscribe(
+          (data: CartResponseDTO) => {
+            this.cart.cartID = data.cartID;
+            this.cart.totalAmount = data.totalAmount;
+            this.cart.userID = data.userID;
+          },
+          error => {
+            console.error('Error fetching carts', error);
+          }
+        );
+      }
     } 
    this.calculateTotalAmount();
   }

@@ -2273,6 +2273,56 @@
         }
       }
     },
+    "/api/v1/products/user/{userId}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Retrieves products by user id.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The ID of the user.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of all products by user id.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponseDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponseDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponseDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/products/{productId}": {
       "get": {
         "tags": [
@@ -3323,6 +3373,10 @@
           "productID": {
             "type": "string",
             "format": "uuid"
+          },
+          "userID": {
+            "type": "string",
+            "nullable": true
           },
           "categories": {
             "type": "array",

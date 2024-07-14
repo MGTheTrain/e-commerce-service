@@ -12,6 +12,7 @@
 
 export interface ProductResponseDTO { 
     productID?: string;
+    userID?: string;
     categories?: Array<string>;
     name?: string;
     description?: string;

@@ -307,4 +307,52 @@ export class ProductService {
         );
     }
 
+    /**
+     * Retrieves products by user id.
+     * 
+     * @param userId The ID of the user.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiV1ProductsUserUserIdGet(userId: string, observe?: 'body', reportProgress?: boolean): Observable<Array<ProductResponseDTO>>;
+    public apiV1ProductsUserUserIdGet(userId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ProductResponseDTO>>>;
+    public apiV1ProductsUserUserIdGet(userId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ProductResponseDTO>>>;
+    public apiV1ProductsUserUserIdGet(userId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (userId === null || userId === undefined) {
+            throw new Error('Required parameter userId was null or undefined when calling apiV1ProductsUserUserIdGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["Authorization"]) {
+            headers = headers.set('Authorization', this.configuration.apiKeys["Authorization"]);
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<ProductResponseDTO>>('get',`${this.basePath}/api/v1/products/user/${encodeURIComponent(String(userId))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
 }

@@ -37,12 +37,19 @@ builder.Services.AddAuthorization(options =>
         policy.Requirements.Add(new HasPermissionRequirement("manage:reviews")));
     options.AddPolicy("manage:carts", policy =>
         policy.Requirements.Add(new HasPermissionRequirement("manage:carts")));
+    options.AddPolicy("manage:own-product", policy =>
+        policy.Requirements.Add(new HasPermissionRequirement("manage:own-product")));
+    options.AddPolicy("manage:own-order", policy =>
+        policy.Requirements.Add(new HasPermissionRequirement("manage:own-order")));
     options.AddPolicy("manage:own-review", policy =>
         policy.Requirements.Add(new HasPermissionRequirement("manage:own-review")));
     options.AddPolicy("manage:own-cart", policy =>
         policy.Requirements.Add(new HasPermissionRequirement("manage:own-cart")));
-    options.AddPolicy("manage:own-order", policy =>
-        policy.Requirements.Add(new HasPermissionRequirement("manage:own-order")));
+
+    options.AddPolicy("manage:products-and-own-product", policy =>
+    {
+        policy.RequireClaim("permissions", "manage:products", "manage:own-product");
+    });
 
     options.AddPolicy("manage:reviews-and-own-review", policy =>
     {

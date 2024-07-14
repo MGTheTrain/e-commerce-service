@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Include [detail header component](./frontend/e-commerce-service/src/app/components/header/detail-header/) in [product creation component](./frontend/e-commerce-service/src/app/components/product-management/product-creation) and [product detail component](./frontend/e-commerce-service/src/app/components/product-management/product-detail)
 - Reload page after setting access token in [header component](./frontend/e-commerce-service/src/app/components/header/)
 - Initialize cart on login in [product list component](./frontend/e-commerce-service/src/app/components/product-management/product-list/) and handle cart deletion on logout in [header component](./frontend/e-commerce-service/src/app/components/header/) and [detail header component](./frontend/e-commerce-service/src/app/components/header/detail-header/)
+- Add `UserID attribute` in [Product.cs](./backend/Mgtt.ECom/src/Mgtt.ECom.Domain/ProductManagement/Product.cs), add controller endpoint in [ProductController.cs](./backend/Mgtt.ECom/src/Mgtt.ECom.Web/v1/ProductManagement/Controllers/ProductController.cs) and consider product owner in [order detail component](./frontend/e-commerce-service/src/app/components/order-management/order-detail/)
 
 ## [0.7.0] - 07-07-2024
 

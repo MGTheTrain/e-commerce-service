@@ -123,6 +123,10 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
+  handleCartAddToCartClick(product: ProductResponseDTO): void {
+    console.log('About to handle cart added', product);
+  }
+
   triggerImageInput(): void {
     const fileInput = document.getElementById('imageInput') as HTMLInputElement;
     fileInput.click();

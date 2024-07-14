@@ -43,22 +43,34 @@
           </div>
           <hr>
           <div class="form-group mb-4 text-center" *ngIf="isLoggedIn">
-            <button type="button" class="btn btn-secondary" (click)="handleEditClick()">
-              <fa-icon [icon]="faEdit"></fa-icon> {{ isEditing ? 'Cancel' : 'Edit' }}
-            </button>
-            <span class="mx-2" *ngIf="isEditing"></span>
-            <button type="submit" class="btn btn-danger" (click)="handleDeleteProductClick()" *ngIf="isEditing">
-              <fa-icon [icon]="faTrash"></fa-icon> Delete
-            </button>
-            <span class="mx-2" *ngIf="isEditing"></span>
-            <button type="button" class="btn btn-primary" (click)="handleUpdateProductClick()" *ngIf="isEditing">
-              <fa-icon [icon]="faEdit"></fa-icon> Update
-            </button>
-            <span class="mx-2"></span>
-            <button type="button" class="btn btn-outline-secondary" (click)="handleUpdateProductClick()" *ngIf="!isEditing">
-              <fa-icon [icon]="faPlus"></fa-icon> Add to Cart
-            </button>
+            <!-- Conditionally Rendered Input and Add to Cart Button for Non-Editing Mode -->
+            <div class="d-flex justify-content-center align-items-center mt-3 flex-wrap">
+              <!-- Edit and Cancel Button -->
+              <button type="button" class="btn btn-secondary me-2 mb-2" (click)="handleEditClick()">
+                <fa-icon [icon]="faEdit"></fa-icon> {{ isEditing ? 'Cancel' : 'Edit' }}
+              </button>
+          
+              <!-- Conditionally Rendered Buttons for Editing Mode -->
+              <span class="mx-2" *ngIf="isEditing"></span>
+              <button type="submit" class="btn btn-danger me-2 mb-2" (click)="handleDeleteProductClick()" *ngIf="isEditing">
+                <fa-icon [icon]="faTrash"></fa-icon> Delete
+              </button>
+              <span class="mx-2" *ngIf="isEditing"></span>
+              <button type="button" class="btn btn-primary me-2 mb-2" (click)="handleUpdateProductClick()" *ngIf="isEditing">
+                <fa-icon [icon]="faEdit"></fa-icon> Update
+              </button>
+          
+              <!-- Quantity Label and Input Field for Non-Editing Mode -->
+              <label class="mx-2 mb-2" *ngIf="!isEditing"><strong>Quantity</strong></label>
+              <input type="number" placeholder="Quantity" class="form-control me-2 mb-2" id="quantity" name="quantity" [(ngModel)]="quantity" style="max-width: 100px;" *ngIf="!isEditing">
+          
+              <!-- Add to Cart Button for Non-Editing Mode -->
+              <button type="button" class="btn btn-outline-secondary me-2 mb-2" (click)="handleAddToCartClick(product)" *ngIf="!isEditing">
+                <fa-icon [icon]="faPlus"></fa-icon> Cart
+              </button>
+            </div>
           </div>
+          
         </form>
       </div>
     </div>

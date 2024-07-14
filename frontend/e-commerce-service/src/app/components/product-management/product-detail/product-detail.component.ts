@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductResponseDTO, ProductRequestDTO, ProductService } from '../../../generated';
+import { ProductResponseDTO, ProductRequestDTO, ProductService, CartService, CartResponseDTO, CartItemRequestDTO, CartItemResponseDTO } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrash, faImage, faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,6 +28,8 @@ export class ProductDetailComponent implements OnInit {
     stock: 5, 
     imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg' 
   };
+
+  quantity: number = 0;
   
   availableCategories: string[] = [
     'Acoustic Guitar',
@@ -51,7 +53,7 @@ export class ProductDetailComponent implements OnInit {
 
   public isLoggedIn: boolean = false;
 
-  constructor(private router: Router, private route: ActivatedRoute, private productService: ProductService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private productService: ProductService, private cartService: CartService) { }
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
@@ -128,8 +130,24 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  handleCartAddToCartClick(product: ProductResponseDTO): void {
-    console.log('About to handle cart added', product);
+  handleAddToCartClick(product: ProductResponseDTO): void {
+    if(this.isLoggedIn) {
+      const cartId = localStorage.getItem('cartId')?.toString();
+      const cartItemRequestDto: CartItemRequestDTO = {
+        cartID: cartId!.toString(),
+        productID: product.productID!,
+        quantity: this.quantity,
+        price: product.price!,
+      };
+      this.cartService.apiV1CartsCartIdItemsPost(cartId!, cartItemRequestDto).subscribe(
+        (data: CartItemResponseDTO) => {
+          console.log('Added item to cart with id', data);     
+        },
+        error => {
+          console.error('Error adding item to cart with id', cartId, error);
+        }
+      );
+    }
   }
 
   triggerImageInput(): void {

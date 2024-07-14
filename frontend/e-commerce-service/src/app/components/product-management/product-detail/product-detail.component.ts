@@ -52,6 +52,7 @@ export class ProductDetailComponent implements OnInit {
   public isEditing: boolean = false;
 
   public isLoggedIn: boolean = false;
+  public isProductOwner: boolean = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private productService: ProductService, private cartService: CartService) { }
 
@@ -61,16 +62,27 @@ export class ProductDetailComponent implements OnInit {
     } 
 
     this.subscription = this.route.params.subscribe(params => {
-      const id = params['productId'];
-      this.product.productID = id;
+      const productId = params['productId'];
+      this.product.productID = productId;
 
-      this.productService.apiV1ProductsProductIdGet(id).subscribe(
+      this.productService.apiV1ProductsProductIdGet(productId).subscribe(
         (data: ProductResponseDTO) => {
           this.product = data;
         },
         error => {
-          console.error('Error fetching product with id', id, error);
+          console.error('Error fetching product with id', productId, error);
         }
+      );
+      
+      this.productService.apiV1ProductsProductIdUserGet(productId).subscribe(
+        (data: ProductResponseDTO) => {
+          console.log("Product owned by:", data);
+          this.isProductOwner = true;
+        },
+        error => {
+          console.error('Error: User is not the product owner', error);
+        }
+        
       );
    });
   }

@@ -46,17 +46,17 @@
             <!-- Conditionally Rendered Input and Add to Cart Button for Non-Editing Mode -->
             <div class="d-flex justify-content-center align-items-center mt-3 flex-wrap">
               <!-- Edit and Cancel Button -->
-              <button type="button" class="btn btn-secondary me-2 mb-2" (click)="handleEditClick()">
+              <button type="button" class="btn btn-secondary me-2 mb-2" (click)="handleEditClick()" *ngIf="isProductOwner">
                 <fa-icon [icon]="faEdit"></fa-icon> {{ isEditing ? 'Cancel' : 'Edit' }}
               </button>
           
               <!-- Conditionally Rendered Buttons for Editing Mode -->
-              <span class="mx-2" *ngIf="isEditing"></span>
-              <button type="submit" class="btn btn-danger me-2 mb-2" (click)="handleDeleteProductClick()" *ngIf="isEditing">
+              <span class="mx-2" *ngIf="isEditing && isProductOwner"></span>
+              <button type="submit" class="btn btn-danger me-2 mb-2" (click)="handleDeleteProductClick()" *ngIf="isEditing && isProductOwner">
                 <fa-icon [icon]="faTrash"></fa-icon> Delete
               </button>
-              <span class="mx-2" *ngIf="isEditing"></span>
-              <button type="button" class="btn btn-primary me-2 mb-2" (click)="handleUpdateProductClick()" *ngIf="isEditing">
+              <span class="mx-2" *ngIf="isEditing && isProductOwner"></span>
+              <button type="button" class="btn btn-primary me-2 mb-2" (click)="handleUpdateProductClick()" *ngIf="isEditing && isProductOwner">
                 <fa-icon [icon]="faEdit"></fa-icon> Update
               </button>
           

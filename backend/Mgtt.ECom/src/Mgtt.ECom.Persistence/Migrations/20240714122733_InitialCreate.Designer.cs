@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mgtt.ECom.Persistence.Migrations
 {
     [DbContext(typeof(PsqlDbContext))]
-    [Migration("20240707102530_InitialCreate")]
+    [Migration("20240714122733_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -103,6 +103,10 @@ namespace Mgtt.ECom.Persistence.Migrations
 
                     b.Property<int>("Stock")
                         .HasColumnType("integer");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("ProductID");
 

@@ -101,6 +101,10 @@ namespace Mgtt.ECom.Persistence.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("integer");
 
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("ProductID");
 
                     b.ToTable("Products");

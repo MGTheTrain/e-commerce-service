@@ -78,6 +78,6 @@ export class HeaderComponent implements OnInit {
   }
 
   handleCartClick(): void {
-    this.router.navigate(['/carts']);
+    this.router.navigate(['/cart']);
   }
 }

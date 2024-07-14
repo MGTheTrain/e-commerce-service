@@ -161,7 +161,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <param name="userId">The ID of the user.</param>
         /// <returns>A list of all products by user id.</returns>
         /// <response code="200">Returns a list of all products by user id.</response>
-        [HttpGet]
+        [HttpGet("user/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductResponseDTO>))]
         public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetProductsByUserId(string userId)
         {

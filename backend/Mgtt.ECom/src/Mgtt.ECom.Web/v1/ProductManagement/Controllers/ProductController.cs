@@ -156,6 +156,37 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         }
 
         /// <summary>
+        /// Retrieves products by user id.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>A list of all products by user id.</returns>
+        /// <response code="200">Returns a list of all products by user id.</response>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductResponseDTO>))]
+        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAllProducts(string userId)
+        {
+            var products = await this.productService.GetProductsByUserId(userId);
+            var productDTOs = new List<ProductResponseDTO>();
+
+            foreach (var product in products)
+            {
+                productDTOs.Add(new ProductResponseDTO
+                {
+                    ProductID = product.ProductID,
+                    UserID = product.UserID,
+                    Categories = product.Categories,
+                    Name = product.Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    Stock = product.Stock,
+                    ImageUrl = product.ImageUrl,
+                });
+            }
+
+            return this.Ok(productDTOs);
+        }
+
+        /// <summary>
         /// Retrieves a product by its ID.
         /// </summary>
         /// <param name="productId">The ID of the product.</param>

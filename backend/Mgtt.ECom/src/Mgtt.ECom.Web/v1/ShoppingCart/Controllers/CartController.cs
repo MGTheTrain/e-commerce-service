@@ -451,6 +451,47 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         }
 
         /// <summary>
+        /// Gets a cart item by product id.
+        /// </summary>
+        /// <param name="cartId">The ID of the cart.</param>
+        /// <param name="productId">The ID of the product.</param>
+        /// <returns>The cart iem with the specified product ID.</returns>
+        /// <response code="200">Returns the cart with the specified ID.</response>
+        /// <response code="404">If the cart is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
+        [HttpGet("{cartId}/products/{productId}/item")]
+        [Authorize("manage:carts-and-own-cart")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartItemResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<CartItemResponseDTO>> GetCartItemByProductId(Guid cartId, Guid productId)
+        {
+
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForCart(isCreateOperation, cartId);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
+            var cartItem = await this.cartItemService.GetCartItemByProductId(productId);
+
+            if (cartItem == null)
+            {
+                return this.NotFound();
+            }
+
+            var cartItemResponseDto = new CartItemResponseDTO
+            {
+                CartID = cartItem.CartID,
+            };
+
+            return this.Ok(cartItemResponseDto);
+        }
+
+        /// <summary>
         /// Updates an item in a cart.
         /// </summary>
         /// <param name="cartId">The ID of the cart.</param>

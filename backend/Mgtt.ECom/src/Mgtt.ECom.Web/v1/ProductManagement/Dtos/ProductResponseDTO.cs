@@ -7,6 +7,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.DTOs
     public class ProductResponseDTO
     {
         public Guid ProductID { get; set; }
+
         public string UserID { get; set; }
 
         public List<string>? Categories { get; set; }

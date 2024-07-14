@@ -52,6 +52,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                     var order = await this.orderService.GetOrderById(orderId);
                     return order?.UserID ?? userId;
                 }
+
                 return userId;
             }
 
@@ -62,6 +63,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                     var userOrders = await this.orderService.GetOrdersByUserId(userId);
                     return userOrders?.Any(x => x.OrderID == orderId) == true ? userId : null;
                 }
+
                 return userId;
             }
 

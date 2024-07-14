@@ -63,6 +63,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                     var userCarts = await this.cartService.GetCartsByUserId(userId);
                     return userCarts?.Any(x => x.CartID == cartId) == true ? userId : null;
                 }
+
                 return userId;
             }
 

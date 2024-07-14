@@ -48,6 +48,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                     var product = await this.productService.GetProductById(productId);
                     return product?.UserID ?? userId;
                 }
+
                 return userId;
             }
 
@@ -58,6 +59,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                     var userProducts = await this.productService.GetProductsByUserId(userId);
                     return userProducts?.Any(x => x.ProductID == productId) == true ? userId : null;
                 }
+
                 return userId;
             }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductResponseDTO, ProductRequestDTO, ProductService, CartService, CartResponseDTO, CartItemRequestDTO, CartItemResponseDTO } from '../../../generated';
+import { ProductResponseDTO, ProductRequestDTO, ProductService, CartService, CartItemRequestDTO, CartItemResponseDTO } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrash, faImage, faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router';

@@ -48,6 +48,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
                     var review = await this.reviewService.GetReviewById(reviewId);
                     return review?.UserID ?? userId;
                 }
+
                 return userId;
             }
 
@@ -58,6 +59,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
                     var userReviews = await this.reviewService.GetReviewsByUserId(userId);
                     return userReviews?.Any(x => x.ReviewID == reviewId) == true ? userId : null;
                 }
+
                 return userId;
             }
 

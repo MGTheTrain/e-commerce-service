@@ -9,7 +9,7 @@ public interface IProductService
     Task<Product?> GetProductById(Guid productId);
 
     Task<IEnumerable<Product>?> GetAllProducts();
-    
+
     Task<IEnumerable<Product>?> GetProductsByUserId(string userId);
 
     Task<Product?> CreateProduct(Product product);

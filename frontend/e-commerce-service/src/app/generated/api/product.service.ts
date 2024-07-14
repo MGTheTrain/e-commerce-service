@@ -308,19 +308,19 @@ export class ProductService {
     }
 
     /**
-     * Retrieves products by user id.
+     * Retrieves the product associated with a specific user.
      * 
-     * @param userId The ID of the user.
+     * @param productId The ID of the product.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ProductsUserUserIdGet(userId: string, observe?: 'body', reportProgress?: boolean): Observable<Array<ProductResponseDTO>>;
-    public apiV1ProductsUserUserIdGet(userId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ProductResponseDTO>>>;
-    public apiV1ProductsUserUserIdGet(userId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ProductResponseDTO>>>;
-    public apiV1ProductsUserUserIdGet(userId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1ProductsProductIdUserGet(productId: string, observe?: 'body', reportProgress?: boolean): Observable<ProductResponseDTO>;
+    public apiV1ProductsProductIdUserGet(productId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ProductResponseDTO>>;
+    public apiV1ProductsProductIdUserGet(productId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ProductResponseDTO>>;
+    public apiV1ProductsProductIdUserGet(productId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (userId === null || userId === undefined) {
-            throw new Error('Required parameter userId was null or undefined when calling apiV1ProductsUserUserIdGet.');
+        if (productId === null || productId === undefined) {
+            throw new Error('Required parameter productId was null or undefined when calling apiV1ProductsProductIdUserGet.');
         }
 
         let headers = this.defaultHeaders;
@@ -345,7 +345,7 @@ export class ProductService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ProductResponseDTO>>('get',`${this.basePath}/api/v1/products/user/${encodeURIComponent(String(userId))}`,
+        return this.httpClient.request<ProductResponseDTO>('get',`${this.basePath}/api/v1/products/${encodeURIComponent(String(productId))}/user`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

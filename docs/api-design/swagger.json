@@ -2273,49 +2273,41 @@
         }
       }
     },
-    "/api/v1/products/user/{userId}": {
+    "/api/v1/products/{productId}/user": {
       "get": {
         "tags": [
           "Product"
         ],
-        "summary": "Retrieves products by user id.",
+        "summary": "Retrieves the product associated with a specific user.",
         "parameters": [
           {
-            "name": "userId",
+            "name": "productId",
             "in": "path",
-            "description": "The ID of the user.",
+            "description": "The ID of the product.",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Returns a list of all products by user id.",
+            "description": "Returns the product by user id.",
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProductResponseDTO"
-                  }
+                  "$ref": "#/components/schemas/ProductResponseDTO"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProductResponseDTO"
-                  }
+                  "$ref": "#/components/schemas/ProductResponseDTO"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProductResponseDTO"
-                  }
+                  "$ref": "#/components/schemas/ProductResponseDTO"
                 }
               }
             }

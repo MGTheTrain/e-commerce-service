@@ -42,17 +42,21 @@
             </div>
           </div>
           <hr>
-          <div class="form-group mb-4 text-center">
+          <div class="form-group mb-4 text-center" *ngIf="isLoggedIn">
             <button type="button" class="btn btn-secondary" (click)="handleEditClick()">
               <fa-icon [icon]="faEdit"></fa-icon> {{ isEditing ? 'Cancel' : 'Edit' }}
             </button>
             <span class="mx-2"></span>
             <button type="submit" class="btn btn-danger" (click)="handleDeleteProductClick()" [disabled]="!isEditing">
-              <fa-icon [icon]="faTrash"></fa-icon> Delete Product
+              <fa-icon [icon]="faTrash"></fa-icon> Delete
             </button>
             <span class="mx-2"></span>
             <button type="button" class="btn btn-primary" (click)="handleUpdateProductClick()" [disabled]="!isEditing">
-              <fa-icon [icon]="faEdit"></fa-icon> Update Product
+              <fa-icon [icon]="faEdit"></fa-icon> Update
+            </button>
+            <span class="mx-2"></span>
+            <button type="button" class="btn btn-outline-secondary" (click)="handleUpdateProductClick()">
+              <fa-icon [icon]="faPlus"></fa-icon> Add to Cart
             </button>
           </div>
         </form>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductResponseDTO, ProductRequestDTO, ProductService } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faEdit, faTrash, faImage, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faImage, faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -46,6 +46,7 @@ export class ProductDetailComponent implements OnInit {
   public faEdit: IconDefinition = faEdit;
   public faImage: IconDefinition = faImage;
   public faArrowLeft: IconDefinition = faArrowLeft;
+  public faPlus: IconDefinition = faPlus;
   public isEditing: boolean = false;
 
   public isLoggedIn: boolean = false;

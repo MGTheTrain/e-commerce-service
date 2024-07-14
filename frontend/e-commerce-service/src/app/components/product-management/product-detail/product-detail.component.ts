@@ -82,45 +82,49 @@ export class ProductDetailComponent implements OnInit {
   }
 
   handleDeleteProductClick() {
-    const productID = this.product.productID;
-    if (productID) {
-      this.productService.apiV1ProductsProductIdDelete(productID).subscribe(
-        () => {
-          console.error('Successfully deleted product with id', productID);
-          this.router.navigate(['/']);
-        },
-        error => {
-          console.error('Error deleting product with id', productID, error);
-        }
-      );
-    } else {
-      console.error('Product ID is undefined');
+    if(this.isLoggedIn) {
+      const productID = this.product.productID;
+      if (productID) {
+        this.productService.apiV1ProductsProductIdDelete(productID).subscribe(
+          () => {
+            console.error('Successfully deleted product with id', productID);
+            this.router.navigate(['/']);
+          },
+          error => {
+            console.error('Error deleting product with id', productID, error);
+          }
+        );
+      } else {
+        console.error('Product ID is undefined');
+      }
     }
   }
 
   handleUpdateProductClick() {
-    const productID = this.product.productID;
-    if (productID) {
-      const productRequest: ProductRequestDTO = { 
-        categories: this.product.categories!,
-        name: this.product.name!, 
-        description: this.product.description!, 
-        price: this.product.price!, 
-        stock: this.product.stock!, 
-        imageUrl: this.product.imageUrl! 
-      };
+    if(this.isLoggedIn) {
+      const productID = this.product.productID;
+      if (productID) {
+        const productRequest: ProductRequestDTO = { 
+          categories: this.product.categories!,
+          name: this.product.name!, 
+          description: this.product.description!, 
+          price: this.product.price!, 
+          stock: this.product.stock!, 
+          imageUrl: this.product.imageUrl! 
+        };
 
-      this.productService.apiV1ProductsProductIdPut(productID, productRequest).subscribe(
-        () => {
-          console.error('Successfully updated product with id', productID);
-          this.router.navigate(['/']);
-        },
-        error => {
-          console.error('Error updating product with id', productID, error);
-        }
-      );
-    } else {
-      console.error('Product ID is undefined');
+        this.productService.apiV1ProductsProductIdPut(productID, productRequest).subscribe(
+          () => {
+            console.error('Successfully updated product with id', productID);
+            this.router.navigate(['/']);
+          },
+          error => {
+            console.error('Error updating product with id', productID, error);
+          }
+        );
+      } else {
+        console.error('Product ID is undefined');
+      }
     }
   }
 

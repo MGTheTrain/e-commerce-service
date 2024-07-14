@@ -485,7 +485,11 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
 
             var cartItemResponseDto = new CartItemResponseDTO
             {
+                CartItemID = cartItem.CartItemID,
                 CartID = cartItem.CartID,
+                ProductID = cartItem.ProductID,
+                Quantity = cartItem.Quantity,
+                Price = cartItem.Price,
             };
 
             return this.Ok(cartItemResponseDto);

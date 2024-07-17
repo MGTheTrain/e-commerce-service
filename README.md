@@ -67,7 +67,7 @@ You can find instructions on applicable commands for the frontend source code in
 You can start the web front-end and back-end using the command:
 
 ```sh
-docker-compose up -d --build
+docker-compose up -d --build # Optionally run this command twice if internal services are not yet up and running
 ``` 
 
 To view the web backend, open a browser and go to `localhost:5000/swagger/index.html`. Results should resemble:

@@ -67,6 +67,10 @@ namespace Mgtt.ECom.Persistence.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("OrderItemID");
 
                     b.ToTable("OrderItems");
@@ -174,6 +178,10 @@ namespace Mgtt.ECom.Persistence.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("CartItemID");
 

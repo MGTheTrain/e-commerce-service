@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - [x] Allow users to add products to their cart, view cart contents and update quantities.
   - Cart Persistence
     - [x] Ensure cart contents persist across user sessions.
+- Modify the [entity relationship diagram](./docs/diagrams/entity-relationship-diagram.mmd) to ensure that the cart item entity includes the `UserID` property
+- Update the [smoke tests](./backend/Mgtt.ECom/smoke-test/) to remove the obsolete user ID from the request DTO and enable smoke tests for the order management in order controller 
 
 ## [0.7.0] - 07-07-2024
 

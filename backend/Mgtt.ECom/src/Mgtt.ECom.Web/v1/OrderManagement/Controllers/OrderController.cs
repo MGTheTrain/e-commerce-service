@@ -421,11 +421,11 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         }
 
         /// <summary>
-        /// Gets a order item by product id.
+        /// Gets a order item for a user.
         /// </summary>
         /// <param name="orderId">The ID of the order.</param>
         /// <param name="productId">The ID of the product.</param>
-        /// <returns>The order iem with the specified product ID.</returns>
+        /// <returns>The order iem for the specified user.</returns>
         /// <response code="200">Returns the order with the specified ID.</response>
         /// <response code="404">If the order is not found.</response>
         /// <response code="401">If the user is not authenticated.</response>
@@ -436,7 +436,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<OrderItemResponseDTO>> GetCartItemByProductAndUserId(Guid orderId, Guid productId)
+        public async Task<ActionResult<OrderItemResponseDTO>> GetOrderItemForUser(Guid orderId, Guid productId)
         {
 
             var isCreateOperation = false;

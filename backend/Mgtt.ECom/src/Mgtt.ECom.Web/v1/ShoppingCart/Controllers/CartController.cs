@@ -455,11 +455,11 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         }
 
         /// <summary>
-        /// Gets a cart item by product id.
+        /// Gets a cart item for a user.
         /// </summary>
         /// <param name="cartId">The ID of the cart.</param>
         /// <param name="productId">The ID of the product.</param>
-        /// <returns>The cart iem with the specified product ID.</returns>
+        /// <returns>The cart iem for the specified user.</returns>
         /// <response code="200">Returns the cart with the specified ID.</response>
         /// <response code="404">If the cart is not found.</response>
         /// <response code="401">If the user is not authenticated.</response>
@@ -470,7 +470,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<CartItemResponseDTO>> GetCartItemByProductAndUserId(Guid cartId, Guid productId)
+        public async Task<ActionResult<CartItemResponseDTO>> GetCartItemForUser(Guid cartId, Guid productId)
         {
 
             var isCreateOperation = false;

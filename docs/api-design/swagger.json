@@ -1104,7 +1104,7 @@
         "tags": [
           "Cart"
         ],
-        "summary": "Gets a cart item by product id.",
+        "summary": "Gets a cart item for a user.",
         "parameters": [
           {
             "name": "cartId",
@@ -2243,7 +2243,7 @@
         "tags": [
           "Order"
         ],
-        "summary": "Gets a order item by product id.",
+        "summary": "Gets a order item for a user.",
         "parameters": [
           {
             "name": "orderId",

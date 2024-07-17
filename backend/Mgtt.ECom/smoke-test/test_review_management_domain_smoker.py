@@ -5,8 +5,7 @@ import os
 
 API_BASE_URL = os.getenv('API_BASE_URL', 'http://localhost/api/v1')
 BEARER_TOKEN = os.getenv('BEARER_TOKEN', '')
-TEST_PRODUCT_ID = str(uuid.uuid4())  # Replace with an actual product ID from your setup
-TEST_USER_ID = str(uuid.uuid4())  # Replace with an actual user ID from your setup
+TEST_PRODUCT_ID = str(uuid.uuid4())  
 TEST_REVIEW_RATING = 5
 TEST_REVIEW_COMMENT = "This is a test review."
 
@@ -18,7 +17,6 @@ def review_id():
     }
     body = {
         'productID': TEST_PRODUCT_ID,
-        'userID': TEST_USER_ID,
         'rating': 4,
         'comment': "This is another test review."
     }
@@ -48,7 +46,6 @@ def test_update_review(review_id):
     }
     body = {
         'productID': TEST_PRODUCT_ID,
-        'userID': TEST_USER_ID,
         'rating': 3,
         'comment': "This is an updated test review."
     }

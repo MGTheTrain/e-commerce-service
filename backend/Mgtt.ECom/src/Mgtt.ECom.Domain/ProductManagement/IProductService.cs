@@ -10,6 +10,8 @@ public interface IProductService
 
     Task<IEnumerable<Product>?> GetAllProducts();
 
+    Task<IEnumerable<Product>?> GetProductsByUserId(string userId);
+
     Task<Product?> CreateProduct(Product product);
 
     Task<Product?> UpdateProduct(Product product);

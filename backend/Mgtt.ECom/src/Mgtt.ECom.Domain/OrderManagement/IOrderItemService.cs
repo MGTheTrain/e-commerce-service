@@ -10,6 +10,8 @@ public interface IOrderItemService
 
     Task<IEnumerable<OrderItem>?> GetOrderItemsByOrderId(Guid orderId);
 
+    Task<OrderItem?> GetOrderItemByProductAndUserId(Guid productId, string userId);
+
     Task<OrderItem?> CreateOrderItem(OrderItem orderItem);
 
     Task<OrderItem?> UpdateOrderItem(OrderItem orderItem);

@@ -9,6 +9,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.OrderManagement;
+    using Mgtt.ECom.Domain.ShoppingCart;
     using Mgtt.ECom.Web.V1.OrderManagement.DTOs;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -33,23 +34,34 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <param name="isCreateOperation">Indicates whether the operation is a creation operation.</param>
         /// <param name="orderId">The order id to check against.</param>
         /// <returns>True if the user has the required permissions and, if necessary, has valid orders; otherwise, false.</returns>
-        private async Task<string?> CheckManageOwnOrderPermission(bool isCreateOperation, Guid orderId)
+        private async Task<string?> VerifyUserPermissionForOrder(bool isCreateOperation, Guid orderId)
         {
             var permissionsClaims = this.User.FindAll("permissions");
-            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:orders")) ||
-                permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-order")))
+            var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = userIdClaim?.Value;
+
+            if (userId == null)
             {
-                var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
-                var userId = userIdClaim!.Value;
+                return null;
+            }
+
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:orders")))
+            {
                 if (!isCreateOperation && orderId != Guid.Empty)
                 {
-                    var userCarts = await this.orderService.GetOrdersByUserId(userId);
-                    if (userCarts!.Where(x => x.OrderID == orderId).FirstOrDefault() != null)
-                    {
-                        return userId;
-                    }
+                    var order = await this.orderService.GetOrderById(orderId);
+                    return order?.UserID ?? userId;
+                }
 
-                    return null;
+                return userId;
+            }
+
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-order")))
+            {
+                if (!isCreateOperation && orderId != Guid.Empty)
+                {
+                    var userOrders = await this.orderService.GetOrdersByUserId(userId);
+                    return userOrders?.Any(x => x.OrderID == orderId) == true ? userId : null;
                 }
 
                 return userId;
@@ -81,7 +93,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             }
 
             var isCreateOperation = true;
-            var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, Guid.Empty);
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, Guid.Empty);
             if (userId == null)
             {
                 return this.Forbid();
@@ -175,7 +187,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             }
 
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
             if (userId == null)
             {
                 return this.Forbid();
@@ -227,7 +239,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         public async Task<IActionResult> DeleteOrder(Guid orderId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
             if (userId == null)
             {
                 return this.Forbid();
@@ -268,8 +280,14 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
+            var order = await this.orderService.GetOrderById(orderId);
+            if (order == null)
+            {
+                return this.BadRequest();
+            }
+
             var isCreateOperation = false; // false because we are verifying the order resource which consists of order items
-            var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
             if (userId == null)
             {
                 return this.Forbid();
@@ -279,6 +297,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             {
                 OrderID = orderId,
                 ProductID = orderItemDTO.ProductID,
+                UserID = userId,
                 Quantity = orderItemDTO.Quantity,
                 Price = orderItemDTO.Price,
             };
@@ -293,6 +312,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             {
                 OrderItemID = orderItem.OrderItemID,
                 OrderID = orderItem.OrderID,
+                UserID = orderItem.UserID,
                 ProductID = orderItem.ProductID,
                 Quantity = orderItem.Quantity,
                 Price = orderItem.Price,
@@ -319,10 +339,16 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         public async Task<ActionResult<IEnumerable<OrderItemResponseDTO>>> GetOrderItemsByOrderId(Guid orderId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var order = await this.orderService.GetOrderById(orderId);
+            if (order == null)
+            {
+                return this.BadRequest();
             }
 
             var orderItems = await this.orderItemService.GetOrderItemsByOrderId(orderId);
@@ -335,6 +361,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                     OrderItemID = orderItem.OrderItemID,
                     OrderID = orderItem.OrderID,
                     ProductID = orderItem.ProductID,
+                    UserID = orderItem.UserID,
                     Quantity = orderItem.Quantity,
                     Price = orderItem.Price,
                 });
@@ -362,10 +389,16 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         public async Task<ActionResult<OrderItemResponseDTO>> GetOrderItemById(Guid orderId, Guid itemId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var order = await this.orderService.GetOrderById(orderId);
+            if (order == null)
+            {
+                return this.BadRequest();
             }
 
             var orderItem = await this.orderItemService.GetOrderItemById(itemId);
@@ -379,11 +412,57 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderItemID = orderItem.OrderItemID,
                 OrderID = orderItem.OrderID,
                 ProductID = orderItem.ProductID,
+                UserID = orderItem.UserID,
                 Quantity = orderItem.Quantity,
                 Price = orderItem.Price,
             };
 
             return this.Ok(orderItemResponseDTO);
+        }
+
+        /// <summary>
+        /// Gets a order item for a user.
+        /// </summary>
+        /// <param name="orderId">The ID of the order.</param>
+        /// <param name="productId">The ID of the product.</param>
+        /// <returns>The order iem for the specified user.</returns>
+        /// <response code="200">Returns the order with the specified ID.</response>
+        /// <response code="404">If the order is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
+        [HttpGet("{orderId}/products/{productId}/item")]
+        [Authorize("manage:orders-and-own-order")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderItemResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<OrderItemResponseDTO>> GetOrderItemForUser(Guid orderId, Guid productId)
+        {
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
+            var orderItem = await this.orderItemService.GetOrderItemByProductAndUserId(productId, userId);
+
+            if (orderItem == null)
+            {
+                return this.NotFound();
+            }
+
+            var orderItemResponseDto = new OrderItemResponseDTO
+            {
+                OrderItemID = orderItem.OrderItemID,
+                OrderID = orderItem.OrderID,
+                ProductID = orderItem.ProductID,
+                UserID = orderItem.UserID,
+                Quantity = orderItem.Quantity,
+                Price = orderItem.Price,
+            };
+
+            return this.Ok(orderItemResponseDto);
         }
 
         /// <summary>
@@ -413,10 +492,16 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             }
 
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var order = await this.orderService.GetOrderById(orderId);
+            if (order == null)
+            {
+                return this.BadRequest();
             }
 
             var orderItem = await this.orderItemService.GetOrderItemById(itemId);
@@ -430,6 +515,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             orderItem.Quantity = orderItemDTO.Quantity;
             orderItem.Price = orderItemDTO.Price;
 
+            // orderItem.UserID = orderItem.UserID;
             var action = await this.orderItemService.UpdateOrderItem(orderItem);
             if (action == null)
             {
@@ -441,6 +527,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderItemID = orderItem.OrderItemID,
                 OrderID = orderItem.OrderID,
                 ProductID = orderItem.ProductID,
+                UserID = orderItem.UserID,
                 Quantity = orderItem.Quantity,
                 Price = orderItem.Price,
             };
@@ -467,10 +554,16 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         public async Task<IActionResult> DeleteOrderItem(Guid orderId, Guid itemId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnOrderPermission(isCreateOperation, orderId);
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var order = await this.orderService.GetOrderById(orderId);
+            if (order == null)
+            {
+                return this.BadRequest();
             }
 
             var orderItem = await this.orderItemService.GetOrderItemById(itemId);

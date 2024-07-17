@@ -14,6 +14,8 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.DTOs
 
         public Guid ProductID { get; set; }
 
+        public string UserID { get; set; }
+
         public int Quantity { get; set; }
 
         public float Price { get; set; }

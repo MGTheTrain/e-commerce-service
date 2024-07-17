@@ -30,6 +30,7 @@ namespace Mgtt.ECom.PersistenceTest.DataAccess
             {
                 var product = new Product
                 {
+                    UserID = Guid.NewGuid().ToString(),
                     Categories = new System.Collections.Generic.List<string> { "Electronics", "Gadgets" },
                     Name = "Test Product",
                     Description = "Product Description",

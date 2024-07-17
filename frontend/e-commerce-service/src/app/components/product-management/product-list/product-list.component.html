@@ -12,16 +12,10 @@
   <div class="row">
     <div class="col-md-4" *ngFor="let product of products">
       <div class="card mb-4 shadow-sm card-hover">
-        <img [src]="product.imageUrl" class="card-img-top fixed-size-img" alt="Product Image">
+        <img [src]="product.imageUrl" class="card-img-top fixed-size-img" alt="Product Image" (click)="handleViewClick(product)">
         <div class="card-body">
           <h5 class="card-title">{{ product.name }}</h5>
           <p class="card-text">{{ product.description }}</p>
-          <div class="d-flex align-items-center mb-2">
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-outline-secondary" (click)="handleCartAddToCartClick(product)">Add to Cart</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary" (click)="handleViewClick(product)">View</button>
-            </div>
-          </div>
           <small class="text-muted">$ {{ product.price }}</small>
         </div>
       </div>

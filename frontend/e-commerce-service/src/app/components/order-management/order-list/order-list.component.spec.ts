@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OrderListComponent } from './order-list.component';
-import { OrderService } from '../../../generated';
+import { CartService, OrderService } from '../../../generated';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from '../../../../../environments/environment';
 
@@ -24,7 +24,8 @@ describe('OrderListComponent', () => {
         })
       ],
       providers: [
-        OrderService 
+        OrderService,
+        CartService
       ]
     })
     .compileComponents();

@@ -28,6 +28,9 @@ namespace Mgtt.ECom.Domain.ProductManagement
         public Guid ProductID { get; internal set; }
 
         [Required]
+        public string UserID { get; set; }
+
+        [Required]
         public List<string>? Categories { get; set; }
 
         [Required]
@@ -56,6 +59,11 @@ namespace Mgtt.ECom.Domain.ProductManagement
             if (this.ProductID == Guid.Empty)
             {
                 yield return new ValidationResult($"{nameof(this.ProductID)} can't be empty");
+            }
+
+            if (this.UserID == string.Empty)
+            {
+                yield return new ValidationResult($"{nameof(this.UserID)} can't be empty");
             }
 
             if (string.IsNullOrEmpty(this.Name))

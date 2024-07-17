@@ -29,8 +29,8 @@ namespace Mgtt.ECom.ApplicationTest.Services
 
             var initialProducts = new List<Product>
             {
-                new Product { Name = "Product 1", Price = 100 },
-                new Product { Name = "Product 2", Price = 200 },
+                new Product { UserID = Guid.NewGuid().ToString(), Name = "Product 1", Price = 100 },
+                new Product { UserID = Guid.NewGuid().ToString(), Name = "Product 2", Price = 200 },
             };
 
             this.dbContext.Products.AddRange(initialProducts);
@@ -50,7 +50,7 @@ namespace Mgtt.ECom.ApplicationTest.Services
         public async Task Test_CreateProduct_GetProductById()
         {
             // Arrange
-            var product = new Product { Name = "New Product", Price = 300 };
+            var product = new Product { UserID = Guid.NewGuid().ToString(), Name = "New Product", Price = 300 };
 
             // Act
             await this.productService.CreateProduct(product);
@@ -58,6 +58,7 @@ namespace Mgtt.ECom.ApplicationTest.Services
 
             // Assert
             Assert.NotNull(result);
+            Assert.Equal(product.UserID, result.UserID);
             Assert.Equal(product.Name, result.Name);
             Assert.Equal(product.Price, result.Price);
         }
@@ -66,7 +67,7 @@ namespace Mgtt.ECom.ApplicationTest.Services
         public async Task Test_UpdateProduct()
         {
             // Arrange
-            var product = new Product { Name = "Product to Update", Price = 400 };
+            var product = new Product { UserID = Guid.NewGuid().ToString(), Name = "Product to Update", Price = 400 };
             await this.productService.CreateProduct(product);
 
             // Act
@@ -83,7 +84,7 @@ namespace Mgtt.ECom.ApplicationTest.Services
         public async Task Test_DeleteProduct()
         {
             // Arrange
-            var product = new Product { Name = "Product to Delete", Price = 500 };
+            var product = new Product { UserID = Guid.NewGuid().ToString(), Name = "Product to Delete", Price = 500 };
             await this.productService.CreateProduct(product);
 
             // Act

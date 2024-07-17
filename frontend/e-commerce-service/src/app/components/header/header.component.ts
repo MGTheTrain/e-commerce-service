@@ -6,6 +6,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faSearch, faShoppingCart, faSignIn } from '@fortawesome/free-solid-svg-icons';
+import { CartResponseDTO, CartService } from '../../generated';
 
 @Component({
   selector: 'app-header',
@@ -23,7 +24,7 @@ export class HeaderComponent implements OnInit {
   public isLoggedIn: boolean = false;
   public accessToken: string | null = ''; 
 
-  constructor(private router: Router, public auth: AuthService) {}
+  constructor(private router: Router, public auth: AuthService, private cartService: CartService) {}
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
@@ -38,6 +39,8 @@ export class HeaderComponent implements OnInit {
           this.auth.getAccessTokenSilently().subscribe(
             (accessToken: string) => {
               localStorage.setItem("accessToken", accessToken);
+
+              window.location.reload();
             },
             (error) => {
               console.error('Error getting access token:', error);
@@ -53,22 +56,28 @@ export class HeaderComponent implements OnInit {
   }
 
   handleLoginClick(): void {
-    // this.router.navigate(['/user/login']);
     this.auth.loginWithRedirect();
   }
 
   handleLogoutClick(): void {
+    const cartId = localStorage.getItem('cartId')?.toString();
+    this.cartService.apiV1CartsCartIdDelete(cartId!).subscribe(
+      (data: CartResponseDTO) => {
+        localStorage.setItem("cartId", data.cartID!.toString());
+      },
+      error => {
+        console.error('Error deleting cart', error);
+      }
+    );
     this.auth.logout();
-    // Simulate a logout process
-    // You would typically have a service to handle the actual logout process
-    // For now, we will just remove the isLoggedIn flag from local storage
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('cartId');
     this.isLoggedIn = false;
     this.router.navigate(['/']);
   }
 
   handleCartClick(): void {
-    console.log('Navigating to cart');
+    this.router.navigate(['/cart']);
   }
 }

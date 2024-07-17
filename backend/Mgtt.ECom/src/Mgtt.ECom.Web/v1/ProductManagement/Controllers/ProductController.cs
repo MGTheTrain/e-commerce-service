@@ -6,6 +6,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.ProductManagement;
     using Mgtt.ECom.Web.V1.ProductManagement.DTOs;
@@ -24,6 +25,48 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         }
 
         /// <summary>
+        /// Determines if the user has the "manage:products" or "manage:own-product" permission, and if applicable, validates the user's products.
+        /// </summary>
+        /// <param name="isCreateOperation">Indicates whether the operation is a creation operation.</param>
+        /// <param name="productId">The product id to check against.</param>
+        /// <returns>True if the user has the required permissions and, if necessary, has valid products; otherwise, false.</returns>
+        private async Task<string?> VerifyUserPermissionForProduct(bool isCreateOperation, Guid productId)
+        {
+            var permissionsClaims = this.User.FindAll("permissions");
+            var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = userIdClaim?.Value;
+
+            if (userId == null)
+            {
+                return null;
+            }
+
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:products")))
+            {
+                if (!isCreateOperation && productId != Guid.Empty)
+                {
+                    var product = await this.productService.GetProductById(productId);
+                    return product?.UserID ?? userId;
+                }
+
+                return userId;
+            }
+
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-product")))
+            {
+                if (!isCreateOperation && productId != Guid.Empty)
+                {
+                    var userProducts = await this.productService.GetProductsByUserId(userId);
+                    return userProducts?.Any(x => x.ProductID == productId) == true ? userId : null;
+                }
+
+                return userId;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Creates a new product.
         /// </summary>
         /// <param name="productDTO">The product data transfer object containing product details.</param>
@@ -33,7 +76,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="401">If the user is not authenticated.</response>
         /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPost]
-        [Authorize("manage:products")]
+        [Authorize("manage:products-and-own-product")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProductResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -45,8 +88,16 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
+            var isCreateOperation = true;
+            var userId = await this.VerifyUserPermissionForProduct(isCreateOperation, Guid.Empty);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
             var product = new Product
             {
+                UserID = userId,
                 Categories = productDTO.Categories,
                 Name = productDTO.Name,
                 Description = productDTO.Description,
@@ -64,6 +115,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             var productResponseDTO = new ProductResponseDTO
             {
                 ProductID = product.ProductID,
+                UserID = product.UserID,
                 Categories = product.Categories,
                 Name = product.Name,
                 Description = product.Description,
@@ -92,6 +144,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                 productDTOs.Add(new ProductResponseDTO
                 {
                     ProductID = product.ProductID,
+                    UserID = product.UserID,
                     Categories = product.Categories,
                     Name = product.Name,
                     Description = product.Description,
@@ -102,6 +155,47 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             }
 
             return this.Ok(productDTOs);
+        }
+
+        /// <summary>
+        /// Retrieves the product associated with a specific user.
+        /// </summary>
+        /// <param name="productId">The ID of the product.</param>
+        /// <returns>The product by user id.</returns>
+        /// <response code="200">Returns the product by user id.</response>
+        [HttpGet("{productId}/user")]
+        [Authorize("manage:products-and-own-product")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponseDTO))]
+        public async Task<ActionResult<ProductResponseDTO>> GetProductForUser(Guid productId)
+        {
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForProduct(isCreateOperation, productId);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
+            var products = await this.productService.GetProductsByUserId(userId);
+            var product = products!.FirstOrDefault();
+
+            if (product == null)
+            {
+                return this.NotFound();
+            }
+
+            var productDTO = new ProductResponseDTO
+            {
+                ProductID = product.ProductID,
+                UserID = product.UserID,
+                Categories = product.Categories,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Stock = product.Stock,
+                ImageUrl = product.ImageUrl,
+            };
+
+            return this.Ok(productDTO);
         }
 
         /// <summary>
@@ -126,6 +220,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             var productDTO = new ProductResponseDTO
             {
                 ProductID = product.ProductID,
+                UserID = product.UserID,
                 Categories = product.Categories,
                 Name = product.Name,
                 Description = product.Description,
@@ -149,7 +244,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="401">If the user is not authenticated.</response>
         /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPut("{productId}")]
-        [Authorize("manage:products")]
+        [Authorize("manage:products-and-own-product")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -160,6 +255,13 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
+            }
+
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForProduct(isCreateOperation, productId);
+            if (userId == null)
+            {
+                return this.Forbid();
             }
 
             var product = await this.productService.GetProductById(productId);
@@ -185,6 +287,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             var productResponseDTO = new ProductResponseDTO
             {
                 ProductID = product.ProductID,
+                UserID = product.UserID,
                 Categories = product.Categories,
                 Name = product.Name,
                 Description = product.Description,
@@ -206,7 +309,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="401">If the user is not authenticated.</response>
         /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpDelete("{productId}")]
-        [Authorize("manage:products")]
+        [Authorize("manage:products-and-own-product")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -218,6 +321,13 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             if (product == null)
             {
                 return this.NotFound();
+            }
+
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForProduct(isCreateOperation, productId);
+            if (userId == null)
+            {
+                return this.Forbid();
             }
 
             await this.productService.DeleteProduct(productId);

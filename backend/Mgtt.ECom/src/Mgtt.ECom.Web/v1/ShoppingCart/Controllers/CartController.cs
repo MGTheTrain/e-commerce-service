@@ -34,23 +34,34 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <param name="isCreateOperation">Indicates whether the operation is a creation operation.</param>
         /// <param name="cartId">The cart id to check against.</param>
         /// <returns>True if the user has the required permissions and, if necessary, has valid carts; otherwise, false.</returns>
-        private async Task<string?> CheckManageOwnCartPermission(bool isCreateOperation, Guid cartId)
+        private async Task<string?> VerifyUserPermissionForCart(bool isCreateOperation, Guid cartId)
         {
             var permissionsClaims = this.User.FindAll("permissions");
-            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:carts")) ||
-                permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-cart")))
+            var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = userIdClaim?.Value;
+
+            if (userId == null)
             {
-                var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
-                var userId = userIdClaim!.Value;
+                return null;
+            }
+
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:carts")))
+            {
+                if (!isCreateOperation && cartId != Guid.Empty)
+                {
+                    var cart = await this.cartService.GetCartById(cartId);
+                    return cart?.UserID ?? userId;
+                }
+
+                return userId;
+            }
+
+            if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-cart")))
+            {
                 if (!isCreateOperation && cartId != Guid.Empty)
                 {
                     var userCarts = await this.cartService.GetCartsByUserId(userId);
-                    if (userCarts!.Where(x => x.CartID == cartId).FirstOrDefault() != null)
-                    {
-                        return userId;
-                    }
-
-                    return null;
+                    return userCarts?.Any(x => x.CartID == cartId) == true ? userId : null;
                 }
 
                 return userId;
@@ -82,7 +93,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             }
 
             var isCreateOperation = true;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, Guid.Empty);
+            var userId = await this.VerifyUserPermissionForCart(isCreateOperation, Guid.Empty);
             if (userId == null)
             {
                 return this.Forbid();
@@ -128,7 +139,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         public async Task<ActionResult<CartResponseDTO>> GetCartById(Guid cartId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
+            var userId = await this.VerifyUserPermissionForCart(isCreateOperation, cartId);
             if (userId == null)
             {
                 return this.Forbid();
@@ -166,7 +177,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         public async Task<ActionResult<IEnumerable<CartResponseDTO>>> GetAllCarts()
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, Guid.Empty);
+            var userId = await this.VerifyUserPermissionForCart(isCreateOperation, Guid.Empty);
             if (userId == null)
             {
                 return this.Forbid();
@@ -214,7 +225,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             }
 
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
+            var userId = await this.VerifyUserPermissionForCart(isCreateOperation, cartId);
             if (userId == null)
             {
                 return this.Forbid();
@@ -263,7 +274,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         public async Task<IActionResult> DeleteCartById(Guid cartId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
+            var userId = await this.VerifyUserPermissionForCart(isCreateOperation, cartId);
             if (userId == null)
             {
                 return this.Forbid();
@@ -305,16 +316,23 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             }
 
             var isCreateOperation = false; // false because we are verifying the cart resource which consists of cart items
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
+            var userId = await this.VerifyUserPermissionForCart(isCreateOperation, cartId);
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var cart = await this.cartService.GetCartById(cartId);
+            if (cart == null)
+            {
+                return this.BadRequest();
             }
 
             var cartItem = new CartItem
             {
                 CartID = cartId,
                 ProductID = cartItemDTO.ProductID,
+                UserID = userId,
                 Quantity = cartItemDTO.Quantity,
                 Price = cartItemDTO.Price,
             };
@@ -330,6 +348,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 CartItemID = cartItem.CartItemID,
                 CartID = cartItem.CartID,
                 ProductID = cartItem.ProductID,
+                UserID = cartItem.UserID,
                 Quantity = cartItem.Quantity,
                 Price = cartItem.Price,
             };
@@ -353,10 +372,16 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         public async Task<ActionResult<IEnumerable<CartItemResponseDTO>>> GetCartItemsByCartId(Guid cartId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
+            var userId = await this.VerifyUserPermissionForCart(isCreateOperation, cartId);
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var cart = await this.cartService.GetCartById(cartId);
+            if (cart == null)
+            {
+                return this.BadRequest();
             }
 
             var cartItems = await this.cartItemService.GetCartItemsByCartId(cartId);
@@ -369,6 +394,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                     CartItemID = cartItem.CartItemID,
                     CartID = cartItem.CartID,
                     ProductID = cartItem.ProductID,
+                    UserID = cartItem.UserID,
                     Quantity = cartItem.Quantity,
                     Price = cartItem.Price,
                 });
@@ -396,10 +422,16 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         public async Task<ActionResult<CartItemResponseDTO>> GetCartItemById(Guid cartId, Guid itemId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
+            var userId = await this.VerifyUserPermissionForCart(isCreateOperation, cartId);
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var cart = await this.cartService.GetCartById(cartId);
+            if (cart == null)
+            {
+                return this.BadRequest();
             }
 
             var cartItem = await this.cartItemService.GetCartItemById(itemId);
@@ -414,6 +446,52 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 CartItemID = cartItem.CartItemID,
                 CartID = cartItem.CartID,
                 ProductID = cartItem.ProductID,
+                UserID = cartItem.UserID,
+                Quantity = cartItem.Quantity,
+                Price = cartItem.Price,
+            };
+
+            return this.Ok(cartItemResponseDto);
+        }
+
+        /// <summary>
+        /// Gets a cart item for a user.
+        /// </summary>
+        /// <param name="cartId">The ID of the cart.</param>
+        /// <param name="productId">The ID of the product.</param>
+        /// <returns>The cart iem for the specified user.</returns>
+        /// <response code="200">Returns the cart with the specified ID.</response>
+        /// <response code="404">If the cart is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
+        [HttpGet("{cartId}/products/{productId}/item")]
+        [Authorize("manage:carts-and-own-cart")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CartItemResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<CartItemResponseDTO>> GetCartItemForUser(Guid cartId, Guid productId)
+        {
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForCart(isCreateOperation, cartId);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
+            var cartItem = await this.cartItemService.GetCartItemByProductAndUserId(productId, userId);
+
+            if (cartItem == null)
+            {
+                return this.NotFound();
+            }
+
+            var cartItemResponseDto = new CartItemResponseDTO
+            {
+                CartItemID = cartItem.CartItemID,
+                CartID = cartItem.CartID,
+                ProductID = cartItem.ProductID,
+                UserID = cartItem.UserID,
                 Quantity = cartItem.Quantity,
                 Price = cartItem.Price,
             };
@@ -448,10 +526,16 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             }
 
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
+            var userId = await this.VerifyUserPermissionForCart(isCreateOperation, cartId);
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var cart = await this.cartService.GetCartById(cartId);
+            if (cart == null)
+            {
+                return this.BadRequest();
             }
 
             var cartItem = await this.cartItemService.GetCartItemById(itemId);
@@ -466,6 +550,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             cartItem.Quantity = cartItemDTO.Quantity;
             cartItem.Price = cartItemDTO.Price;
 
+            // cartItem.UserID = cartItemDTO.UserID;
             var action = await this.cartItemService.UpdateCartItem(cartItem);
             if (action == null)
             {
@@ -477,6 +562,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 CartItemID = cartItem.CartItemID,
                 CartID = cartItem.CartID,
                 ProductID = cartItem.ProductID,
+                UserID = cartItem.UserID,
                 Quantity = cartItem.Quantity,
                 Price = cartItem.Price,
             };
@@ -503,10 +589,16 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         public async Task<IActionResult> DeleteCartItem(Guid cartId, Guid itemId)
         {
             var isCreateOperation = false;
-            var userId = await this.CheckManageOwnCartPermission(isCreateOperation, cartId);
+            var userId = await this.VerifyUserPermissionForCart(isCreateOperation, cartId);
             if (userId == null)
             {
                 return this.Forbid();
+            }
+
+            var cart = await this.cartService.GetCartById(cartId);
+            if (cart == null)
+            {
+                return this.BadRequest();
             }
 
             var cartItem = await this.cartItemService.GetCartItemById(itemId);

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ProductCreationComponent } from './product-creation.component';
-import { ProductService } from '../../../generated';
+import { CartService, ProductService } from '../../../generated';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from '../../../../../environments/environment';
 
@@ -24,7 +24,8 @@ describe('ProductCreationComponent', () => {
         })
       ],
       providers: [
-        ProductService 
+        ProductService,
+        CartService
       ]
     })
     .compileComponents();

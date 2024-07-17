@@ -5,7 +5,6 @@ import os
 
 API_BASE_URL = os.getenv('API_BASE_URL', 'http://localhost:7260/api/v1')
 BEARER_TOKEN = os.getenv('BEARER_TOKEN', '')
-TEST_USER_ID = str(uuid.uuid4())  # Sample UUID for test
 
 @pytest.fixture(scope="module")
 def cart_data():
@@ -14,11 +13,11 @@ def cart_data():
     headers = {
         'Authorization': f'Bearer {BEARER_TOKEN}'
     }
-    body = {'userID': TEST_USER_ID, 'totalAmount': 100.0}
+    body = {'totalAmount': 100.0}
     response = requests.post(url, json=body, headers=headers) 
     assert response.status_code == 201
     cart_id = response.json().get('cartID')
-    return {'user_id': TEST_USER_ID, 'cart_id': cart_id}
+    return {'cart_id': cart_id}
 
 @pytest.fixture(scope="module")
 def cart_item_id(cart_data):
@@ -41,7 +40,7 @@ def test_create_cart():
     headers = {
         'Authorization': f'Bearer {BEARER_TOKEN}'
     }
-    body = {'userID': TEST_USER_ID, 'totalAmount': 100.0}
+    body = {'totalAmount': 100.0}
     response = requests.post(url, json=body, headers=headers)
     assert response.status_code == 201
     assert 'cartID' in response.json()
@@ -135,4 +134,4 @@ def test_delete_cart(cart_data):
 
     # Verify the cart was deleted
     response = requests.get(url, headers=headers)
-    assert response.status_code == 403
+    assert response.status_code == 404

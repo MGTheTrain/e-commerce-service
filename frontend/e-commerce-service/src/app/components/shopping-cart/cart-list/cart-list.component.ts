@@ -35,16 +35,15 @@ export class CartListComponent implements OnInit {
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
+      this.cartService.apiV1CartsGet().subscribe(
+        (data: CartResponseDTO[]) => {
+          this.carts = data;
+        },
+        error => {
+          console.error('Error fetching carts', error);
+        }
+      );
     } 
-
-    this.cartService.apiV1CartsGet().subscribe(
-      (data: CartResponseDTO[]) => {
-        this.carts = data;
-      },
-      error => {
-        console.error('Error fetching carts', error);
-      }
-    );
   }
 
   // getUserName(userID: string | undefined): string | undefined {

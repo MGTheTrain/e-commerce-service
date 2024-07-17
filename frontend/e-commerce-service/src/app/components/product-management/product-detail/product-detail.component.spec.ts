@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ProductDetailComponent } from './product-detail.component';
-import { ProductService } from '../../../generated';
+import { CartService, ProductService } from '../../../generated';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
@@ -31,6 +31,7 @@ describe('ProductDetailComponent', () => {
       ],
       providers: [
         ProductService,
+        CartService,
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ]
     })

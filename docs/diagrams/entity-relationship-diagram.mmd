@@ -3,53 +3,55 @@ erDiagram
     
     %% Product Management Context
     Product {
-        int ProductID
+        Guid ProductID
         string Name
         string Description
         float Price
-        int Stock
+        Guid Stock
         string[] Categoryies
         string ImageUrl
     }
     
     %% Order Management Context
     Order {
-        int OrderID
-        int UserID
+        Guid OrderID
+        string UserID
         date OrderDate
         float TotalAmount
         string OrderStatus
     }
     
     OrderItem {
-        int OrderItemID
-        int OrderID
-        int ProductID
-        int Quantity
+        Guid OrderItemID
+        Guid OrderID
+        Guid ProductID
+        string UserID
+        Guid Quantity
         float Price
     }
     
     %% Shopping Cart Context
     Cart {
-        int CartID
-        int UserID
+        Guid CartID
+        string UserID
         float TotalAmount
     }
     
     CartItem {
-        int CartItemID
-        int CartIDh
-        int ProductID
-        int Quantity
+        Guid CartItemID
+        Guid CartID
+        Guid ProductID
+        string UserID
+        Guid Quantity
         float Price
     }
     
     %% Review Management Context
     Review {
-        int ReviewID
-        int ProductID
-        int UserID
-        int Rating
+        Guid ReviewID
+        Guid ProductID
+        string UserID
+        Guid Rating
         string Comment
         date ReviewDate
     }

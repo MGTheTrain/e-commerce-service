@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mgtt.ECom.Persistence.Migrations
 {
     [DbContext(typeof(PsqlDbContext))]
-    [Migration("20240707102530_InitialCreate")]
+    [Migration("20240717193101_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -70,6 +70,10 @@ namespace Mgtt.ECom.Persistence.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("OrderItemID");
 
                     b.ToTable("OrderItems");
@@ -103,6 +107,10 @@ namespace Mgtt.ECom.Persistence.Migrations
 
                     b.Property<int>("Stock")
                         .HasColumnType("integer");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("ProductID");
 
@@ -173,6 +181,10 @@ namespace Mgtt.ECom.Persistence.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("CartItemID");
 

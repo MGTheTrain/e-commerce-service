@@ -431,6 +431,59 @@ export class CartService {
     }
 
     /**
+     * Gets a cart item for a user.
+     * 
+     * @param cartId The ID of the cart.
+     * @param productId The ID of the product.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiV1CartsCartIdProductsProductIdItemGet(cartId: string, productId: string, observe?: 'body', reportProgress?: boolean): Observable<CartItemResponseDTO>;
+    public apiV1CartsCartIdProductsProductIdItemGet(cartId: string, productId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CartItemResponseDTO>>;
+    public apiV1CartsCartIdProductsProductIdItemGet(cartId: string, productId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CartItemResponseDTO>>;
+    public apiV1CartsCartIdProductsProductIdItemGet(cartId: string, productId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (cartId === null || cartId === undefined) {
+            throw new Error('Required parameter cartId was null or undefined when calling apiV1CartsCartIdProductsProductIdItemGet.');
+        }
+
+        if (productId === null || productId === undefined) {
+            throw new Error('Required parameter productId was null or undefined when calling apiV1CartsCartIdProductsProductIdItemGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["Authorization"]) {
+            headers = headers.set('Authorization', this.configuration.apiKeys["Authorization"]);
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<CartItemResponseDTO>('get',`${this.basePath}/api/v1/carts/${encodeURIComponent(String(cartId))}/products/${encodeURIComponent(String(productId))}/item`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Updates an existing cart.
      * 
      * @param cartId The ID of the cart user.

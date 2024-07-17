@@ -13,6 +13,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.DTOs
         public Guid CartID { get; set; }
 
         public Guid ProductID { get; set; }
+        public string UserID { get; set; }
 
         public int Quantity { get; set; }
 

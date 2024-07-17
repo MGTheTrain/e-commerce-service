@@ -332,6 +332,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             {
                 CartID = cartId,
                 ProductID = cartItemDTO.ProductID,
+                UserID = cartItemDTO.UserID, 
                 Quantity = cartItemDTO.Quantity,
                 Price = cartItemDTO.Price,
             };
@@ -347,6 +348,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 CartItemID = cartItem.CartItemID,
                 CartID = cartItem.CartID,
                 ProductID = cartItem.ProductID,
+                UserID = cartItem.UserID,
                 Quantity = cartItem.Quantity,
                 Price = cartItem.Price,
             };
@@ -392,6 +394,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                     CartItemID = cartItem.CartItemID,
                     CartID = cartItem.CartID,
                     ProductID = cartItem.ProductID,
+                    UserID = cartItem.UserID,
                     Quantity = cartItem.Quantity,
                     Price = cartItem.Price,
                 });
@@ -443,6 +446,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 CartItemID = cartItem.CartItemID,
                 CartID = cartItem.CartID,
                 ProductID = cartItem.ProductID,
+                UserID = cartItem.UserID,
                 Quantity = cartItem.Quantity,
                 Price = cartItem.Price,
             };
@@ -466,7 +470,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<CartItemResponseDTO>> GetCartItemByProductId(Guid cartId, Guid productId)
+        public async Task<ActionResult<CartItemResponseDTO>> GetCartItemByProductAndUserId(Guid cartId, Guid productId)
         {
 
             var isCreateOperation = false;
@@ -476,7 +480,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 return this.Forbid();
             }
 
-            var cartItem = await this.cartItemService.GetCartItemByProductId(productId);
+            var cartItem = await this.cartItemService.GetCartItemByProductAndUserId(productId, userId);
 
             if (cartItem == null)
             {
@@ -488,6 +492,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 CartItemID = cartItem.CartItemID,
                 CartID = cartItem.CartID,
                 ProductID = cartItem.ProductID,
+                UserID = cartItem.UserID,
                 Quantity = cartItem.Quantity,
                 Price = cartItem.Price,
             };
@@ -545,6 +550,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             cartItem.ProductID = cartItemDTO.ProductID;
             cartItem.Quantity = cartItemDTO.Quantity;
             cartItem.Price = cartItemDTO.Price;
+            //cartItem.UserID = cartItemDTO.UserID;
 
             var action = await this.cartItemService.UpdateCartItem(cartItem);
             if (action == null)
@@ -557,6 +563,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
                 CartItemID = cartItem.CartItemID,
                 CartID = cartItem.CartID,
                 ProductID = cartItem.ProductID,
+                UserID = cartItem.UserID,
                 Quantity = cartItem.Quantity,
                 Price = cartItem.Price,
             };

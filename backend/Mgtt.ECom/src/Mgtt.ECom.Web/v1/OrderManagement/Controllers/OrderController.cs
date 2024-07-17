@@ -297,6 +297,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             {
                 OrderID = orderId,
                 ProductID = orderItemDTO.ProductID,
+                UserID = orderItemDTO.UserID, 
                 Quantity = orderItemDTO.Quantity,
                 Price = orderItemDTO.Price,
             };
@@ -311,6 +312,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             {
                 OrderItemID = orderItem.OrderItemID,
                 OrderID = orderItem.OrderID,
+                UserID = orderItem.UserID,
                 ProductID = orderItem.ProductID,
                 Quantity = orderItem.Quantity,
                 Price = orderItem.Price,
@@ -359,6 +361,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                     OrderItemID = orderItem.OrderItemID,
                     OrderID = orderItem.OrderID,
                     ProductID = orderItem.ProductID,
+                    UserID = orderItem.UserID,
                     Quantity = orderItem.Quantity,
                     Price = orderItem.Price,
                 });
@@ -409,11 +412,58 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderItemID = orderItem.OrderItemID,
                 OrderID = orderItem.OrderID,
                 ProductID = orderItem.ProductID,
+                UserID = orderItem.UserID,
                 Quantity = orderItem.Quantity,
                 Price = orderItem.Price,
             };
 
             return this.Ok(orderItemResponseDTO);
+        }
+
+        /// <summary>
+        /// Gets a order item by product id.
+        /// </summary>
+        /// <param name="orderId">The ID of the order.</param>
+        /// <param name="productId">The ID of the product.</param>
+        /// <returns>The order iem with the specified product ID.</returns>
+        /// <response code="200">Returns the order with the specified ID.</response>
+        /// <response code="404">If the order is not found.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not allowed to manage the resource.</response>
+        [HttpGet("{orderId}/products/{productId}/item")]
+        [Authorize("manage:orders-and-own-order")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderItemResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<OrderItemResponseDTO>> GetCartItemByProductAndUserId(Guid orderId, Guid productId)
+        {
+
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
+            var orderItem = await this.orderItemService.GetOrderItemByProductAndUserId(productId, userId);
+
+            if (orderItem == null)
+            {
+                return this.NotFound();
+            }
+
+            var orderItemResponseDto = new OrderItemResponseDTO
+            {
+                OrderItemID = orderItem.OrderItemID,
+                OrderID = orderItem.OrderID,
+                ProductID = orderItem.ProductID,
+                UserID = orderItem.UserID,
+                Quantity = orderItem.Quantity,
+                Price = orderItem.Price,
+            };
+
+            return this.Ok(orderItemResponseDto);
         }
 
         /// <summary>
@@ -465,6 +515,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             orderItem.ProductID = orderItemDTO.ProductID;
             orderItem.Quantity = orderItemDTO.Quantity;
             orderItem.Price = orderItemDTO.Price;
+            //orderItem.UserID = orderItem.UserID;
 
             var action = await this.orderItemService.UpdateOrderItem(orderItem);
             if (action == null)
@@ -477,6 +528,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderItemID = orderItem.OrderItemID,
                 OrderID = orderItem.OrderID,
                 ProductID = orderItem.ProductID,
+                UserID = orderItem.UserID,
                 Quantity = orderItem.Quantity,
                 Price = orderItem.Price,
             };

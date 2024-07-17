@@ -9,8 +9,6 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.DTOs
 
     public class OrderRequestDTO
     {
-        [Required]
-        public DateTime OrderDate { get; set; }
 
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "Total amount must be greater than zero")]

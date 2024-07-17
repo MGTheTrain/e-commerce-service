@@ -134,4 +134,4 @@ def test_delete_cart(cart_data):
 
     # Verify the cart was deleted
     response = requests.get(url, headers=headers)
-    assert response.status_code == 403
+    assert response.status_code == 404

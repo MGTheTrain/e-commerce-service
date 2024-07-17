@@ -18,6 +18,7 @@ namespace Mgtt.ECom.Domain.ShoppingCart
             this.CartItemID = Guid.NewGuid();
             this.CartID = Guid.Empty;
             this.ProductID = Guid.Empty;
+            this.UserID = string.Empty;
             this.Quantity = 1;
             this.Price = 0.01f;
         }
@@ -30,6 +31,9 @@ namespace Mgtt.ECom.Domain.ShoppingCart
 
         [Required]
         public Guid ProductID { get; set; }
+
+        [Required]
+        public string UserID { get; set; }
 
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
@@ -58,6 +62,11 @@ namespace Mgtt.ECom.Domain.ShoppingCart
             if (this.ProductID == Guid.Empty)
             {
                 yield return new ValidationResult($"{nameof(this.ProductID)} can't be empty");
+            }
+
+            if (this.UserID == string.Empty)
+            {
+                yield return new ValidationResult($"{nameof(this.UserID)} can't be empty");
             }
 
             if (this.Quantity <= 0)

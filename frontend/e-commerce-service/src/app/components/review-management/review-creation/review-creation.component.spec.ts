@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReviewCreationComponent } from './review-creation.component';
-import { ReviewService } from '../../../generated';
+import { CartService, ReviewService } from '../../../generated';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from '../../../../../environments/environment';
 
@@ -24,7 +24,8 @@ describe('ReviewCreationComponent', () => {
         })
       ],
       providers: [
-        ReviewService
+        ReviewService,
+        CartService
       ]
     })
     .compileComponents();

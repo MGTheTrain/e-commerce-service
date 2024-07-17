@@ -2238,6 +2238,118 @@
         }
       }
     },
+    "/api/v1/orders/{orderId}/products/{productId}/item": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Gets a order item by product id.",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "The ID of the order.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "The ID of the product.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the order with the specified ID.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResponseDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResponseDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "If the order is not found.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "If the user is not authenticated.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "If the user is not allowed to manage the resource.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/products": {
       "post": {
         "tags": [
@@ -3250,6 +3362,10 @@
             "type": "string",
             "format": "uuid"
           },
+          "userID": {
+            "type": "string",
+            "nullable": true
+          },
           "quantity": {
             "type": "integer",
             "format": "int32"
@@ -3339,6 +3455,10 @@
             "type": "string",
             "format": "uuid"
           },
+          "userID": {
+            "type": "string",
+            "nullable": true
+          },
           "quantity": {
             "type": "integer",
             "format": "int32"
@@ -3352,16 +3472,11 @@
       },
       "OrderRequestDTO": {
         "required": [
-          "orderDate",
           "orderStatus",
           "totalAmount"
         ],
         "type": "object",
         "properties": {
-          "orderDate": {
-            "type": "string",
-            "format": "date-time"
-          },
           "totalAmount": {
             "minimum": 0.01,
             "type": "number",

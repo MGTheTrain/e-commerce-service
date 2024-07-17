@@ -14,6 +14,7 @@ export interface OrderItemResponseDTO {
     orderItemID?: string;
     orderID?: string;
     productID?: string;
+    userID?: string;
     quantity?: number;
     price?: number;
 }

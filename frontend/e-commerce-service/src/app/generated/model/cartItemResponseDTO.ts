@@ -14,6 +14,7 @@ export interface CartItemResponseDTO {
     cartItemID?: string;
     cartID?: string;
     productID?: string;
+    userID?: string;
     quantity?: number;
     price?: number;
 }

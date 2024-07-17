@@ -59,42 +59,41 @@ export class ProductDetailComponent implements OnInit {
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
+      this.subscription = this.route.params.subscribe(params => {
+        const productId = params['productId'];
+        this.product.productID = productId;
+  
+        this.productService.apiV1ProductsProductIdGet(productId).subscribe(
+          (data: ProductResponseDTO) => {
+            this.product = data;
+          },
+          error => {
+            console.error('Error fetching product with id', productId, error);
+          }
+        );
+        
+        this.productService.apiV1ProductsProductIdUserGet(productId).subscribe(
+          (data: ProductResponseDTO) => {
+            console.log("Product owned by:", data);
+            this.isProductOwner = true;
+          },
+          error => {
+            console.error('Error: User is not the product owner', error);
+          }
+        );
+  
+        // Update quantity 
+        const cartId = localStorage.getItem('cartId')?.toString();
+        this.cartService.apiV1CartsCartIdProductsProductIdItemGet(cartId!, this.product.productID!).subscribe(
+          (data: CartItemResponseDTO) => {
+            this.quantity = data.quantity!  
+          },
+          error => {
+            console.error('Error retrieving item from cart with id', cartId, error);
+          }
+        );
+     });
     } 
-
-    this.subscription = this.route.params.subscribe(params => {
-      const productId = params['productId'];
-      this.product.productID = productId;
-
-      this.productService.apiV1ProductsProductIdGet(productId).subscribe(
-        (data: ProductResponseDTO) => {
-          this.product = data;
-        },
-        error => {
-          console.error('Error fetching product with id', productId, error);
-        }
-      );
-      
-      this.productService.apiV1ProductsProductIdUserGet(productId).subscribe(
-        (data: ProductResponseDTO) => {
-          console.log("Product owned by:", data);
-          this.isProductOwner = true;
-        },
-        error => {
-          console.error('Error: User is not the product owner', error);
-        }
-      );
-
-      // Update quantity 
-      const cartId = localStorage.getItem('cartId')?.toString();
-      this.cartService.apiV1CartsCartIdProductsProductIdItemGet(cartId!, this.product.productID!).subscribe(
-        (data: CartItemResponseDTO) => {
-          this.quantity = data.quantity!  
-        },
-        error => {
-          console.error('Error retrieving item from cart with id', cartId, error);
-        }
-      );
-   });
   }
 
   handleNavigateBackClick(): void {

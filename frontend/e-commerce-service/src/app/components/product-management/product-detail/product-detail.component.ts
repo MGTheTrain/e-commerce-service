@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductResponseDTO, ProductRequestDTO, ProductService, CartService, CartItemRequestDTO, CartItemResponseDTO } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faEdit, faTrash, faImage, faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faImage, faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -48,7 +48,7 @@ export class ProductDetailComponent implements OnInit {
   public faEdit: IconDefinition = faEdit;
   public faImage: IconDefinition = faImage;
   public faArrowLeft: IconDefinition = faArrowLeft;
-  public faPlus: IconDefinition = faPlus;
+  public faShoppingCart: IconDefinition = faShoppingCart;
   public isEditing: boolean = false;
 
   public isLoggedIn: boolean = false;
@@ -82,7 +82,17 @@ export class ProductDetailComponent implements OnInit {
         error => {
           console.error('Error: User is not the product owner', error);
         }
-        
+      );
+
+      // Update quantity 
+      const cartId = localStorage.getItem('cartId')?.toString();
+      this.cartService.apiV1CartsCartIdProductsProductIdItemGet(cartId!, this.product.productID!).subscribe(
+        (data: CartItemResponseDTO) => {
+          this.quantity = data.quantity!  
+        },
+        error => {
+          console.error('Error retrieving item from cart with id', cartId, error);
+        }
       );
    });
   }
@@ -144,6 +154,8 @@ export class ProductDetailComponent implements OnInit {
 
   handleAddToCartClick(product: ProductResponseDTO): void {
     if(this.isLoggedIn) {
+      this.removeItemFromCart();
+
       const cartId = localStorage.getItem('cartId')?.toString();
       const cartItemRequestDto: CartItemRequestDTO = {
         cartID: cartId!.toString(),
@@ -153,13 +165,38 @@ export class ProductDetailComponent implements OnInit {
       };
       this.cartService.apiV1CartsCartIdItemsPost(cartId!, cartItemRequestDto).subscribe(
         (data: CartItemResponseDTO) => {
-          console.log('Added item to cart with id', data);     
+          console.log('Added item to cart', data);     
         },
         error => {
           console.error('Error adding item to cart with id', cartId, error);
         }
       );
     }
+  }
+
+  handleRemoveFromCartClick(): void {
+    if(this.isLoggedIn) {
+      this.removeItemFromCart();
+    }
+  }
+
+  removeItemFromCart(): void {
+    const cartId = localStorage.getItem('cartId')?.toString();
+    this.cartService.apiV1CartsCartIdProductsProductIdItemGet(cartId!, this.product.productID!).subscribe(
+      (data: CartItemResponseDTO) => {
+        this.cartService.apiV1CartsCartIdItemsItemIdDelete(cartId!, data.cartItemID!).subscribe(
+          (data: CartItemResponseDTO) => {
+            console.log('Delete item from cart', data);     
+          },
+          error => {
+            console.error('Error deleting item from cart with id', cartId, error);
+          }
+        );
+      },
+      error => {
+        console.error('Error retrieving cart item for cart with id', cartId, error);
+      }
+    );
   }
 
   triggerImageInput(): void {

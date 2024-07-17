@@ -51,16 +51,16 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
-        public async Task<CartItem?> GetCartItemByProductId(Guid productId)
+        public async Task<CartItem?> GetCartItemByProductAndUserId(Guid productId, string userId)
         {
-            this.logger.LogInformation("Fetching cart item by ProductID: {ProductId}", productId);
+            this.logger.LogInformation("Fetching cart item by ProductID: {ProductId} and UserID: {UserId}", productId, userId);
             try
             {
-                return await Task.FromResult(this.context.CartItems.Where(ci => ci.ProductID == productId).FirstOrDefault());
+                return await Task.FromResult(this.context.CartItems.Where(ci => ci.ProductID == productId && ci.UserID == userId).FirstOrDefault());
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, "Error fetching cart item by ProductID: {ProductId}", productId);
+                this.logger.LogError(ex, "Error fetching cart item by ProductID: {ProductId} and UserID: {UserId}", productId, userId);
                 return await Task.FromResult<CartItem?>(null);
             }
         }

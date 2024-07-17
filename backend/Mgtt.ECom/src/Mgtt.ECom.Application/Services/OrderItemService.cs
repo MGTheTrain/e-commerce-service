@@ -53,6 +53,20 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
+        public async Task<OrderItem?> GetOrderItemByProductAndUserId(Guid productId, string userId)
+        {
+            this.logger.LogInformation("Fetching order item by ProductID: {ProductId} and UserID: {UserId}", productId, userId);
+            try
+            {
+                return await Task.FromResult(this.context.OrderItem.Where(ci => ci.ProductID == productId && ci.UserID == userId).FirstOrDefault());
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, "Error fetching order item by ProductID: {ProductId} and UserID: {UserId}", productId, userId);
+                return await Task.FromResult<OrderItem?>(null);
+            }
+        }
+
         public async Task<OrderItem?> CreateOrderItem(OrderItem orderItem)
         {
             this.logger.LogInformation("Creating new order item: {OrderItemId}", orderItem.OrderItemID);

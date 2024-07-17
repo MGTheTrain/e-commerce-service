@@ -10,7 +10,7 @@ public interface ICartItemService
 
     Task<IEnumerable<CartItem>?> GetCartItemsByCartId(Guid cartId);
 
-    Task<CartItem?> GetCartItemByProductId(Guid productId);
+    Task<CartItem?> GetCartItemByProductAndUserId(Guid productId, string userId);
 
     Task<CartItem?> CreateCartItem(CartItem cartItem);
 

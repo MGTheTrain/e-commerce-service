@@ -65,21 +65,26 @@ export class CartComponent implements OnInit {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
 
-      if(localStorage.getItem('cartId') === null) {
-        const cartId = localStorage.getItem('cartId')?.toString();
-        this.cartService.apiV1CartsCartIdGet(cartId!).subscribe(
-          (data: CartResponseDTO) => {
-            this.cart.cartID = data.cartID;
-            this.cart.totalAmount = data.totalAmount;
-            this.cart.userID = data.userID;
-          },
-          error => {
-            console.error('Error fetching carts', error);
-          }
-        );
-      }
+      const cartId = localStorage.getItem('cartId')?.toString();
+      this.cartService.apiV1CartsCartIdGet(cartId!).subscribe(
+        (data: CartResponseDTO) => {
+          this.cart = data;
+        },
+        error => {
+          console.error('Error fetching carts', error);
+        }
+      );
+
+      this.cartService.apiV1CartsCartIdItemsGet(cartId!).subscribe(
+        (data: CartItemResponseDTO[]) => {
+          this.cartItems = data;
+        },
+        error => {
+          console.error('Error fetching carts', error);
+        }
+      );
+      this.calculateTotalAmount();
     } 
-   this.calculateTotalAmount();
   }
 
   handleEditClick(): void {
@@ -102,5 +107,6 @@ export class CartComponent implements OnInit {
       const price = item.price ?? 0;
       return total + (quantity * price);
     }, 0);
+    console.log(this.cart.totalAmount);
   }
 }

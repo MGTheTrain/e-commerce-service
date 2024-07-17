@@ -431,7 +431,7 @@ export class CartService {
     }
 
     /**
-     * Gets a cart item by product id.
+     * Gets a cart item for a user.
      * 
      * @param cartId The ID of the cart.
      * @param productId The ID of the product.

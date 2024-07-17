@@ -431,7 +431,7 @@ export class OrderService {
     }
 
     /**
-     * Gets a order item by product id.
+     * Gets a order item for a user.
      * 
      * @param orderId The ID of the order.
      * @param productId The ID of the product.

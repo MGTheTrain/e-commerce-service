@@ -165,7 +165,8 @@ export class ProductDetailComponent implements OnInit {
       };
       this.cartService.apiV1CartsCartIdItemsPost(cartId!, cartItemRequestDto).subscribe(
         (data: CartItemResponseDTO) => {
-          console.log('Added item to cart', data);     
+          console.log('Added item to cart', data);    
+          this.router.navigate(['/']); 
         },
         error => {
           console.error('Error adding item to cart with id', cartId, error);
@@ -177,6 +178,7 @@ export class ProductDetailComponent implements OnInit {
   handleRemoveFromCartClick(): void {
     if(this.isLoggedIn) {
       this.removeItemFromCart();
+      this.router.navigate(['/']);
     }
   }
 

@@ -332,7 +332,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             {
                 CartID = cartId,
                 ProductID = cartItemDTO.ProductID,
-                UserID = cartItemDTO.UserID, 
+                UserID = userId, 
                 Quantity = cartItemDTO.Quantity,
                 Price = cartItemDTO.Price,
             };

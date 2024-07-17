@@ -297,7 +297,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             {
                 OrderID = orderId,
                 ProductID = orderItemDTO.ProductID,
-                UserID = orderItemDTO.UserID, 
+                UserID = userId, 
                 Quantity = orderItemDTO.Quantity,
                 Price = orderItemDTO.Price,
             };

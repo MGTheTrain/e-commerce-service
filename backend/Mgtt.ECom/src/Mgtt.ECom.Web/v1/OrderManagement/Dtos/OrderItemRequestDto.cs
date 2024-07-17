@@ -16,9 +16,6 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.DTOs
         public Guid ProductID { get; set; }
 
         [Required]
-        public string UserID { get; set; }
-
-        [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
         public int Quantity { get; set; }
 

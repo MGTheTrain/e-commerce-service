@@ -34,9 +34,9 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
 
 - **Shopping Cart**
   - Cart Functionality
-    - [ ] Allow users to add products to their cart, view cart contents, and update quantities.
+    - [x] Allow users to add products to their cart, view cart contents and update quantities.
   - Cart Persistence
-    - [ ] Ensure cart contents persist across user sessions.
+    - [x] Ensure cart contents persist across user sessions.
 
 - **Review Management**
   - Product Reviews

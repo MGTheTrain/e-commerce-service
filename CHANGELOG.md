@@ -7,16 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.8.0] - 13-07-2024
+## [0.8.0] - 17-07-2024
 
 ### Updated
 
-- Rename and update helper methods for verifying user permissions within controller endpoints of the [web backend](./backend/Mgtt.ECom/)
-- Add missing validation checks for item management in Order and Cart controller endpoints of the [web backend](./backend/Mgtt.ECom/)
-- Include [detail header component](./frontend/e-commerce-service/src/app/components/header/detail-header/) in [product creation component](./frontend/e-commerce-service/src/app/components/product-management/product-creation) and [product detail component](./frontend/e-commerce-service/src/app/components/product-management/product-detail)
-- Reload page after setting access token in [header component](./frontend/e-commerce-service/src/app/components/header/)
-- Initialize cart on login in [product list component](./frontend/e-commerce-service/src/app/components/product-management/product-list/) and handle cart deletion on logout in [header component](./frontend/e-commerce-service/src/app/components/header/) and [detail header component](./frontend/e-commerce-service/src/app/components/header/detail-header/)
-- Add `UserID attribute` in [Product.cs](./backend/Mgtt.ECom/src/Mgtt.ECom.Domain/ProductManagement/Product.cs), add controller endpoint in [ProductController.cs](./backend/Mgtt.ECom/src/Mgtt.ECom.Web/v1/ProductManagement/Controllers/ProductController.cs) and consider product owner in [order detail component](./frontend/e-commerce-service/src/app/components/order-management/order-detail/)
+- [Feature] Shopping Cart
+  - Cart Functionality
+    - [x] Allow users to add products to their cart, view cart contents and update quantities.
+  - Cart Persistence
+    - [x] Ensure cart contents persist across user sessions.
 
 ## [0.7.0] - 07-07-2024
 

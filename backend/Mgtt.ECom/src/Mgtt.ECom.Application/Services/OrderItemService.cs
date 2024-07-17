@@ -58,7 +58,7 @@ namespace Mgtt.ECom.Application.Services
             this.logger.LogInformation("Fetching order item by ProductID: {ProductId} and UserID: {UserId}", productId, userId);
             try
             {
-                return await Task.FromResult(this.context.OrderItem.Where(ci => ci.ProductID == productId && ci.UserID == userId).FirstOrDefault());
+                return await Task.FromResult(this.context.OrderItems.Where(ci => ci.ProductID == productId && ci.UserID == userId).FirstOrDefault());
             }
             catch (Exception ex)
             {

@@ -297,7 +297,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             {
                 OrderID = orderId,
                 ProductID = orderItemDTO.ProductID,
-                UserID = userId, 
+                UserID = userId,
                 Quantity = orderItemDTO.Quantity,
                 Price = orderItemDTO.Price,
             };
@@ -438,7 +438,6 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<ActionResult<OrderItemResponseDTO>> GetOrderItemForUser(Guid orderId, Guid productId)
         {
-
             var isCreateOperation = false;
             var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
             if (userId == null)
@@ -515,8 +514,8 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             orderItem.ProductID = orderItemDTO.ProductID;
             orderItem.Quantity = orderItemDTO.Quantity;
             orderItem.Price = orderItemDTO.Price;
-            //orderItem.UserID = orderItem.UserID;
 
+            // orderItem.UserID = orderItem.UserID;
             var action = await this.orderItemService.UpdateOrderItem(orderItem);
             if (action == null)
             {

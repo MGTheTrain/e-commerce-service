@@ -332,7 +332,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             {
                 CartID = cartId,
                 ProductID = cartItemDTO.ProductID,
-                UserID = userId, 
+                UserID = userId,
                 Quantity = cartItemDTO.Quantity,
                 Price = cartItemDTO.Price,
             };
@@ -472,7 +472,6 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<ActionResult<CartItemResponseDTO>> GetCartItemForUser(Guid cartId, Guid productId)
         {
-
             var isCreateOperation = false;
             var userId = await this.VerifyUserPermissionForCart(isCreateOperation, cartId);
             if (userId == null)
@@ -550,8 +549,8 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             cartItem.ProductID = cartItemDTO.ProductID;
             cartItem.Quantity = cartItemDTO.Quantity;
             cartItem.Price = cartItemDTO.Price;
-            //cartItem.UserID = cartItemDTO.UserID;
 
+            // cartItem.UserID = cartItemDTO.UserID;
             var action = await this.cartItemService.UpdateCartItem(cartItem);
             if (action == null)
             {

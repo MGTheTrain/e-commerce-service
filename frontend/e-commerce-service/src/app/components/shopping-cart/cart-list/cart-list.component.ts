@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CartResponseDTO, CartService } from '../../../generated';
-import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';

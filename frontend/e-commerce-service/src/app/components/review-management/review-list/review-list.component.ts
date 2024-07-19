@@ -3,7 +3,6 @@ import { ProductResponseDTO, ReviewResponseDTO, ReviewService } from '../../../g
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { v4 as uuidv4 } from 'uuid';
 import { HeaderComponent } from '../../header/header.component';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';

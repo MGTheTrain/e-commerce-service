@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart-item',
@@ -38,7 +37,7 @@ export class CartItemComponent implements OnInit {
 
   public isLoggedIn: boolean = false;
 
-  constructor(private router: Router, private productService: ProductService, private cartService: CartService) {}
+  constructor(private productService: ProductService, private cartService: CartService) {}
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {

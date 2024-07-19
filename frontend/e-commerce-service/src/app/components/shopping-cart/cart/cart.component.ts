@@ -65,13 +65,21 @@ export class CartComponent implements OnInit {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
 
-      const cartId = localStorage.getItem('cartId')?.toString();
+      let cartId = localStorage.getItem('cartId')?.toString();
+      
+      this.subscription = this.route.params.subscribe(params => {
+          if (params['cartId']) {
+              cartId = params['cartId'];
+          } 
+      });
+      
       this.cartService.apiV1CartsCartIdGet(cartId!).subscribe(
         (data: CartResponseDTO) => {
           this.cart = data;
         },
         error => {
           console.error('Error fetching carts', error);
+          this.router.navigate(['/']);
         }
       );
 
@@ -81,6 +89,7 @@ export class CartComponent implements OnInit {
         },
         error => {
           console.error('Error fetching carts', error);
+
         }
       );
       this.calculateTotalAmount();
@@ -107,6 +116,5 @@ export class CartComponent implements OnInit {
       const price = item.price ?? 0;
       return total + (quantity * price);
     }, 0);
-    console.log(this.cart.totalAmount);
   }
 }

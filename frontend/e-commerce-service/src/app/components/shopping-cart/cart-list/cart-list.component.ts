@@ -15,18 +15,7 @@ import { HeaderComponent } from '../../header/header.component';
   styleUrl: './cart-list.component.css'
 })
 export class CartListComponent implements OnInit {
-  @Input() carts: CartResponseDTO[] = [
-    {
-      cartID: uuidv4(),
-      userID: '1',
-      totalAmount: 50.0
-    },
-    {
-      cartID: uuidv4(),
-      userID: '2',
-      totalAmount: 50.0
-    },
-  ];
+  @Input() carts: CartResponseDTO[] = [];
 
   public isLoggedIn: boolean = false;
 

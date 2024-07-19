@@ -17,6 +17,7 @@ import { ReviewCreationComponent } from './components/review-management/review-c
 
 const routes: Routes = [
     { path: 'cart', component: CartComponent },
+    { path: 'carts/:cartId', component: CartComponent },
     { path: '', component: ProductListComponent },
     { path: 'products/creation', component: ProductCreationComponent },
     { path: 'products/:productId', component: ProductDetailComponent },

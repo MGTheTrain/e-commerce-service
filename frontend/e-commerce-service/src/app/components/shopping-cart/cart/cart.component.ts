@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CartItemResponseDTO, CartResponseDTO, CartService, ProductResponseDTO } from '../../../generated';
+import { CartItemRequestDTO, CartItemResponseDTO, CartRequestDTO, CartResponseDTO, CartService } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CartItemComponent } from '../cart-item/cart-item.component';
@@ -21,7 +21,8 @@ export class CartComponent implements OnInit {
   private subscription: Subscription | null = null;
   public faEdit: IconDefinition = faEdit;
   public faShoppingCart: IconDefinition = faShoppingCart;
-  public isEditing: boolean = false;
+
+  public disableCheckout: boolean = false;
 
   @Input() cart: CartResponseDTO = {
     cartID: 'cart1',
@@ -29,20 +30,7 @@ export class CartComponent implements OnInit {
     totalAmount: 50.0
   };
 
-  @Input() cartItems: CartItemResponseDTO[] = [
-    { cartItemID: '1', cartID: 'cart1', productID: 'product1', quantity: 2, price: 25.0 },
-    { cartItemID: '2', cartID: 'cart1', productID: 'product2', quantity: 1, price: 20.0 }
-  ];
-
-  @Input() product: ProductResponseDTO = {
-    productID: '1',
-    categories: ['Electric Guitar'],
-    name: 'Dean Razorback Guitar',
-    description: 'Product Description',
-    price: 3999.99,
-    stock: 10,
-    imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
-  };
+  @Input() cartItems: CartItemResponseDTO[] = [];
 
   availableCategories: string[] = [
     'Acoustic Guitar',
@@ -58,6 +46,7 @@ export class CartComponent implements OnInit {
   ];
 
   public isLoggedIn: boolean = false;
+  public isEditing: boolean = true;
 
   constructor(private router: Router, private route: ActivatedRoute, private cartService: CartService) { }
 
@@ -65,40 +54,73 @@ export class CartComponent implements OnInit {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
 
-      const cartId = localStorage.getItem('cartId')?.toString();
+      let cartId = localStorage.getItem('cartId')?.toString();
+      
+      this.subscription = this.route.params.subscribe(params => {
+          if (params['cartId']) {
+              cartId = params['cartId'];
+          } 
+      });
+      
       this.cartService.apiV1CartsCartIdGet(cartId!).subscribe(
         (data: CartResponseDTO) => {
           this.cart = data;
         },
         error => {
           console.error('Error fetching carts', error);
+          this.router.navigate(['/']);
         }
       );
 
       this.cartService.apiV1CartsCartIdItemsGet(cartId!).subscribe(
         (data: CartItemResponseDTO[]) => {
           this.cartItems = data;
+
+          if(this.cartItems.length == 0) { // disable checkout button
+            this.disableCheckout = true;
+          }
+          this.calculateTotalAmount();
         },
         error => {
           console.error('Error fetching carts', error);
         }
       );
-      this.calculateTotalAmount();
     } 
   }
 
-  handleEditClick(): void {
-    this.isEditing = !this.isEditing;
-  }
-
-  handleUpdateCartClick(): void {
-    console.log('Updating cart:', this.cart);
-    // pop up window
-    this.router.navigate(['/']);
-  }
-
   handleCheckoutClick(): void {
-    console.log('Checking out cart:', this.cart);
+    if(this.cartItems.length > 0) {
+      this.updateCart();
+      // this.router.navigate(['/order']);
+    }
+  }
+
+  updateCart(): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      const cartId = localStorage.getItem('cartId')?.toString();
+      const cartRequestDto: CartRequestDTO = {
+        totalAmount: this.cart.totalAmount!
+      };
+      this.cartService.apiV1CartsCartIdPut(cartId!, cartRequestDto).subscribe(
+        (data: CartResponseDTO) => {
+          console.log("Updated cart with cart id", data.cartID!);
+        }
+      );
+
+      for(const cartItem of this.cartItems) {
+        const cartItemRequestDTO: CartItemRequestDTO = {
+          cartID: cartItem.cartID!,
+          productID: cartItem.productID!,
+          quantity: cartItem.quantity!,
+          price: cartItem.price!,
+        };
+        this.cartService.apiV1CartsCartIdItemsItemIdPut(cartId!, cartItem.cartItemID!, cartItemRequestDTO).subscribe(
+          (data: CartItemResponseDTO) => {
+            console.log("Updated cart item with cart item id", data.cartItemID!);
+          }
+        );
+      }
+    }
   }
 
   calculateTotalAmount(): void {
@@ -107,6 +129,5 @@ export class CartComponent implements OnInit {
       const price = item.price ?? 0;
       return total + (quantity * price);
     }, 0);
-    console.log(this.cart.totalAmount);
   }
 }

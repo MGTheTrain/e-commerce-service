@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CartResponseDTO, CartService } from '../../../generated';
-import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -15,18 +14,7 @@ import { HeaderComponent } from '../../header/header.component';
   styleUrl: './cart-list.component.css'
 })
 export class CartListComponent implements OnInit {
-  @Input() carts: CartResponseDTO[] = [
-    {
-      cartID: uuidv4(),
-      userID: '1',
-      totalAmount: 50.0
-    },
-    {
-      cartID: uuidv4(),
-      userID: '2',
-      totalAmount: 50.0
-    },
-  ];
+  @Input() carts: CartResponseDTO[] = [];
 
   public isLoggedIn: boolean = false;
 
@@ -52,6 +40,6 @@ export class CartListComponent implements OnInit {
   // }
 
   handleCartClick(cart: CartResponseDTO): void {
-    this.router.navigate(['/user', cart.cartID, 'cart']);
+    this.router.navigate(['/carts', cart.cartID]);
   }
 }

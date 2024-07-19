@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CartItemResponseDTO, ProductResponseDTO } from '../../../generated';
+import { CartItemResponseDTO, CartService, ProductResponseDTO, ProductService } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -14,23 +14,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   styleUrl: './cart-item.component.css'
 })
 export class CartItemComponent implements OnInit {
-  @Input() cartItem: CartItemResponseDTO = {
-    cartItemID: '1',
-    cartID: 'cart1',
-    productID: 'product1',
-    quantity: 2,
-    price: 25.0
-  };
+  @Input() cartItem: CartItemResponseDTO = {};
 
-  @Input() product: ProductResponseDTO = {
-    productID: '1',
-    categories: ['Electric Guitar'],
-    name: 'Dean Razorback Guitar',
-    description: 'Product Description',
-    price: 3999.99,
-    stock: 10,
-    imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
-  };
+  @Input() product: ProductResponseDTO = {};
 
   availableCategories: string[] = [
     'Acoustic Guitar',
@@ -51,13 +37,29 @@ export class CartItemComponent implements OnInit {
 
   public isLoggedIn: boolean = false;
 
+  constructor(private productService: ProductService, private cartService: CartService) {}
+
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
-    } 
+
+      this.productService.apiV1ProductsProductIdGet(this.cartItem.productID!).subscribe(
+        (data: ProductResponseDTO) => {
+            this.product = data;
+        }
+      ); 
+    }
   }
 
-  handleDeleteItemClick(): void {
-    console.log('Removing cart item:', this.cartItem);
+  handleDeleteItemClick(cartItem: CartItemResponseDTO): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      const cartId = localStorage.getItem('cartId')?.toString();
+      this.cartService.apiV1CartsCartIdItemsItemIdDelete(cartId!, cartItem.cartItemID!).subscribe(
+        (data: CartItemResponseDTO) => {
+          console.log("Delete cart item with id", data.cartItemID, "from cart with id", data.cartID);
+        }
+      );
+    }
+    window.location.reload();
   }
 }

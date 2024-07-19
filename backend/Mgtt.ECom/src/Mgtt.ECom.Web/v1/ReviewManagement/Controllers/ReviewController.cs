@@ -213,6 +213,46 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         }
 
         /// <summary>
+        /// Retrieves the reviews for the specific user.
+        /// </summary>
+        /// <returns>A single review for the authenticated user.</returns>
+        /// <response code="200">Returns the review for the authenticated user.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not authorized to access the resource.</response>
+        [HttpGet("user")]
+        [Authorize("manage:reviews-and-own-review")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewResponseDTO>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetReviewsForUser()
+        {
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForReview(isCreateOperation, Guid.Empty);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
+            var reviews = await this.reviewService.GetReviewsByUserId(userId);
+            var reviewDTOs = new List<ReviewResponseDTO>();
+
+            foreach (var review in reviews!)
+            {
+                reviewDTOs.Add(new ReviewResponseDTO
+                {
+                    ReviewID = review.ReviewID,
+                    ProductID = review.ProductID,
+                    UserID = review.UserID,
+                    Rating = review.Rating,
+                    Comment = review.Comment,
+                    ReviewDate = review.ReviewDate,
+                });
+            }
+
+            return this.Ok(reviewDTOs);
+        }
+
+        /// <summary>
         /// Updates an existing review.
         /// </summary>
         /// <param name="reviewId">The ID of the review to update.</param>

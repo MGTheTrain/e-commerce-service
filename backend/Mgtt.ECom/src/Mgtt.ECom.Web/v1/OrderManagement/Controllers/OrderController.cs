@@ -9,7 +9,6 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.OrderManagement;
-    using Mgtt.ECom.Domain.ShoppingCart;
     using Mgtt.ECom.Web.V1.OrderManagement.DTOs;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -159,6 +158,45 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             };
 
             return this.Ok(orderDTO);
+        }
+
+        /// <summary>
+        /// Retrieves the orders created for a specific user.
+        /// </summary>
+        /// <returns>A single order created for a authenticated user.</returns>
+        /// <response code="200">Returns the order created for a authenticated user.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not authorized to access the resource.</response>
+        [HttpGet("user")]
+        [Authorize("manage:orders-and-own-order")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrderResponseDTO>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<IEnumerable<OrderResponseDTO>>> GetOrdersForUser()
+        {
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, Guid.Empty);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
+            var orders = await this.orderService.GetOrdersByUserId(userId);
+            var orderDTOs = new List<OrderResponseDTO>();
+
+            foreach (var order in orders!)
+            {
+                orderDTOs.Add(new OrderResponseDTO
+                {
+                    OrderID = order.OrderID,
+                    UserID = order.UserID,
+                    OrderDate = order.OrderDate,
+                    TotalAmount = order.TotalAmount,
+                    OrderStatus = order.OrderStatus,
+                });
+            }
+
+            return this.Ok(orderDTOs);
         }
 
         /// <summary>

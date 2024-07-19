@@ -16,13 +16,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  @Input() products: ProductResponseDTO[] = [
-    { productID: '1', categories: ['Electric Guitar'], name: 'Dean Razorback Guitar Blue', description: 'Description of Product A', price: 4999.99, stock: 10, imageUrl: 'https://s.yimg.com/ny/api/res/1.2/jVphTvtt1LwM3foboVcs_w--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02MDA-/https://media.zenfs.com/en-US/homerun/consequence_of_sound_458/830585263f74148d1ac63c91bfe6e2f4' },
-    { productID: '2', categories: ['Electric Guitar'], name: 'Dean Razorback Guitar White', description: 'Description of Product B', price: 2999.99, stock: 5, imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg' },
-    { productID: '3', categories: ['Electric Guitar'], name: 'ESP LTD Greeny Black', description: 'Description of Product C', price: 3999.99, stock: 15, imageUrl: 'https://media.sound-service.eu/Artikelbilder/Shopsystem/1200x837/ALEXI%20LAIHO%20GREENY_1.jpg' },
-    { productID: '4', categories: ['Electric Guitar'], name: 'Jackson Guitar Blue', description: 'Description of Product D', price: 1099.99, stock: 2, imageUrl: 'https://m.media-amazon.com/images/I/51EnIfqKY7L.jpg' },
-    { productID: '5', categories: ['Electric Guitar'], name: 'Gibson Les Paul Black', description: 'Description of Product E', price: 999.99, stock: 8, imageUrl: 'https://morningsideschoolofmusic.co.uk/wp-content/uploads/2022/05/Gibson-Guitars-1024x576.jpg' },
-  ];
+  @Input() products: ProductResponseDTO[] = [];
 
   availableCategories: string[] = [
     'Acoustic Guitar',
@@ -51,12 +45,25 @@ export class ProductListComponent implements OnInit {
         const cartRequestDto: CartRequestDTO = {
           totalAmount: 0
         };
-        this.cartService.apiV1CartsPost(cartRequestDto).subscribe(
-          (data: CartResponseDTO) => {
-            localStorage.setItem("cartId", data.cartID!.toString());
+
+        this.cartService.apiV1CartsUserGet().subscribe(
+          (data: CartResponseDTO[]) => {
+            if (data.length === 0) {
+              this.cartService.apiV1CartsPost(cartRequestDto).subscribe(
+                (newCart: CartResponseDTO) => {
+                  localStorage.setItem("cartId", newCart.cartID!.toString());
+                },
+                error => {
+                  console.error('Error creating cart', error);
+                }
+              );
+            } else {
+              localStorage.setItem("cartId", data[0].cartID!.toString());
+              console.log('User already has carts.');
+            }
           },
           error => {
-            console.error('Error creating cart', error);
+            console.error('Error fetching user carts', error);
           }
         );
       }

@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CartItemResponseDTO, ProductResponseDTO, ProductService } from '../../../generated';
+import { CartItemResponseDTO, CartService, ProductResponseDTO, ProductService } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart-item',
@@ -37,7 +38,7 @@ export class CartItemComponent implements OnInit {
 
   public isLoggedIn: boolean = false;
 
-  constructor(private productService: ProductService) {}
+  constructor(private router: Router, private productService: ProductService, private cartService: CartService) {}
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
@@ -51,7 +52,15 @@ export class CartItemComponent implements OnInit {
     }
   }
 
-  handleDeleteItemClick(): void {
-    console.log('Removing cart item:', this.cartItem);
+  handleDeleteItemClick(cartItem: CartItemResponseDTO): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      const cartId = localStorage.getItem('cartId')?.toString();
+      this.cartService.apiV1CartsCartIdItemsItemIdDelete(cartId!, cartItem.cartItemID!).subscribe(
+        (data: CartItemResponseDTO) => {
+          console.log("Delete cart item with id", data.cartItemID, "from cart with id", data.cartID);
+        }
+      );
+    }
+    window.location.reload();
   }
 }

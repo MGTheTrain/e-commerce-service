@@ -52,6 +52,6 @@ export class CartListComponent implements OnInit {
   // }
 
   handleCartClick(cart: CartResponseDTO): void {
-    this.router.navigate(['/user', cart.cartID, 'cart']);
+    this.router.navigate(['/carts', cart.cartID]);
   }
 }

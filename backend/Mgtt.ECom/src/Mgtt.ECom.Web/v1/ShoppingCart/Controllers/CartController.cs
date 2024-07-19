@@ -170,7 +170,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         /// <response code="401">If the user is not authenticated.</response>
         /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpGet]
-        [Authorize("manage:carts-and-own-cart")]
+        [Authorize("manage:carts")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CartResponseDTO>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

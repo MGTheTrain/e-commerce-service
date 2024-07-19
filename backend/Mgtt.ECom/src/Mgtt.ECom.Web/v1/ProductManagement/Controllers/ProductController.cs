@@ -199,6 +199,48 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         }
 
         /// <summary>
+        /// Retrieves the products created by a specific user.
+        /// </summary>
+        /// <returns>A single product created by a authenticated user.</returns>
+        /// <response code="200">Returns the product created by a authenticated user.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not authorized to access the resource.</response>
+        [HttpGet("user")]
+        [Authorize("manage:products-and-own-product")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductResponseDTO>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetProductsCreatedByUser()
+        {
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForProduct(isCreateOperation, Guid.Empty);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
+            var products = await this.productService.GetProductsByUserId(userId);
+            var productDTOs = new List<ProductResponseDTO>();
+
+            foreach (var product in products!)
+            {
+                productDTOs.Add(new ProductResponseDTO
+                {
+                    ProductID = product.ProductID,
+                    UserID = product.UserID,
+                    Categories = product.Categories,
+                    Name = product.Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    Stock = product.Stock,
+                    ImageUrl = product.ImageUrl,
+                });
+            }
+
+            return this.Ok(productDTOs);
+        }
+
+        /// <summary>
         /// Retrieves a product by its ID.
         /// </summary>
         /// <param name="productId">The ID of the product.</param>

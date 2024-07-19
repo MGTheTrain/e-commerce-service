@@ -200,6 +200,43 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
         }
 
         /// <summary>
+        /// Retrieves the cart for the specific user.
+        /// </summary>
+        /// <returns>A single cart for the authenticated user.</returns>
+        /// <response code="200">Returns the cart for the authenticated user.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the user is not authorized to access the resource.</response>
+        [HttpGet("user")]
+        [Authorize("manage:carts-and-own-cart")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CartResponseDTO>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<CartResponseDTO>> GetCartForUser()
+        {
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForCart(isCreateOperation, Guid.Empty);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
+            var carts = await this.cartService.GetCartsByUserId(userId);
+            var cartDTOs = new List<CartResponseDTO>();
+
+            foreach (var cart in carts!)
+            {
+                cartDTOs.Add(new CartResponseDTO
+                {
+                    CartID = cart.CartID,
+                    UserID = cart.UserID,
+                    TotalAmount = cart.TotalAmount,
+                });
+            }
+
+            return this.Ok(cartDTOs);
+        }
+
+        /// <summary>
         /// Updates an existing cart.
         /// </summary>
         /// <param name="cartId">The ID of the cart user.</param>

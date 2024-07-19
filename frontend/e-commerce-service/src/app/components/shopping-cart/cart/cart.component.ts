@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CartItemResponseDTO, CartResponseDTO, CartService, ProductResponseDTO } from '../../../generated';
+import { CartItemResponseDTO, CartResponseDTO, CartService } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CartItemComponent } from '../cart-item/cart-item.component';
@@ -33,16 +33,6 @@ export class CartComponent implements OnInit {
     { cartItemID: '1', cartID: 'cart1', productID: 'product1', quantity: 2, price: 25.0 },
     { cartItemID: '2', cartID: 'cart1', productID: 'product2', quantity: 1, price: 20.0 }
   ];
-
-  @Input() product: ProductResponseDTO = {
-    productID: '1',
-    categories: ['Electric Guitar'],
-    name: 'Dean Razorback Guitar',
-    description: 'Product Description',
-    price: 3999.99,
-    stock: 10,
-    imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
-  };
 
   availableCategories: string[] = [
     'Acoustic Guitar',
@@ -92,6 +82,7 @@ export class CartComponent implements OnInit {
 
         }
       );
+
       this.calculateTotalAmount();
     } 
   }

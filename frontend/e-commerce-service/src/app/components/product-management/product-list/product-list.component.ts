@@ -58,6 +58,7 @@ export class ProductListComponent implements OnInit {
                 }
               );
             } else {
+              localStorage.setItem("cartId", data[0].cartID!.toString());
               console.log('User already has carts.');
             }
           },

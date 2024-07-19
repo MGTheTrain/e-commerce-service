@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modified permissions for `GetAllCarts()` method in [CartController.cs](./backend/Mgtt.ECom/src/Mgtt.ECom.Web/v1/ShoppingCart/Controllers/CartController.cs) component
 - Ensured proper navigation handling from the cart list component and within the cart component
 - Modified [page not found component](./frontend/e-commerce-service/src/app/components/error-pages/page-not-found/)
+- Added HTTP controller endpoints for retrieval of orders, reviews, products and carts related to a specific user
 
 ## [0.8.0] - 17-07-2024
 

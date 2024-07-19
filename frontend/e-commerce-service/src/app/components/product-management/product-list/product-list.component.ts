@@ -45,12 +45,24 @@ export class ProductListComponent implements OnInit {
         const cartRequestDto: CartRequestDTO = {
           totalAmount: 0
         };
-        this.cartService.apiV1CartsPost(cartRequestDto).subscribe(
-          (data: CartResponseDTO) => {
-            localStorage.setItem("cartId", data.cartID!.toString());
+
+        this.cartService.apiV1CartsUserGet().subscribe(
+          (data: CartResponseDTO[]) => {
+            if (data.length === 0) {
+              this.cartService.apiV1CartsPost(cartRequestDto).subscribe(
+                (newCart: CartResponseDTO) => {
+                  localStorage.setItem("cartId", newCart.cartID!.toString());
+                },
+                error => {
+                  console.error('Error creating cart', error);
+                }
+              );
+            } else {
+              console.log('User already has carts.');
+            }
           },
           error => {
-            console.error('Error creating cart', error);
+            console.error('Error fetching user carts', error);
           }
         );
       }

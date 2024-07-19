@@ -11,15 +11,8 @@
     <div class="text-center">
       <label><strong>Total Amount</strong></label>
       <h5>${{ cart.totalAmount }}</h5>
-      <button type="button" class="btn btn-secondary" (click)="handleEditClick()">
-        <fa-icon [icon]="faEdit"></fa-icon> {{ isEditing ? 'Cancel' : 'Edit' }}
-      </button>
       <span class="mx-2"></span>
-      <button type="button" class="btn btn-primary" (click)="handleUpdateCartClick()" [disabled]="!isEditing">
-        <fa-icon [icon]="faEdit"></fa-icon> Update Order
-      </button>
-      <span class="mx-2"></span>
-      <button type="button" class="btn btn-success" (click)="handleCheckoutClick()" [disabled]="!isEditing">
+      <button type="button" class="btn btn-success" (click)="handleCheckoutClick()" [disabled]="disableCheckout">
         <fa-icon [icon]="faShoppingCart"></fa-icon> Checkout
       </button>
     </div>

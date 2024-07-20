@@ -213,6 +213,46 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         }
 
         /// <summary>
+        /// Retrieves the review associated with a specific user. 
+        /// Explicitly checks whether a review belongs to a user by requiring a review id
+        /// </summary>
+        /// <param name="reviewId">The ID of the review.</param>
+        /// <returns>The review by user id.</returns>
+        /// <response code="200">Returns the review by user id.</response>
+        [HttpGet("{reviewId}/user")]
+        [Authorize("manage:reviews-and-own-review")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReviewResponseDTO))]
+        public async Task<ActionResult<ReviewResponseDTO>> GetProductForUser(Guid reviewId)
+        {
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForReview(isCreateOperation, reviewId);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
+            var reviews = await this.reviewService.GetReviewsByUserId(userId);
+            var review = reviews!.FirstOrDefault();
+
+            if (review == null)
+            {
+                return this.NotFound();
+            }
+
+            var reviewDTO = new ReviewResponseDTO
+            {
+                ReviewID = review.ReviewID,
+                ProductID = review.ProductID,
+                UserID = review.UserID,
+                Rating = review.Rating,
+                Comment = review.Comment,
+                ReviewDate = review.ReviewDate,
+            };
+
+            return this.Ok(reviewDTO);
+        }
+
+        /// <summary>
         /// Retrieves the reviews for the specific user.
         /// </summary>
         /// <returns>A single review for the authenticated user.</returns>

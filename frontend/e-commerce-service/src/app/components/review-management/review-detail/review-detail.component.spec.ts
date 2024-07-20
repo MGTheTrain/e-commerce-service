@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReviewDetailComponent } from './review-detail.component';
-import { CartService, ReviewService } from '../../../generated';
+import { CartService, ProductService, ReviewService } from '../../../generated';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { AuthModule } from '@auth0/auth0-angular';
@@ -32,6 +32,7 @@ describe('ReviewDetailComponent', () => {
       providers: [
         ReviewService,
         CartService,
+        ProductService,
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ]
     })

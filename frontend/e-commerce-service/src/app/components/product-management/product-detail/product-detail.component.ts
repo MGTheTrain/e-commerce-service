@@ -19,15 +19,7 @@ import { DetailHeaderComponent } from '../../header/detail-header/detail-header.
 export class ProductDetailComponent implements OnInit {
   private subscription: Subscription | null = null;
 
-  product: ProductResponseDTO = { 
-    productID: '2', 
-    categories: ['Electric Guitar'],
-    name: 'Dean Razorback Guitar White', 
-    description: 'Description of Product B', 
-    price: 2999.99, 
-    stock: 5, 
-    imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg' 
-  };
+  product: ProductResponseDTO = {};
 
   quantity: number = 0;
   
@@ -57,22 +49,21 @@ export class ProductDetailComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private productService: ProductService, private cartService: CartService) { }
 
   ngOnInit(): void {
+    this.subscription = this.route.params.subscribe(params => {
+      this.product.productID = params['productId'];
+
+      this.productService.apiV1ProductsProductIdGet(this.product.productID!).subscribe(
+        (data: ProductResponseDTO) => {
+          this.product = data;
+        },
+        error => {
+          console.error('Error fetching product with id', this.product.productID, error);
+        }
+      );
+    });
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
-      this.subscription = this.route.params.subscribe(params => {
-        const productId = params['productId'];
-        this.product.productID = productId;
-  
-        this.productService.apiV1ProductsProductIdGet(productId).subscribe(
-          (data: ProductResponseDTO) => {
-            this.product = data;
-          },
-          error => {
-            console.error('Error fetching product with id', productId, error);
-          }
-        );
-        
-        this.productService.apiV1ProductsProductIdUserGet(productId).subscribe(
+        this.productService.apiV1ProductsProductIdUserGet(this.product.productID!).subscribe(
           (data: ProductResponseDTO) => {
             console.log("Product owned by:", data);
             this.isProductOwner = true;
@@ -92,8 +83,7 @@ export class ProductDetailComponent implements OnInit {
             console.error('Error retrieving item from cart with id', cartId, error);
           }
         );
-     });
-    } 
+     } 
   }
 
   handleNavigateBackClick(): void {

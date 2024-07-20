@@ -16,18 +16,28 @@ import { ProductCreationComponent } from './components/product-management/produc
 import { ReviewCreationComponent } from './components/review-management/review-creation/review-creation.component';
 
 const routes: Routes = [
-    { path: 'cart', component: CartComponent },
-    { path: 'carts/:cartId', component: CartComponent },
     { path: '', component: ProductListComponent },
+
+    // Product Management
     { path: 'products/creation', component: ProductCreationComponent },
     { path: 'products/:productId', component: ProductDetailComponent },
+
+    // Cart Management
+    { path: 'cart', component: CartComponent },
+    { path: 'carts/:cartId', component: CartComponent },
+    { path: 'carts', component: CartListComponent },
+
+    // Order Management
     { path: 'orders', component: OrderListComponent },
     // { path: 'orders/creation', component: OrderCreationComponent }, // order will be created trough the cart
     { path: 'orders/:orderId', component: OrderDetailComponent },
-    { path: 'carts', component: CartListComponent },
-    { path: 'reviews', component: ReviewListComponent },
-    { path: 'reviews/creation', component: ReviewCreationComponent },
-    { path: 'reviews/:reviewId', component: ReviewDetailComponent },
+    
+    // Review Management
+    { path: 'reviews', component: ReviewListComponent }, // List all reviews
+    { path: 'reviews/:reviewId', component: ReviewDetailComponent }, // View a specific review by reviewId
+    { path: 'products/:productId/reviews', component: ReviewListComponent }, // List reviews for a specific product
+    { path: 'products/:productId/review/creation', component: ReviewCreationComponent }, // Create a review for a specific product
+    
     { path: '**', component: PageNotFoundComponent },
 ];
 

@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProductResponseDTO, ReviewResponseDTO, ReviewService } from '../../../generated';
+import { ProductResponseDTO, ProductService, ReviewResponseDTO, ReviewService } from '../../../generated';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderComponent } from '../../header/header.component';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-review-list',
@@ -16,6 +17,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   styleUrl: './review-list.component.css'
 })
 export class ReviewListComponent implements OnInit {
+  private subscription: Subscription | null = null;
   @Input() reviews: ReviewResponseDTO[] = [];
 
   @Input() products: ProductResponseDTO[] = [];
@@ -36,26 +38,55 @@ export class ReviewListComponent implements OnInit {
   public faPlus: IconDefinition = faPlus;
 
   public isLoggedIn: boolean = false;
+  public productId: string | null = null;
 
-  constructor(private router: Router, private reviewService: ReviewService) {}
+  constructor(private router: Router, private route: ActivatedRoute, private reviewService: ReviewService, private productService: ProductService) {}
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
-    } 
 
-    this.reviewService.apiV1ReviewsGet().subscribe(
-      (data: ReviewResponseDTO[]) => {
-        this.reviews = data;
-      },
-      error => {
-        console.error('Error fetching reviews', error);
-      }
-    );
+      this.subscription = this.route.params.subscribe(params => {
+        if (params['productId']) {
+            this.productId = params['productId'];
+            this.reviewService.apiV1ReviewsProductProductIdGet(this.productId!).subscribe(
+              (data: ReviewResponseDTO[]) => {
+                this.reviews = data;
+                this.getReviewsForProduct();
+              },
+              error => {
+                console.error('Error fetching reviews', error);
+              }
+            );
+        } else {
+          this.reviewService.apiV1ReviewsGet().subscribe(
+            (data: ReviewResponseDTO[]) => {
+              this.reviews = data;
+              this.getReviewsForProduct();
+            },
+            error => {
+              console.error('Error fetching reviews', error);
+            }
+          );
+        } 
+      });
+    } 
+  }
+
+  getReviewsForProduct(): void {
+    for(const review of this.reviews) {
+      this.productService.apiV1ProductsProductIdGet(review.productID!).subscribe(
+        (data: ProductResponseDTO) => {
+          this.products.push(data);
+        }
+      );
+    }
   }
 
   handleCreateReviewClick(): void {
-    this.router.navigate(['/reviews/creation']);
+    if(this.productId != null) {
+      this.router.navigate(['/products', this.productId! , 'review', 'creation']);
+    }
   }
 
   // getUserName(userID: string | undefined): string | undefined {

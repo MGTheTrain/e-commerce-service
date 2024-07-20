@@ -159,6 +159,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
 
         /// <summary>
         /// Retrieves the product associated with a specific user.
+        /// Explicitly checks whether a product belongs to a user by requiring a product id.
         /// </summary>
         /// <param name="productId">The ID of the product.</param>
         /// <returns>The product by user id.</returns>
@@ -166,7 +167,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         [HttpGet("{productId}/user")]
         [Authorize("manage:products-and-own-product")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponseDTO))]
-        public async Task<ActionResult<ProductResponseDTO>> GetProductForUser(Guid productId)
+        public async Task<ActionResult<ProductResponseDTO>> GetUserProductById(Guid productId)
         {
             var isCreateOperation = false;
             var userId = await this.VerifyUserPermissionForProduct(isCreateOperation, productId);

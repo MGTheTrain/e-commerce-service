@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProductResponseDTO, ReviewResponseDTO } from '../../../generated';
+import { ProductResponseDTO, ProductService, ReviewRequestDTO, ReviewResponseDTO, ReviewService } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faArrowLeft, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FormsModule } from '@angular/forms';
@@ -19,24 +19,9 @@ import { DetailHeaderComponent } from '../../header/detail-header/detail-header.
 export class ReviewDetailComponent implements OnInit {
   private subscription: Subscription | null = null;
 
-  @Input() review: ReviewResponseDTO = {
-    reviewID: '1',
-    productID: '1',
-    userID: 'user1',
-    rating: 4,
-    comment: 'Great product!',
-    reviewDate: new Date('2023-06-01')
-  };
+  @Input() review: ReviewResponseDTO = {};
 
-  @Input() product: ProductResponseDTO = { 
-    productID: '1', 
-    categories: ['Electric Guitar'],
-    name: 'Dean Razorback Guitar Blue', 
-    description: 'Description of Product A', 
-    price: 4999.99, 
-    stock: 10, 
-    imageUrl: 'https://s.yimg.com/ny/api/res/1.2/jVphTvtt1LwM3foboVcs_w--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02MDA-/https://media.zenfs.com/en-US/homerun/consequence_of_sound_458/830585263f74148d1ac63c91bfe6e2f4' 
-  };
+  @Input() product: ProductResponseDTO = {};
 
   availableCategories: string[] = [
     'Acoustic Guitar',
@@ -57,8 +42,10 @@ export class ReviewDetailComponent implements OnInit {
   public isEditing: boolean = false;
 
   public isLoggedIn: boolean = false;
+  public productReviewsUrl: string = "";
+  public isReviewOwner: boolean = false;
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute, private reviewService: ReviewService, private productService: ProductService) { }
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
@@ -66,24 +53,77 @@ export class ReviewDetailComponent implements OnInit {
     } 
     
     this.subscription = this.route.params.subscribe(params => {
-      const id = params['reviewId'];
-      this.review.reviewID = id;
+      this.review.reviewID = params['reviewId'];
+
+      this.reviewService.apiV1ReviewsReviewIdUserGet(this.review.reviewID!).subscribe(
+        (data: ReviewResponseDTO) => {
+          console.log("Review owned by:", data);
+          this.isReviewOwner = true;
+        },
+        error => {
+          console.error('Error: User is not the product owner', error);
+        }
+      );
+
+      this.reviewService.apiV1ReviewsReviewIdGet(this.review.reviewID!).subscribe(
+        (data: ReviewResponseDTO) => {
+          this.review = data;
+          this.productService.apiV1ProductsProductIdGet(this.review.productID!).subscribe(
+            (data: ProductResponseDTO) => {
+              this.product = data;
+              this.productReviewsUrl = `/products/${this.review.productID}/reviews`;
+              console.log("productReviewsUrl", this.productReviewsUrl);
+            },
+            error => {
+              console.error('Error retrieving product', error);
+            }
+          );
+        },
+        error => {
+          console.error('Error retrieving review', error);
+        }
+      );
    });
   }
 
   handleNavigateBackClick(): void {
-    this.router.navigate(['/reviews']);
+    this.router.navigate([this.productReviewsUrl]);
   }
 
   handleEditClick(): void {
     this.isEditing = !this.isEditing;
   }
 
-  handleDeleteReviewClick(): void {    
-    console.log('Deleting review:', this.review);    
+  handleUpdateReviewClick(): void {    
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      const reviewRequestDto: ReviewRequestDTO = {
+        productID: this.product.productID!,
+        rating: this.review.rating!,
+        comment: this.review.comment!,
+      };
+      this.reviewService.apiV1ReviewsReviewIdPut(this.review.reviewID!, reviewRequestDto).subscribe(
+        (data: ReviewResponseDTO) => {
+          console.log("Updated review with id", data.reviewID!);
+          this.router.navigate([this.productReviewsUrl]);
+        },
+        error => {
+          console.error('Error updating review', error);
+        }
+      );
+    }
   }
 
-  handleUpdateReviewClick(): void {    
-    console.log('Updating review:', this.review);    
+  handleDeleteReviewClick(): void {    
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.reviewService.apiV1ReviewsReviewIdDelete(this.review.reviewID!).subscribe(
+        () => {
+          console.log("Deleted review");
+          this.router.navigate([this.productReviewsUrl]);
+        },
+        error => {
+          console.error('Error deleting review', error);
+        }
+      );
+    } 
   }
 }

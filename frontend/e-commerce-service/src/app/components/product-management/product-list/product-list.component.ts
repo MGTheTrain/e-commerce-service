@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HeaderComponent } from '../../header/header.component';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
@@ -32,6 +32,7 @@ export class ProductListComponent implements OnInit {
   ];
 
   public faPlus: IconDefinition = faPlus;
+  public faStar: IconDefinition = faStar;
   public isLoggedIn: boolean = false;
   public accessToken: string | null = ''; 
 
@@ -82,7 +83,11 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['/products/creation']);
   }
 
-  handleViewClick(product: ProductResponseDTO): void {
+  handleViewProductClick(product: ProductResponseDTO): void {
     this.router.navigate(['/products', product.productID]);
+  }
+
+  handleViewReviewsClick(product: ProductResponseDTO): void {
+    this.router.navigate(['/products', product.productID, 'reviews']);
   }
 }

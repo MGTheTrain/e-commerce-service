@@ -4,7 +4,7 @@
       <div class="container mt-4 border border-dark rounded p-4">
       <app-detail-header></app-detail-header>
       <button type="button" class="btn btn-link mb-3" (click)="handleNavigateBackClick()">
-        <fa-icon [icon]="faArrowLeft"></fa-icon> Back to Reviews
+        <fa-icon [icon]="faArrowLeft"></fa-icon> Back to Reviews for this Product
       </button>
       <h2 class="text-center mb-4">Review Details</h2>
       <form>
@@ -33,15 +33,15 @@
           <textarea class="form-control" placeholder="Comment" id="comment" name="comment" [(ngModel)]="review.comment" [disabled]="!isEditing"></textarea>
         </div>
         <div class="form-group mb-4 text-center">
-          <button type="button" class="btn btn-secondary" (click)="handleEditClick()">
+          <button type="button" class="btn btn-secondary" (click)="handleEditClick()" *ngIf="isReviewOwner">
             <fa-icon [icon]="faEdit"></fa-icon> {{ isEditing ? 'Cancel' : 'Edit' }}
           </button>
-          <span class="mx-2"></span>
-          <button type="button" class="btn btn-danger" (click)="handleDeleteReviewClick()" [disabled]="!isEditing">
+          <span class="mx-2" *ngIf="isReviewOwner"></span>
+          <button type="button" class="btn btn-danger" (click)="handleDeleteReviewClick()" *ngIf="isEditing && isReviewOwner">
             <fa-icon [icon]="faTrash"></fa-icon> Delete Review
           </button>
-          <span class="mx-2"></span>
-          <button type="button" class="btn btn-primary" (click)="handleUpdateReviewClick()" [disabled]="!isEditing">
+          <span class="mx-2" *ngIf="isReviewOwner"></span>
+          <button type="button" class="btn btn-primary" (click)="handleUpdateReviewClick()" *ngIf="isEditing && isReviewOwner">
             <fa-icon [icon]="faEdit"></fa-icon> Update Review
           </button>
         </div>

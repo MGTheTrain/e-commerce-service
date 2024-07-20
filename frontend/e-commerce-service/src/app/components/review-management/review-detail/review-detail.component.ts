@@ -43,6 +43,7 @@ export class ReviewDetailComponent implements OnInit {
 
   public isLoggedIn: boolean = false;
   public productReviewsUrl: string = "";
+  public isReviewOwner: boolean = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private reviewService: ReviewService, private productService: ProductService) { }
 
@@ -53,6 +54,16 @@ export class ReviewDetailComponent implements OnInit {
     
     this.subscription = this.route.params.subscribe(params => {
       this.review.reviewID = params['reviewId'];
+
+      this.reviewService.apiV1ReviewsReviewIdUserGet(this.review.reviewID!).subscribe(
+        (data: ReviewResponseDTO) => {
+          console.log("Review owned by:", data);
+          this.isReviewOwner = true;
+        },
+        error => {
+          console.error('Error: User is not the product owner', error);
+        }
+      );
 
       this.reviewService.apiV1ReviewsReviewIdGet(this.review.reviewID!).subscribe(
         (data: ReviewResponseDTO) => {

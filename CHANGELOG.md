@@ -12,7 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Updated
 
 - Product Reviews
-  - [x] Enable users to write reviews for products, rate them and provide feedback.
+  - [x] Enabled users to write reviews for products, rate them and provide feedback.
+- Ensures to update views in [product detail component](./frontend/e-commerce-service/src/app/components/product-management/product-detail/) for any user
 
 ## [0.9.0] - 19-07-2024
 

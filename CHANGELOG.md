@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] - 20 -07-2024
+
+### Updated
+
+- Product Reviews
+  - [x] Enable users to write reviews for products, rate them and provide feedback.
+
 ## [0.9.0] - 19-07-2024
 
 ### Updated

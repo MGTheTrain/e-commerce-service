@@ -34,7 +34,7 @@ const routes: Routes = [
     
     // Review Management
     { path: 'reviews', component: ReviewListComponent }, // List all reviews
-    { path: 'reviews/detail/:reviewId', component: ReviewDetailComponent }, // View a specific review by reviewId
+    { path: 'reviews/:reviewId', component: ReviewDetailComponent }, // View a specific review by reviewId
     { path: 'products/:productId/reviews', component: ReviewListComponent }, // List reviews for a specific product
     { path: 'products/:productId/review/creation', component: ReviewCreationComponent }, // Create a review for a specific product
     

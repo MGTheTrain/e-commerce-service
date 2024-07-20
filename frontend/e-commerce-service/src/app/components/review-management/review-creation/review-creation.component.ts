@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { ProductResponseDTO, ReviewResponseDTO } from '../../../generated';
+import { ProductResponseDTO, ProductService, ReviewRequestDTO, ReviewResponseDTO, ReviewService } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DetailHeaderComponent } from '../../header/detail-header/detail-header.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-review-creation',
@@ -16,48 +17,35 @@ import { DetailHeaderComponent } from '../../header/detail-header/detail-header.
   styleUrl: './review-creation.component.css'
 })
 export class ReviewCreationComponent implements OnInit {
-  @Input() review: ReviewResponseDTO = {
-    reviewID: '1',
-    productID: '1',
-    userID: 'user1',
-    rating: 4,
-    comment: 'Great product!',
-    reviewDate: new Date('2023-06-01')
-  };
+  private subscription: Subscription | null = null;
 
-  @Input() product: ProductResponseDTO = { 
-    productID: '1', 
-    categories: ['Electric Guitar'], 
-    name: 'Dean Razorback Guitar Blue', 
-    description: 'Description of Product A', 
-    price: 4999.99, 
-    stock: 10, 
-    imageUrl: 'https://s.yimg.com/ny/api/res/1.2/jVphTvtt1LwM3foboVcs_w--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02MDA-/https://media.zenfs.com/en-US/homerun/consequence_of_sound_458/830585263f74148d1ac63c91bfe6e2f4' 
-  };
+  @Input() review: ReviewResponseDTO = {};
 
-  availableCategories: string[] = [
-    'Acoustic Guitar',
-    'Electric Guitar',
-    'Bass Guitar',
-    'Classical Guitar',
-    '12-String Guitar',
-    '7-String Guitar',
-    'Jazz Guitar',
-    'Blues Guitar',
-    'Metal Guitar',
-    'Rock Guitar'
-  ];
+  @Input() product: ProductResponseDTO = {};
   
   public faPlus: IconDefinition = faPlus;
   public faArrowLeft: IconDefinition = faArrowLeft;
 
   public isLoggedIn: boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private route: ActivatedRoute, private productService: ProductService, private reviewService: ReviewService) { }
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
+
+      this.subscription = this.route.params.subscribe(params => {
+        if (params['productId']) {
+            const productId: string = params['productId'];
+            
+            // update product name
+            this.productService.apiV1ProductsProductIdGet(productId).subscribe(
+              (data: ProductResponseDTO) => {
+                this.product = data;
+              }
+            );
+        }
+      });
     } 
   }
 
@@ -66,6 +54,17 @@ export class ReviewCreationComponent implements OnInit {
   }
 
   handleCreateReviewClick(): void {
-    console.log('Creating review:', this.review);    
+    // create review
+    const reviewRequestDto: ReviewRequestDTO = {
+      productID: this.product.productID!,
+      rating: this.review.rating!,
+      comment: this.review.comment!,
+    };
+    this.reviewService.apiV1ReviewsPost(reviewRequestDto).subscribe(
+      (data: ReviewResponseDTO) => {
+        console.log("Created review ", data)
+      }
+    );
+    this.router.navigate(['/']);
   }
 }

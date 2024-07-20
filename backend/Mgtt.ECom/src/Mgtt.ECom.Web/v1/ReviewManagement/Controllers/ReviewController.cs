@@ -213,8 +213,8 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         }
 
         /// <summary>
-        /// Retrieves the review associated with a specific user. 
-        /// Explicitly checks whether a review belongs to a user by requiring a review id
+        /// Retrieves the review associated with a specific user.
+        /// Explicitly checks whether a review belongs to a user by requiring a review id.
         /// </summary>
         /// <param name="reviewId">The ID of the review.</param>
         /// <returns>The review by user id.</returns>

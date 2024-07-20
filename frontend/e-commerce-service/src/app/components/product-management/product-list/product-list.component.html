@@ -17,6 +17,11 @@
           <h5 class="card-title">{{ product.name }}</h5>
           <p class="card-text">{{ product.description }}</p>
           <small class="text-muted">$ {{ product.price }}</small>
+          <div class="mt-3">
+            <button type="button" class="btn btn-secondary me-2 mb-2" (click)="handleViewReviewsClick(product)">
+              <fa-icon [icon]="faStar"></fa-icon> Reviews
+            </button>
+          </div>
         </div>
       </div>
     </div>

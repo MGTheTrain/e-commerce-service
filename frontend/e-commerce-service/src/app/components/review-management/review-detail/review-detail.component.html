@@ -37,11 +37,11 @@
             <fa-icon [icon]="faEdit"></fa-icon> {{ isEditing ? 'Cancel' : 'Edit' }}
           </button>
           <span class="mx-2" *ngIf="isReviewOwner"></span>
-          <button type="button" class="btn btn-danger" (click)="handleDeleteReviewClick()" *ngIf="!isEditing && isReviewOwner">
+          <button type="button" class="btn btn-danger" (click)="handleDeleteReviewClick()" *ngIf="isEditing && isReviewOwner">
             <fa-icon [icon]="faTrash"></fa-icon> Delete Review
           </button>
           <span class="mx-2" *ngIf="isReviewOwner"></span>
-          <button type="button" class="btn btn-primary" (click)="handleUpdateReviewClick()" *ngIf="!isEditing && isReviewOwner">
+          <button type="button" class="btn btn-primary" (click)="handleUpdateReviewClick()" *ngIf="isEditing && isReviewOwner">
             <fa-icon [icon]="faEdit"></fa-icon> Update Review
           </button>
         </div>

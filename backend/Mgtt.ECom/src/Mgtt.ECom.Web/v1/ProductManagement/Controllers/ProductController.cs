@@ -158,7 +158,8 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         }
 
         /// <summary>
-        /// Retrieves the product associated with a specific user.
+        /// Retrieves the product associated with a specific user. 
+        /// Explicitly checks whether a product belongs to a user by requiring a product id
         /// </summary>
         /// <param name="productId">The ID of the product.</param>
         /// <returns>The product by user id.</returns>

@@ -83,7 +83,7 @@ export class ProductDetailComponent implements OnInit {
             console.error('Error retrieving item from cart with id', cartId, error);
           }
         );
-     }; 
+     } 
   }
 
   handleNavigateBackClick(): void {

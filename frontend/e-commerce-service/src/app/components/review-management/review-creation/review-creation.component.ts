@@ -42,6 +42,9 @@ export class ReviewCreationComponent implements OnInit {
             this.productService.apiV1ProductsProductIdGet(productId).subscribe(
               (data: ProductResponseDTO) => {
                 this.product = data;
+              },
+              error => {
+                console.error('Error fetching product', error);
               }
             );
         }
@@ -63,6 +66,9 @@ export class ReviewCreationComponent implements OnInit {
     this.reviewService.apiV1ReviewsPost(reviewRequestDto).subscribe(
       (data: ReviewResponseDTO) => {
         console.log("Created review ", data)
+      },
+      error => {
+        console.error('Error creating review', error);
       }
     );
     this.router.navigate(['/']);

@@ -62,7 +62,7 @@ export class ReviewCreationComponent implements OnInit {
   }
 
   handleNavigateBackClick(): void {
-    this.router.navigate(['/reviews']);
+    this.router.navigate(['/']);
   }
 
   handleCreateReviewClick(): void {

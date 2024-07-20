@@ -356,6 +356,54 @@ export class ReviewService {
     }
 
     /**
+     * Retrieves the review associated with a specific user.   Explicitly checks whether a review belongs to a user by requiring a review id
+     * 
+     * @param reviewId The ID of the review.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiV1ReviewsReviewIdUserGet(reviewId: string, observe?: 'body', reportProgress?: boolean): Observable<ReviewResponseDTO>;
+    public apiV1ReviewsReviewIdUserGet(reviewId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReviewResponseDTO>>;
+    public apiV1ReviewsReviewIdUserGet(reviewId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReviewResponseDTO>>;
+    public apiV1ReviewsReviewIdUserGet(reviewId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (reviewId === null || reviewId === undefined) {
+            throw new Error('Required parameter reviewId was null or undefined when calling apiV1ReviewsReviewIdUserGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["Authorization"]) {
+            headers = headers.set('Authorization', this.configuration.apiKeys["Authorization"]);
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ReviewResponseDTO>('get',`${this.basePath}/api/v1/reviews/${encodeURIComponent(String(reviewId))}/user`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Retrieves the reviews for the specific user.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

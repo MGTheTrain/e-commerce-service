@@ -308,7 +308,7 @@ export class ProductService {
     }
 
     /**
-     * Retrieves the product associated with a specific user.
+     * Retrieves the product associated with a specific user.   Explicitly checks whether a product belongs to a user by requiring a product id
      * 
      * @param productId The ID of the product.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

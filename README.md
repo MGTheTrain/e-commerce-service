@@ -72,11 +72,11 @@ docker-compose up -d --build # Optionally run this command twice if internal ser
 
 To view the web backend, open a browser and go to `localhost:5000/swagger/index.html`. Results should resemble:
 
-![Swagger UI trough Docker](./docs/api-design/swagger-ui-trough-docker.PNG)
+![Swagger UI trough Docker](./docs/api-design/v1/swagger-ui-trough-docker.PNG)
 
 To view the web frontend, open a browser and go to `localhost:4200`. Results should resemble:
 
-![Web frontend](./docs/test/web-frontend.PNG)
+**TBD**
 
 You can remove all Docker resources with:
 

@@ -83,7 +83,7 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['/products/creation']);
   }
 
-  handleViewClick(product: ProductResponseDTO): void {
+  handleViewProductClick(product: ProductResponseDTO): void {
     this.router.navigate(['/products', product.productID]);
   }
 

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProductResponseDTO, ProductService, ReviewResponseDTO, ReviewService } from '../../../generated';
+import { ProductResponseDTO, ProductService, ReviewRequestDTO, ReviewResponseDTO, ReviewService } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faArrowLeft, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FormsModule } from '@angular/forms';
@@ -59,8 +59,14 @@ export class ReviewDetailComponent implements OnInit {
           this.productService.apiV1ProductsProductIdGet(this.review.productID!).subscribe(
             (data: ProductResponseDTO) => {
               this.product = data;
+            },
+            error => {
+              console.error('Error retrieving product', error);
             }
           );
+        },
+        error => {
+          console.error('Error retrieving review', error);
         }
       );
    });
@@ -75,10 +81,33 @@ export class ReviewDetailComponent implements OnInit {
   }
 
   handleDeleteReviewClick(): void {    
-    console.log('Deleting review:', this.review);    
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      const reviewRequestDto: ReviewRequestDTO = {
+        productID: this.product.productID!,
+        rating: this.review.rating!,
+        comment: this.review.comment!,
+      };
+      this.reviewService.apiV1ReviewsReviewIdPut(this.review.reviewID!, reviewRequestDto).subscribe(
+        (data: ReviewResponseDTO) => {
+          console.log("Updated review with id", data.reviewID!);
+        },
+        error => {
+          console.error('Error updating review', error);
+        }
+      );
+    }
   }
 
   handleUpdateReviewClick(): void {    
-    console.log('Updating review:', this.review);    
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.reviewService.apiV1ReviewsReviewIdDelete(this.review.reviewID!).subscribe(
+        (data: ReviewResponseDTO) => {
+          console.log("Delete review with id", data.reviewID!);
+        },
+        error => {
+          console.error('Error deleting review', error);
+        }
+      );
+    } 
   }
 }

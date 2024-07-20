@@ -167,7 +167,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         [HttpGet("{productId}/user")]
         [Authorize("manage:products-and-own-product")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponseDTO))]
-        public async Task<ActionResult<ProductResponseDTO>> GetProductForUser(Guid productId)
+        public async Task<ActionResult<ProductResponseDTO>> GetUserProductById(Guid productId)
         {
             var isCreateOperation = false;
             var userId = await this.VerifyUserPermissionForProduct(isCreateOperation, productId);

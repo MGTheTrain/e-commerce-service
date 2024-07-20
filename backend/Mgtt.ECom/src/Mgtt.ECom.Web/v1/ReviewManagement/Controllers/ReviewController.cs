@@ -222,7 +222,7 @@ namespace Mgtt.ECom.Web.V1.ReviewManagement.Controllers
         [HttpGet("{reviewId}/user")]
         [Authorize("manage:reviews-and-own-review")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReviewResponseDTO))]
-        public async Task<ActionResult<ReviewResponseDTO>> GetProductForUser(Guid reviewId)
+        public async Task<ActionResult<ReviewResponseDTO>> GetUserReviewById(Guid reviewId)
         {
             var isCreateOperation = false;
             var userId = await this.VerifyUserPermissionForReview(isCreateOperation, reviewId);

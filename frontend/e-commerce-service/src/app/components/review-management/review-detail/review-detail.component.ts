@@ -42,6 +42,7 @@ export class ReviewDetailComponent implements OnInit {
   public isEditing: boolean = false;
 
   public isLoggedIn: boolean = false;
+  public productReviewsUrl: string = "";
 
   constructor(private router: Router, private route: ActivatedRoute, private reviewService: ReviewService, private productService: ProductService) { }
 
@@ -59,6 +60,8 @@ export class ReviewDetailComponent implements OnInit {
           this.productService.apiV1ProductsProductIdGet(this.review.productID!).subscribe(
             (data: ProductResponseDTO) => {
               this.product = data;
+              this.productReviewsUrl = `/products/${this.review.productID}/reviews`;
+              console.log("productReviewsUrl", this.productReviewsUrl);
             },
             error => {
               console.error('Error retrieving product', error);
@@ -73,14 +76,14 @@ export class ReviewDetailComponent implements OnInit {
   }
 
   handleNavigateBackClick(): void {
-    this.router.navigate(['/products', this.review.productID , 'reviews']);
+    this.router.navigate([this.productReviewsUrl]);
   }
 
   handleEditClick(): void {
     this.isEditing = !this.isEditing;
   }
 
-  handleDeleteReviewClick(): void {    
+  handleUpdateReviewClick(): void {    
     if(localStorage.getItem('isLoggedIn') === 'true') {
       const reviewRequestDto: ReviewRequestDTO = {
         productID: this.product.productID!,
@@ -90,6 +93,7 @@ export class ReviewDetailComponent implements OnInit {
       this.reviewService.apiV1ReviewsReviewIdPut(this.review.reviewID!, reviewRequestDto).subscribe(
         (data: ReviewResponseDTO) => {
           console.log("Updated review with id", data.reviewID!);
+          this.router.navigate([this.productReviewsUrl]);
         },
         error => {
           console.error('Error updating review', error);
@@ -98,11 +102,12 @@ export class ReviewDetailComponent implements OnInit {
     }
   }
 
-  handleUpdateReviewClick(): void {    
+  handleDeleteReviewClick(): void {    
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.reviewService.apiV1ReviewsReviewIdDelete(this.review.reviewID!).subscribe(
-        (data: ReviewResponseDTO) => {
-          console.log("Delete review with id", data.reviewID!);
+        () => {
+          console.log("Deleted review");
+          this.router.navigate([this.productReviewsUrl]);
         },
         error => {
           console.error('Error deleting review', error);

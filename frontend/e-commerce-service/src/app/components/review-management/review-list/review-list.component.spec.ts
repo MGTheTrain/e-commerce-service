@@ -1,9 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReviewListComponent } from './review-list.component';
-import { CartService, ReviewService } from '../../../generated';
+import { CartService, ProductService, ReviewService } from '../../../generated';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from '../../../../../environments/environment';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+
+class ActivatedRouteStub {
+  params = of({ id: 1 }); // some mocked data
+}
 
 describe('ReviewListComponent', () => {
   let component: ReviewListComponent;
@@ -25,7 +31,9 @@ describe('ReviewListComponent', () => {
       ],
       providers: [
         ReviewService,
-        CartService
+        CartService,
+        ProductService,
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ]
     })
     .compileComponents();

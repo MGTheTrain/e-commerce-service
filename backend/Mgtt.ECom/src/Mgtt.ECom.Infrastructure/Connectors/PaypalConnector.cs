@@ -10,26 +10,26 @@ using Newtonsoft.Json;
 namespace Mgtt.ECom.Infrastructure.Connectors;
 public class PayPalConnector : IPayPalConnector
 {
-    private readonly HttpClient _httpClient;
-    private readonly PayPalSettings _settings;
+    private readonly HttpClient httpClient;
+    private readonly PayPalSettings settings;
 
     public PayPalConnector(HttpClient httpClient, IOptions<PayPalSettings> settings)
     {
-        _httpClient = httpClient;
-        _settings = settings.Value;
+        this.httpClient = httpClient;
+        this.settings = settings.Value;
     }
 
     public async Task<string> GetAccessTokenAsync()
     {
-        var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_settings.ClientId}:{_settings.ClientSecret}"));
-        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", basicAuth);
+        var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{this.settings.ClientId}:{this.settings.ClientSecret}"));
+        this.httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", basicAuth);
 
         var request = new HttpRequestMessage(HttpMethod.Post, "https://api-m.sandbox.paypal.com/v1/oauth2/token");
         request.Headers.Add("Accept", "application/json");
         request.Headers.Add("Accept-Language", "en_US");
         request.Content = new StringContent("grant_type=client_credentials", Encoding.UTF8, "application/x-www-form-urlencoded");
 
-        var response = await _httpClient.SendAsync(request);
+        var response = await this.httpClient.SendAsync(request);
         response.EnsureSuccessStatusCode();
         var jsonString = await response.Content.ReadAsStringAsync();
         dynamic result = JsonConvert.DeserializeObject(jsonString)!;
@@ -38,7 +38,7 @@ public class PayPalConnector : IPayPalConnector
 
     public async Task<CreateOrderResponse> CreateOrderAsync(OrderDetails orderDetails)
     {
-        var accessToken = await GetAccessTokenAsync();
+        var accessToken = await this.GetAccessTokenAsync();
 
         var requestBody = new
         {
@@ -72,12 +72,12 @@ public class PayPalConnector : IPayPalConnector
         var requestContent = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
         var requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://api-m.sandbox.paypal.com/v2/checkout/orders")
         {
-            Content = requestContent
+            Content = requestContent,
         };
 
         requestMessage.Headers.Add("Authorization", $"Bearer {accessToken}");
 
-        var response = await _httpClient.SendAsync(requestMessage);
+        var response = await this.httpClient.SendAsync(requestMessage);
         response.EnsureSuccessStatusCode();
 
         var responseContent = await response.Content.ReadAsStringAsync();
@@ -99,12 +99,12 @@ public class PayPalConnector : IPayPalConnector
 
     public async Task<string> GetOrderAsync(string orderId)
     {
-        var accessToken = await GetAccessTokenAsync();
+        var accessToken = await this.GetAccessTokenAsync();
 
         var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"https://api-m.sandbox.paypal.com/v2/checkout/orders/{orderId}");
         requestMessage.Headers.Add("Authorization", $"Bearer {accessToken}");
 
-        var response = await _httpClient.SendAsync(requestMessage);
+        var response = await this.httpClient.SendAsync(requestMessage);
         response.EnsureSuccessStatusCode();
 
         var responseContent = await response.Content.ReadAsStringAsync();
@@ -113,12 +113,12 @@ public class PayPalConnector : IPayPalConnector
 
     public async Task<string> DeleteOrderAsync(string orderId)
     {
-        var accessToken = await GetAccessTokenAsync();
+        var accessToken = await this.GetAccessTokenAsync();
 
         var requestMessage = new HttpRequestMessage(HttpMethod.Delete, $"https://api-m.sandbox.paypal.com/v1/checkout/orders/{orderId}");
         requestMessage.Headers.Add("Authorization", $"Bearer {accessToken}");
 
-        var response = await _httpClient.SendAsync(requestMessage);
+        var response = await this.httpClient.SendAsync(requestMessage);
         response.EnsureSuccessStatusCode();
 
         var responseContent = await response.Content.ReadAsStringAsync();

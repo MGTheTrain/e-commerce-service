@@ -66,7 +66,7 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
         var responseContent = JsonConvert.SerializeObject(new { access_token = expectedAccessToken });
         var fakeHttpMessageHandler = new FakeHttpMessageHandler(request =>
         {
-            if (request.Method == HttpMethod.Post && request.RequestUri.ToString().Contains("/v1/oauth2/token"))
+            if (request.Method == HttpMethod.Post)
             {
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
@@ -108,7 +108,7 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
             links = new[]
             {
                 new { href = "https://www.sandbox.paypal.com/checkoutnow?token=test-order-id", rel = "checkoutnow" },
-            }
+            },
         });
 
         var fakeHttpMessageHandler = new FakeHttpMessageHandler(request =>
@@ -137,7 +137,6 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
     public async Task GetOrderAsync_ReturnsOrderDetails()
     {
         var expectedOrderId = "test-order-id";
-        var expectedAccessToken = "test-access-token";
 
         var expectedOrderDetails = new
         {
@@ -161,7 +160,7 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
         var httpClient = new HttpClient(fakeHttpMessageHandler);
         var connector = new PayPalConnector(httpClient, this.settings, this.mockLogger);
 
-        var fakeAccessToken = "test-access-token";
+        var fakeAccessToken = "test-access-token"; // In practice, connector.GetAccessTokenAsync() would be invoked as a prerequisite
         var orderResponse = await connector.GetOrderAsync(expectedOrderId, fakeAccessToken);
 
         Assert.NotNull(orderResponse);
@@ -184,10 +183,33 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
         var httpClient = new HttpClient(fakeHttpMessageHandler);
         var connector = new PayPalConnector(httpClient, this.settings, this.mockLogger);
 
-        var fakeAccessToken = "test-access-token";
+        var fakeAccessToken = "test-access-token"; // In practice, connector.GetAccessTokenAsync() would be invoked as a prerequisite
         var orderResponse = await connector.GetOrderAsync(expectedOrderId, fakeAccessToken);
 
         Assert.Null(orderResponse);
     }
-  }
+
+    [Fact]
+    public async Task DeleteOrderAsync_ReturnsOrderDetails()
+    {
+        var expectedOrderId = "test-order-id";
+
+        var fakeHttpMessageHandler = new FakeHttpMessageHandler(request =>
+        {
+            if (request.Method == HttpMethod.Delete)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
+            }
+            return new HttpResponseMessage(HttpStatusCode.NotFound);
+        });
+
+        var httpClient = new HttpClient(fakeHttpMessageHandler);
+        var connector = new PayPalConnector(httpClient, this.settings, this.mockLogger);
+
+        var fakeAccessToken = "test-access-token"; // In practice, connector.GetAccessTokenAsync() would be invoked as a prerequisite
+        var deleteOrderResponse = await connector.DeleteOrderAsync(expectedOrderId, fakeAccessToken);
+
+        Assert.True(deleteOrderResponse);
+    }
+    }
 }

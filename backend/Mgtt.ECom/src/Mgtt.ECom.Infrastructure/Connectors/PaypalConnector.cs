@@ -24,7 +24,7 @@ public class PayPalConnector : IPayPalConnector
         var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{this.settings.ClientId}:{this.settings.ClientSecret}"));
         this.httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", basicAuth);
 
-        var request = new HttpRequestMessage(HttpMethod.Post, "https://api-m.sandbox.paypal.com/v1/oauth2/token");
+        var request = new HttpRequestMessage(HttpMethod.Post, $"{this.settings.BaseUrl}/v1/oauth2/token");
         request.Headers.Add("Accept", "application/json");
         request.Headers.Add("Accept-Language", "en_US");
         request.Content = new StringContent("grant_type=client_credentials", Encoding.UTF8, "application/x-www-form-urlencoded");
@@ -70,7 +70,7 @@ public class PayPalConnector : IPayPalConnector
         };
 
         var requestContent = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
-        var requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://api-m.sandbox.paypal.com/v2/checkout/orders")
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{this.settings.BaseUrl}/v2/checkout/orders")
         {
             Content = requestContent,
         };
@@ -101,7 +101,7 @@ public class PayPalConnector : IPayPalConnector
     {
         var accessToken = await this.GetAccessTokenAsync();
 
-        var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"https://api-m.sandbox.paypal.com/v2/checkout/orders/{orderId}");
+        var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{this.settings.BaseUrl}/v2/checkout/orders/{orderId}");
         requestMessage.Headers.Add("Authorization", $"Bearer {accessToken}");
 
         var response = await this.httpClient.SendAsync(requestMessage);
@@ -115,7 +115,7 @@ public class PayPalConnector : IPayPalConnector
     {
         var accessToken = await this.GetAccessTokenAsync();
 
-        var requestMessage = new HttpRequestMessage(HttpMethod.Delete, $"https://api-m.sandbox.paypal.com/v1/checkout/orders/{orderId}");
+        var requestMessage = new HttpRequestMessage(HttpMethod.Delete, $"{this.settings.BaseUrl}/v1/checkout/orders/{orderId}");
         requestMessage.Headers.Add("Authorization", $"Bearer {accessToken}");
 
         var response = await this.httpClient.SendAsync(requestMessage);

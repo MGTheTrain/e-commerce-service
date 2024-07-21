@@ -25,20 +25,42 @@ public class PayPalConnector : IPayPalConnector
 
     public async Task<string?> GetAccessTokenAsync()
     {
-        var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{this.settings.ClientId}:{this.settings.ClientSecret}"));
-        this.httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", basicAuth);
+        try
+        {
+            var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{this.settings.ClientId}:{this.settings.ClientSecret}"));
 
-        var request = new HttpRequestMessage(HttpMethod.Post, $"{this.settings.BaseUrl}/v1/oauth2/token");
-        request.Headers.Add("Accept", "application/json");
-        request.Headers.Add("Accept-Language", "en_US");
-        request.Content = new StringContent("grant_type=client_credentials", Encoding.UTF8, "application/x-www-form-urlencoded");
+            var request = new HttpRequestMessage(HttpMethod.Post, $"{this.settings.BaseUrl}/v1/oauth2/token")
+            {
+                Headers =
+                {
+                    Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentials),
+                },
+                Content = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("grant_type", "client_credentials"),
+                }),
+            };
 
-        var response = await this.httpClient.SendAsync(request);
-        response.EnsureSuccessStatusCode();
-        var jsonString = await response.Content.ReadAsStringAsync();
-        dynamic result = JsonConvert.DeserializeObject(jsonString)!;
-        this.logger.LogInformation("Access token retrieved successfully.");
-        return result.access_token;
+            var response = await this.httpClient.SendAsync(request);
+
+            if (response == null)
+            {
+                throw new InvalidOperationException("The response from the HTTP request is null.");
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            dynamic result = JsonConvert.DeserializeObject(jsonString);
+
+            this.logger.LogInformation("Access token retrieved successfully.");
+            return result?.access_token;
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "An unexpected error occurred while retrieving the access token.");
+            return null;
+        }
     }
 
     public async Task<CreateOrderResponse?> CreateOrderAsync(OrderDetails orderDetails)

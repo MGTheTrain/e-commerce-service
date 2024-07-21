@@ -21,6 +21,7 @@ public class CreateOrderResponse
 
 public interface IPayPalConnector
 {
+    Task<string> GetAccessTokenAsync();
     Task<CreateOrderResponse> CreateOrderAsync(OrderDetails orderDetails);
     Task<string> GetOrderAsync(string orderId);
     Task<string> DeleteOrderAsync(string orderId);

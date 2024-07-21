@@ -87,7 +87,6 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
     [Fact]
     public async Task CreateOrderAsync_ReturnsCreateOrderResponse()
     {
-        // Arrange
         var orderDetails = new OrderDetails
         {
             TotalAmount = 0.50m,
@@ -102,7 +101,6 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
         };
 
         var expectedOrderId = "test-order-id";
-        var expectedAccessToken = "test-access-token";
     
         var responseContent = JsonConvert.SerializeObject(new
         {
@@ -110,8 +108,7 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
             links = new[]
             {
                 new { href = "https://www.sandbox.paypal.com/checkoutnow?token=test-order-id", rel = "checkoutnow" },
-            },
-            access_token = expectedAccessToken,
+            }
         });
 
         var fakeHttpMessageHandler = new FakeHttpMessageHandler(request =>
@@ -129,13 +126,68 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
         var httpClient = new HttpClient(fakeHttpMessageHandler);
         var connector = new PayPalConnector(httpClient, this.settings, this.mockLogger);
 
-        var createOrderResponse = await connector.CreateOrderAsync(orderDetails);
+        var fakeAccessToken = "test-access-token";
+        var createOrderResponse = await connector.CreateOrderAsync(orderDetails, fakeAccessToken);
 
         Assert.NotNull(createOrderResponse);
         Assert.Equal(expectedOrderId, createOrderResponse.OrderId);
     }
 
+    [Fact]
+    public async Task GetOrderAsync_ReturnsOrderDetails()
+    {
+        var expectedOrderId = "test-order-id";
+        var expectedAccessToken = "test-access-token";
 
-}
+        var expectedOrderDetails = new
+        {
+            id = expectedOrderId,
+            status = "CREATED",
+        };
 
+        var responseContent = JsonConvert.SerializeObject(expectedOrderDetails);
+        var fakeHttpMessageHandler = new FakeHttpMessageHandler(request =>
+        {
+            if (request.Method == HttpMethod.Get)
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(responseContent),
+                };
+            }
+            return new HttpResponseMessage(HttpStatusCode.NotFound);
+        });
+
+        var httpClient = new HttpClient(fakeHttpMessageHandler);
+        var connector = new PayPalConnector(httpClient, this.settings, this.mockLogger);
+
+        var fakeAccessToken = "test-access-token";
+        var orderResponse = await connector.GetOrderAsync(expectedOrderId, fakeAccessToken);
+
+        Assert.NotNull(orderResponse);
+        Assert.Contains(expectedOrderId, orderResponse);
+    }
+
+    [Fact]
+    public async Task GetOrderAsync_ReturnsNullWhenAccessTokenIsMissing()
+    {
+        var expectedOrderId = "test-order-id";
+        var fakeHttpMessageHandler = new FakeHttpMessageHandler(request =>
+        {
+            if (request.Method == HttpMethod.Get)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+            return new HttpResponseMessage(HttpStatusCode.NotFound);
+        });
+
+        var httpClient = new HttpClient(fakeHttpMessageHandler);
+        var connector = new PayPalConnector(httpClient, this.settings, this.mockLogger);
+
+        var fakeAccessToken = "test-access-token";
+        var orderResponse = await connector.GetOrderAsync(expectedOrderId, fakeAccessToken);
+
+        Assert.Null(orderResponse);
+    }
+  }
 }

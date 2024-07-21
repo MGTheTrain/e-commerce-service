@@ -63,11 +63,10 @@ public class PayPalConnector : IPayPalConnector
         }
     }
 
-    public async Task<CreateOrderResponse?> CreateOrderAsync(OrderDetails orderDetails)
+    public async Task<CreateOrderResponse?> CreateOrderAsync(OrderDetails orderDetails, string accessToken)
     {
          try
         {
-            var accessToken = await this.GetAccessTokenAsync();
             if (string.IsNullOrEmpty(accessToken))
             {
                 this.logger.LogWarning("Failed to retrieve access token.");
@@ -143,11 +142,10 @@ public class PayPalConnector : IPayPalConnector
         }
     }
 
-    public async Task<string?> GetOrderAsync(string orderId)
+    public async Task<string?> GetOrderAsync(string orderId, string accessToken)
     {
         try
         {
-            var accessToken = await this.GetAccessTokenAsync();
             if (string.IsNullOrEmpty(accessToken))
             {
                 this.logger.LogWarning("Failed to retrieve access token.");
@@ -181,11 +179,10 @@ public class PayPalConnector : IPayPalConnector
         }
     }
 
-    public async Task<bool> DeleteOrderAsync(string orderId)
+    public async Task<bool> DeleteOrderAsync(string orderId, string accessToken)
     {
         try
         {
-            var accessToken = await this.GetAccessTokenAsync();
             if (string.IsNullOrEmpty(accessToken))
             {
                 this.logger.LogWarning("Failed to retrieve access token.");

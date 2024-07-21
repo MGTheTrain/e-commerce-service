@@ -23,9 +23,9 @@ public interface IPayPalConnector
 {
     Task<string?> GetAccessTokenAsync();
 
-    Task<CreateOrderResponse?> CreateOrderAsync(OrderDetails orderDetails);
+    Task<CreateOrderResponse?> CreateOrderAsync(OrderDetails orderDetails, string accessToken);
 
-    Task<string?> GetOrderAsync(string orderId);
+    Task<string?> GetOrderAsync(string orderId, string accessToken);
 
-    Task<bool> DeleteOrderAsync(string orderId);
+    Task<bool> DeleteOrderAsync(string orderId, string accessToken);
 }

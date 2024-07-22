@@ -142,7 +142,7 @@ public class PayPalConnector : IPayPalConnector
         }
     }
 
-    public async Task<string?> GetOrderAsync(string orderId, string accessToken)
+    public async Task<string?> GetOrderByIdAsync(string orderId, string accessToken)
     {
         try
         {
@@ -179,7 +179,7 @@ public class PayPalConnector : IPayPalConnector
         }
     }
 
-    public async Task<bool> DeleteOrderAsync(string orderId, string accessToken)
+    public async Task<bool> DeleteOrderByIdAsync(string orderId, string accessToken)
     {
         try
         {

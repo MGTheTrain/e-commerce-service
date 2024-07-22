@@ -134,7 +134,7 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
     }
 
     [Fact]
-    public async Task GetOrderAsync_ReturnsOrderDetails()
+    public async Task GetOrderByIdAsync_ReturnsOrderDetails()
     {
         var expectedOrderId = "test-order-id";
 
@@ -161,14 +161,14 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
         var connector = new PayPalConnector(httpClient, this.settings, this.mockLogger);
 
         var fakeAccessToken = "test-access-token"; // In practice, connector.GetAccessTokenAsync() would be invoked as a prerequisite
-        var orderResponse = await connector.GetOrderAsync(expectedOrderId, fakeAccessToken);
+        var orderResponse = await connector.GetOrderByIdAsync(expectedOrderId, fakeAccessToken);
 
         Assert.NotNull(orderResponse);
         Assert.Contains(expectedOrderId, orderResponse);
     }
 
     [Fact]
-    public async Task GetOrderAsync_ReturnsNullWhenAccessTokenIsMissing()
+    public async Task GetOrderByIdAsync_ReturnsNullWhenAccessTokenIsMissing()
     {
         var expectedOrderId = "test-order-id";
         var fakeHttpMessageHandler = new FakeHttpMessageHandler(request =>
@@ -184,13 +184,13 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
         var connector = new PayPalConnector(httpClient, this.settings, this.mockLogger);
 
         var fakeAccessToken = "test-access-token"; // In practice, connector.GetAccessTokenAsync() would be invoked as a prerequisite
-        var orderResponse = await connector.GetOrderAsync(expectedOrderId, fakeAccessToken);
+        var orderResponse = await connector.GetOrderByIdAsync(expectedOrderId, fakeAccessToken);
 
         Assert.Null(orderResponse);
     }
 
     [Fact]
-    public async Task DeleteOrderAsync_ReturnsOrderDetails()
+    public async Task DeleteOrderByIdAsync_ReturnsOrderDetails()
     {
         var expectedOrderId = "test-order-id";
 
@@ -207,7 +207,7 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
         var connector = new PayPalConnector(httpClient, this.settings, this.mockLogger);
 
         var fakeAccessToken = "test-access-token"; // In practice, connector.GetAccessTokenAsync() would be invoked as a prerequisite
-        var deleteOrderResponse = await connector.DeleteOrderAsync(expectedOrderId, fakeAccessToken);
+        var deleteOrderResponse = await connector.DeleteOrderByIdAsync(expectedOrderId, fakeAccessToken);
 
         Assert.True(deleteOrderResponse);
     }

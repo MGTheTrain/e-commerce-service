@@ -2,7 +2,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors;
 
 public class OrderDetails
 {
-    public decimal TotalAmount { get; set; }
+    public float TotalAmount { get; set; }
     public string CurrencyCode { get; set; }
     public string ReferenceId { get; set; }
     public string AddressLine1 { get; set; }

@@ -16,7 +16,7 @@ namespace Mgtt.ECom.Domain.OrderManagement
         public OrderItem()
         {
             this.OrderItemID = Guid.NewGuid();
-            this.OrderID = Guid.Empty;
+            this.OrderID = string.Empty;
             this.ProductID = Guid.Empty;
             this.UserID = string.Empty;
             this.Quantity = 1;
@@ -27,7 +27,7 @@ namespace Mgtt.ECom.Domain.OrderManagement
         public Guid OrderItemID { get; internal set; }
 
         [Required]
-        public Guid OrderID { get; set; }
+        public string OrderID { get; set; }
 
         [Required]
         public Guid ProductID { get; set; }
@@ -54,7 +54,7 @@ namespace Mgtt.ECom.Domain.OrderManagement
                 yield return new ValidationResult($"{nameof(this.OrderItemID)} can't be empty");
             }
 
-            if (this.OrderID == Guid.Empty)
+            if (this.OrderID == string.Empty)
             {
                 yield return new ValidationResult($"{nameof(this.OrderID)} can't be empty");
             }

@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Mgtt.ECom.Domain.OrderManagement;
 using Mgtt.ECom.Infrastructure.Connectors;
 using Mgtt.ECom.Infrastructure.Settings;
 using Microsoft.Extensions.Logging;
@@ -87,9 +88,13 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
     [Fact]
     public async Task CreateOrderAsync_ReturnsCreateOrderResponse()
     {
-        var orderDetails = new OrderDetails
+        var expectedOrder = new Order
         {
-            TotalAmount = 0.50m,
+            OrderID = Guid.NewGuid().ToString(),
+            UserID = Guid.NewGuid().ToString(),
+            OrderDate = DateTime.UtcNow,
+            OrderStatus = "InProgress",
+            TotalAmount = 0.5f,
             CurrencyCode = "USD",
             ReferenceId = "test-reference-id",
             AddressLine1 = "123 Main St",
@@ -98,13 +103,12 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
             AdminArea1 = "CA",
             PostalCode = "95131",
             CountryCode = "US",
+            CheckoutNowHref = "https://www.sandbox.paypal.com/checkoutnow?token=test-order-id",
         };
 
-        var expectedOrderId = "test-order-id";
-    
         var responseContent = JsonConvert.SerializeObject(new
         {
-            id = expectedOrderId,
+            id = expectedOrder.OrderID,
             links = new[]
             {
                 new { href = "https://www.sandbox.paypal.com/checkoutnow?token=test-order-id", rel = "checkoutnow" },
@@ -127,10 +131,10 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
         var connector = new PayPalConnector(httpClient, this.settings, this.mockLogger);
 
         var fakeAccessToken = "test-access-token";
-        var createOrderResponse = await connector.CreateOrderAsync(orderDetails, fakeAccessToken);
+        var createOrderResponse = await connector.CreateOrderAsync(expectedOrder, fakeAccessToken);
 
         Assert.NotNull(createOrderResponse);
-        Assert.Equal(expectedOrderId, createOrderResponse.OrderId);
+        Assert.Equal(expectedOrder.OrderID, createOrderResponse.OrderID);
     }
 
     [Fact]

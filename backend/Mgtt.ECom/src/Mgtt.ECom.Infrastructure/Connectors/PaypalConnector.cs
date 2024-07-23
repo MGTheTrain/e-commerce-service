@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Mgtt.ECom.Domain.OrderManagement;
 using Mgtt.ECom.Infrastructure.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -63,7 +64,7 @@ public class PayPalConnector : IPayPalConnector
         }
     }
 
-    public async Task<CreateOrderResponse?> CreateOrderAsync(OrderDetails orderDetails, string accessToken)
+    public async Task<Order?> CreateOrderAsync(Order order, string accessToken)
     {
          try
         {
@@ -80,22 +81,22 @@ public class PayPalConnector : IPayPalConnector
                 {
                     new
                     {
-                        reference_id = orderDetails.ReferenceId,
+                        reference_id = order.ReferenceId,
                         amount = new
                         {
-                            currency_code = orderDetails.CurrencyCode,
-                            value = orderDetails.TotalAmount.ToString("F2"),
+                            currency_code = order.CurrencyCode,
+                            value = order.TotalAmount.ToString("F2"),
                         },
                         shipping = new
                         {
                             address = new
                             {
-                                address_line_1 = orderDetails.AddressLine1,
-                                address_line_2 = orderDetails.AddressLine2,
-                                admin_area_1 = orderDetails.AdminArea1,
-                                admin_area_2 = orderDetails.AdminArea2,
-                                postal_code = orderDetails.PostalCode,
-                                country_code = orderDetails.CountryCode,
+                                address_line_1 = order.AddressLine1,
+                                address_line_2 = order.AddressLine2,
+                                admin_area_1 = order.AdminArea1,
+                                admin_area_2 = order.AdminArea2,
+                                postal_code = order.PostalCode,
+                                country_code = order.CountryCode,
                             },
                         },
                     },
@@ -116,19 +117,16 @@ public class PayPalConnector : IPayPalConnector
             var responseContent = await response.Content.ReadAsStringAsync();
             var jsonDocument = JsonDocument.Parse(responseContent);
 
-            var createOrderResponse = new CreateOrderResponse
-            {
-                OrderId = jsonDocument.RootElement.GetProperty("id").GetString()!,
-                CheckoutNowHref = jsonDocument.RootElement
+            order.OrderID = jsonDocument.RootElement.GetProperty("id").GetString()!;
+            order.CheckoutNowHref = jsonDocument.RootElement
                 .GetProperty("links")
                 .EnumerateArray()
-                .First(link => link.GetProperty("href").GetString().Contains("checkoutnow"))
+                .First(link => link.GetProperty("href").GetString()!.Contains("checkoutnow"))
                 .GetProperty("href")
-                .GetString()!,
-            };
+                .GetString()!;
 
-            this.logger.LogInformation("Order created successfully with Order ID: {OrderId}", createOrderResponse.OrderId);
-            return createOrderResponse;
+            this.logger.LogInformation("Order created successfully with Order ID: {OrderId}", order.OrderID);
+            return order;
         }
         catch (HttpRequestException ex)
         {
@@ -179,16 +177,16 @@ public class PayPalConnector : IPayPalConnector
         }
     }
 
-    public async Task<CreateOrderResponse?> UpdateOrderByIdAsync(string orderId, OrderDetails orderDetails, string accessToken) 
+    public async Task<Order?> UpdateOrderByIdAsync(string orderId, Order order, string accessToken) 
     {
         try
         {
             var result = await this.DeleteOrderByIdAsync(orderId, accessToken);
             if(result)
             {
-                var responseContent = await this.CreateOrderAsync(orderDetails, accessToken);
-                this.logger.LogInformation("Order updated successfully. Order ID: {OrderId}", responseContent!.OrderId);
-                return responseContent;
+                var newOrder = await this.CreateOrderAsync(order, accessToken);
+                this.logger.LogInformation("Order updated successfully. Order ID: {OrderId}", newOrder.OrderID);
+                return newOrder;
             }
             else {
                 return null;

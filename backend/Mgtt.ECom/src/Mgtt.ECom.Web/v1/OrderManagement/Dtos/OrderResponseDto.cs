@@ -8,7 +8,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.DTOs
 
     public class OrderResponseDTO
     {
-        public Guid OrderID { get; set; }
+        public string OrderID { get; set; }
 
         public string UserID { get; set; }
 
@@ -17,5 +17,21 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.DTOs
         public float TotalAmount { get; set; }
 
         public string OrderStatus { get; set; }
+
+        public string CurrencyCode { get; set; }
+
+        public string ReferenceId { get; set; }
+
+        public string AddressLine1 { get; set; }
+
+        public string AddressLine2 { get; set; }
+
+        public string AdminArea2 { get; set; }
+
+        public string AdminArea1 { get; set; }
+
+        public string PostalCode { get; set; }
+
+        public string CountryCode { get; set; }
     }
 }

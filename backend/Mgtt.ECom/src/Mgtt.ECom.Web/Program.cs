@@ -8,6 +8,7 @@ using Mgtt.ECom.Domain.OrderManagement;
 using Mgtt.ECom.Domain.ProductManagement;
 using Mgtt.ECom.Domain.ReviewManagement;
 using Mgtt.ECom.Domain.ShoppingCart;
+using Mgtt.ECom.Infrastructure.Connectors;
 using Mgtt.ECom.Persistence.DataAccess;
 using Mgtt.ECom.Web.Handlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -134,6 +135,7 @@ var dbContext = builder.Services.AddDbContext<DbContext, PsqlDbContext>(options 
     options.UseNpgsql(psqlDbconnectionString);
 });
 
+builder.Services.AddHttpClient<IPayPalConnector, PayPalConnector>();
 builder.Services.AddTransient<IOrderItemService, OrderItemService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IProductService, ProductService>();

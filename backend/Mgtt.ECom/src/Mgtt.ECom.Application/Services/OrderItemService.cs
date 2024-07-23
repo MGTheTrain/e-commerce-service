@@ -39,7 +39,7 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
-        public async Task<IEnumerable<OrderItem>?> GetOrderItemsByOrderId(Guid orderId)
+        public async Task<IEnumerable<OrderItem>?> GetOrderItemsByOrderId(string orderId)
         {
             this.logger.LogInformation("Fetching order items by Order ID: {OrderId}", orderId);
             try

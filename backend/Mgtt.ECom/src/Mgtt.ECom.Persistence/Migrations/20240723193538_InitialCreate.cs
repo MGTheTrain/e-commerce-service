@@ -46,7 +46,7 @@ namespace Mgtt.ECom.Persistence.Migrations
                 columns: table => new
                 {
                     OrderItemID = table.Column<Guid>(type: "uuid", nullable: false),
-                    OrderID = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrderID = table.Column<string>(type: "text", nullable: false),
                     ProductID = table.Column<Guid>(type: "uuid", nullable: false),
                     UserID = table.Column<string>(type: "text", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
@@ -61,11 +61,20 @@ namespace Mgtt.ECom.Persistence.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    OrderID = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrderID = table.Column<string>(type: "text", nullable: false),
                     UserID = table.Column<string>(type: "text", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     TotalAmount = table.Column<float>(type: "real", nullable: false),
-                    OrderStatus = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
+                    OrderStatus = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    CurrencyCode = table.Column<string>(type: "character varying(3)", maxLength: 3, nullable: false),
+                    ReferenceId = table.Column<string>(type: "text", nullable: false),
+                    AddressLine1 = table.Column<string>(type: "text", nullable: false),
+                    AddressLine2 = table.Column<string>(type: "text", nullable: false),
+                    AdminArea2 = table.Column<string>(type: "text", nullable: false),
+                    AdminArea1 = table.Column<string>(type: "text", nullable: false),
+                    PostalCode = table.Column<string>(type: "text", nullable: false),
+                    CountryCode = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
+                    CheckoutNowHref = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

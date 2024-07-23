@@ -25,9 +25,39 @@ namespace Mgtt.ECom.Persistence.Migrations
 
             modelBuilder.Entity("Mgtt.ECom.Domain.OrderManagement.Order", b =>
                 {
-                    b.Property<Guid>("OrderID")
+                    b.Property<string>("OrderID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("text");
+
+                    b.Property<string>("AddressLine1")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AddressLine2")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AdminArea1")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AdminArea2")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CheckoutNowHref")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CountryCode")
+                        .IsRequired()
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("timestamp with time zone");
@@ -36,6 +66,14 @@ namespace Mgtt.ECom.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReferenceId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<float>("TotalAmount")
                         .HasColumnType("real");
@@ -55,8 +93,9 @@ namespace Mgtt.ECom.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("OrderID")
-                        .HasColumnType("uuid");
+                    b.Property<string>("OrderID")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");

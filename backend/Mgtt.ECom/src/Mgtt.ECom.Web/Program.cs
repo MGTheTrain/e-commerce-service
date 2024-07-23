@@ -3,17 +3,20 @@
 // </copyright>
 
 using System.Reflection;
+using System.Text;
 using Mgtt.ECom.Application.Services;
 using Mgtt.ECom.Domain.OrderManagement;
 using Mgtt.ECom.Domain.ProductManagement;
 using Mgtt.ECom.Domain.ReviewManagement;
 using Mgtt.ECom.Domain.ShoppingCart;
 using Mgtt.ECom.Infrastructure.Connectors;
+using Mgtt.ECom.Infrastructure.Settings;
 using Mgtt.ECom.Persistence.DataAccess;
 using Mgtt.ECom.Web.Handlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -135,7 +138,10 @@ var dbContext = builder.Services.AddDbContext<DbContext, PsqlDbContext>(options 
     options.UseNpgsql(psqlDbconnectionString);
 });
 
+
+builder.Services.Configure<PayPalSettings>(builder.Configuration.GetSection("PayPalSettings"));
 builder.Services.AddHttpClient<IPayPalConnector, PayPalConnector>();
+
 builder.Services.AddTransient<IOrderItemService, OrderItemService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IProductService, ProductService>();

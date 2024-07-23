@@ -6,7 +6,7 @@ namespace Mgtt.ECom.Domain.OrderManagement;
 
 public interface IOrderService
 {
-    Task<Order?> GetOrderById(Guid orderId);
+    Task<Order?> GetOrderById(string orderId);
 
     Task<IEnumerable<Order>?> GetOrdersByUserId(string userId);
 
@@ -14,5 +14,5 @@ public interface IOrderService
 
     Task<Order?> UpdateOrder(Order order);
 
-    Task DeleteOrder(Guid orderId);
+    Task DeleteOrder(string orderId);
 }

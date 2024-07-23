@@ -27,10 +27,10 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
 
 - **Order Management**
   - Order Processing
-    - [ ] Manage customer orders from creation to completion.
-    - [ ] Incorporate payment APIs like PayPal or Stripe
+    - [x] Manage customer orders from creation to completion.
+    - [x] Incorporate payment APIs like PayPal or Stripe
   - Order Items
-    - [ ] Handle individual items within an order, including quantity and price details.
+    - [x] Handle individual items within an order, including quantity and price details.
 
 - **Shopping Cart**
   - Cart Functionality
@@ -63,6 +63,8 @@ You can find instructions on applicable commands for the backend source code in 
 You can find instructions on applicable commands for the frontend source code in the following [README.md](./frontend/e-commerce-service/README.md)
 
 ### Local docker compose setup
+
+**Precondition**: Update the values in [Mgtt.ECom.Web.env](./Mgtt.ECom.Web.env) and [environment.ts](./frontend/e-commerce-service/environments/environment.ts)
 
 You can start the web front-end and back-end using the command:
 

@@ -136,6 +136,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 AdminArea1 = order.AdminArea1,
                 PostalCode = order.PostalCode,
                 CountryCode = order.CountryCode,
+                CheckoutNowHref = order.CheckoutNowHref,
             };
 
             return this.CreatedAtAction(nameof(this.CreateOrder), orderResponseDTO);
@@ -180,6 +181,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 AdminArea1 = order.AdminArea1,
                 PostalCode = order.PostalCode,
                 CountryCode = order.CountryCode,
+                CheckoutNowHref = order.CheckoutNowHref,
             };
 
             return this.Ok(orderDTO);
@@ -226,6 +228,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                     AdminArea1 = order.AdminArea1,
                     PostalCode = order.PostalCode,
                     CountryCode = order.CountryCode,
+                    CheckoutNowHref = order.CheckoutNowHref,
                 });
             }
 
@@ -295,6 +298,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 AdminArea1 = order.AdminArea1,
                 PostalCode = order.PostalCode,
                 CountryCode = order.CountryCode,
+                CheckoutNowHref = order.CheckoutNowHref,
             };
 
             return this.Ok(orderResponseDTO);

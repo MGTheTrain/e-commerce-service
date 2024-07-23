@@ -5,6 +5,7 @@
 namespace Mgtt.ECom.Web.V1.OrderManagement.DTOs
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     public class OrderResponseDTO
     {
@@ -33,5 +34,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.DTOs
         public string PostalCode { get; set; }
 
         public string CountryCode { get; set; }
+
+        public string CheckoutNowHref { get; set; }
     }
 }

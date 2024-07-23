@@ -6,6 +6,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.OrderManagement;
@@ -104,6 +105,14 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderDate = DateTime.UtcNow,
                 TotalAmount = orderDTO.TotalAmount,
                 OrderStatus = orderDTO.OrderStatus,
+                CurrencyCode = orderDTO.CurrencyCode,
+                ReferenceId = orderDTO.ReferenceId,
+                AddressLine1 = orderDTO.AddressLine1,
+                AddressLine2 = orderDTO.AddressLine2,
+                AdminArea2 = orderDTO.AdminArea2,
+                AdminArea1 = orderDTO.AdminArea1,
+                PostalCode = orderDTO.PostalCode,
+                CountryCode = orderDTO.CountryCode,
             };
 
             var action = await this.orderService.CreateOrder(order);
@@ -119,6 +128,14 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
                 OrderStatus = order.OrderStatus,
+                CurrencyCode = order.CurrencyCode,
+                ReferenceId = order.ReferenceId,
+                AddressLine1 = order.AddressLine1,
+                AddressLine2 = order.AddressLine2,
+                AdminArea2 = order.AdminArea2,
+                AdminArea1 = order.AdminArea1,
+                PostalCode = order.PostalCode,
+                CountryCode = order.CountryCode,
             };
 
             return this.CreatedAtAction(nameof(this.CreateOrder), orderResponseDTO);
@@ -155,6 +172,14 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
                 OrderStatus = order.OrderStatus,
+                CurrencyCode = order.CurrencyCode,
+                ReferenceId = order.ReferenceId,
+                AddressLine1 = order.AddressLine1,
+                AddressLine2 = order.AddressLine2,
+                AdminArea2 = order.AdminArea2,
+                AdminArea1 = order.AdminArea1,
+                PostalCode = order.PostalCode,
+                CountryCode = order.CountryCode,
             };
 
             return this.Ok(orderDTO);
@@ -193,6 +218,14 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                     OrderDate = order.OrderDate,
                     TotalAmount = order.TotalAmount,
                     OrderStatus = order.OrderStatus,
+                    CurrencyCode = order.CurrencyCode,
+                    ReferenceId = order.ReferenceId,
+                    AddressLine1 = order.AddressLine1,
+                    AddressLine2 = order.AddressLine2,
+                    AdminArea2 = order.AdminArea2,
+                    AdminArea1 = order.AdminArea1,
+                    PostalCode = order.PostalCode,
+                    CountryCode = order.CountryCode,
                 });
             }
 
@@ -254,6 +287,14 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
                 OrderStatus = order.OrderStatus,
+                CurrencyCode = order.CurrencyCode,
+                ReferenceId = order.ReferenceId,
+                AddressLine1 = order.AddressLine1,
+                AddressLine2 = order.AddressLine2,
+                AdminArea2 = order.AdminArea2,
+                AdminArea1 = order.AdminArea1,
+                PostalCode = order.PostalCode,
+                CountryCode = order.CountryCode,
             };
 
             return this.Ok(orderResponseDTO);
@@ -338,6 +379,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 UserID = userId,
                 Quantity = orderItemDTO.Quantity,
                 Price = orderItemDTO.Price,
+                
             };
 
             var action = await this.orderItemService.CreateOrderItem(orderItem);

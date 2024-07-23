@@ -80,11 +80,9 @@ namespace Mgtt.ECom.Application.Services
             this.logger.LogInformation("Updating order: {OrderId}", order.OrderID);
             try
             {
-                var accessToken = await this.payPalConnector.GetAccessTokenAsync();
-                var updatedOrder = await this.payPalConnector.UpdateOrderByIdAsync(order.OrderID, order, accessToken!);
+                await this.DeleteOrder(order.OrderID);
+                var updatedOrder = await this.CreateOrder(order);
 
-                this.context.Orders.Update(updatedOrder!);
-                await this.context.SaveChangesAsync();
                 this.logger.LogInformation("Order updated successfully: {OrderId}", updatedOrder!.OrderID);
                 return await Task.FromResult<Order?>(updatedOrder);
             }

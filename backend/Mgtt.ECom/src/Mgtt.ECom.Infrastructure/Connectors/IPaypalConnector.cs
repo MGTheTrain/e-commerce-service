@@ -10,7 +10,5 @@ public interface IPayPalConnector
 
     Task<string?> GetOrderByIdAsync(string orderId, string accessToken);
 
-    Task<Order?> UpdateOrderByIdAsync(string orderId, Order order, string accessToken); // Delete and create new order
-
     Task<bool> DeleteOrderByIdAsync(string orderId, string accessToken);
 }

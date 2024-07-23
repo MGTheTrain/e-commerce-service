@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 23-07-2024
+
+### Updated
+
+- **Order Management**
+  - Order Processing
+    - [x] Managed customer orders from creation to completion.
+    - [x] Incorporated payment APIs like PayPal or Stripe
+  - Order Items
+    - [x] Handled individual items within an order, including quantity and price details.
+
 ## [0.10.1] - 20-07-2024
 
 ### Fixed

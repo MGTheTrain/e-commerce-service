@@ -179,6 +179,28 @@ public class PayPalConnector : IPayPalConnector
         }
     }
 
+    public async Task<CreateOrderResponse?> UpdateOrderByIdAsync(string orderId, OrderDetails orderDetails, string accessToken) 
+    {
+        try
+        {
+            var result = await this.DeleteOrderByIdAsync(orderId, accessToken);
+            if(result)
+            {
+                var responseContent = await this.CreateOrderAsync(orderDetails, accessToken);
+                this.logger.LogInformation("Order updated successfully. Order ID: {OrderId}", responseContent!.OrderId);
+                return responseContent;
+            }
+            else {
+                return null;
+            }
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "An unexpected error occurred while updating order.");
+            return null;
+        }
+    }
+
     public async Task<bool> DeleteOrderByIdAsync(string orderId, string accessToken)
     {
         try

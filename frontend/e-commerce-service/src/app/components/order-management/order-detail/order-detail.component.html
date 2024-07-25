@@ -41,15 +41,15 @@
 
         <hr>
         <div class="form-group mb-4 text-center">
-          <button type="button" class="btn btn-secondary" (click)="handleEditClick()">
+          <button type="button" class="btn btn-secondary" (click)="handleEditClick()" *ngIf="isOrderOwner">
             <fa-icon [icon]="faEdit"></fa-icon> {{ isEditing ? 'Cancel' : 'Edit' }}
           </button>
           <span class="mx-2"></span>
-          <button type="button" class="btn btn-danger mr-2" (click)="handleDeleteOrderClick()" [disabled]="!isEditing">
+          <button type="button" class="btn btn-danger mr-2" (click)="handleDeleteOrderClick()" *ngIf="isOrderOwner && isEditing">
             <fa-icon [icon]="faTrash"></fa-icon> Delete Order
           </button>
           <span class="mx-2"></span>
-          <button type="button" class="btn btn-primary" (click)="handleUpdateOrderClick()" [disabled]="!isEditing">
+          <button type="button" class="btn btn-primary" (click)="handleUpdateOrderClick()" *ngIf="isOrderOwner && isEditing">
             <fa-icon [icon]="faEdit"></fa-icon> Update Order
           </button>
         </div>

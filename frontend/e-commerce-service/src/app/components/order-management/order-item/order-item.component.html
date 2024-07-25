@@ -1,16 +1,14 @@
-<div class="card mb-3">
-    <div class="card-body card-hover">
-      <img [src]="product.imageUrl" class="card-img-top fixed-size-img" alt="Product Image">
-      <p class="card-text">{{ product.name }}</p>
-      <div class="form-group mb-0">
-        <label class="mb-0"><strong>Quantity</strong></label>
-        <input type="number" class="form-control" [(ngModel)]="orderItem.quantity" [disabled]="!isEditing">
-      </div>
-      <label class="mb-0"><strong>Price</strong></label>
-      <p class="card-text">${{ orderItem.price }}</p>
-      <button type="submit" class="btn btn-danger mr-2" [disabled]="!isEditing">
-        <fa-icon [icon]="faTrash"></fa-icon> Delete Item
-      </button>
-    </div>
+<div class="card mb-3 card-hover">
+  <div class="card-body">
+    <img [src]="product.imageUrl" class="card-img-top fixed-size-img" alt="Product Image">
+    <label><strong>Product Name</strong></label>
+    <p class="card-text">{{ product.name }} </p>
+    <label><strong>Quantity</strong></label>
+    <p class="card-text"><input type="number" [(ngModel)]="orderItem.quantity" [disabled]="!isEditing"></p>
+    <label><strong>Price</strong></label>
+    <p class="card-text">${{ orderItem.price }}</p>
+    <button type="button" class="btn btn-danger mr-2" (click)="handleDeleteItemClick(orderItem)" [disabled]="!isEditing">
+      <fa-icon [icon]="faTrash"></fa-icon> Delete Item
+    </button>
   </div>
-  
+</div>

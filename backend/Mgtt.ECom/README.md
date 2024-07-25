@@ -14,6 +14,7 @@ A simple backend for an e-commerce platform utilizing DDD principles based on an
 ## References
 
 - [Design a DDD-oriented microservice](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/ddd-oriented-microservice)
+- [Paypal Order API](https://developer.paypal.com/docs/api/orders/v2/)
 
 ## Getting Started
 

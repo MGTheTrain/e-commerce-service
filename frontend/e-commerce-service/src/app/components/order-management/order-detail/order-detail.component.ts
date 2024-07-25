@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { OrderItemResponseDTO, OrderRequestDTO, OrderResponseDTO, OrderService, ProductResponseDTO, ProductService } from '../../../generated';
+import { OrderItemResponseDTO, OrderRequestDTO, OrderResponseDTO, OrderService,  ProductResponseDTO,  ProductService } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -8,7 +8,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { OrderItemComponent } from '../order-item/order-item.component';
-import { v4 as uuidv4 } from 'uuid';
 import { DetailHeaderComponent } from '../../header/detail-header/detail-header.component';
 
 @Component({
@@ -24,6 +23,8 @@ export class OrderDetailComponent implements OnInit {
   @Input() order: OrderResponseDTO = {};
 
   @Input() orderItems: OrderItemResponseDTO[] = [];
+
+  @Input() products: ProductResponseDTO[] = [];
 
   public faTrash: IconDefinition = faTrash;
   public faEdit: IconDefinition = faEdit;
@@ -55,6 +56,25 @@ export class OrderDetailComponent implements OnInit {
         this.orderService.apiV1OrdersOrderIdGet(this.order.orderID!).subscribe(
           (data: OrderResponseDTO) => {
             this.order = data;
+
+            this.orderService.apiV1OrdersOrderIdItemsGet(this.order.orderID!).subscribe(
+              (data: OrderItemResponseDTO[]) => {
+                this.orderItems = data;
+                for(const orderItem of data) {
+                  this.productService.apiV1ProductsProductIdGet(orderItem.productID!).subscribe(
+                    (data2: ProductResponseDTO) => {
+                      this.products.push(data2);
+                    },
+                    error => {
+                      console.error('Error retrieving product', error);
+                    }
+                  );
+                }
+              },
+              error => {
+                console.error('Error retrieving order items', error);
+              }
+            );
           },
           error => {
             console.error('Error retrieving order', error);

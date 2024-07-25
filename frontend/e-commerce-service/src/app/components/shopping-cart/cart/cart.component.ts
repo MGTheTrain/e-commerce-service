@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CartItemRequestDTO, CartItemResponseDTO, CartRequestDTO, CartResponseDTO, CartService } from '../../../generated';
+import { CartItemRequestDTO, CartItemResponseDTO, CartRequestDTO, CartResponseDTO, CartService, OrderRequestDTO, OrderResponseDTO, OrderService } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CartItemComponent } from '../cart-item/cart-item.component';
@@ -24,11 +24,7 @@ export class CartComponent implements OnInit {
 
   public disableCheckout: boolean = false;
 
-  @Input() cart: CartResponseDTO = {
-    cartID: 'cart1',
-    userID: 'user1',
-    totalAmount: 50.0
-  };
+  @Input() cart: CartResponseDTO = {};
 
   @Input() cartItems: CartItemResponseDTO[] = [];
 
@@ -48,7 +44,7 @@ export class CartComponent implements OnInit {
   public isLoggedIn: boolean = false;
   public isEditing: boolean = true;
 
-  constructor(private router: Router, private route: ActivatedRoute, private cartService: CartService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private cartService: CartService, private orderService: OrderService) { }
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
@@ -91,7 +87,27 @@ export class CartComponent implements OnInit {
   handleCheckoutClick(): void {
     if(this.cartItems.length > 0) {
       this.updateCart();
-      // this.router.navigate(['/order']);
+      const orderRequestDto: OrderRequestDTO = {
+        totalAmount: this.cart.totalAmount!,
+        orderStatus: "",
+        currencyCode: "USD",
+        referenceId: "",
+        addressLine1: "",
+        addressLine2: "",
+        adminArea2: "",
+        adminArea1: "",
+        postalCode: "",
+        countryCode: "US",
+      };
+      this.orderService.apiV1OrdersPost(orderRequestDto).subscribe(
+        (data: OrderResponseDTO) => {
+          console.log("Created order", data);
+          this.router.navigate([data.checkoutNowHref]);
+        },
+        error => {
+          console.error('Error creating order', error);
+        }
+      );
     }
   }
 

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CartItemRequestDTO, CartItemResponseDTO, CartRequestDTO, CartResponseDTO, CartService, OrderRequestDTO, OrderResponseDTO, OrderService } from '../../../generated';
+import { CartItemRequestDTO, CartItemResponseDTO, CartRequestDTO, CartResponseDTO, CartService, OrderItemRequestDTO, OrderItemResponseDTO, OrderRequestDTO, OrderResponseDTO, OrderService } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CartItemComponent } from '../cart-item/cart-item.component';
@@ -9,6 +9,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { DetailHeaderComponent } from '../../header/detail-header/detail-header.component';
+import { OrderItemComponent } from '../../order-management/order-item/order-item.component';
 
 @Component({
   selector: 'app-cart',
@@ -103,6 +104,24 @@ export class CartComponent implements OnInit {
       this.orderService.apiV1OrdersPost(orderRequestDto).subscribe(
         (data: OrderResponseDTO) => {
           console.log("Created order", data);
+
+          for(const cartItem of this.cartItems) {
+            const orderItemRequestDTO: OrderItemRequestDTO = {
+              orderID: data.orderID!,
+              productID: cartItem.productID!,
+              quantity: cartItem.quantity!,
+              price: cartItem.price!,
+            };
+            this.orderService.apiV1OrdersOrderIdItemsPost(data.orderID!, orderItemRequestDTO).subscribe(
+              (data2: OrderItemResponseDTO) => {
+                console.log("Created order item", data2, "for order with id", data.orderID!)
+              },
+              error => {
+                console.error('Error creating order item', error);
+              }
+            );
+          }
+
           window.location.href = data.checkoutNowHref!;
         },
         error => {

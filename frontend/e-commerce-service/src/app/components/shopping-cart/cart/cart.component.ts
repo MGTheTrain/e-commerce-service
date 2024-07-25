@@ -88,21 +88,22 @@ export class CartComponent implements OnInit {
     if(this.cartItems.length > 0) {
       this.updateCart();
       const orderRequestDto: OrderRequestDTO = {
-        totalAmount: this.cart.totalAmount!,
-        orderStatus: "",
+        totalAmount: this.cart.totalAmount! + 0.0,
+        orderStatus: "Pending",
         currencyCode: "USD",
-        referenceId: "",
-        addressLine1: "",
-        addressLine2: "",
-        adminArea2: "",
-        adminArea1: "",
-        postalCode: "",
+        referenceId: "tmp",
+        addressLine1: "tmp",
+        addressLine2: "tmp",
+        adminArea2: "tmp",
+        adminArea1: "tmp",
+        postalCode: "tmp",
         countryCode: "US",
       };
+      
       this.orderService.apiV1OrdersPost(orderRequestDto).subscribe(
         (data: OrderResponseDTO) => {
           console.log("Created order", data);
-          this.router.navigate([data.checkoutNowHref]);
+          window.location.href = data.checkoutNowHref!;
         },
         error => {
           console.error('Error creating order', error);

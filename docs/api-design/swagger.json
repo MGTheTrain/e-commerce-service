@@ -1400,6 +1400,47 @@
         }
       }
     },
+    "/api/v1/orders/{orderId}/user": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Retrieves the order associated with a specific user.\r\nExplicitly checks whether a order belongs to a user by requiring a order id.",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "The ID of the order.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the order by user id.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponseDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponseDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/orders/{orderId}": {
       "get": {
         "tags": [

@@ -143,6 +143,54 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         }
 
         /// <summary>
+        /// Retrieves the order associated with a specific user.
+        /// Explicitly checks whether a order belongs to a user by requiring a order id.
+        /// </summary>
+        /// <param name="orderId">The ID of the order.</param>
+        /// <returns>The order by user id.</returns>
+        /// <response code="200">Returns the order by user id.</response>
+        [HttpGet("{orderId}/user")]
+        [Authorize("manage:orders-and-own-order")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderResponseDTO))]
+        public async Task<ActionResult<OrderResponseDTO>> GetUserOrderById(string orderId)
+        {
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
+            var orders = await this.orderService.GetOrdersByUserId(userId);
+            var order = orders!.FirstOrDefault();
+
+            if (order == null)
+            {
+                return this.NotFound();
+            }
+
+            var orderDTO = new OrderResponseDTO
+            {
+                OrderID = order.OrderID,
+                UserID = order.UserID,
+                OrderDate = order.OrderDate,
+                TotalAmount = order.TotalAmount,
+                OrderStatus = order.OrderStatus,
+                CurrencyCode = order.CurrencyCode,
+                ReferenceId = order.ReferenceId,
+                AddressLine1 = order.AddressLine1,
+                AddressLine2 = order.AddressLine2,
+                AdminArea2 = order.AdminArea2,
+                AdminArea1 = order.AdminArea1,
+                PostalCode = order.PostalCode,
+                CountryCode = order.CountryCode,
+                CheckoutNowHref = order.CheckoutNowHref,
+            };
+
+            return this.Ok(orderDTO);
+        }
+
+        /// <summary>
         /// Retrieves an order by its ID.
         /// </summary>
         /// <param name="orderId">The ID of the order.</param>

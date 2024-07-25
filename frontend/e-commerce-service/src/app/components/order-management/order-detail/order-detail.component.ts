@@ -70,6 +70,7 @@ export class OrderDetailComponent implements OnInit {
                     }
                   );
                 }
+                this.calculateTotalAmount();
               },
               error => {
                 console.error('Error retrieving order items', error);
@@ -81,7 +82,6 @@ export class OrderDetailComponent implements OnInit {
           }
         );
       });
-      this.calculateTotalAmount();
     } 
   }
 
@@ -99,6 +99,7 @@ export class OrderDetailComponent implements OnInit {
       const price = item.price ?? 0;
       return total + (quantity * price);
     }, 0);
+    console.log(this.order.totalAmount);
   }
 
   handleDeleteOrderClick(): void {    

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { OrderItemResponseDTO, OrderRequestDTO, OrderResponseDTO, OrderService,  ProductResponseDTO,  ProductService } from '../../../generated';
+import { OrderItemRequestDTO, OrderItemResponseDTO, OrderRequestDTO, OrderResponseDTO, OrderService,  ProductResponseDTO,  ProductService } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -99,11 +99,12 @@ export class OrderDetailComponent implements OnInit {
       const price = item.price ?? 0;
       return total + (quantity * price);
     }, 0);
-    console.log(this.order.totalAmount);
   }
 
   handleDeleteOrderClick(): void {    
     if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.deleteAllOrderItems();
+
       this.orderService.apiV1OrdersOrderIdDelete(this.order.orderID!).subscribe(
         () => {
           console.log("Deleted order");
@@ -117,7 +118,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   handleUpdateOrderClick(): void {    
-    if(localStorage.getItem('isLoggedIn') === 'true') {
+    if(localStorage.getItem('isLoggedIn') === 'true') {  
       const orderRequestDto: OrderRequestDTO = {
         totalAmount: this.order.totalAmount!,
         orderStatus: this.order.orderStatus!,
@@ -130,13 +131,40 @@ export class OrderDetailComponent implements OnInit {
         postalCode: this.order.postalCode,
         countryCode: this.order.countryCode!,
       };
+
+      this.deleteAllOrderItems();
+
       this.orderService.apiV1OrdersOrderIdPut(this.order.orderID!, orderRequestDto).subscribe(
         (data: OrderResponseDTO) => {
           console.log("Updated order with id", data.orderID!);
+    
+          for(const orderItem of this.orderItems) {
+            const orderItemRequestDto: OrderItemRequestDTO = {
+              orderID: data.orderID!,
+              productID: orderItem.productID!,
+              quantity: orderItem.quantity!,
+              price: orderItem.price!,
+            };
+            this.orderService.apiV1OrdersOrderIdItemsItemIdPut(orderItem.orderID!, orderItem.orderItemID!, orderItemRequestDto).subscribe(
+              (data2: OrderItemResponseDTO) => {
+                console.log("Updated order item", data2);
+              }
+            );
+          }
           this.router.navigate(['/orders']);
         },
         error => {
           console.error('Error updating review', error);
+        }
+      );
+    }
+  }
+
+  deleteAllOrderItems(): void {
+    for(const orderItem of this.orderItems) {
+      this.orderService.apiV1OrdersOrderIdItemsItemIdDelete(orderItem.orderID!, orderItem.orderItemID!).subscribe(
+        (data: OrderItemResponseDTO) => {
+          console.log("Deleted order item", data);
         }
       );
     }

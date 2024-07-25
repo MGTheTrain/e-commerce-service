@@ -356,7 +356,7 @@ export class ReviewService {
     }
 
     /**
-     * Retrieves the review associated with a specific user.   Explicitly checks whether a review belongs to a user by requiring a review id
+     * Retrieves the review associated with a specific user.  Explicitly checks whether a review belongs to a user by requiring a review id.
      * 
      * @param reviewId The ID of the review.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

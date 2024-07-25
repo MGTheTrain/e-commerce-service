@@ -16,4 +16,13 @@ export interface OrderResponseDTO {
     orderDate?: Date;
     totalAmount?: number;
     orderStatus?: string;
+    currencyCode?: string;
+    referenceId?: string;
+    addressLine1?: string;
+    addressLine2?: string;
+    adminArea2?: string;
+    adminArea1?: string;
+    postalCode?: string;
+    countryCode?: string;
+    checkoutNowHref?: string;
 }

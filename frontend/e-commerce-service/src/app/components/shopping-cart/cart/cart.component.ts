@@ -9,7 +9,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { DetailHeaderComponent } from '../../header/detail-header/detail-header.component';
-import { OrderItemComponent } from '../../order-management/order-item/order-item.component';
 
 @Component({
   selector: 'app-cart',

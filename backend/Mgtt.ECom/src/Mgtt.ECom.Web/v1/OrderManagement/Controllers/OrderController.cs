@@ -633,7 +633,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             var order = await this.orderService.GetOrderById(orderId);
             if (order == null)
             {
-                return this.BadRequest();
+                return this.NotFound();
             }
 
             var orderItem = await this.orderItemService.GetOrderItemById(itemId);
@@ -695,7 +695,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             var order = await this.orderService.GetOrderById(orderId);
             if (order == null)
             {
-                return this.BadRequest();
+                return this.NotFound();
             }
 
             var orderItem = await this.orderItemService.GetOrderItemById(itemId);

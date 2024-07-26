@@ -431,7 +431,6 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 UserID = userId,
                 Quantity = orderItemDTO.Quantity,
                 Price = orderItemDTO.Price,
-                
             };
 
             var action = await this.orderItemService.CreateOrderItem(orderItem);

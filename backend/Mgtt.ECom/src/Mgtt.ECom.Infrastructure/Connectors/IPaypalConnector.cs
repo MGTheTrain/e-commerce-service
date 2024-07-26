@@ -1,3 +1,7 @@
+// <copyright file="IPaypalConnector.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 using Mgtt.ECom.Domain.OrderManagement;
 
 namespace Mgtt.ECom.Infrastructure.Connectors;

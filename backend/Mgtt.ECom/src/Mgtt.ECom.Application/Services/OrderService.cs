@@ -18,7 +18,7 @@ namespace Mgtt.ECom.Application.Services
     {
         private readonly PsqlDbContext context;
         private readonly ILogger<OrderService> logger;
-        private readonly IPayPalConnector payPalConnector; 
+        private readonly IPayPalConnector payPalConnector;
 
         public OrderService(PsqlDbContext context, IPayPalConnector payPalConnector, ILogger<OrderService> logger)
         {

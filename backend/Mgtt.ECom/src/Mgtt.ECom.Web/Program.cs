@@ -138,7 +138,6 @@ var dbContext = builder.Services.AddDbContext<DbContext, PsqlDbContext>(options 
     options.UseNpgsql(psqlDbconnectionString);
 });
 
-
 builder.Services.Configure<PayPalSettings>(builder.Configuration.GetSection("PayPalSettings"));
 builder.Services.AddHttpClient<IPayPalConnector, PayPalConnector>();
 

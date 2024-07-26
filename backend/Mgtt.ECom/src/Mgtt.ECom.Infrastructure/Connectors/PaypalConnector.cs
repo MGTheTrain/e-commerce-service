@@ -1,3 +1,7 @@
+// <copyright file="PaypalConnector.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 using System;
 using System.Net;
 using System.Net.Http;
@@ -66,7 +70,7 @@ public class PayPalConnector : IPayPalConnector
 
     public async Task<Order?> CreateOrderAsync(Order order, string accessToken)
     {
-         try
+        try
         {
             if (string.IsNullOrEmpty(accessToken))
             {
@@ -117,13 +121,13 @@ public class PayPalConnector : IPayPalConnector
             var responseContent = await response.Content.ReadAsStringAsync();
             var jsonDocument = JsonDocument.Parse(responseContent);
 
-            order.OrderID = jsonDocument.RootElement.GetProperty("id").GetString()!;
+            order.OrderID = jsonDocument.RootElement.GetProperty("id").GetString() !;
             order.CheckoutNowHref = jsonDocument.RootElement
                 .GetProperty("links")
                 .EnumerateArray()
-                .First(link => link.GetProperty("href").GetString()!.Contains("checkoutnow"))
+                .First(link => link.GetProperty("href").GetString() !.Contains("checkoutnow"))
                 .GetProperty("href")
-                .GetString()!;
+                .GetString() !;
 
             this.logger.LogInformation("Order created successfully with Order ID: {OrderId}", order.OrderID);
             return order;

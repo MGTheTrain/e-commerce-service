@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { AuthModule } from '@auth0/auth0-angular'; 
 import { environment } from '../../../../../environments/environment';
-import { CartService } from '../../../generated';
+import { CartService, OrderService } from '../../../generated';
 
 class ActivatedRouteStub {
   params = of({ id: 1 }); 
@@ -31,6 +31,7 @@ describe('CartComponent', () => {
       providers: [
         CartComponent,
         CartService,
+        OrderService,
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ]
     }).compileComponents(); 

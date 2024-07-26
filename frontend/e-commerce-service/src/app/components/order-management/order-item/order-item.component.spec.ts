@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OrderItemComponent } from './order-item.component';
-import { OrderService } from '../../../generated';
+import { OrderService, ProductService } from '../../../generated';
 
 describe('OrderItemComponent', () => {
   let component: OrderItemComponent;
@@ -14,7 +14,8 @@ describe('OrderItemComponent', () => {
         OrderItemComponent
       ],
       providers: [
-        OrderService
+        OrderService,
+        ProductService
       ]
     })
     .compileComponents();

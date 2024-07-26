@@ -133,11 +133,10 @@ export class OrderDetailComponent implements OnInit {
       };
 
       this.deleteAllOrderItems();
-
       this.orderService.apiV1OrdersOrderIdPut(this.order.orderID!, orderRequestDto).subscribe(
         (data: OrderResponseDTO) => {
           console.log("Updated order with id", data.orderID!);
-    
+          
           for(const orderItem of this.orderItems) {
             const orderItemRequestDto: OrderItemRequestDTO = {
               orderID: data.orderID!,
@@ -145,7 +144,8 @@ export class OrderDetailComponent implements OnInit {
               quantity: orderItem.quantity!,
               price: orderItem.price!,
             };
-            this.orderService.apiV1OrdersOrderIdItemsItemIdPut(orderItem.orderID!, orderItem.orderItemID!, orderItemRequestDto).subscribe(
+
+            this.orderService.apiV1OrdersOrderIdItemsPost(data.orderID!, orderItemRequestDto).subscribe(
               (data2: OrderItemResponseDTO) => {
                 console.log("Updated order item", data2);
               }

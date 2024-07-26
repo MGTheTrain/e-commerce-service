@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CartItemRequestDTO, CartItemResponseDTO, CartRequestDTO, CartResponseDTO, CartService } from '../../../generated';
+import { CartItemRequestDTO, CartItemResponseDTO, CartRequestDTO, CartResponseDTO, CartService, OrderItemRequestDTO, OrderItemResponseDTO, OrderRequestDTO, OrderResponseDTO, OrderService } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CartItemComponent } from '../cart-item/cart-item.component';
@@ -24,11 +24,7 @@ export class CartComponent implements OnInit {
 
   public disableCheckout: boolean = false;
 
-  @Input() cart: CartResponseDTO = {
-    cartID: 'cart1',
-    userID: 'user1',
-    totalAmount: 50.0
-  };
+  @Input() cart: CartResponseDTO = {};
 
   @Input() cartItems: CartItemResponseDTO[] = [];
 
@@ -48,7 +44,7 @@ export class CartComponent implements OnInit {
   public isLoggedIn: boolean = false;
   public isEditing: boolean = true;
 
-  constructor(private router: Router, private route: ActivatedRoute, private cartService: CartService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private cartService: CartService, private orderService: OrderService) { }
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
@@ -91,7 +87,46 @@ export class CartComponent implements OnInit {
   handleCheckoutClick(): void {
     if(this.cartItems.length > 0) {
       this.updateCart();
-      // this.router.navigate(['/order']);
+      const orderRequestDto: OrderRequestDTO = {
+        totalAmount: this.cart.totalAmount! + 0.0,
+        orderStatus: "Pending",
+        currencyCode: "USD",
+        referenceId: "tmp",
+        addressLine1: "tmp",
+        addressLine2: "tmp",
+        adminArea2: "tmp",
+        adminArea1: "tmp",
+        postalCode: "tmp",
+        countryCode: "US",
+      };
+      
+      this.orderService.apiV1OrdersPost(orderRequestDto).subscribe(
+        (data: OrderResponseDTO) => {
+          console.log("Created order", data);
+
+          for(const cartItem of this.cartItems) {
+            const orderItemRequestDTO: OrderItemRequestDTO = {
+              orderID: data.orderID!,
+              productID: cartItem.productID!,
+              quantity: cartItem.quantity!,
+              price: cartItem.price!,
+            };
+            this.orderService.apiV1OrdersOrderIdItemsPost(data.orderID!, orderItemRequestDTO).subscribe(
+              (data2: OrderItemResponseDTO) => {
+                console.log("Created order item", data2, "for order with id", data.orderID!)
+              },
+              error => {
+                console.error('Error creating order item', error);
+              }
+            );
+          }
+
+          window.location.href = data.checkoutNowHref!;
+        },
+        error => {
+          console.error('Error creating order', error);
+        }
+      );
     }
   }
 

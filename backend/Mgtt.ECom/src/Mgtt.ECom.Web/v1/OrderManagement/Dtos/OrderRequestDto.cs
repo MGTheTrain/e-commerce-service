@@ -16,5 +16,23 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.DTOs
         [Required]
         [StringLength(50)]
         public string OrderStatus { get; set; }
+
+        public string CurrencyCode { get; set; }
+
+        public string ReferenceId { get; set; }
+
+        public string AddressLine1 { get; set; }
+
+        public string AddressLine2 { get; set; }
+
+        public string AdminArea2 { get; set; }
+
+        public string AdminArea1 { get; set; }
+
+        public string PostalCode { get; set; }
+
+        [Required]
+        [StringLength(2, MinimumLength = 2, ErrorMessage = "Country code must be a 2-letter code")]
+        public string CountryCode { get; set; }
     }
 }

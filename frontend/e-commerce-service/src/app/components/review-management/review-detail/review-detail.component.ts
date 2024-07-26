@@ -57,7 +57,7 @@ export class ReviewDetailComponent implements OnInit {
 
       this.reviewService.apiV1ReviewsReviewIdUserGet(this.review.reviewID!).subscribe(
         (data: ReviewResponseDTO) => {
-          console.log("Review owned by:", data);
+          console.log("Review owned by:", data.userID);
           this.isReviewOwner = true;
         },
         error => {

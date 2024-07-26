@@ -362,7 +362,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             var cart = await this.cartService.GetCartById(cartId);
             if (cart == null)
             {
-                return this.BadRequest();
+                return this.NotFound();
             }
 
             var cartItem = new CartItem
@@ -418,7 +418,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             var cart = await this.cartService.GetCartById(cartId);
             if (cart == null)
             {
-                return this.BadRequest();
+                return this.NotFound();
             }
 
             var cartItems = await this.cartItemService.GetCartItemsByCartId(cartId);
@@ -468,7 +468,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             var cart = await this.cartService.GetCartById(cartId);
             if (cart == null)
             {
-                return this.BadRequest();
+                return this.NotFound();
             }
 
             var cartItem = await this.cartItemService.GetCartItemById(itemId);
@@ -572,7 +572,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             var cart = await this.cartService.GetCartById(cartId);
             if (cart == null)
             {
-                return this.BadRequest();
+                return this.NotFound();
             }
 
             var cartItem = await this.cartItemService.GetCartItemById(itemId);
@@ -635,7 +635,7 @@ namespace Mgtt.ECom.Web.V1.ShoppingCart.Controllers
             var cart = await this.cartService.GetCartById(cartId);
             if (cart == null)
             {
-                return this.BadRequest();
+                return this.NotFound();
             }
 
             var cartItem = await this.cartItemService.GetCartItemById(itemId);

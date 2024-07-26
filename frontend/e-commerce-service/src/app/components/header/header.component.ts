@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faSearch, faShoppingCart, faSignIn } from '@fortawesome/free-solid-svg-icons';
+import { faList, faSearch, faShoppingCart, faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { CartResponseDTO, CartService } from '../../generated';
 
 @Component({
@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
   public faSearch: IconDefinition = faSearch;
   public faShoppingCart: IconDefinition = faShoppingCart;
   public faSignIn: IconDefinition = faSignIn;
+  public faList: IconDefinition = faList;
 
   public searchText: string = ""; 
   public isLoggedIn: boolean = false;
@@ -79,5 +80,9 @@ export class HeaderComponent implements OnInit {
 
   handleCartClick(): void {
     this.router.navigate(['/cart']);
+  }
+
+  handleNavigateToOrdersClick(): void {
+    this.router.navigate(['/orders']);
   }
 }

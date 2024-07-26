@@ -29,16 +29,15 @@ export class OrderListComponent implements OnInit {
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
+      this.orderService.apiV1OrdersUserGet().subscribe(
+        (data: OrderResponseDTO[]) => {
+          this.orders = data;
+        },
+        error => {
+          console.error('Error fetching orders', error);
+        }
+      );
     } 
-    
-    // this.orderService.apiV1OrdersOrderIdGet().subscribe(
-    //   (data: OrderResponseDTO[]) => {
-    //     this.orders = data;
-    //   },
-    //   error => {
-    //     console.error('Error fetching products', error);
-    //   }
-    // );
   }
 
   // getUserName(userID: string | undefined): string | undefined {

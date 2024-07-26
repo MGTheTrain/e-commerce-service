@@ -542,6 +542,54 @@ export class OrderService {
     }
 
     /**
+     * Retrieves the order associated with a specific user.  Explicitly checks whether a order belongs to a user by requiring a order id.
+     * 
+     * @param orderId The ID of the order.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiV1OrdersOrderIdUserGet(orderId: string, observe?: 'body', reportProgress?: boolean): Observable<OrderResponseDTO>;
+    public apiV1OrdersOrderIdUserGet(orderId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<OrderResponseDTO>>;
+    public apiV1OrdersOrderIdUserGet(orderId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<OrderResponseDTO>>;
+    public apiV1OrdersOrderIdUserGet(orderId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (orderId === null || orderId === undefined) {
+            throw new Error('Required parameter orderId was null or undefined when calling apiV1OrdersOrderIdUserGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["Authorization"]) {
+            headers = headers.set('Authorization', this.configuration.apiKeys["Authorization"]);
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<OrderResponseDTO>('get',`${this.basePath}/api/v1/orders/${encodeURIComponent(String(orderId))}/user`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Creates a new order.
      * 
      * @param body The order data transfer object containing order details.

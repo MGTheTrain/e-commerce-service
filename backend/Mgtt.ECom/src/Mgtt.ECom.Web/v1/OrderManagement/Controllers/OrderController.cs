@@ -6,6 +6,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.OrderManagement;
@@ -33,7 +34,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         /// <param name="isCreateOperation">Indicates whether the operation is a creation operation.</param>
         /// <param name="orderId">The order id to check against.</param>
         /// <returns>True if the user has the required permissions and, if necessary, has valid orders; otherwise, false.</returns>
-        private async Task<string?> VerifyUserPermissionForOrder(bool isCreateOperation, Guid orderId)
+        private async Task<string?> VerifyUserPermissionForOrder(bool isCreateOperation, string orderId)
         {
             var permissionsClaims = this.User.FindAll("permissions");
             var userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
@@ -46,7 +47,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
 
             if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:orders")))
             {
-                if (!isCreateOperation && orderId != Guid.Empty)
+                if (!isCreateOperation && orderId != string.Empty)
                 {
                     var order = await this.orderService.GetOrderById(orderId);
                     return order?.UserID ?? userId;
@@ -57,7 +58,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
 
             if (permissionsClaims.Any(x => x.Value.Split(' ').Contains("manage:own-order")))
             {
-                if (!isCreateOperation && orderId != Guid.Empty)
+                if (!isCreateOperation && orderId != string.Empty)
                 {
                     var userOrders = await this.orderService.GetOrdersByUserId(userId);
                     return userOrders?.Any(x => x.OrderID == orderId) == true ? userId : null;
@@ -92,7 +93,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             }
 
             var isCreateOperation = true;
-            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, Guid.Empty);
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, string.Empty);
             if (userId == null)
             {
                 return this.Forbid();
@@ -104,6 +105,14 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderDate = DateTime.UtcNow,
                 TotalAmount = orderDTO.TotalAmount,
                 OrderStatus = orderDTO.OrderStatus,
+                CurrencyCode = orderDTO.CurrencyCode,
+                ReferenceId = orderDTO.ReferenceId,
+                AddressLine1 = orderDTO.AddressLine1,
+                AddressLine2 = orderDTO.AddressLine2,
+                AdminArea2 = orderDTO.AdminArea2,
+                AdminArea1 = orderDTO.AdminArea1,
+                PostalCode = orderDTO.PostalCode,
+                CountryCode = orderDTO.CountryCode,
             };
 
             var action = await this.orderService.CreateOrder(order);
@@ -119,9 +128,66 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
                 OrderStatus = order.OrderStatus,
+                CurrencyCode = order.CurrencyCode,
+                ReferenceId = order.ReferenceId,
+                AddressLine1 = order.AddressLine1,
+                AddressLine2 = order.AddressLine2,
+                AdminArea2 = order.AdminArea2,
+                AdminArea1 = order.AdminArea1,
+                PostalCode = order.PostalCode,
+                CountryCode = order.CountryCode,
+                CheckoutNowHref = order.CheckoutNowHref,
             };
 
             return this.CreatedAtAction(nameof(this.CreateOrder), orderResponseDTO);
+        }
+
+        /// <summary>
+        /// Retrieves the order associated with a specific user.
+        /// Explicitly checks whether a order belongs to a user by requiring a order id.
+        /// </summary>
+        /// <param name="orderId">The ID of the order.</param>
+        /// <returns>The order by user id.</returns>
+        /// <response code="200">Returns the order by user id.</response>
+        [HttpGet("{orderId}/user")]
+        [Authorize("manage:orders-and-own-order")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrderResponseDTO))]
+        public async Task<ActionResult<OrderResponseDTO>> GetUserOrderById(string orderId)
+        {
+            var isCreateOperation = false;
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
+            if (userId == null)
+            {
+                return this.Forbid();
+            }
+
+            var orders = await this.orderService.GetOrdersByUserId(userId);
+            var order = orders!.FirstOrDefault();
+
+            if (order == null)
+            {
+                return this.NotFound();
+            }
+
+            var orderDTO = new OrderResponseDTO
+            {
+                OrderID = order.OrderID,
+                UserID = order.UserID,
+                OrderDate = order.OrderDate,
+                TotalAmount = order.TotalAmount,
+                OrderStatus = order.OrderStatus,
+                CurrencyCode = order.CurrencyCode,
+                ReferenceId = order.ReferenceId,
+                AddressLine1 = order.AddressLine1,
+                AddressLine2 = order.AddressLine2,
+                AdminArea2 = order.AdminArea2,
+                AdminArea1 = order.AdminArea1,
+                PostalCode = order.PostalCode,
+                CountryCode = order.CountryCode,
+                CheckoutNowHref = order.CheckoutNowHref,
+            };
+
+            return this.Ok(orderDTO);
         }
 
         /// <summary>
@@ -139,7 +205,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<OrderResponseDTO>> GetOrderById(Guid orderId)
+        public async Task<ActionResult<OrderResponseDTO>> GetOrderById(string orderId)
         {
             var order = await this.orderService.GetOrderById(orderId);
 
@@ -155,6 +221,15 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
                 OrderStatus = order.OrderStatus,
+                CurrencyCode = order.CurrencyCode,
+                ReferenceId = order.ReferenceId,
+                AddressLine1 = order.AddressLine1,
+                AddressLine2 = order.AddressLine2,
+                AdminArea2 = order.AdminArea2,
+                AdminArea1 = order.AdminArea1,
+                PostalCode = order.PostalCode,
+                CountryCode = order.CountryCode,
+                CheckoutNowHref = order.CheckoutNowHref,
             };
 
             return this.Ok(orderDTO);
@@ -175,7 +250,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         public async Task<ActionResult<IEnumerable<OrderResponseDTO>>> GetOrdersForUser()
         {
             var isCreateOperation = false;
-            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, Guid.Empty);
+            var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, string.Empty);
             if (userId == null)
             {
                 return this.Forbid();
@@ -193,6 +268,15 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                     OrderDate = order.OrderDate,
                     TotalAmount = order.TotalAmount,
                     OrderStatus = order.OrderStatus,
+                    CurrencyCode = order.CurrencyCode,
+                    ReferenceId = order.ReferenceId,
+                    AddressLine1 = order.AddressLine1,
+                    AddressLine2 = order.AddressLine2,
+                    AdminArea2 = order.AdminArea2,
+                    AdminArea1 = order.AdminArea1,
+                    PostalCode = order.PostalCode,
+                    CountryCode = order.CountryCode,
+                    CheckoutNowHref = order.CheckoutNowHref,
                 });
             }
 
@@ -217,7 +301,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> UpdateOrder(Guid orderId, OrderRequestDTO orderDTO)
+        public async Task<IActionResult> UpdateOrder(string orderId, OrderRequestDTO orderDTO)
         {
             if (!this.ModelState.IsValid)
             {
@@ -254,6 +338,15 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
                 OrderStatus = order.OrderStatus,
+                CurrencyCode = order.CurrencyCode,
+                ReferenceId = order.ReferenceId,
+                AddressLine1 = order.AddressLine1,
+                AddressLine2 = order.AddressLine2,
+                AdminArea2 = order.AdminArea2,
+                AdminArea1 = order.AdminArea1,
+                PostalCode = order.PostalCode,
+                CountryCode = order.CountryCode,
+                CheckoutNowHref = order.CheckoutNowHref,
             };
 
             return this.Ok(orderResponseDTO);
@@ -274,7 +367,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> DeleteOrder(Guid orderId)
+        public async Task<IActionResult> DeleteOrder(string orderId)
         {
             var isCreateOperation = false;
             var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
@@ -311,7 +404,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> CreateOrderItem(Guid orderId, OrderItemRequestDTO orderItemDTO)
+        public async Task<IActionResult> CreateOrderItem(string orderId, OrderItemRequestDTO orderItemDTO)
         {
             if (!this.ModelState.IsValid)
             {
@@ -374,7 +467,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<IEnumerable<OrderItemResponseDTO>>> GetOrderItemsByOrderId(Guid orderId)
+        public async Task<ActionResult<IEnumerable<OrderItemResponseDTO>>> GetOrderItemsByOrderId(string orderId)
         {
             var isCreateOperation = false;
             var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
@@ -424,7 +517,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<OrderItemResponseDTO>> GetOrderItemById(Guid orderId, Guid itemId)
+        public async Task<ActionResult<OrderItemResponseDTO>> GetOrderItemById(string orderId, Guid itemId)
         {
             var isCreateOperation = false;
             var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
@@ -474,7 +567,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<OrderItemResponseDTO>> GetOrderItemForUser(Guid orderId, Guid productId)
+        public async Task<ActionResult<OrderItemResponseDTO>> GetOrderItemForUser(string orderId, Guid productId)
         {
             var isCreateOperation = false;
             var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
@@ -522,7 +615,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> UpdateOrderItem(Guid orderId, Guid itemId, OrderItemRequestDTO orderItemDTO)
+        public async Task<IActionResult> UpdateOrderItem(string orderId, Guid itemId, OrderItemRequestDTO orderItemDTO)
         {
             if (!this.ModelState.IsValid)
             {
@@ -539,7 +632,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             var order = await this.orderService.GetOrderById(orderId);
             if (order == null)
             {
-                return this.BadRequest();
+                return this.NotFound();
             }
 
             var orderItem = await this.orderItemService.GetOrderItemById(itemId);
@@ -589,7 +682,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> DeleteOrderItem(Guid orderId, Guid itemId)
+        public async Task<IActionResult> DeleteOrderItem(string orderId, Guid itemId)
         {
             var isCreateOperation = false;
             var userId = await this.VerifyUserPermissionForOrder(isCreateOperation, orderId);
@@ -601,7 +694,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.Controllers
             var order = await this.orderService.GetOrderById(orderId);
             if (order == null)
             {
-                return this.BadRequest();
+                return this.NotFound();
             }
 
             var orderItem = await this.orderItemService.GetOrderItemById(itemId);

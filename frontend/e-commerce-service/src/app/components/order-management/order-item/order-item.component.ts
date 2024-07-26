@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { OrderItemResponseDTO, ProductResponseDTO } from '../../../generated';
+import { OrderItemResponseDTO, OrderService, ProductResponseDTO, ProductService } from '../../../generated';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -17,23 +17,9 @@ export class OrderItemComponent implements OnInit {
   public faTrash: IconDefinition = faTrash;
   @Input() public isEditing: boolean = false;
   
-  @Input() orderItem: OrderItemResponseDTO = {
-    orderItemID: '',
-    orderID: '',
-    productID: '',
-    quantity: 0,
-    price: 0
-  };
+  @Input() orderItem: OrderItemResponseDTO = {};
 
-  @Input() product: ProductResponseDTO = {
-    productID: '1',
-    categories: ['Electric Guitar'],
-    name: 'Dean Razorback Guitar',
-    description: 'Product Description',
-    price: 3999.99,
-    stock: 10,
-    imageUrl: 'https://www.musicconnection.com/wp-content/uploads/2021/01/dean-dime-620x420.jpg'
-  };
+  @Input() product: ProductResponseDTO = {};
 
   availableCategories: string[] = [
     'Acoustic Guitar',
@@ -50,11 +36,28 @@ export class OrderItemComponent implements OnInit {
 
   public isLoggedIn: boolean = false;
 
+  constructor(private productService: ProductService, private orderService: OrderService) {}
+
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.isLoggedIn = true;
+
+      this.productService.apiV1ProductsProductIdGet(this.orderItem.productID!).subscribe(
+        (data: ProductResponseDTO) => {
+            this.product = data;
+        }
+      ); 
     } 
   }
 
-  constructor() { }
+  handleDeleteItemClick(orderItem: OrderItemResponseDTO): void {
+    if(localStorage.getItem('isLoggedIn') === 'true') {
+      this.orderService.apiV1OrdersOrderIdItemsItemIdDelete(orderItem.orderID!, orderItem.orderItemID!).subscribe(
+        (data: OrderItemResponseDTO) => {
+          console.log("Delete order item with id", data.orderItemID, "from order with id", data.orderID);
+        }
+      );
+    }
+    window.location.reload();
+  }
 }

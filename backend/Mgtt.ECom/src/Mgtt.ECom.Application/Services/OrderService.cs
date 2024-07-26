@@ -9,6 +9,7 @@ namespace Mgtt.ECom.Application.Services
     using System.Linq;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.OrderManagement;
+    using Mgtt.ECom.Infrastructure.Connectors;
     using Mgtt.ECom.Persistence.DataAccess;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
@@ -17,14 +18,16 @@ namespace Mgtt.ECom.Application.Services
     {
         private readonly PsqlDbContext context;
         private readonly ILogger<OrderService> logger;
+        private readonly IPayPalConnector payPalConnector;
 
-        public OrderService(PsqlDbContext context, ILogger<OrderService> logger)
+        public OrderService(PsqlDbContext context, IPayPalConnector payPalConnector, ILogger<OrderService> logger)
         {
             this.context = context;
             this.logger = logger;
+            this.payPalConnector = payPalConnector;
         }
 
-        public async Task<Order?> GetOrderById(Guid orderId)
+        public async Task<Order?> GetOrderById(string orderId)
         {
             this.logger.LogInformation("Fetching order by ID: {OrderId}", orderId);
             try
@@ -57,10 +60,13 @@ namespace Mgtt.ECom.Application.Services
             this.logger.LogInformation("Creating new order: {OrderId}", order.OrderID);
             try
             {
-                this.context.Orders.Add(order);
+                var accessToken = await this.payPalConnector.GetAccessTokenAsync();
+                var updatedOrder = await this.payPalConnector.CreateOrderAsync(order, accessToken!);
+
+                this.context.Orders.Add(updatedOrder!);
                 await this.context.SaveChangesAsync();
-                this.logger.LogInformation("Order created successfully: {OrderId}", order.OrderID);
-                return await Task.FromResult<Order?>(order);
+                this.logger.LogInformation("Order created successfully: {OrderId}", updatedOrder!.OrderID);
+                return await Task.FromResult<Order?>(updatedOrder);
             }
             catch (Exception ex)
             {
@@ -74,10 +80,11 @@ namespace Mgtt.ECom.Application.Services
             this.logger.LogInformation("Updating order: {OrderId}", order.OrderID);
             try
             {
-                this.context.Orders.Update(order);
-                await this.context.SaveChangesAsync();
-                this.logger.LogInformation("Order updated successfully: {OrderId}", order.OrderID);
-                return await Task.FromResult<Order?>(order);
+                await this.DeleteOrder(order.OrderID);
+                var updatedOrder = await this.CreateOrder(order);
+
+                this.logger.LogInformation("Order updated successfully: {OrderId}", updatedOrder!.OrderID);
+                return await Task.FromResult<Order?>(updatedOrder);
             }
             catch (Exception ex)
             {
@@ -86,17 +93,23 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
-        public async Task DeleteOrder(Guid orderId)
+        public async Task DeleteOrder(string orderId)
         {
             this.logger.LogInformation("Deleting order: {OrderId}", orderId);
             try
             {
-                var order = await this.context.Orders.FindAsync(orderId);
-                if (order != null)
+                var accessToken = await this.payPalConnector.GetAccessTokenAsync();
+                var result = await this.payPalConnector.DeleteOrderByIdAsync(orderId, accessToken!);
+
+                if (result)
                 {
-                    this.context.Orders.Remove(order);
-                    await this.context.SaveChangesAsync();
-                    this.logger.LogInformation("Order deleted successfully: {OrderId}", orderId);
+                    var order = await this.context.Orders.FindAsync(orderId);
+                    if (order != null)
+                    {
+                        this.context.Orders.Remove(order);
+                        await this.context.SaveChangesAsync();
+                        this.logger.LogInformation("Order deleted successfully: {OrderId}", orderId);
+                    }
                 }
             }
             catch (Exception ex)

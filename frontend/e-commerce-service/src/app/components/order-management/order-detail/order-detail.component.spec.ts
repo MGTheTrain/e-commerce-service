@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OrderDetailComponent } from './order-detail.component';
-import { CartService, OrderService } from '../../../generated';
+import { CartService, OrderService, ProductService } from '../../../generated';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { AuthModule } from '@auth0/auth0-angular';
@@ -32,6 +32,7 @@ describe('OrderDetailComponent', () => {
       providers: [
         OrderService,
         CartService,
+        ProductService,
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ]
     })

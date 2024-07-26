@@ -11,7 +11,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.DTOs
     {
         public Guid OrderItemID { get; set; }
 
-        public Guid OrderID { get; set; }
+        public string OrderID { get; set; }
 
         public Guid ProductID { get; set; }
 

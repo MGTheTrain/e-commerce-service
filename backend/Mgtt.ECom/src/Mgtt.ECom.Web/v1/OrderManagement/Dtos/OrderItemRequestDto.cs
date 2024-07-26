@@ -10,7 +10,7 @@ namespace Mgtt.ECom.Web.V1.OrderManagement.DTOs
     public class OrderItemRequestDTO
     {
         [Required]
-        public Guid OrderID { get; set; }
+        public string OrderID { get; set; }
 
         [Required]
         public Guid ProductID { get; set; }

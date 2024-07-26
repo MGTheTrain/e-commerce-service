@@ -29,7 +29,6 @@ const routes: Routes = [
 
     // Order Management
     { path: 'orders', component: OrderListComponent },
-    // { path: 'orders/creation', component: OrderCreationComponent }, // order will be created trough the cart
     { path: 'orders/:orderId', component: OrderDetailComponent },
     
     // Review Management

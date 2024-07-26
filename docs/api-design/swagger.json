@@ -1400,6 +1400,47 @@
         }
       }
     },
+    "/api/v1/orders/{orderId}/user": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Retrieves the order associated with a specific user.\r\nExplicitly checks whether a order belongs to a user by requiring a order id.",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "The ID of the order.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the order by user id.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponseDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponseDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/orders/{orderId}": {
       "get": {
         "tags": [
@@ -1413,8 +1454,7 @@
             "description": "The ID of the order.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -1513,8 +1553,7 @@
             "description": "The ID of the order to update.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -1656,8 +1695,7 @@
             "description": "The ID of the order to delete.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -1820,8 +1858,7 @@
             "description": "The ID of the order to which the item belongs.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -1940,8 +1977,7 @@
             "description": "The ID of the order.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -2051,8 +2087,7 @@
             "description": "The ID of the order.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           },
           {
@@ -2161,8 +2196,7 @@
             "description": "The ID of the order to which the item belongs.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           },
           {
@@ -2314,8 +2348,7 @@
             "description": "The ID of the order to which the item belongs.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           },
           {
@@ -2409,8 +2442,7 @@
             "description": "The ID of the order.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           },
           {
@@ -2660,7 +2692,7 @@
         "tags": [
           "Product"
         ],
-        "summary": "Retrieves the product associated with a specific user. \r\nExplicitly checks whether a product belongs to a user by requiring a product id",
+        "summary": "Retrieves the product associated with a specific user.\r\nExplicitly checks whether a product belongs to a user by requiring a product id.",
         "parameters": [
           {
             "name": "productId",
@@ -3555,7 +3587,7 @@
         "tags": [
           "Review"
         ],
-        "summary": "Retrieves the review associated with a specific user. \r\nExplicitly checks whether a review belongs to a user by requiring a review id",
+        "summary": "Retrieves the review associated with a specific user.\r\nExplicitly checks whether a review belongs to a user by requiring a review id.",
         "parameters": [
           {
             "name": "reviewId",
@@ -3777,8 +3809,8 @@
         "type": "object",
         "properties": {
           "orderID": {
-            "type": "string",
-            "format": "uuid"
+            "minLength": 1,
+            "type": "string"
           },
           "productID": {
             "type": "string",
@@ -3807,7 +3839,7 @@
           },
           "orderID": {
             "type": "string",
-            "format": "uuid"
+            "nullable": true
           },
           "productID": {
             "type": "string",
@@ -3830,6 +3862,7 @@
       },
       "OrderRequestDTO": {
         "required": [
+          "countryCode",
           "orderStatus",
           "totalAmount"
         ],
@@ -3844,6 +3877,39 @@
             "maxLength": 50,
             "minLength": 0,
             "type": "string"
+          },
+          "currencyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "referenceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine1": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine2": {
+            "type": "string",
+            "nullable": true
+          },
+          "adminArea2": {
+            "type": "string",
+            "nullable": true
+          },
+          "adminArea1": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryCode": {
+            "maxLength": 2,
+            "minLength": 2,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -3853,7 +3919,7 @@
         "properties": {
           "orderID": {
             "type": "string",
-            "format": "uuid"
+            "nullable": true
           },
           "userID": {
             "type": "string",
@@ -3868,6 +3934,42 @@
             "format": "float"
           },
           "orderStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "currencyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "referenceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine1": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine2": {
+            "type": "string",
+            "nullable": true
+          },
+          "adminArea2": {
+            "type": "string",
+            "nullable": true
+          },
+          "adminArea1": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "checkoutNowHref": {
             "type": "string",
             "nullable": true
           }

@@ -8,7 +8,7 @@ public interface IOrderItemService
 {
     Task<OrderItem?> GetOrderItemById(Guid orderItemId);
 
-    Task<IEnumerable<OrderItem>?> GetOrderItemsByOrderId(Guid orderId);
+    Task<IEnumerable<OrderItem>?> GetOrderItemsByOrderId(string orderId);
 
     Task<OrderItem?> GetOrderItemByProductAndUserId(Guid productId, string userId);
 

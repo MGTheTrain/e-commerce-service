@@ -48,6 +48,7 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
 - [ ] Decouple the monolith into µServices
 - [ ] Implement filtering and pagination for specific list calls in web backend
 - [ ] Increase and measure code coverage
+- [ ] Enable the uploading and resizing of product images
 
 **NOTE:** Also consider checking out the [entity relationship diagram](./docs/diagrams/entity-relationship-diagram.mmd)
 

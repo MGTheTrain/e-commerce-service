@@ -1,6 +1,6 @@
 # e-commerce-service
 
-![Status](https://img.shields.io/badge/Status-On%20Hold-yellow)
+![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
 
 ## Table of Contents
 

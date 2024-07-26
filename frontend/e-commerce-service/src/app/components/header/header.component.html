@@ -17,6 +17,10 @@
             <fa-icon [icon]="faShoppingCart"></fa-icon> Cart
           </button>
           <span class="mx-2"></span>
+          <button *ngIf="isLoggedIn" type="button" class="btn btn-outline-secondary" (click)="handleNavigateToOrdersClick()">
+            <fa-icon [icon]="faList"></fa-icon> Orders
+          </button>
+          <span class="mx-2"></span>
           <button *ngIf="isLoggedIn" type="button" class="btn btn-danger" (click)="handleLogoutClick()">
             <fa-icon [icon]="faSignIn"></fa-icon> Logout
           </button>

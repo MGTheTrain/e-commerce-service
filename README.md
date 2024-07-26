@@ -47,6 +47,7 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
 - [ ] Reduce the number of web backend calls from the web frontend by providing HTTP endpoints that perform multiple logical backend operations
 - [ ] Decouple the monolith into µServices
 - [ ] Implement filtering and pagination for specific list calls in web backend
+- [ ] Increase and measure code coverage
 
 **NOTE:** Also consider checking out the [entity relationship diagram](./docs/diagrams/entity-relationship-diagram.mmd)
 

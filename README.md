@@ -1,6 +1,6 @@
 # e-commerce-service
 
-![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
+![Status](https://img.shields.io/badge/Status-In%20OnHold-yellow)
 
 ## Table of Contents
 
@@ -45,7 +45,7 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
     - [ ] Manage and moderate user reviews to maintain quality and trustworthiness. Therefore leverage OpenAI APIs.
 
 - [ ] Reduce the number of web backend calls from the web frontend by providing HTTP endpoints that perform multiple logical backend operations
-- [ ] Decouple the monolith into microservices
+- [ ] Decouple the monolith into µServices
 - [ ] Implement filtering and pagination for specific list calls in web backend
 
 **NOTE:** Also consider checking out the [entity relationship diagram](./docs/diagrams/entity-relationship-diagram.mmd)

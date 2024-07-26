@@ -25,10 +25,10 @@
         </div>
         <div class="form-group mb-3">
           <label><strong>Order Status</strong></label>
-          <select placeholder="Order Status" class="form-control" id="orderStatus" name="orderStatus" [(ngModel)]="order.orderStatus" [disabled]="!isEditing">
-            <option value="pending">Pending</option>
-            <option value="shipped">Shipped</option>
-            <option value="delivered">Delivered</option>
+          <select placeholder="Order Status" class="form-control" id="orderStatus" name="orderStatus" [(ngModel)]="order.orderStatus" disabled>
+            <option value="Pending">Pending</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Delivered">Delivered</option>
           </select>
         </div>
 

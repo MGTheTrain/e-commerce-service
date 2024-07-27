@@ -3,15 +3,18 @@ services:
     image: localstack/localstack
     container_name: localstack
     ports:
-      - "4566:4566"
+      - "4566:4566"            # LocalStack Gateway
+      - "4510-4559:4510-4559"  # External services port range
     environment:
       - DEBUG=${DEBUG-}
       - DOCKER_HOST=unix:///var/run/docker.sock
-      - AWS_DEFAULT_REGION=us-east-1
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
-      - AWS_ENDPOINT_URL=http://localhost:4566
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_REGION=us-east-1
+      - AWS_ENDPOINT_URL=http://localstack:4566
       - AWS_PAGER=""
+      - SERVICES=s3
     volumes:
       - localstack-data:/data
     # Check: aws configure list

@@ -141,6 +141,9 @@ var dbContext = builder.Services.AddDbContext<DbContext, PsqlDbContext>(options 
 builder.Services.Configure<PayPalSettings>(builder.Configuration.GetSection("PayPalSettings"));
 builder.Services.AddHttpClient<IPayPalConnector, PayPalConnector>();
 
+builder.Services.Configure<AwsS3Settings>(builder.Configuration.GetSection("AwsS3Settings"));
+builder.Services.AddSingleton<IBlobConnector, AwsS3Connector>();
+
 builder.Services.AddTransient<IOrderItemService, OrderItemService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IProductService, ProductService>();

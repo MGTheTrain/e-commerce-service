@@ -26,7 +26,7 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
         }
 
         [Fact]
-        public async Task UploadDownloadAndDeleteImageAsync_VerifiesImageLifecycle()
+        public async Task UploadDownloadAndDeleteImageUsingFilePathAsync_VerifiesImageLifecycle()
         {
             var bucketName = "test-bucket";
             var key = "test.txt";
@@ -65,7 +65,7 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
         }
 
         [Fact]
-        public async Task UploadDownloadAndDeleteImageAsync_VerifiesImageLifecycleII()
+        public async Task UploadDownloadAndDeleteImageUsingStreamsAsync_VerifiesImageLifecycle()
         {
             var bucketName = "test-bucket";
             var key = "test.txt";

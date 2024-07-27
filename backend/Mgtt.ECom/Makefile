@@ -9,13 +9,13 @@ TEST_DIR = test
 SMOKE_TEST_DIR = smoke-test
 
 # Commands
-.PHONY: start-docker-cmp stop-docker-cmp test test-individual smoke-test run clean format-and-lint
+.PHONY: start-docker-cmp-external stop-docker-cmp-external test test-individual smoke-test run clean format-and-lint
 
-start-docker-cmp:
-	cd devops/docker-compose && docker-compose up -d --build
+start-docker-cmp-external:
+	cd ../.. && docker-compose -f docker-compose.external.yml up -d --build
 
-stop-docker-cmp:
-	cd devops/docker-compose && docker-compose down -v
+stop-docker-cmp-external:
+	cd ../.. && docker-compose -f docker-compose.external.yml down -v
 
 # Run tests
 test:

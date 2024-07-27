@@ -40,10 +40,10 @@ dotnet sln Mgtt.ECom.sln add ./test/Mgtt.ECom.PersistenceTest/Mgtt.ECom.Persiste
 
 ### Running xUnit tests
 
-If external services for storage or messaging are needed via Docker Compose modify the [docker-compose.yml](./devops/docker-compose/docker-compose.yml) and utilize the following line:
+If external services for storage or messaging are needed via Docker Compose modify the [docker-compose.external.yml](../../docker-compose.external.yml) and utilize the following line:
 
 ```sh
-make start-docker-cmp
+make start-docker-cmp-external
 ```
 
 Run xUnit tests:
@@ -51,6 +51,8 @@ Run xUnit tests:
 ```sh
 export AWS_ACCESS_KEY_ID="test"
 export AWS_SECRET_ACCESS_KEY="test"
+export AWS_DEFAULT_REGION="us-east-1"
+export AWS_ENDPOINT_URL="http://localhost:4566"
 # All tests
 make test
 # Individual tests
@@ -59,10 +61,10 @@ make test-individual subdir=<subdirectory in the test folder, e.g. Mgtt.ECom.App
 
 ### Starting the Kestrel-Webserver
 
-If external services for storage or messaging are needed via Docker Compose modify the [docker-compose.yml](./devops/docker-compose/docker-compose.yml) and utilize the following line:
+If external services for storage or messaging are needed via Docker Compose modify the [docker-compose.external.yml](../../docker-compose.external.yml) and utilize the following line:
 
 ```sh
-make start-docker-cmp
+make start-docker-cmp-external
 ```
 
 Start Kestrel-Webserver:

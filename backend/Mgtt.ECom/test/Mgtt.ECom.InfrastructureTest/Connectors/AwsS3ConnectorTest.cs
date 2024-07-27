@@ -5,6 +5,7 @@
 namespace Mgtt.ECom.InfrastructureTest.Connectors
 {
     using System.IO;
+    using System.Text;
     using System.Threading.Tasks;
     using Mgtt.ECom.Infrastructure.Connectors;
     using Mgtt.ECom.Infrastructure.Settings;
@@ -61,6 +62,41 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
             // Clean up
             File.Delete(filePath);
             File.Delete(downloadPath);
+        }
+
+        [Fact]
+        public async Task UploadDownloadAndDeleteImageAsync_VerifiesImageLifecycleII()
+        {
+            var bucketName = "test-bucket";
+            var key = "test.txt";
+            var content = "Sample content";
+
+            // Create a stream to upload
+            var uploadStream = new MemoryStream(Encoding.UTF8.GetBytes(content));
+
+            // Upload the image
+            await this.awsS3Connector.UploadImageAsync(bucketName, key, uploadStream);
+
+            // Verify that the image has been uploaded
+            var listResponse = await this.awsS3Connector.ListObjectsAsync(bucketName);
+            Assert.Contains(listResponse.S3Objects, obj => obj.Key == key);
+
+            // Download the image
+            var downloadStream = await this.awsS3Connector.DownloadImageAsync(bucketName, key);
+
+            // Verify that the image has been downloaded correctly
+            using (var reader = new StreamReader(downloadStream))
+            {
+                var downloadedContent = await reader.ReadToEndAsync();
+                Assert.Equal(content, downloadedContent);
+            }
+
+            // Delete the image
+            await this.awsS3Connector.DeleteImageAsync(bucketName, key);
+
+            // Verify that the image has been deleted
+            var listAfterDeleteResponse = await this.awsS3Connector.ListObjectsAsync(bucketName);
+            Assert.DoesNotContain(listAfterDeleteResponse.S3Objects, obj => obj.Key == key);
         }
     }
 }

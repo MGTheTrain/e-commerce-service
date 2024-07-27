@@ -16,7 +16,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors
         private readonly IAmazonS3 s3Client;
         private readonly ILogger<AwsS3Connector> logger;
 
-        public AwsS3Connector(ILogger<AwsS3Connector> logger, bool utilizeLocalStackS3)
+        public AwsS3Connector(ILogger<AwsS3Connector> logger, bool utilizeLocalStackS3) 
         {
             this.logger = logger;
 
@@ -82,6 +82,29 @@ namespace Mgtt.ECom.Infrastructure.Connectors
             }
         }
 
+        public async Task UploadImageAsync(string bucketName, string key, Stream inputStream)
+        {
+            await EnsureBucketExistsAsync(bucketName);
+            this.logger.LogInformation($"Uploading {key} to bucket {bucketName}...");
+
+            try
+            {
+                var putRequest = new PutObjectRequest
+                {
+                    BucketName = bucketName,
+                    Key = key,
+                    InputStream = inputStream,
+                };
+
+                PutObjectResponse response = await this.s3Client.PutObjectAsync(putRequest);
+                this.logger.LogInformation($"Upload response status code: {response.HttpStatusCode}");
+            }
+            catch (AmazonS3Exception e)
+            {
+                this.logger.LogError($"Error uploading image: {e.Message}");
+            }
+        }
+
         public async Task DownloadImageAsync(string bucketName, string key, string downloadPath)
         {
             await EnsureBucketExistsAsync(bucketName);
@@ -104,6 +127,33 @@ namespace Mgtt.ECom.Infrastructure.Connectors
             catch (AmazonS3Exception e)
             {
                 this.logger.LogError($"Error downloading image: {e.Message}");
+            }
+        }
+
+        public async Task<Stream> DownloadImageAsync(string bucketName, string key)
+        {
+            await EnsureBucketExistsAsync(bucketName);
+            this.logger.LogInformation($"Downloading {key} from bucket {bucketName}...");
+
+            try
+            {
+                var getRequest = new GetObjectRequest
+                {
+                    BucketName = bucketName,
+                    Key = key,
+                };
+
+                GetObjectResponse response = await this.s3Client.GetObjectAsync(getRequest);
+                var outputStream = new MemoryStream();
+                await response.ResponseStream.CopyToAsync(outputStream);
+                outputStream.Position = 0; // Reset the stream position to the beginning
+                this.logger.LogInformation($"Downloaded image to stream.");
+                return outputStream;
+            }
+            catch (AmazonS3Exception e)
+            {
+                this.logger.LogError($"Error downloading image: {e.Message}");
+                throw;
             }
         }
 

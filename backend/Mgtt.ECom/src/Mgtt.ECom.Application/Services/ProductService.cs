@@ -9,18 +9,23 @@ namespace Mgtt.ECom.Application.Services
     using System.Linq;
     using System.Threading.Tasks;
     using Mgtt.ECom.Domain.ProductManagement;
+    using Mgtt.ECom.Infrastructure.Connectors;
     using Mgtt.ECom.Persistence.DataAccess;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
 
     public class ProductService : IProductService
     {
-        private readonly PsqlDbContext context;
+        private readonly PsqlDbContext dbContext;
+
+        private readonly IBlobConnector blobConnector; 
         private readonly ILogger<ProductService> logger;
 
-        public ProductService(PsqlDbContext context, ILogger<ProductService> logger)
+        public ProductService(PsqlDbContext dbContext, IBlobConnector blobConnector, ILogger<ProductService> logger)
         {
-            this.context = context;
+            this.dbContext = dbContext;
+            this.blobConnector = blobConnector;
             this.logger = logger;
         }
 
@@ -29,7 +34,7 @@ namespace Mgtt.ECom.Application.Services
             this.logger.LogInformation("Fetching product by ID: {ProductId}", productId);
             try
             {
-                return await this.context.Products.FindAsync(productId);
+                return await this.dbContext.Products.FindAsync(productId);
             }
             catch (Exception ex)
             {
@@ -43,7 +48,7 @@ namespace Mgtt.ECom.Application.Services
             this.logger.LogInformation("Fetching all products");
             try
             {
-                return await this.context.Products.ToListAsync();
+                return await this.dbContext.Products.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -57,7 +62,7 @@ namespace Mgtt.ECom.Application.Services
             this.logger.LogInformation("Fetching products by User ID: {UserId}", userId);
             try
             {
-                return await this.context.Products.Where(r => r.UserID == userId).ToListAsync();
+                return await this.dbContext.Products.Where(r => r.UserID == userId).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -66,13 +71,17 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
-        public async Task<Product?> CreateProduct(Product product)
+        public async Task<Product?> CreateProduct(Product product, IFormFile file)
         {
             this.logger.LogInformation("Creating new product: {ProductName}", product.Name);
             try
             {
-                this.context.Products.Add(product);
-                await this.context.SaveChangesAsync();
+                using (var stream = file.OpenReadStream())
+                {
+                    await this.blobConnector.UploadImageAsync(product.ProductID.ToString(), product.Name, stream);
+                }
+                this.dbContext.Products.Add(product);
+                await this.dbContext.SaveChangesAsync();
                 this.logger.LogInformation("Product created successfully: {ProductId}", product.ProductID);
                 return await Task.FromResult<Product?>(product);
             }
@@ -83,13 +92,18 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
-        public async Task<Product?> UpdateProduct(Product product)
+        public async Task<Product?> UpdateProduct(Product product, IFormFile file)
         {
             this.logger.LogInformation("Updating product: {ProductId}", product.ProductID);
             try
             {
-                this.context.Products.Update(product);
-                await this.context.SaveChangesAsync();
+                await this.blobConnector.DeleteImageAsync(product.ProductID.ToString(), product.Name);
+                using (var stream = file.OpenReadStream())
+                {
+                    await this.blobConnector.UploadImageAsync(product.ProductID.ToString(), product.Name, stream);
+                }
+                this.dbContext.Products.Update(product);
+                await this.dbContext.SaveChangesAsync();
                 this.logger.LogInformation("Product updated successfully: {ProductId}", product.ProductID);
                 return await Task.FromResult<Product?>(product);
             }
@@ -105,11 +119,12 @@ namespace Mgtt.ECom.Application.Services
             this.logger.LogInformation("Deleting product: {ProductId}", productId);
             try
             {
-                var product = await this.context.Products.FindAsync(productId);
+                var product = await this.dbContext.Products.FindAsync(productId);
                 if (product != null)
                 {
-                    this.context.Products.Remove(product);
-                    await this.context.SaveChangesAsync();
+                    await this.blobConnector.DeleteImageAsync(product.ProductID.ToString(), product.Name);
+                    this.dbContext.Products.Remove(product);
+                    await this.dbContext.SaveChangesAsync();
                     this.logger.LogInformation("Product deleted successfully: {ProductId}", productId);
                 }
             }

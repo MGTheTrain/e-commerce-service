@@ -2,6 +2,8 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+using Microsoft.AspNetCore.Http;
+
 namespace Mgtt.ECom.Domain.ProductManagement;
 
 public interface IProductService
@@ -12,9 +14,9 @@ public interface IProductService
 
     Task<IEnumerable<Product>?> GetProductsByUserId(string userId);
 
-    Task<Product?> CreateProduct(Product product);
+    Task<Product?> CreateProduct(Product product, IFormFile file);
 
-    Task<Product?> UpdateProduct(Product product);
+    Task<Product?> UpdateProduct(Product product, IFormFile file);
 
     Task DeleteProduct(Guid productId);
 }

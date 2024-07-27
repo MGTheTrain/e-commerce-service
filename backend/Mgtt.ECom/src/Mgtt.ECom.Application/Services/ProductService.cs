@@ -76,9 +76,10 @@ namespace Mgtt.ECom.Application.Services
             this.logger.LogInformation("Creating new product: {ProductName}", product.Name);
             try
             {
+                product.SnapShotImageName = file.FileName;
                 using (var stream = file.OpenReadStream())
                 {
-                    await this.blobConnector.UploadImageAsync(product.ProductID.ToString(), product.Name, stream);
+                    await this.blobConnector.UploadImageAsync(product.ProductID.ToString(), product.SnapShotImageName, stream);
                 }
                 this.dbContext.Products.Add(product);
                 await this.dbContext.SaveChangesAsync();
@@ -97,11 +98,13 @@ namespace Mgtt.ECom.Application.Services
             this.logger.LogInformation("Updating product: {ProductId}", product.ProductID);
             try
             {
+                product.SnapShotImageName = file.FileName;
                 await this.blobConnector.DeleteImageAsync(product.ProductID.ToString(), product.Name);
                 using (var stream = file.OpenReadStream())
                 {
-                    await this.blobConnector.UploadImageAsync(product.ProductID.ToString(), product.Name, stream);
+                    await this.blobConnector.UploadImageAsync(product.ProductID.ToString(), product.SnapShotImageName, stream);
                 }
+
                 this.dbContext.Products.Update(product);
                 await this.dbContext.SaveChangesAsync();
                 this.logger.LogInformation("Product updated successfully: {ProductId}", product.ProductID);
@@ -122,7 +125,7 @@ namespace Mgtt.ECom.Application.Services
                 var product = await this.dbContext.Products.FindAsync(productId);
                 if (product != null)
                 {
-                    await this.blobConnector.DeleteImageAsync(product.ProductID.ToString(), product.Name);
+                    await this.blobConnector.DeleteImageAsync(product.ProductID.ToString(), product.SnapShotImageName);
                     this.dbContext.Products.Remove(product);
                     await this.dbContext.SaveChangesAsync();
                     this.logger.LogInformation("Product deleted successfully: {ProductId}", productId);

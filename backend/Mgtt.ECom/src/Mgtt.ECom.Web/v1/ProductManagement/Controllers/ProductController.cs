@@ -110,7 +110,6 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                 Description = productDTO.Description,
                 Price = productDTO.Price,
                 Stock = productDTO.Stock,
-                ImageUrl = productDTO.ImageUrl,
             };
 
             var action = await this.productService.CreateProduct(product, files[0]);
@@ -338,7 +337,6 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             product.Description = productDTO.Description;
             product.Price = productDTO.Price;
             product.Stock = productDTO.Stock;
-            product.ImageUrl = productDTO.ImageUrl;
 
             var action = await this.productService.UpdateProduct(product, files[0]);
             if (action == null)

@@ -83,7 +83,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> CreateProduct([FromRoute] ProductRequestDTO productDTO, [FromForm(Name = "files")] List<IFormFile> files)
+        public async Task<IActionResult> CreateProduct([FromBody] ProductRequestDTO productDTO, [FromForm(Name = "files")] List<IFormFile> files)
         {
             if (files.Count != 1)
             {
@@ -307,7 +307,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> UpdateProduct(Guid productId, ProductRequestDTO productDTO, [FromForm(Name = "files")] List<IFormFile> files)
+        public async Task<IActionResult> UpdateProduct([FromRoute] Guid productId, [FromBody] ProductRequestDTO productDTO, [FromForm(Name = "files")] List<IFormFile> files)
         {
             if (files.Count != 1)
             {

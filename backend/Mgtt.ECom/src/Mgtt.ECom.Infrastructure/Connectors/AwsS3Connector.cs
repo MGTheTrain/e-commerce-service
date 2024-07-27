@@ -2,6 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Mgtt.ECom.Infrastructure.Settings;
@@ -19,7 +20,9 @@ namespace Mgtt.ECom.Infrastructure.Connectors
         {
             this.logger = logger;
 
-            this.s3Client = new AmazonS3Client(new AmazonS3Config
+            var awsCredentials = new BasicAWSCredentials(settings.Value.AccessKey, settings.Value.SecretKey);
+
+            this.s3Client = new AmazonS3Client(awsCredentials, new AmazonS3Config
             {
                 ServiceURL = settings.Value.Url,
                 RegionEndpoint = Amazon.RegionEndpoint.GetBySystemName(settings.Value.Region),

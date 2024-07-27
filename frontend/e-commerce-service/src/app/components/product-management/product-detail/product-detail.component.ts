@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductResponseDTO, ProductRequestDTO, ProductService, CartService, CartItemRequestDTO, CartItemResponseDTO } from '../../../generated';
+import { ProductResponseDTO, ProductService, CartService, CartItemRequestDTO, CartItemResponseDTO } from '../../../generated';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrash, faImage, faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DetailHeaderComponent } from '../../header/detail-header/detail-header.component';
+import { ProductRequestDTO } from '../../../generated/model/productRequestDTO';
 
 @Component({
   selector: 'app-product-detail',
@@ -45,6 +46,7 @@ export class ProductDetailComponent implements OnInit {
 
   public isLoggedIn: boolean = false;
   public isProductOwner: boolean = false;
+  public selectedFile: File | null = null;
 
   constructor(private router: Router, private route: ActivatedRoute, private productService: ProductService, private cartService: CartService) { }
 
@@ -122,11 +124,22 @@ export class ProductDetailComponent implements OnInit {
           name: this.product.name!, 
           description: this.product.description!, 
           price: this.product.price!, 
-          stock: this.product.stock!, 
-          imageUrl: this.product.imageUrl! 
+          stock: this.product.stock!
         };
 
-        this.productService.apiV1ProductsProductIdPut(productID, productRequest).subscribe(
+        const fileBlobs: Blob[] = [];
+        if (this.selectedFile) {
+          fileBlobs.push(this.selectedFile);
+        }
+
+        this.productService.apiV1ProductsProductIdPutForm(productID,
+          productRequest.categories,
+          productRequest.name,
+          productRequest.description,
+          productRequest.price,
+          productRequest.stock,
+          fileBlobs
+        ).subscribe(
           () => {
             console.error('Successfully updated product with id', productID);
             this.router.navigate(['/']);
@@ -190,20 +203,26 @@ export class ProductDetailComponent implements OnInit {
     );
   }
 
+  // Method to trigger file input click
   triggerImageInput(): void {
     const fileInput = document.getElementById('imageInput') as HTMLInputElement;
     fileInput.click();
   }
-
+  
+  // Method to handle image file change
   onImageChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      // const file = input.files[0];
-      // const reader = new FileReader();
-      // reader.onload = (e: any) => {
-      //   // this.product.imageUrl = e.target.result;
-      // };
-      // // reader.readAsDataURL(file);
-    }
+      const file = input.files[0];
+      this.selectedFile = file;
+  
+      // Create a FileReader to read the file and convert it to a Data URL for preview
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        // Ensure e.target is an instance of FileReader
+        console.log(e);
+      };
+      reader.readAsDataURL(file);
+    }  
   }
 }

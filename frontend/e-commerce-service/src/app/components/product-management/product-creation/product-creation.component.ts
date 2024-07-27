@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faArrowLeft, faImage, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { ProductRequestDTO, ProductResponseDTO, ProductService } from '../../../generated';
+import { ProductResponseDTO, ProductService } from '../../../generated';
 import { DetailHeaderComponent } from '../../header/detail-header/detail-header.component';
 
 @Component({
@@ -16,13 +16,12 @@ import { DetailHeaderComponent } from '../../header/detail-header/detail-header.
   styleUrl: './product-creation.component.css'
 })
 export class ProductCreationComponent implements OnInit {
-  productRequest: ProductRequestDTO = { 
+  product: ProductResponseDTO = { 
     categories: ['Electric Guitar'],
     name: '', 
     description: '', 
     price: 0, 
-    stock: 0, 
-    imageUrl: 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg' 
+    stock: 0
   };
 
   availableCategories: string[] = [
@@ -44,6 +43,7 @@ export class ProductCreationComponent implements OnInit {
   public isEditing: boolean = false;
 
   public isLoggedIn: boolean = false;
+  public selectedFile: File | null = null;
 
   constructor(private router: Router, private productService: ProductService) { }
 
@@ -58,7 +58,18 @@ export class ProductCreationComponent implements OnInit {
   }
 
   handleCreateProductClick(): void {
-    this.productService.apiV1ProductsPost(this.productRequest).subscribe(
+    const fileBlobs: Blob[] = [];
+    if (this.selectedFile) {
+      fileBlobs.push(this.selectedFile);
+    }
+    
+    this.productService.apiV1ProductsPostForm(
+      this.product.categories,
+      this.product.name,
+      this.product.description,
+      this.product.price,
+      this.product.stock,
+      fileBlobs).subscribe(
       (data: ProductResponseDTO) => {
         console.log('Created product', data);
         this.router.navigate(['/']);
@@ -69,20 +80,26 @@ export class ProductCreationComponent implements OnInit {
     ); 
   }
 
+  // Method to trigger file input click
   triggerImageInput(): void {
     const fileInput = document.getElementById('imageInput') as HTMLInputElement;
     fileInput.click();
   }
 
+  // Method to handle image file change
   onImageChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      // const file = input.files[0];
-      // const reader = new FileReader();
-      // reader.onload = (e: any) => {
-      //   // this.product.imageUrl = e.target.result;
-      // };
-      // // reader.readAsDataURL(file);
-    }
+      const file = input.files[0];
+      this.selectedFile = file;
+  
+      // Create a FileReader to read the file and convert it to a Data URL for preview
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        // Ensure e.target is an instance of FileReader
+        console.log(e);
+      };
+      reader.readAsDataURL(file);
+    }  
   }
 }

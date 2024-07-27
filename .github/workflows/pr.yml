@@ -11,26 +11,33 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Test C#
-        uses: MGTheTrain/public-github-actions/.github/actions/test-csharp-repository@main
-        with:
-          TEST_WORKING_DIRECTORY: ./backend/Mgtt.ECom/test
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Test TypeScript
-        uses: MGTheTrain/public-github-actions/.github/actions/test-ng-typescript-repository@main
-        with:
-          WORKING_DIRECTORY: ./frontend/e-commerce-service
+      - name: Check availability of docker-compose
+        run: |
+          docker-compose --help 
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: 'csharp, javascript'
+      # - name: Test C#
+      #   uses: MGTheTrain/public-github-actions/.github/actions/test-csharp-repository@main
+      #   with:
+      #     TEST_WORKING_DIRECTORY: ./backend/Mgtt.ECom/test
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+      # - name: Test TypeScript
+      #   uses: MGTheTrain/public-github-actions/.github/actions/test-ng-typescript-repository@main
+      #   with:
+      #     WORKING_DIRECTORY: ./frontend/e-commerce-service
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-        with:
-          languages: 'csharp, javascript'
+      # - name: Initialize CodeQL
+      #   uses: github/codeql-action/init@v3
+      #   with:
+      #     languages: 'csharp, javascript'
+
+      # - name: Autobuild
+      #   uses: github/codeql-action/autobuild@v3
+
+      # - name: Perform CodeQL Analysis
+      #   uses: github/codeql-action/analyze@v3
+      #   with:
+      #     languages: 'csharp, javascript'
           

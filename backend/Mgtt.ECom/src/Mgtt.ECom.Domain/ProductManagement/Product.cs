@@ -37,6 +37,10 @@ namespace Mgtt.ECom.Domain.ProductManagement
         [StringLength(100)]
         public string Name { get; set; }
 
+        [Required]
+        [StringLength(100)]
+        public string SnapShotImageName { get; set; }
+
         public string Description { get; set; }
 
         [Required]
@@ -69,6 +73,11 @@ namespace Mgtt.ECom.Domain.ProductManagement
             if (string.IsNullOrEmpty(this.Name))
             {
                 yield return new ValidationResult($"{nameof(this.Name)} can't be empty");
+            }
+
+            if (this.SnapShotImageName == string.Empty)
+            {
+                yield return new ValidationResult($"{nameof(this.SnapShotImageName)} can't be empty");
             }
 
             if (this.Price <= 0)

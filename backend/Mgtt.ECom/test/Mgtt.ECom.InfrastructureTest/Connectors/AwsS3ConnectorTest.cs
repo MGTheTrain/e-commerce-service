@@ -4,6 +4,7 @@
 
 namespace Mgtt.ECom.InfrastructureTest.Connectors
 {
+    using System;
     using System.IO;
     using System.Text;
     using System.Threading.Tasks;
@@ -21,7 +22,6 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
         public AwsS3ConnectorTest()
         {
             var mockLogger = Mock.Of<ILogger<AwsS3Connector>>();
-            var utilizeLocalStackS3 = true;
 
             var awsS3Settings = new AwsS3Settings
             {
@@ -44,8 +44,10 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
             // Create the file to upload
             await File.WriteAllTextAsync(filePath, content);
 
-            // Upload the image
-            await this.awsS3Connector.UploadImageAsync(bucketName, key, filePath);
+            // Upload the image and get the URL
+            var uploadUrl = await this.awsS3Connector.UploadImageAsync(bucketName, key, filePath);
+            Assert.NotNull(uploadUrl);
+            Assert.StartsWith("http", uploadUrl); // Basic check to ensure URL starts with "http"
 
             // Verify that the image has been uploaded
             var listResponse = await this.awsS3Connector.ListObjectsAsync(bucketName);
@@ -79,24 +81,24 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
             var content = "Sample content";
 
             // Create a stream to upload
-            var uploadStream = new MemoryStream(Encoding.UTF8.GetBytes(content));
+            using var uploadStream = new MemoryStream(Encoding.UTF8.GetBytes(content));
 
-            // Upload the image
-            await this.awsS3Connector.UploadImageAsync(bucketName, key, uploadStream);
+            // Upload the image and get the URL
+            var uploadUrl = await this.awsS3Connector.UploadImageAsync(bucketName, key, uploadStream);
+            Assert.NotNull(uploadUrl);
+            Assert.StartsWith("http", uploadUrl); // Basic check to ensure URL starts with "http"
 
             // Verify that the image has been uploaded
             var listResponse = await this.awsS3Connector.ListObjectsAsync(bucketName);
             Assert.Contains(listResponse.S3Objects, obj => obj.Key == key);
 
             // Download the image
-            var downloadStream = await this.awsS3Connector.DownloadImageAsync(bucketName, key);
+            using var downloadStream = await this.awsS3Connector.DownloadImageAsync(bucketName, key);
 
             // Verify that the image has been downloaded correctly
-            using (var reader = new StreamReader(downloadStream))
-            {
-                var downloadedContent = await reader.ReadToEndAsync();
-                Assert.Equal(content, downloadedContent);
-            }
+            using var reader = new StreamReader(downloadStream);
+            var downloadedContent = await reader.ReadToEndAsync();
+            Assert.Equal(content, downloadedContent);
 
             // Delete the image
             await this.awsS3Connector.DeleteImageAsync(bucketName, key);

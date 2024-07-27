@@ -20,7 +20,9 @@ import { ProductRequestDTO } from '../../../generated/model/productRequestDTO';
 export class ProductDetailComponent implements OnInit {
   private subscription: Subscription | null = null;
 
-  product: ProductResponseDTO = {};
+  product: ProductResponseDTO = {
+    imageUrl: 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg' 
+  };
 
   quantity: number = 0;
   

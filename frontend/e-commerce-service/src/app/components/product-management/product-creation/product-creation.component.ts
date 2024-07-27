@@ -21,7 +21,8 @@ export class ProductCreationComponent implements OnInit {
     name: '', 
     description: '', 
     price: 0, 
-    stock: 0
+    stock: 0,
+    imageUrl: 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg' 
   };
 
   availableCategories: string[] = [

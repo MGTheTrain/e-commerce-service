@@ -46,7 +46,7 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
 
 - **Optimizations**
   - [ ] Reduce the number of web backend calls from the web frontend by providing HTTP endpoints that perform multiple logical backend operations
-  - [ ] Decompose the monolith into µServices
+  - [ ] Decompose monolith web backend into µServices
   - [ ] Implement filtering and pagination for specific list calls in web backend
   - [ ] Increase and measure code coverage
   - [ ] Enable the uploading and resizing of product images

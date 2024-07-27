@@ -301,7 +301,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPut("{productId}")]
         [Authorize("manage:products-and-own-product")]
-        [Produces("multipart/form-data")]
+        [Consumes("multipart/form-data")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

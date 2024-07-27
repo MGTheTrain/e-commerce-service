@@ -20,7 +20,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors
         {
             this.logger = logger;
 
-             // The AWS SDK will automatically use environment variables for credentials and configurations
+             // The AWS SDK will use externally set environment variables for credentials and configurations
             if(utilizeLocalStackS3)
             {
                 var awsConfig = new AmazonS3Config

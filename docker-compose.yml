@@ -17,6 +17,8 @@ services:
       - SERVICES=s3
     volumes:
       - localstack-data:/data
+    networks:
+      - custom-network 
     # Check: aws configure list
 
   postgres: 

@@ -16,12 +16,12 @@ namespace Mgtt.ECom.Infrastructure.Connectors
         private readonly IAmazonS3 s3Client;
         private readonly ILogger<AwsS3Connector> logger;
 
-        public AwsS3Connector(ILogger<AwsS3Connector> logger, bool utilizeLocalStackS3) 
+        public AwsS3Connector(ILogger<AwsS3Connector> logger, IOptions<AwsS3Settings> settings) 
         {
             this.logger = logger;
 
              // The AWS SDK will use externally set environment variables for credentials and configurations
-            if(utilizeLocalStackS3)
+            if(settings.Value.UtilizeLocalStack)
             {
                 var awsConfig = new AmazonS3Config
                 {

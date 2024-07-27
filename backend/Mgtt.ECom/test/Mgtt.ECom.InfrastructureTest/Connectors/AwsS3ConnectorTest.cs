@@ -22,7 +22,14 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
         {
             var mockLogger = Mock.Of<ILogger<AwsS3Connector>>();
             var utilizeLocalStackS3 = true;
-            this.awsS3Connector = new AwsS3Connector(mockLogger, utilizeLocalStackS3);
+
+            var awsS3Settings = new AwsS3Settings
+            {
+                UtilizeLocalStack = true,
+            };
+
+            var mockOptions = Options.Create(awsS3Settings);
+            this.awsS3Connector = new AwsS3Connector(mockLogger, mockOptions);
         }
 
         [Fact]

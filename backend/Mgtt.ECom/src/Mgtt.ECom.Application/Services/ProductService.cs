@@ -79,7 +79,8 @@ namespace Mgtt.ECom.Application.Services
                 product.SnapShotImageName = file.FileName;
                 using (var stream = file.OpenReadStream())
                 {
-                    await this.blobConnector.UploadImageAsync(product.ProductID.ToString(), product.SnapShotImageName, stream);
+                    var imageUrl = await this.blobConnector.UploadImageAsync(product.ProductID.ToString(), product.SnapShotImageName, stream);
+                    product.ImageUrl = imageUrl!;
                 }
                 this.dbContext.Products.Add(product);
                 await this.dbContext.SaveChangesAsync();
@@ -102,7 +103,8 @@ namespace Mgtt.ECom.Application.Services
                 await this.blobConnector.DeleteImageAsync(product.ProductID.ToString(), product.Name);
                 using (var stream = file.OpenReadStream())
                 {
-                    await this.blobConnector.UploadImageAsync(product.ProductID.ToString(), product.SnapShotImageName, stream);
+                    var imageUrl = await this.blobConnector.UploadImageAsync(product.ProductID.ToString(), product.SnapShotImageName, stream);
+                    product.ImageUrl = imageUrl!;
                 }
 
                 this.dbContext.Products.Update(product);

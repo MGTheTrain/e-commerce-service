@@ -15,13 +15,15 @@ namespace Mgtt.ECom.Infrastructure.Connectors
     {
         private readonly IAmazonS3 s3Client;
         private readonly ILogger<AwsS3Connector> logger;
+        private readonly IOptions<AwsS3Settings> settings;
 
         public AwsS3Connector(ILogger<AwsS3Connector> logger, IOptions<AwsS3Settings> settings) 
         {
             this.logger = logger;
+            this.settings = settings;
 
              // The AWS SDK will use externally set environment variables for credentials and configurations
-            if(settings.Value.UtilizeLocalStack)
+            if (settings.Value.UtilizeLocalStack)
             {
                 var awsConfig = new AmazonS3Config
                 {
@@ -59,7 +61,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors
             }
         }
 
-        public async Task UploadImageAsync(string bucketName, string key, string filePath)
+        public async Task<string?> UploadImageAsync(string bucketName, string key, string filePath)
         {
             await EnsureBucketExistsAsync(bucketName);
             this.logger.LogInformation($"Uploading {filePath} to bucket {bucketName}...");
@@ -75,14 +77,27 @@ namespace Mgtt.ECom.Infrastructure.Connectors
 
                 PutObjectResponse response = await this.s3Client.PutObjectAsync(putRequest);
                 this.logger.LogInformation($"Upload response status code: {response.HttpStatusCode}");
+
+                var url = string.Empty;
+                if (this.settings.Value.UtilizeLocalStack)
+                {
+                    url = $"https://localhost:4566/{bucketName}/{key}";
+                }
+                else
+                {
+                    url = $"https://{bucketName}.s3.amazonaws.com/{key}";
+                }
+
+                return url;
             }
             catch (AmazonS3Exception e)
             {
                 this.logger.LogError($"Error uploading image: {e.Message}");
+                return null;
             }
         }
 
-        public async Task UploadImageAsync(string bucketName, string key, Stream inputStream)
+        public async Task<string?> UploadImageAsync(string bucketName, string key, Stream inputStream)
         {
             await EnsureBucketExistsAsync(bucketName);
             this.logger.LogInformation($"Uploading {key} to bucket {bucketName}...");
@@ -98,10 +113,23 @@ namespace Mgtt.ECom.Infrastructure.Connectors
 
                 PutObjectResponse response = await this.s3Client.PutObjectAsync(putRequest);
                 this.logger.LogInformation($"Upload response status code: {response.HttpStatusCode}");
+
+                var url = string.Empty;
+                if (this.settings.Value.UtilizeLocalStack)
+                {
+                    url = $"https://localhost:4566/{bucketName}/{key}";
+                }
+                else
+                {
+                    url = $"https://{bucketName}.s3.amazonaws.com/{key}";
+                }
+
+                return url;
             }
             catch (AmazonS3Exception e)
             {
                 this.logger.LogError($"Error uploading image: {e.Message}");
+                return null;
             }
         }
 

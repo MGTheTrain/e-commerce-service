@@ -20,18 +20,43 @@ namespace Mgtt.ECom.Infrastructure.Connectors
         {
             this.logger = logger;
 
-            var awsCredentials = new BasicAWSCredentials(settings.Value.AccessKey, settings.Value.SecretKey);
-
-            this.s3Client = new AmazonS3Client(awsCredentials, new AmazonS3Config
+             // The AWS SDK will automatically use environment variables for credentials
+            var awsConfig = new AmazonS3Config
             {
                 ServiceURL = settings.Value.Url,
                 RegionEndpoint = Amazon.RegionEndpoint.GetBySystemName(settings.Value.Region),
                 ForcePathStyle = true,
-            });
+            };
+
+            this.s3Client = new AmazonS3Client(awsConfig);
+        }
+
+        private async Task EnsureBucketExistsAsync(string bucketName)
+        {
+            try
+            {
+                var listBucketsResponse = await this.s3Client.ListBucketsAsync();
+                if (!listBucketsResponse.Buckets.Any(b => b.BucketName == bucketName))
+                {
+                    var createBucketRequest = new PutBucketRequest
+                    {
+                        BucketName = bucketName,
+                        UseClientRegion = true,
+                    };
+                    await this.s3Client.PutBucketAsync(createBucketRequest);
+                    this.logger.LogInformation($"Bucket {bucketName} created successfully.");
+                }
+            }
+            catch (AmazonS3Exception e)
+            {
+                this.logger.LogError($"Error checking or creating bucket: {e.Message}");
+                throw;
+            }
         }
 
         public async Task UploadImageAsync(string bucketName, string key, string filePath)
         {
+            await EnsureBucketExistsAsync(bucketName);
             this.logger.LogInformation($"Uploading {filePath} to bucket {bucketName}...");
 
             try
@@ -54,6 +79,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors
 
         public async Task DownloadImageAsync(string bucketName, string key, string downloadPath)
         {
+            await EnsureBucketExistsAsync(bucketName);
             this.logger.LogInformation($"Downloading {key} from bucket {bucketName}...");
 
             try
@@ -78,6 +104,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors
 
         public async Task DeleteImageAsync(string bucketName, string key)
         {
+            await EnsureBucketExistsAsync(bucketName);
             this.logger.LogInformation($"Deleting {key} from bucket {bucketName}...");
 
             try
@@ -94,6 +121,26 @@ namespace Mgtt.ECom.Infrastructure.Connectors
             catch (AmazonS3Exception e)
             {
                 this.logger.LogError($"Error deleting image: {e.Message}");
+            }
+        }
+
+        public async Task<ListObjectsV2Response> ListObjectsAsync(string bucketName)
+        {
+            await EnsureBucketExistsAsync(bucketName);
+            try
+            {
+                var request = new ListObjectsV2Request
+                {
+                    BucketName = bucketName,
+                };
+
+                ListObjectsV2Response response = await this.s3Client.ListObjectsV2Async(request);
+                return response;
+            }
+            catch (AmazonS3Exception e)
+            {
+                this.logger.LogError($"Error listing objects: {e.Message}");
+                throw;
             }
         }
     }

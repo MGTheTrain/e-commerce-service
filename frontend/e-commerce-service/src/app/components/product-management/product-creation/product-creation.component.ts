@@ -98,7 +98,8 @@ export class ProductCreationComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
         // Ensure e.target is an instance of FileReader
-        console.log(e);
+        const target = e.target as FileReader;
+        this.product.imageUrl = target.result as string;
       };
       reader.readAsDataURL(file);
     }  

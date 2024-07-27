@@ -81,7 +81,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors
                 var url = string.Empty;
                 if (this.settings.Value.UtilizeLocalStack)
                 {
-                    url = $"https://localhost:4566/{bucketName}/{key}";
+                    url = $"http://localhost:4566/{bucketName}/{key}";
                 }
                 else
                 {
@@ -117,7 +117,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors
                 var url = string.Empty;
                 if (this.settings.Value.UtilizeLocalStack)
                 {
-                    url = $"https://localhost:4566/{bucketName}/{key}";
+                    url = $"http://localhost:4566/{bucketName}/{key}";
                 }
                 else
                 {

@@ -44,7 +44,7 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
   - Review Moderation
     - [ ] Manage and moderate user reviews to maintain quality and trustworthiness. Therefore leverage OpenAI APIs.
 
-- Optimizations
+- **Optimizations**
   - [ ] Reduce the number of web backend calls from the web frontend by providing HTTP endpoints that perform multiple logical backend operations
   - [ ] Decompose the monolith into µServices
   - [ ] Implement filtering and pagination for specific list calls in web backend

@@ -29,12 +29,4 @@
     <ProjectReference Include="..\..\src\Mgtt.ECom.Infrastructure\Mgtt.ECom.Infrastructure.csproj" />
   </ItemGroup>
 
-    <!-- <Target Name="CopyFiles" BeforeTargets="Build">
-      <ItemGroup>
-        <FilesToCopy Include="..\..\src\Mgtt.ECom.Web\appsettings.Development.json" />
-        <FilesToCopy Include=".\Assets\file_example_MP4_1280_10MG.mp4" />
-      </ItemGroup>
-      <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="$(OutputPath)" />
-    </Target> -->
-
 </Project>

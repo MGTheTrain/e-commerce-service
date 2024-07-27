@@ -16,19 +16,24 @@ namespace Mgtt.ECom.Infrastructure.Connectors
         private readonly IAmazonS3 s3Client;
         private readonly ILogger<AwsS3Connector> logger;
 
-        public AwsS3Connector(ILogger<AwsS3Connector> logger, IOptions<AwsS3Settings> settings)
+        public AwsS3Connector(ILogger<AwsS3Connector> logger, bool utilizeLocalStackS3)
         {
             this.logger = logger;
 
              // The AWS SDK will automatically use environment variables for credentials
-            var awsConfig = new AmazonS3Config
+            if(utilizeLocalStackS3)
             {
-                ServiceURL = settings.Value.Url,
-                RegionEndpoint = Amazon.RegionEndpoint.GetBySystemName(settings.Value.Region),
-                ForcePathStyle = true,
-            };
+                var awsConfig = new AmazonS3Config
+                {
+                    ForcePathStyle = true, // Necessary when working with LocalStack S3 instances
+                };
 
-            this.s3Client = new AmazonS3Client(awsConfig);
+                this.s3Client = new AmazonS3Client(awsConfig);
+            } 
+            else 
+            {
+                this.s3Client = new AmazonS3Client();
+            }
         }
 
         private async Task EnsureBucketExistsAsync(string bucketName)
@@ -126,9 +131,9 @@ namespace Mgtt.ECom.Infrastructure.Connectors
 
         public async Task<ListObjectsV2Response> ListObjectsAsync(string bucketName)
         {
-            await EnsureBucketExistsAsync(bucketName);
             try
             {
+                await EnsureBucketExistsAsync(bucketName);
                 var request = new ListObjectsV2Request
                 {
                     BucketName = bucketName,

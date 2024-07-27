@@ -89,6 +89,7 @@ namespace Mgtt.ECom.Persistence.Migrations
                     UserID = table.Column<string>(type: "text", nullable: false),
                     Categories = table.Column<List<string>>(type: "text[]", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    SnapShotImageName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
                     Stock = table.Column<int>(type: "integer", nullable: false),

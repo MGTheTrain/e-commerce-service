@@ -19,13 +19,9 @@ namespace Mgtt.ECom.InfrastructureTest.Connectors
 
         public AwsS3ConnectorTest()
         {
-            var settings = Options.Create(new AwsS3Settings
-            {
-                Url = "http://localhost:4566",
-                Region = "us-east-1",
-            });
             var mockLogger = Mock.Of<ILogger<AwsS3Connector>>();
-            this.awsS3Connector = new AwsS3Connector(mockLogger, settings);
+            var utilizeLocalStackS3 = true;
+            this.awsS3Connector = new AwsS3Connector(mockLogger, utilizeLocalStackS3);
         }
 
         [Fact]

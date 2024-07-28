@@ -18,6 +18,7 @@ namespace Mgtt.ECom.Domain.ProductManagement
             this.ProductID = Guid.NewGuid();
             this.Categories = new List<string>();
             this.Name = string.Empty;
+            this.SnapShotImageName = string.Empty;
             this.Description = string.Empty;
             this.Price = 0.01f;
             this.Stock = 0;

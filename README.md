@@ -59,6 +59,7 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
 
 - [Install Docker Engine](https://docs.docker.com/engine/install/)
 - Auth0 instance and expertise in creating necessary resources (roles, permissions, applications, APIs). **TBD:** Deployment of Auth0 resources using Terraform  required by web backend and web frontend
+- PayPal Developer Account with Dashboard Access. Checkout following [link](https://developer.paypal.com/api/rest/)
 
 ### Backend
 
@@ -94,6 +95,6 @@ docker-compose down -v
 
 ## Documentation
 
-Explore the Web API structure [here](./docs/api-design/web-api-structure.md). For more details on the use case overview [checkout following diagram](./docs/diagrams/use-case-overview.mmd). For more details on user roles and permissions required for RBAC [checkout following diagram](./docs/diagrams/user-roles-and-permissions-mapping.mmd).
+Explore the Web API structure [here](./docs/api-design/v1/web-api-structure.md). For more details on the use case overview [checkout following diagram](./docs/diagrams/use-case-overview.mmd). For more details on user roles and permissions required for RBAC [checkout following diagram](./docs/diagrams/user-roles-and-permissions-mapping.mmd).
 
 Optionally copy contents of the [swagger.json](./docs/api-design/swagger.json) to the [Swagger Online editor](https://editor.swagger.io/) and access the Swagger UI.

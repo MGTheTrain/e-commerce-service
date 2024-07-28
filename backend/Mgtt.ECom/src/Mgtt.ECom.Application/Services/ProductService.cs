@@ -43,19 +43,57 @@ namespace Mgtt.ECom.Application.Services
             }
         }
 
-        public async Task<IEnumerable<Product>?> GetAllProducts()
+        public async Task<IEnumerable<Product>?> GetAllProducts(
+            int pageNumber = 1, 
+            int pageSize = 10, 
+            string? category = null, 
+            string? name = null, 
+            float? minPrice = null, 
+            float? maxPrice = null)
         {
-            this.logger.LogInformation("Fetching all products");
+            this.logger.LogInformation("Fetching all products with filters");
+
             try
             {
-                return await this.dbContext.Products.ToListAsync();
+                // Start with all products
+                var query = this.dbContext.Products.AsQueryable();
+
+                // Apply category filter
+                if (!string.IsNullOrEmpty(category))
+                {
+                    query = query.Where(p => p.Categories != null && p.Categories.Contains(category));
+                }
+
+                // Apply name filter
+                if (!string.IsNullOrEmpty(name))
+                {
+                    query = query.Where(p => p.Name.Contains(name));
+                }
+
+                // Apply price range filter
+                if (minPrice.HasValue)
+                {
+                    query = query.Where(p => p.Price >= minPrice.Value);
+                }
+
+                if (maxPrice.HasValue)
+                {
+                    query = query.Where(p => p.Price <= maxPrice.Value);
+                }
+
+                // Apply pagination
+                var skip = (pageNumber - 1) * pageSize;
+                var products = await query.Skip(skip).Take(pageSize).ToListAsync();
+
+                return products;
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, "Error fetching all products");
+                this.logger.LogError(ex, "Error fetching products with filters");
                 return await Task.FromResult<IEnumerable<Product>?>(null);
             }
         }
+
 
         public async Task<IEnumerable<Product>?> GetProductsByUserId(string userId)
         {

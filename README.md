@@ -50,6 +50,7 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
   - [ ] Implement filtering and pagination for specific list calls in web backend
   - [ ] Increase and measure code coverage
   - [x] Enable uploading of product images
+  - [ ] Deployment of Auth0 resources using Terraform  required by web backend and web frontend
 
 **NOTE:** Also consider checking out the [entity relationship diagram](./docs/diagrams/entity-relationship-diagram.mmd)
 
@@ -58,7 +59,7 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
 ### Preconditions
 
 - [Install Docker Engine](https://docs.docker.com/engine/install/)
-- Auth0 instance and expertise in creating necessary resources (roles, permissions, applications, APIs). **TBD:** Deployment of Auth0 resources using Terraform  required by web backend and web frontend
+- Auth0 instance and expertise in creating necessary resources (roles, permissions, applications, APIs).
 - PayPal Developer Account with Dashboard Access. Checkout following [link](https://developer.paypal.com/api/rest/)
 
 ### Backend

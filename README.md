@@ -90,34 +90,42 @@ To view the web frontend, open a browser and go to `localhost:4200`. After manua
 
 ---
 
+**Products**
 ![Products](./docs/results/web-frontend-I.PNG "Products")
 
 ---
 
+**Shopping cart**
 ![Shopping cart](./docs/results/web-frontend-II.PNG "Shopping Cart")
 
 ---
 
+**Paypal checkout link**
 ![Paypal checkout link](./docs/results/web-frontend-III.PNG "Paypal checkout link")
 
 ---
 
+**User Order**
 ![User Order](./docs/results/web-frontend-IV.PNG "User Order")
 
 ---
 
+**Order Details**
 ![Order Details](./docs/results/web-frontend-V.PNG "Order Details")
 
 ---
 
+**Reviews**
 ![Reviews](./docs/results/web-frontend-VI.PNG "Reviews")
 
 ---
 
+**Auth0 Login**
 ![Auth0 Login](./docs/results/web-frontend-VII.PNG "Auth0 Login")
 
 ---
 
+**Product Creation**
 ![Product Creation](./docs/results/web-frontend-VIII.PNG "Product Creation")
 
 ---

@@ -89,21 +89,37 @@ To view the web backend, open a browser and go to `localhost:5000/swagger/index.
 To view the web frontend, open a browser and go to `localhost:4200`. After manually creating or adding some resources (products, reviews, orders, order items, cart items) results should resemble:
 
 ---
+
 ![Products](./docs/results/web-frontend-I.PNG)
+
 ---
+
 ![Shopping cart](./docs/results/web-frontend-II.PNG)
+
 ---
+
 ![Paypal checkout link](./docs/results/web-frontend-III.PNG)
+
 ---
+
 ![User Order](./docs/results/web-frontend-IV.PNG)
+
 ---
+
 ![Order Details](./docs/results/web-frontend-V.PNG)
+
 ---
+
 ![Reviews](./docs/results/web-frontend-VI.PNG)
+
 ---
+
 ![Auth0 Login](./docs/results/web-frontend-VII.PNG)
+
 ---
+
 ![Product Creation](./docs/results/web-frontend-VIII.PNG)
+
 ---
 
 You can remove all Docker resources with:

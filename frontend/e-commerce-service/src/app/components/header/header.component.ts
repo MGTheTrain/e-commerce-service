@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit {
   public searchText: string = ""; 
   public isLoggedIn: boolean = false;
   public accessToken: string | null = ''; 
+  @Input() enableSearch: boolean = true;
 
   constructor(private router: Router, public auth: AuthService, private cartService: CartService) {}
 

@@ -17,6 +17,7 @@ export class CartListComponent implements OnInit {
   @Input() carts: CartResponseDTO[] = [];
 
   public isLoggedIn: boolean = false;
+  public enableSearch: boolean = false;
 
   constructor(private router: Router, private cartService: CartService) {}
 

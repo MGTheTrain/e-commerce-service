@@ -39,6 +39,7 @@ export class ReviewListComponent implements OnInit {
 
   public isLoggedIn: boolean = false;
   public productId: string | null = null;
+  public enableSearch: boolean = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private reviewService: ReviewService, private productService: ProductService) {}
 

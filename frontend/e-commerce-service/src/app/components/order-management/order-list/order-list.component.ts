@@ -24,6 +24,8 @@ export class OrderListComponent implements OnInit {
   public isLoggedIn: boolean = false;
   public accessToken: string | null = ''; 
 
+  public enableSearch: boolean = false;
+
   constructor(private router: Router, private orderService: OrderService) {}
 
   ngOnInit(): void {

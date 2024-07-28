@@ -36,6 +36,8 @@ export class ProductListComponent implements OnInit {
   public isLoggedIn: boolean = false;
   public accessToken: string | null = ''; 
 
+  public enableSearch: boolean = true;
+
   constructor(private router: Router, private productService: ProductService, private cartService: CartService) {}
 
   ngOnInit(): void {

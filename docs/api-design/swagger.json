@@ -2702,10 +2702,66 @@
         "tags": [
           "Product"
         ],
-        "summary": "Retrieves all products.",
+        "summary": "Retrieves all products with optional pagination and filtering.",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "The page number for pagination.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "The number of items per page.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "The category to filter by.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "The name to filter by.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minPrice",
+            "in": "query",
+            "description": "The minimum price to filter by.",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "description": "The maximum price to filter by.",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Returns a list of all products.",
+            "description": "Returns a list of filtered and paginated products.",
             "content": {
               "text/plain": {
                 "schema": {

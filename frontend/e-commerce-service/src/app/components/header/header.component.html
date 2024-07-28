@@ -1,14 +1,15 @@
 <div class="row mb-3 justify-content-center">
   <div class="col-md-8 text-center">
     <img src="assets/e-commerce-logo.png" class="ecommerce-logo" (click)="handleLogoClick()">
-    <div class="input-group">
+
+    <div class="input-group" *ngIf="enableSearch">
       <div class="input-group-prepend">
         <button *ngIf="isLoggedIn" type="button" class="btn btn-outline-secondary" (click)="handleNavigateToOrdersClick()">
           <fa-icon [icon]="faList"></fa-icon> Orders
         </button>
         <span class="mx-2"></span>
       </div>
-      <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText" *ngIf="enableSearch">
+      <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
       <div class="input-group-append">
         <span class="input-group-text" id="search-icon">
           <fa-icon [icon]="faSearch"></fa-icon>
@@ -28,6 +29,12 @@
           <fa-icon [icon]="faSignIn"></fa-icon> Logout
         </button>
       </div>
+    </div>
+
+    <div *ngIf="!enableSearch" class="text-center">
+      <button *ngIf="!isLoggedIn" type="button" class="btn btn-primary" (click)="handleLoginClick()">
+        <fa-icon [icon]="faSignIn"></fa-icon> Login
+      </button>
     </div>
   </div>
 </div>

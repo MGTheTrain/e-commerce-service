@@ -88,22 +88,23 @@ To view the web backend, open a browser and go to `localhost:5000/swagger/index.
 
 To view the web frontend, open a browser and go to `localhost:4200`. After manually creating or adding some resources (products, reviews, orders, order items, cart items) results should resemble:
 
-<p>
-  <img src="./docs/results/web-frontend-I.PNG" alt="Products" width="600"/>
-  <img src="./docs/results/web-frontend-II.PNG" alt="Shopping cart" width="600"/>
-</p>
-<p>
-  <img src="./docs/results/web-frontend-III.PNG" alt="Paypal checkout link" width="600"/>
-  <img src="./docs/results/web-frontend-IV.PNG" alt="User Order" width="600"/>
-</p>
-<p>
-  <img src="./docs/results/web-frontend-V.PNG" alt="Order Details" width="600"/>
-  <img src="./docs/results/web-frontend-VI.PNG" alt="Reviews" width="600"/>
-</p>
-<p>
-  <img src="./docs/results/web-frontend-VII.PNG" alt="Auth0 Login" width="600"/>
-  <img src="./docs/results/web-frontend-VIII.PNG" alt="Product Creation" width="600"/>
-</p>
+---
+![Products](./docs/results/web-frontend-I.PNG)
+---
+![Shopping cart](./docs/results/web-frontend-II.PNG)
+---
+![Paypal checkout link](./docs/results/web-frontend-III.PNG)
+---
+![User Order](./docs/results/web-frontend-IV.PNG)
+---
+![Order Details](./docs/results/web-frontend-V.PNG)
+---
+![Reviews](./docs/results/web-frontend-VI.PNG)
+---
+![Auth0 Login](./docs/results/web-frontend-VII.PNG)
+---
+![Product Creation](./docs/results/web-frontend-VIII.PNG)
+---
 
 You can remove all Docker resources with:
 

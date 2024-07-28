@@ -115,8 +115,8 @@ To view the web frontend, open a browser and go to `localhost:4200`. After manua
 
 ---
 
-**Reviews**
-![Reviews](./docs/results/web-frontend-VI.PNG "Reviews")
+**Product Reviews**
+![Product Reviews](./docs/results/web-frontend-VI.PNG "Product Reviews")
 
 ---
 

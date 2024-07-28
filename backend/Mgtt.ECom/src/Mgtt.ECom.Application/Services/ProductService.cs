@@ -19,7 +19,7 @@ namespace Mgtt.ECom.Application.Services
     {
         private readonly PsqlDbContext dbContext;
 
-        private readonly IBlobConnector blobConnector; 
+        private readonly IBlobConnector blobConnector;
         private readonly ILogger<ProductService> logger;
 
         public ProductService(PsqlDbContext dbContext, IBlobConnector blobConnector, ILogger<ProductService> logger)
@@ -82,6 +82,7 @@ namespace Mgtt.ECom.Application.Services
                     var imageUrl = await this.blobConnector.UploadImageAsync(product.ProductID.ToString(), product.SnapShotImageName, stream);
                     product.ImageUrl = imageUrl!;
                 }
+
                 this.dbContext.Products.Add(product);
                 await this.dbContext.SaveChangesAsync();
                 this.logger.LogInformation("Product created successfully: {ProductId}", product.ProductID);

@@ -2,27 +2,27 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using Amazon.Runtime;
-using Amazon.S3;
-using Amazon.S3.Model;
-using Mgtt.ECom.Infrastructure.Settings;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-
 namespace Mgtt.ECom.Infrastructure.Connectors
 {
+    using Amazon.Runtime;
+    using Amazon.S3;
+    using Amazon.S3.Model;
+    using Mgtt.ECom.Infrastructure.Settings;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
+
     public class AwsS3Connector : IBlobConnector
     {
         private readonly IAmazonS3 s3Client;
         private readonly ILogger<AwsS3Connector> logger;
         private readonly IOptions<AwsS3Settings> settings;
 
-        public AwsS3Connector(ILogger<AwsS3Connector> logger, IOptions<AwsS3Settings> settings) 
+        public AwsS3Connector(ILogger<AwsS3Connector> logger, IOptions<AwsS3Settings> settings)
         {
             this.logger = logger;
             this.settings = settings;
 
-             // The AWS SDK will use externally set environment variables for credentials and configurations
+            // The AWS SDK will use externally set environment variables for credentials and configurations
             if (settings.Value.UtilizeLocalStack)
             {
                 var awsConfig = new AmazonS3Config
@@ -31,8 +31,8 @@ namespace Mgtt.ECom.Infrastructure.Connectors
                 };
 
                 this.s3Client = new AmazonS3Client(awsConfig);
-            } 
-            else 
+            }
+            else
             {
                 this.s3Client = new AmazonS3Client();
             }
@@ -63,7 +63,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors
 
         public async Task<string?> UploadImageAsync(string bucketName, string key, string filePath)
         {
-            await EnsureBucketExistsAsync(bucketName);
+            await this.EnsureBucketExistsAsync(bucketName);
             this.logger.LogInformation($"Uploading {filePath} to bucket {bucketName}...");
 
             try
@@ -99,7 +99,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors
 
         public async Task<string?> UploadImageAsync(string bucketName, string key, Stream inputStream)
         {
-            await EnsureBucketExistsAsync(bucketName);
+            await this.EnsureBucketExistsAsync(bucketName);
             this.logger.LogInformation($"Uploading {key} to bucket {bucketName}...");
 
             try
@@ -135,7 +135,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors
 
         public async Task DownloadImageAsync(string bucketName, string key, string downloadPath)
         {
-            await EnsureBucketExistsAsync(bucketName);
+            await this.EnsureBucketExistsAsync(bucketName);
             this.logger.LogInformation($"Downloading {key} from bucket {bucketName}...");
 
             try
@@ -160,7 +160,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors
 
         public async Task<Stream> DownloadImageAsync(string bucketName, string key)
         {
-            await EnsureBucketExistsAsync(bucketName);
+            await this.EnsureBucketExistsAsync(bucketName);
             this.logger.LogInformation($"Downloading {key} from bucket {bucketName}...");
 
             try
@@ -187,7 +187,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors
 
         public async Task DeleteImageAsync(string bucketName, string key)
         {
-            await EnsureBucketExistsAsync(bucketName);
+            await this.EnsureBucketExistsAsync(bucketName);
             this.logger.LogInformation($"Deleting {key} from bucket {bucketName}...");
 
             try
@@ -211,7 +211,7 @@ namespace Mgtt.ECom.Infrastructure.Connectors
         {
             try
             {
-                await EnsureBucketExistsAsync(bucketName);
+                await this.EnsureBucketExistsAsync(bucketName);
                 var request = new ListObjectsV2Request
                 {
                     BucketName = bucketName,

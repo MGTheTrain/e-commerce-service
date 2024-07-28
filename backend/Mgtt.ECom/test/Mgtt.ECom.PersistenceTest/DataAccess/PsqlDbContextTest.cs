@@ -33,6 +33,7 @@ namespace Mgtt.ECom.PersistenceTest.DataAccess
                     UserID = Guid.NewGuid().ToString(),
                     Categories = new System.Collections.Generic.List<string> { "Electronics", "Gadgets" },
                     Name = "Test Product",
+                    SnapShotImageName = "snapshot.jpg",
                     Description = "Product Description",
                     Price = 99.99f,
                     Stock = 10,
@@ -48,6 +49,7 @@ namespace Mgtt.ECom.PersistenceTest.DataAccess
                 var retrievedProduct = context.Products.FirstOrDefault(p => p.Name == "Test Product");
                 Assert.NotNull(retrievedProduct);
                 Assert.Equal("Test Product", retrievedProduct.Name);
+                Assert.Equal("snapshot.jpg", retrievedProduct.SnapShotImageName);
                 Assert.Equal(99.99f, retrievedProduct.Price);
                 Assert.Equal(10, retrievedProduct.Stock);
                 Assert.Equal("https://example.com/product-image.jpg", retrievedProduct.ImageUrl);

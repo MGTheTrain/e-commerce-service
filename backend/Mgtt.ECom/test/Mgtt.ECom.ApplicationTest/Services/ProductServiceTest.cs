@@ -67,7 +67,7 @@ namespace Mgtt.ECom.ApplicationTest.Services
             return new FormFile(stream, 0, stream.Length, "id_from_form", fileName)
             {
                 Headers = new HeaderDictionary(),
-                ContentType = "text/plain"
+                ContentType = "text/plain",
             };
         }
 
@@ -76,7 +76,7 @@ namespace Mgtt.ECom.ApplicationTest.Services
         {
             // Arrange
             var product = new Product { UserID = Guid.NewGuid().ToString(), Name = "New Product", SnapShotImageName = "snapshot.jpg", Price = 300 };
-            var formFile = CreateTestFormFile("test.txt", "This is a test file.");
+            var formFile = this.CreateTestFormFile("test.txt", "This is a test file.");
 
             // Act
             await this.productService.CreateProduct(product, formFile);
@@ -94,7 +94,7 @@ namespace Mgtt.ECom.ApplicationTest.Services
         {
             // Arrange
             var product = new Product { UserID = Guid.NewGuid().ToString(), Name = "Product to Update", SnapShotImageName = "snapshot.jpg", Price = 400 };
-            var formFile = CreateTestFormFile("test.txt", "This is a test file.");
+            var formFile = this.CreateTestFormFile("test.txt", "This is a test file.");
             await this.productService.CreateProduct(product, formFile);
 
             // Act
@@ -112,7 +112,7 @@ namespace Mgtt.ECom.ApplicationTest.Services
         {
             // Arrange
             var product = new Product { UserID = Guid.NewGuid().ToString(), Name = "Product to Delete", SnapShotImageName = "snapshot.jpg", Price = 500 };
-            var formFile = CreateTestFormFile("test.txt", "This is a test file.");
+            var formFile = this.CreateTestFormFile("test.txt", "This is a test file.");
             await this.productService.CreateProduct(product, formFile);
 
             // Act

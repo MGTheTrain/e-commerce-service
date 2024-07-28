@@ -10,7 +10,13 @@ public interface IProductService
 {
     Task<Product?> GetProductById(Guid productId);
 
-    Task<IEnumerable<Product>?> GetAllProducts();
+    Task<IEnumerable<Product>?> GetAllProducts(
+            int pageNumber = 1, 
+            int pageSize = 10, 
+            string? category = null, 
+            string? name = null, 
+            float? minPrice = null, 
+            float? maxPrice = null);
 
     Task<IEnumerable<Product>?> GetProductsByUserId(string userId);
 

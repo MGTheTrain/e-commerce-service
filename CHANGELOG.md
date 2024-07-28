@@ -7,12 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0] - 28-07-2024
+
+### Updated
+
+- **Optimizations**
+  - [x] Implemented filtering and pagination for specific list calls in web backend
+
 ## [0.12.0] - 27-07-2024
 
 ### Updated
 
 - **Optimizations**
- - [x] Enabled uploading of product images
+  - [x] Enabled uploading of product images
 
 ### Fixed
 

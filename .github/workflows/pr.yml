@@ -11,10 +11,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Start external storage services
+        run: docker-compose -f docker-compose.external.yml up -d --build
+
       - name: Test C#
         uses: MGTheTrain/public-github-actions/.github/actions/test-csharp-repository@main
         with:
           TEST_WORKING_DIRECTORY: ./backend/Mgtt.ECom/test
+        env:
+          AWS_ACCESS_KEY_ID: "test" 
+          AWS_SECRET_ACCESS_KEY: "test"
+          AWS_DEFAULT_REGION: "us-east-1"
+          AWS_ENDPOINT_URL: "http://localhost:4566"
 
       - name: Test TypeScript
         uses: MGTheTrain/public-github-actions/.github/actions/test-ng-typescript-repository@main

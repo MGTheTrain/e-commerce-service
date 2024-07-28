@@ -1,7 +1,5 @@
 # e-commerce-service
 
-![Status](https://img.shields.io/badge/Status-On%20Hold-yellow)
-
 ## Table of Contents
 
 - [Summary](#summary)
@@ -44,11 +42,15 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
   - Review Moderation
     - [ ] Manage and moderate user reviews to maintain quality and trustworthiness. Therefore leverage OpenAI APIs.
 
-- [ ] Reduce the number of web backend calls from the web frontend by providing HTTP endpoints that perform multiple logical backend operations
-- [ ] Decouple the monolith into µServices
-- [ ] Implement filtering and pagination for specific list calls in web backend
-- [ ] Increase and measure code coverage
-- [ ] Enable the uploading and resizing of product images
+- **Optimizations**
+  - [ ] Reduce the number of web backend calls from the web frontend by providing HTTP endpoints that perform multiple logical backend operations
+  - [ ] Decompose monolith web backend into µServices
+  - [ ] Implement filtering and pagination for specific list calls in web backend
+  - [ ] Increase and measure code coverage
+  - [x] Enable uploading of product images
+  - [ ] Deployment of Auth0 resources using Terraform  required by web backend and web frontend
+  - [ ] Continuous Integration workflows considering Docker image builds and pushing them to a Docker registry
+  - [ ] Continuous Deployment workflow for creating public cloud infrastructure including storage solutions and a Kubernetes cluster or deploying Kubernetes manifests to the Kubernetes cluster
 
 **NOTE:** Also consider checking out the [entity relationship diagram](./docs/diagrams/entity-relationship-diagram.mmd)
 
@@ -57,7 +59,8 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
 ### Preconditions
 
 - [Install Docker Engine](https://docs.docker.com/engine/install/)
-- Auth0 instance and expertise in creating necessary resources (roles, permissions, applications, APIs). **TBD:** Deployment of Auth0 resources using Terraform  required by web backend and web frontend
+- Auth0 instance and expertise in creating necessary resources (roles, permissions, applications, APIs).
+- PayPal Developer Account with Dashboard Access. Checkout following [link](https://developer.paypal.com/api/rest/)
 
 ### Backend
 
@@ -79,11 +82,51 @@ docker-compose up -d --build # Optionally run this command twice if internal ser
 
 To view the web backend, open a browser and go to `localhost:5000/swagger/index.html`. Results should resemble:
 
-![Swagger UI trough Docker](./docs/api-design/v1/swagger-ui-trough-docker.PNG)
+![Swagger UI trough Docker](./docs/api-design/v1/swagger-ui-trough-docker.PNG "Swagger UI trough Docker")
 
-To view the web frontend, open a browser and go to `localhost:4200`. Results should resemble:
+To view the web frontend, open a browser and go to `localhost:4200`. After manually creating or adding resources (such as products, reviews, orders, order items and cart items) the results should resemble:
 
-**TBD**
+---
+
+**Products**
+![Products](./docs/results/web-frontend-I.PNG "Products")
+
+---
+
+**Shopping cart**
+![Shopping cart](./docs/results/web-frontend-II.PNG "Shopping Cart")
+
+---
+
+**Paypal checkout link**
+![Paypal checkout link](./docs/results/web-frontend-III.PNG "Paypal checkout link")
+
+---
+
+**User Order**
+![User Order](./docs/results/web-frontend-IV.PNG "User Order")
+
+---
+
+**Order Details**
+![Order Details](./docs/results/web-frontend-V.PNG "Order Details")
+
+---
+
+**Product Reviews**
+![Product Reviews](./docs/results/web-frontend-VI.PNG "Product Reviews")
+
+---
+
+**Auth0 Login**
+![Auth0 Login](./docs/results/web-frontend-VII.PNG "Auth0 Login")
+
+---
+
+**Product Creation**
+![Product Creation](./docs/results/web-frontend-VIII.PNG "Product Creation")
+
+---
 
 You can remove all Docker resources with:
 
@@ -93,6 +136,6 @@ docker-compose down -v
 
 ## Documentation
 
-Explore the Web API structure [here](./docs/api-design/web-api-structure.md). For more details on the use case overview [checkout following diagram](./docs/diagrams/use-case-overview.mmd). For more details on user roles and permissions required for RBAC [checkout following diagram](./docs/diagrams/user-roles-and-permissions-mapping.mmd).
+Explore the initial Web API structure [here](./docs/api-design/v1/web-api-structure.md). For more details on the use case overview [checkout following diagram](./docs/diagrams/use-case-overview.mmd). For more details on user roles and permissions required for RBAC [checkout following diagram](./docs/diagrams/user-roles-and-permissions-mapping.mmd).
 
-Optionally copy contents of the [swagger.json](./docs/api-design/swagger.json) to the [Swagger Online editor](https://editor.swagger.io/) and access the Swagger UI.
+Optionally copy contents of the [swagger.json](./docs/api-design/swagger.json) to the [Swagger Online editor](https://editor.swagger.io/) to view the available HTTP/s endpoints.

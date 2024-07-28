@@ -10,34 +10,34 @@
           <form>
             <div class="form-group mb-3">
               <label><strong>Product Name</strong></label>
-              <input type="text" placeholder="Product Name" class="form-control" id="name" name="name" [(ngModel)]="productRequest.name">
+              <input type="text" placeholder="Product Name" class="form-control" id="name" name="name" [(ngModel)]="product.name">
             </div>
             <div class="form-group mb-3">
               <label><strong>Categories</strong></label>
-              <select class="form-control" name="categories" [(ngModel)]="productRequest.categories" multiple>
+              <select class="form-control" name="categories" [(ngModel)]="product.categories" multiple>
                 <option *ngFor="let category of availableCategories" [value]="category">{{ category }}</option>
               </select>
             </div>     
             <div class="form-group mb-3">
               <label><strong>Product Description</strong></label>
-              <textarea placeholder="Description" class="form-control" id="description" name="description" [(ngModel)]="productRequest.description"></textarea>
+              <textarea placeholder="Description" class="form-control" id="description" name="description" [(ngModel)]="product.description"></textarea>
             </div>
             <div class="form-group mb-3">
               <label><strong>Price</strong></label>
-              <input type="number" placeholder="Price" class="form-control" id="price" name="price" [(ngModel)]="productRequest.price">
+              <input type="number" placeholder="Price" class="form-control" id="price" name="price" [(ngModel)]="product.price">
             </div>
             <div class="form-group mb-3">
               <label><strong>Stock</strong></label>
-              <input type="number" placeholder="Stock" class="form-control" id="stock" name="stock" [(ngModel)]="productRequest.stock">
+              <input type="number" placeholder="Stock" class="form-control" id="stock" name="stock" [(ngModel)]="product.stock">
             </div>
             <div class="row">
               <div class="card mb-4 shadow-sm card-hover">
-                <img [src]="productRequest.imageUrl" class="card-img-top fixed-size-img" alt="Product Image">
+                <img [src]="product.imageUrl" class="card-img-top fixed-size-img" alt="Product Image">
               </div>
               <div class="form-group mt-2 text-center">
                 <input type="file" (change)="onImageChange($event)" id="imageInput" hidden>
                 <button type="button" class="btn btn-outline-secondary w-100" (click)="triggerImageInput()">
-                  <fa-icon [icon]="faImage"></fa-icon> Uploade Image
+                  <fa-icon [icon]="faImage"></fa-icon> Upload Image
                 </button>
               </div>
             </div>

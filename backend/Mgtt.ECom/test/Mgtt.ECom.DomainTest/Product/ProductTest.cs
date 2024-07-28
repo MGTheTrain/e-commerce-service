@@ -20,6 +20,7 @@ namespace Mgtt.ECom.DomainTest.Product
                 UserID = Guid.NewGuid().ToString(),
                 Categories = new List<string> { "Electronics", "Gadgets" },
                 Name = "Test Product",
+                SnapShotImageName = "snapshot.jpg",
                 Description = "Product Description",
                 Price = 99.99f,
                 Stock = 10,
@@ -34,11 +35,11 @@ namespace Mgtt.ECom.DomainTest.Product
         }
 
         [Theory]
-        [InlineData("user-id-001", new string[] { "Electronics" }, "", "Product Description", 99.99f, 10, "https://example.com/product-image.jpg", "Name")]
-        [InlineData("user-id-002", new string[] { "Electronics" }, "Test Product", "Product Description", 0.0f, 10, "https://example.com/product-image.jpg", "Price")]
-        [InlineData("user-id-003", new string[] { "Electronics" }, "Test Product", "Product Description", 99.99f, -1, "https://example.com/product-image.jpg", "Stock")]
-        [InlineData("user-id-004", new string[] { "Electronics" }, "Test Product", "Product Description", 99.99f, 10, "", "ImageUrl")]
-        public void Product_Validation_Fails_With_Invalid_Data(string userID, string[] categories, string name, string description, float price, int stock, string imageUrl, string expectedMemberName)
+        [InlineData("user-id-001", new string[] { "Electronics" }, "", "snaphot.jpg", "Product Description", 99.99f, 10, "https://example.com/product-image.jpg", "Name")]
+        [InlineData("user-id-002", new string[] { "Electronics" }, "snaphot.jpg", "Test Product", "Product Description", 0.0f, 10, "https://example.com/product-image.jpg", "Price")]
+        [InlineData("user-id-003", new string[] { "Electronics" }, "snaphot.jpg", "Test Product", "Product Description", 99.99f, -1, "https://example.com/product-image.jpg", "Stock")]
+        [InlineData("user-id-004", new string[] { "Electronics" }, "snaphot.jpg", "Test Product", "Product Description", 99.99f, 10, "", "ImageUrl")]
+        public void Product_Validation_Fails_With_Invalid_Data(string userID, string[] categories, string name, string snapShotImageName, string description, float price, int stock, string imageUrl, string expectedMemberName)
         {
             // Arrange
             var product = new Mgtt.ECom.Domain.ProductManagement.Product
@@ -46,6 +47,7 @@ namespace Mgtt.ECom.DomainTest.Product
                 UserID = userID,
                 Categories = categories != null ? new List<string>(categories) : null,
                 Name = name,
+                SnapShotImageName = snapShotImageName,
                 Description = description,
                 Price = price,
                 Stock = stock,

@@ -70,6 +70,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// Creates a new product.
         /// </summary>
         /// <param name="productDTO">The product data transfer object containing product details.</param>
+        /// <param name="files">The image associated with the product.</param>
         /// <returns>The newly created product.</returns>
         /// <response code="201">Returns the newly created product.</response>
         /// <response code="400">If the product data is invalid.</response>
@@ -77,12 +78,18 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPost]
         [Authorize("manage:products-and-own-product")]
+        [Consumes("multipart/form-data")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProductResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> CreateProduct(ProductRequestDTO productDTO)
+        public async Task<IActionResult> CreateProduct([FromForm] ProductRequestDTO productDTO, [FromForm(Name = "files")] List<IFormFile> files)
         {
+            if (files.Count != 1)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
@@ -103,10 +110,9 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                 Description = productDTO.Description,
                 Price = productDTO.Price,
                 Stock = productDTO.Stock,
-                ImageUrl = productDTO.ImageUrl,
             };
 
-            var action = await this.productService.CreateProduct(product);
+            var action = await this.productService.CreateProduct(product, files[0]);
             if (action == null)
             {
                 return this.BadRequest();
@@ -118,6 +124,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                 UserID = product.UserID,
                 Categories = product.Categories,
                 Name = product.Name,
+                SnapShotImageName = product.SnapShotImageName,
                 Description = product.Description,
                 Price = product.Price,
                 Stock = product.Stock,
@@ -147,6 +154,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                     UserID = product.UserID,
                     Categories = product.Categories,
                     Name = product.Name,
+                    SnapShotImageName = product.SnapShotImageName,
                     Description = product.Description,
                     Price = product.Price,
                     Stock = product.Stock,
@@ -190,6 +198,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                 UserID = product.UserID,
                 Categories = product.Categories,
                 Name = product.Name,
+                SnapShotImageName = product.SnapShotImageName,
                 Description = product.Description,
                 Price = product.Price,
                 Stock = product.Stock,
@@ -231,6 +240,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                     UserID = product.UserID,
                     Categories = product.Categories,
                     Name = product.Name,
+                    SnapShotImageName = product.SnapShotImageName,
                     Description = product.Description,
                     Price = product.Price,
                     Stock = product.Stock,
@@ -266,6 +276,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                 UserID = product.UserID,
                 Categories = product.Categories,
                 Name = product.Name,
+                SnapShotImageName = product.SnapShotImageName,
                 Description = product.Description,
                 Price = product.Price,
                 Stock = product.Stock,
@@ -280,6 +291,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// </summary>
         /// <param name="productId">The ID of the product to update.</param>
         /// <param name="productDTO">The product data transfer object containing updated product details.</param>
+        /// <param name="files">The image associated with the product.</param>
         /// <returns>No content response if successful.</returns>
         /// <response code="204">If the product was successfully updated.</response>
         /// <response code="400">If the product data is invalid.</response>
@@ -288,13 +300,19 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         /// <response code="403">If the user is not allowed to manage the resource.</response>
         [HttpPut("{productId}")]
         [Authorize("manage:products-and-own-product")]
+        [Consumes("multipart/form-data")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> UpdateProduct(Guid productId, ProductRequestDTO productDTO)
+        public async Task<IActionResult> UpdateProduct([FromRoute] Guid productId, [FromForm] ProductRequestDTO productDTO, [FromForm(Name = "files")] List<IFormFile> files)
         {
+            if (files.Count != 1)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
@@ -319,9 +337,8 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             product.Description = productDTO.Description;
             product.Price = productDTO.Price;
             product.Stock = productDTO.Stock;
-            product.ImageUrl = productDTO.ImageUrl;
 
-            var action = await this.productService.UpdateProduct(product);
+            var action = await this.productService.UpdateProduct(product, files[0]);
             if (action == null)
             {
                 return this.BadRequest();
@@ -333,6 +350,7 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
                 UserID = product.UserID,
                 Categories = product.Categories,
                 Name = product.Name,
+                SnapShotImageName = product.SnapShotImageName,
                 Description = product.Description,
                 Price = product.Price,
                 Stock = product.Stock,

@@ -141,6 +141,11 @@ namespace Mgtt.ECom.Persistence.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
+                    b.Property<string>("SnapShotImageName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<int>("Stock")
                         .HasColumnType("integer");
 

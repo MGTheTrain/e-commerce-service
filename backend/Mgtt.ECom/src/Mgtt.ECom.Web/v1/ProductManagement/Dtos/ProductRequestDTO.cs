@@ -24,8 +24,5 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.DTOs
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Stock must be non-negative")]
         public int Stock { get; set; }
-
-        [Required]
-        public string ImageUrl { get; set; }
     }
 }

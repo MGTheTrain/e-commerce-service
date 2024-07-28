@@ -2547,21 +2547,70 @@
         ],
         "summary": "Creates a new product.",
         "requestBody": {
-          "description": "The product data transfer object containing product details.",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/ProductRequestDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductRequestDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductRequestDTO"
+                "required": [
+                  "Categories",
+                  "Name",
+                  "Price",
+                  "Stock"
+                ],
+                "type": "object",
+                "properties": {
+                  "Categories": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Name": {
+                    "maxLength": 100,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "Description": {
+                    "type": "string"
+                  },
+                  "Price": {
+                    "minimum": 0.01,
+                    "type": "number",
+                    "format": "float"
+                  },
+                  "Stock": {
+                    "maximum": 2147483647,
+                    "minimum": 0,
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "Categories": {
+                  "style": "form"
+                },
+                "Name": {
+                  "style": "form"
+                },
+                "Description": {
+                  "style": "form"
+                },
+                "Price": {
+                  "style": "form"
+                },
+                "Stock": {
+                  "style": "form"
+                },
+                "files": {
+                  "style": "form"
+                }
               }
             }
           }
@@ -2887,21 +2936,70 @@
           }
         ],
         "requestBody": {
-          "description": "The product data transfer object containing updated product details.",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/ProductRequestDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductRequestDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductRequestDTO"
+                "required": [
+                  "Categories",
+                  "Name",
+                  "Price",
+                  "Stock"
+                ],
+                "type": "object",
+                "properties": {
+                  "Categories": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Name": {
+                    "maxLength": 100,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "Description": {
+                    "type": "string"
+                  },
+                  "Price": {
+                    "minimum": 0.01,
+                    "type": "number",
+                    "format": "float"
+                  },
+                  "Stock": {
+                    "maximum": 2147483647,
+                    "minimum": 0,
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "Categories": {
+                  "style": "form"
+                },
+                "Name": {
+                  "style": "form"
+                },
+                "Description": {
+                  "style": "form"
+                },
+                "Price": {
+                  "style": "form"
+                },
+                "Stock": {
+                  "style": "form"
+                },
+                "files": {
+                  "style": "form"
+                }
               }
             }
           }
@@ -4003,49 +4101,6 @@
         },
         "additionalProperties": { }
       },
-      "ProductRequestDTO": {
-        "required": [
-          "categories",
-          "imageUrl",
-          "name",
-          "price",
-          "stock"
-        ],
-        "type": "object",
-        "properties": {
-          "categories": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "name": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "price": {
-            "minimum": 0.01,
-            "type": "number",
-            "format": "float"
-          },
-          "stock": {
-            "maximum": 2147483647,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "imageUrl": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
       "ProductResponseDTO": {
         "type": "object",
         "properties": {
@@ -4065,6 +4120,10 @@
             "nullable": true
           },
           "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "snapShotImageName": {
             "type": "string",
             "nullable": true
           },

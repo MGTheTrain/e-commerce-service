@@ -4,8 +4,15 @@
 
 namespace Mgtt.ECom.Infrastructure.Connectors;
 
-// Define the contract for blob connectors, outlining the methods that classes implementing this interface should provide to BLOBS
-// Remove it if not required
-public interface IBlobConnetor
+public interface IBlobConnector
 {
+    Task<string?> UploadImageAsync(string bucketName, string key, string filePath);
+
+    Task<string?> UploadImageAsync(string bucketName, string key, Stream inputStream);
+
+    Task DownloadImageAsync(string bucketName, string key, string downloadPath);
+
+    Task<Stream> DownloadImageAsync(string bucketName, string key);
+
+    Task DeleteImageAsync(string bucketName, string key);
 }

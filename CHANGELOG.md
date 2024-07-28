@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 27-07-2024
+
+### Updated
+
+- **Optimizations**
+ - [x] Enabled uploading of product images
+
+### Fixed
+
+- Fixed links and features list in [README.md](./README.md)
+
 ## [0.11.0] - 26-07-2024
 
 ### Updated

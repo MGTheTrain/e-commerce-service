@@ -18,7 +18,6 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { ProblemDetails } from '../model/problemDetails';
-import { ProductRequestDTO } from '../model/productRequestDTO';
 import { ProductResponseDTO } from '../model/productResponseDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -103,14 +102,24 @@ export class ProductService {
     /**
      * Creates a new product.
      * 
-     * @param body The product data transfer object containing product details.
+     * @param categories 
+     * @param name 
+     * @param description 
+     * @param price 
+     * @param stock 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ProductsPost(body?: ProductRequestDTO, observe?: 'body', reportProgress?: boolean): Observable<ProductResponseDTO>;
-    public apiV1ProductsPost(body?: ProductRequestDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ProductResponseDTO>>;
-    public apiV1ProductsPost(body?: ProductRequestDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ProductResponseDTO>>;
-    public apiV1ProductsPost(body?: ProductRequestDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1ProductsPostForm(categories?: Array<string>, name?: string, description?: string, price?: number, stock?: number, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean): Observable<ProductResponseDTO>;
+    public apiV1ProductsPostForm(categories?: Array<string>, name?: string, description?: string, price?: number, stock?: number, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ProductResponseDTO>>;
+    public apiV1ProductsPostForm(categories?: Array<string>, name?: string, description?: string, price?: number, stock?: number, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ProductResponseDTO>>;
+    public apiV1ProductsPostForm(categories?: Array<string>, name?: string, description?: string, price?: number, stock?: number, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+
+
+
 
 
         let headers = this.defaultHeaders;
@@ -133,18 +142,49 @@ export class ProductService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): void; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        }
+
+        if (categories) {
+            categories.forEach((element) => {
+                formParams = formParams.append('Categories', <any>element) as any || formParams;
+            })
+        }
+        if (name !== undefined) {
+            formParams = formParams.append('Name', <any>name) as any || formParams;
+        }
+        if (description !== undefined) {
+            formParams = formParams.append('Description', <any>description) as any || formParams;
+        }
+        if (price !== undefined) {
+            formParams = formParams.append('Price', <any>price) as any || formParams;
+        }
+        if (stock !== undefined) {
+            formParams = formParams.append('Stock', <any>stock) as any || formParams;
+        }
+        if (files) {
+            files.forEach((element) => {
+                formParams = formParams.append('files', <any>element) as any || formParams;
+            })
         }
 
         return this.httpClient.request<ProductResponseDTO>('post',`${this.basePath}/api/v1/products`,
             {
-                body: body,
+                body: convertFormParamsToString ? formParams.toString() : formParams,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -253,18 +293,28 @@ export class ProductService {
      * Updates an existing product.
      * 
      * @param productId The ID of the product to update.
-     * @param body The product data transfer object containing updated product details.
+     * @param categories 
+     * @param name 
+     * @param description 
+     * @param price 
+     * @param stock 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ProductsProductIdPut(productId: string, body?: ProductRequestDTO, observe?: 'body', reportProgress?: boolean): Observable<ProductResponseDTO>;
-    public apiV1ProductsProductIdPut(productId: string, body?: ProductRequestDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ProductResponseDTO>>;
-    public apiV1ProductsProductIdPut(productId: string, body?: ProductRequestDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ProductResponseDTO>>;
-    public apiV1ProductsProductIdPut(productId: string, body?: ProductRequestDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1ProductsProductIdPutForm(productId: string, categories?: Array<string>, name?: string, description?: string, price?: number, stock?: number, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean): Observable<ProductResponseDTO>;
+    public apiV1ProductsProductIdPutForm(productId: string, categories?: Array<string>, name?: string, description?: string, price?: number, stock?: number, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ProductResponseDTO>>;
+    public apiV1ProductsProductIdPutForm(productId: string, categories?: Array<string>, name?: string, description?: string, price?: number, stock?: number, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ProductResponseDTO>>;
+    public apiV1ProductsProductIdPutForm(productId: string, categories?: Array<string>, name?: string, description?: string, price?: number, stock?: number, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (productId === null || productId === undefined) {
             throw new Error('Required parameter productId was null or undefined when calling apiV1ProductsProductIdPut.');
         }
+
+
+
+
+
 
 
         let headers = this.defaultHeaders;
@@ -287,18 +337,49 @@ export class ProductService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): void; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        }
+
+        if (categories) {
+            categories.forEach((element) => {
+                formParams = formParams.append('Categories', <any>element) as any || formParams;
+            })
+        }
+        if (name !== undefined) {
+            formParams = formParams.append('Name', <any>name) as any || formParams;
+        }
+        if (description !== undefined) {
+            formParams = formParams.append('Description', <any>description) as any || formParams;
+        }
+        if (price !== undefined) {
+            formParams = formParams.append('Price', <any>price) as any || formParams;
+        }
+        if (stock !== undefined) {
+            formParams = formParams.append('Stock', <any>stock) as any || formParams;
+        }
+        if (files) {
+            files.forEach((element) => {
+                formParams = formParams.append('files', <any>element) as any || formParams;
+            })
         }
 
         return this.httpClient.request<ProductResponseDTO>('put',`${this.basePath}/api/v1/products/${encodeURIComponent(String(productId))}`,
             {
-                body: body,
+                body: convertFormParamsToString ? formParams.toString() : formParams,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

@@ -10,14 +10,11 @@
  * Do not edit the class manually.
  */
 
-export interface ProductResponseDTO { 
-    productID?: string;
-    userID?: string;
-    categories?: Array<string>;
-    name?: string;
-    snapShotImageName?: string;
+export interface ProductsProductIdBody { 
+    categories: Array<string>;
+    name: string;
     description?: string;
-    price?: number;
-    stock?: number;
-    imageUrl?: string;
+    price: number;
+    stock: number;
+    files?: Array<Blob>;
 }

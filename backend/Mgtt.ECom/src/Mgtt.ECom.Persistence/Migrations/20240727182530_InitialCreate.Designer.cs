@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mgtt.ECom.Persistence.Migrations
 {
     [DbContext(typeof(PsqlDbContext))]
-    [Migration("20240723193538_InitialCreate")]
+    [Migration("20240727182530_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -143,6 +143,11 @@ namespace Mgtt.ECom.Persistence.Migrations
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
+
+                    b.Property<string>("SnapShotImageName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<int>("Stock")
                         .HasColumnType("integer");

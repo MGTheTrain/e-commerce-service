@@ -3,7 +3,7 @@ services:
     image: localstack/localstack
     container_name: localstack
     ports:
-      - "4566:4566"            # LocalStack Gateway
+      - "4566:4566"
       - "4510-4559:4510-4559"  # External services port range
     environment:
       - DEBUG=${DEBUG-}
@@ -17,8 +17,6 @@ services:
       - SERVICES=s3
     volumes:
       - localstack-data:/data
-    networks:
-      - custom-network 
     # Check: aws configure list
 
   postgres: 
@@ -36,35 +34,6 @@ services:
     networks:
       - custom-network 
   # command: psql "host=localhost port=5432 user=postgres password=postgres sslmode=prefer"
-
-  Mgtt.ECom.Web:
-    image: ecommerce-service-be:0.1.0
-    build:
-      context: .
-      dockerfile: backend/Mgtt.ECom/src/Mgtt.ECom.Web/Dockerfile
-    env_file:
-      - Mgtt.ECom.Web.env
-    depends_on:
-      - postgres
-      - localstack
-    ports:
-      - "5000:8080/tcp"
-    networks:
-      - custom-network 
-
-  # Frontend
-  e-commerce-service:
-    image: ecommerce-service-fe:0.1.0
-    build:
-      context: .
-      dockerfile: frontend/e-commerce-service/Dockerfile
-    depends_on:
-      - postgres
-      - localstack
-    ports:
-      - "4200:80/tcp"
-    networks:
-      - custom-network 
 
 volumes:
   postgres-db:

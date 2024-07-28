@@ -18,6 +18,7 @@ namespace Mgtt.ECom.Domain.ProductManagement
             this.ProductID = Guid.NewGuid();
             this.Categories = new List<string>();
             this.Name = string.Empty;
+            this.SnapShotImageName = string.Empty;
             this.Description = string.Empty;
             this.Price = 0.01f;
             this.Stock = 0;
@@ -36,6 +37,10 @@ namespace Mgtt.ECom.Domain.ProductManagement
         [Required]
         [StringLength(100)]
         public string Name { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string SnapShotImageName { get; set; }
 
         public string Description { get; set; }
 
@@ -69,6 +74,11 @@ namespace Mgtt.ECom.Domain.ProductManagement
             if (string.IsNullOrEmpty(this.Name))
             {
                 yield return new ValidationResult($"{nameof(this.Name)} can't be empty");
+            }
+
+            if (this.SnapShotImageName == string.Empty)
+            {
+                yield return new ValidationResult($"{nameof(this.SnapShotImageName)} can't be empty");
             }
 
             if (this.Price <= 0)

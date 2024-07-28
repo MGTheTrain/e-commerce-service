@@ -84,41 +84,41 @@ docker-compose up -d --build # Optionally run this command twice if internal ser
 
 To view the web backend, open a browser and go to `localhost:5000/swagger/index.html`. Results should resemble:
 
-![Swagger UI trough Docker](./docs/api-design/v1/swagger-ui-trough-docker.PNG)
+![Swagger UI trough Docker](./docs/api-design/v1/swagger-ui-trough-docker.PNG "Swagger UI trough Docker")
 
 To view the web frontend, open a browser and go to `localhost:4200`. After manually creating or adding some resources (products, reviews, orders, order items, cart items) results should resemble:
 
 ---
 
-![Products](./docs/results/web-frontend-I.PNG)
+![Products](./docs/results/web-frontend-I.PNG "Products")
 
 ---
 
-![Shopping cart](./docs/results/web-frontend-II.PNG)
+![Shopping cart](./docs/results/web-frontend-II.PNG "Shopping Cart")
 
 ---
 
-![Paypal checkout link](./docs/results/web-frontend-III.PNG)
+![Paypal checkout link](./docs/results/web-frontend-III.PNG "Paypal checkout link")
 
 ---
 
-![User Order](./docs/results/web-frontend-IV.PNG)
+![User Order](./docs/results/web-frontend-IV.PNG "User Order")
 
 ---
 
-![Order Details](./docs/results/web-frontend-V.PNG)
+![Order Details](./docs/results/web-frontend-V.PNG "Order Details")
 
 ---
 
-![Reviews](./docs/results/web-frontend-VI.PNG)
+![Reviews](./docs/results/web-frontend-VI.PNG "Reviews")
 
 ---
 
-![Auth0 Login](./docs/results/web-frontend-VII.PNG)
+![Auth0 Login](./docs/results/web-frontend-VII.PNG "Auth0 Login")
 
 ---
 
-![Product Creation](./docs/results/web-frontend-VIII.PNG)
+![Product Creation](./docs/results/web-frontend-VIII.PNG "Product Creation")
 
 ---
 

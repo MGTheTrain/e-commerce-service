@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Optimizations**
  - [x] Enabled uploading of product images
 
+### Fixed
+
+- Links and features list in [README.md](./README.md)
+
 ## [0.11.0] - 26-07-2024
 
 ### Updated

@@ -86,9 +86,24 @@ To view the web backend, open a browser and go to `localhost:5000/swagger/index.
 
 ![Swagger UI trough Docker](./docs/api-design/v1/swagger-ui-trough-docker.PNG)
 
-To view the web frontend, open a browser and go to `localhost:4200`. Results should resemble:
+To view the web frontend, open a browser and go to `localhost:4200`. After manually creating or adding some resources (products, reviews, orders, order items, cart items) results should resemble:
 
-**TBD**
+<p>
+  <img src="./docs/results/web-frontend-I.PNG" alt="Products" width="600"/>
+  <img src="./docs/results/web-frontend-II.PNG" alt="Shopping cart" width="600"/>
+</p>
+<p>
+  <img src="./docs/results/web-frontend-III.PNG" alt="Paypal checkout link" width="600"/>
+  <img src="./docs/results/web-frontend-IV.PNG" alt="User Order" width="600"/>
+</p>
+<p>
+  <img src="./docs/results/web-frontend-V.PNG" alt="Order Details" width="600"/>
+  <img src="./docs/results/web-frontend-VI.PNG" alt="Reviews" width="600"/>
+</p>
+<p>
+  <img src="./docs/results/web-frontend-VII.PNG" alt="Auth0 Login" width="600"/>
+  <img src="./docs/results/web-frontend-VIII.PNG" alt="Product Creation" width="600"/>
+</p>
 
 You can remove all Docker resources with:
 

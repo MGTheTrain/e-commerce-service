@@ -135,35 +135,43 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
         }
 
         /// <summary>
-        /// Retrieves all products.
+        /// Retrieves all products with optional pagination and filtering.
         /// </summary>
-        /// <returns>A list of all products.</returns>
-        /// <response code="200">Returns a list of all products.</response>
+        /// <param name="pageNumber">The page number for pagination.</param>
+        /// <param name="pageSize">The number of items per page.</param>
+        /// <param name="category">The category to filter by.</param>
+        /// <param name="name">The name to filter by.</param>
+        /// <param name="minPrice">The minimum price to filter by.</param>
+        /// <param name="maxPrice">The maximum price to filter by.</param>
+        /// <returns>A list of filtered and paginated products.</returns>
+        /// <response code="200">Returns a list of filtered and paginated products.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductResponseDTO>))]
-        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAllProducts(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? category = null,
+            [FromQuery] string? name = null,
+            [FromQuery] float? minPrice = null,
+            [FromQuery] float? maxPrice = null)
         {
-            var products = await this.productService.GetAllProducts();
-            var productDTOs = new List<ProductResponseDTO>();
-
-            foreach (var product in products)
+            var products = await this.productService.GetAllProducts(pageNumber, pageSize, category, name, minPrice, maxPrice);
+            var productDTOs = products.Select(product => new ProductResponseDTO
             {
-                productDTOs.Add(new ProductResponseDTO
-                {
-                    ProductID = product.ProductID,
-                    UserID = product.UserID,
-                    Categories = product.Categories,
-                    Name = product.Name,
-                    SnapShotImageName = product.SnapShotImageName,
-                    Description = product.Description,
-                    Price = product.Price,
-                    Stock = product.Stock,
-                    ImageUrl = product.ImageUrl,
-                });
-            }
+                ProductID = product.ProductID,
+                UserID = product.UserID,
+                Categories = product.Categories,
+                Name = product.Name,
+                SnapShotImageName = product.SnapShotImageName,
+                Description = product.Description,
+                Price = product.Price,
+                Stock = product.Stock,
+                ImageUrl = product.ImageUrl,
+            }).ToList();
 
             return this.Ok(productDTOs);
         }
+
 
         /// <summary>
         /// Retrieves the product associated with a specific user.

@@ -51,7 +51,7 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
   - [ ] Increase and measure code coverage
   - [x] Enable uploading of product images
   - [ ] Deployment of Auth0 resources using Terraform  required by web backend and web frontend
-  - [ ] Continuous Integration workflows considering creation of Docker images and pushing them to a Docker registry
+  - [ ] Continuous Integration workflows considering Docker image builds and pushing them to a Docker registry
   - [ ] Continuous Deployment workflow for creating public cloud infrastructure including storage solutions and a Kubernetes cluster or deploying Kubernetes manifests to the Kubernetes cluster
 
 **NOTE:** Also consider checking out the [entity relationship diagram](./docs/diagrams/entity-relationship-diagram.mmd)

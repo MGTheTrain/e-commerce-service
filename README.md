@@ -86,7 +86,7 @@ To view the web backend, open a browser and go to `localhost:5000/swagger/index.
 
 ![Swagger UI trough Docker](./docs/api-design/v1/swagger-ui-trough-docker.PNG "Swagger UI trough Docker")
 
-To view the web frontend, open a browser and go to `localhost:4200`. After manually creating or adding some resources (products, reviews, orders, order items, cart items) results should resemble:
+To view the web frontend, open a browser and go to `localhost:4200`. After manually creating or adding resources (such as products, reviews, orders, order items and cart items) the results should resemble:
 
 ---
 

@@ -107,9 +107,9 @@ export class HeaderComponent implements OnInit {
       maxPrice: this.productListFilter.maxPrice
     });
     this.productListFilter = {
-      category: null,
-      minPrice: null,
-      maxPrice: null,
+      category: this.productListFilter.category,
+      minPrice: this.productListFilter.minPrice,
+      maxPrice: this.productListFilter.maxPrice,
       searchText: null
     };
   }

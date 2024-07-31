@@ -1,3 +1,3 @@
 export interface BaseFilter {
-    searchText: string;
+    searchText: string | null;
 }

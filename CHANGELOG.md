@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] - 31-07-2024
+
+### Updated
+
+- **Optimizations**
+  - [x] Continuous Integration workflows considering Docker image builds and pushing them to a Docker registry
+- Comment CodeQL actions to reduce workflow durations in [pr.yml](.github/workflows/pr.yml) and [release.yml](.github/workflows/release.yml)
+
 ## [0.13.0] - 31-07-2024
 
 ### Updated

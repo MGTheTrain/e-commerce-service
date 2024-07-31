@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  test-build-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -32,16 +32,45 @@ jobs:
         with:
           WORKING_DIRECTORY: ./frontend/e-commerce-service
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: 'csharp, javascript'
+      # - name: Initialize CodeQL
+      #   uses: github/codeql-action/init@v3
+      #   with:
+      #     languages: 'csharp, javascript'
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+      # - name: Autobuild
+      #   uses: github/codeql-action/autobuild@v3
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+      # - name: Perform CodeQL Analysis
+      #   uses: github/codeql-action/analyze@v3
+      #   with:
+      #     languages: 'csharp, javascript'
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
         with:
-          languages: 'csharp, javascript'
-          
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Read version from file
+        id: get_version
+        run: |
+          # Check if the version file exists and read its content
+          if [ -f version ]; then
+            version=$(cat version)
+            echo "VERSION=$version" >> $GITHUB_ENV
+          else
+            echo "Version file not found!"
+            exit 1
+          fi
+
+      - name: Build and push Docker image for web backend
+        run: |
+          BACKEND_TAG="${{ secrets.DOCKER_REPOSITORY }}/ecommerce-service-be:${{ env.VERSION }}-dev${{ github.run_number }}"  
+          docker build -t $BACKEND_TAG -f backend/Mgtt.ECom/src/Mgtt.ECom.Web/Dockerfile .
+          docker push $BACKEND_TAG
+
+      - name: Build and push Docker image for web frontend
+        run: |
+          FRONTEND_TAG="${{ secrets.DOCKER_REPOSITORY }}/ecommerce-service-fe:${{ env.VERSION }}-dev${{ github.run_number }}"
+          docker build -t $FRONTEND_TAG -f frontend/e-commerce-service/Dockerfile .
+          docker push $FRONTEND_TAG

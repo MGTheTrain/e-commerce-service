@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  test-build-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -65,12 +65,12 @@ jobs:
 
       - name: Build and push Docker image for web backend
         run: |
-          BACKEND_TAG="ecommerce-service-be:${{ env.VERSION }}-dev${{ github.run_number }}"  
+          BACKEND_TAG="${{ secrets.DOCKER_REPOSITORY }}/ecommerce-service-be:${{ env.VERSION }}-dev${{ github.run_number }}"  
           docker build -t $BACKEND_TAG -f backend/Mgtt.ECom/src/Mgtt.ECom.Web/Dockerfile .
-          docker push ${{ secrets.DOCKER_REPOSITORY }}/ecommerce-service-be:dev${{ github.run_number }}
+          docker push ${{ secrets.DOCKER_REPOSITORY }}/$BACKEND_TAG
 
       - name: Build and push Docker image for web frontend
         run: |
-          FRONTEND_TAG="ecommerce-service-fe:${{ env.VERSION }}-dev${{ github.run_number }}"
+          FRONTEND_TAG="${{ secrets.DOCKER_REPOSITORY }}/ecommerce-service-fe:${{ env.VERSION }}-dev${{ github.run_number }}"
           docker build -t $FRONTEND_TAG -f frontend/e-commerce-service/Dockerfile .
-          docker push ${{ secrets.DOCKER_REPOSITORY }}/ecommerce-service-fe:dev${{ github.run_number }}
+          docker push ${{ secrets.DOCKER_REPOSITORY }}/$FRONTEND_TAG

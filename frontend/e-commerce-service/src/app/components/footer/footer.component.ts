@@ -9,7 +9,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class FooterComponent {
   @Output() pageNumberChanged = new EventEmitter<number>();
-  public pageNumber: number = 0;
+  public pageNumber: number = 1;
 
   loadMore(): void {
     this.pageNumber++;

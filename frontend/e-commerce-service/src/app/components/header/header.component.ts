@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
@@ -7,6 +7,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faList, faSearch, faShoppingCart, faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { CartResponseDTO, CartService } from '../../generated';
+
+export interface FilterParams {
+  category: string;
+  minPrice: number | null;
+  maxPrice: number | null;
+}
 
 @Component({
   selector: 'app-header',
@@ -21,12 +27,22 @@ export class HeaderComponent implements OnInit {
   public faSignIn: IconDefinition = faSignIn;
   public faList: IconDefinition = faList;
 
-  public searchText: string = ""; 
   public isLoggedIn: boolean = false;
   public accessToken: string | null = ''; 
-  @Input() enableSearch: boolean = true;
 
-  constructor(private router: Router, public auth: AuthService, private cartService: CartService) {}
+  // filter and pagination properties
+  @Input() enableSearch: boolean = true;
+  @Input() availableCategories: string[] = [];
+  @Output() filterChanged = new EventEmitter<FilterParams>();
+  @Output() searchTextChanged = new EventEmitter<string>();
+  @ViewChild('collapseElement') collapseElement!: ElementRef;
+
+  public searchText: string = '';
+  public selectedCategory: string = '';
+  public minPrice: number | null = null;
+  public maxPrice: number | null = null;
+
+  constructor(private router: Router, private renderer: Renderer2, public auth: AuthService, private cartService: CartService) {}
 
   ngOnInit(): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
@@ -85,5 +101,22 @@ export class HeaderComponent implements OnInit {
 
   handleNavigateToOrdersClick(): void {
     this.router.navigate(['/orders']);
+  }
+
+  handleSearch(): void {
+    this.searchTextChanged.emit(this.searchText);
+    this.filterChanged.emit({
+      category: this.selectedCategory,
+      minPrice: this.minPrice,
+      maxPrice: this.maxPrice
+    });
+  }
+
+  toggleCollapse(): void {
+    if (this.collapseElement.nativeElement.classList.contains('show')) {
+      this.renderer.removeClass(this.collapseElement.nativeElement, 'show');
+    } else {
+      this.renderer.addClass(this.collapseElement.nativeElement, 'show');
+    }
   }
 }

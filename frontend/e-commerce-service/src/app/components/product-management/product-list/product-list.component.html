@@ -1,5 +1,10 @@
 <div class="container mt-4">
-  <app-header [enableSearch]="enableSearch"></app-header>
+  <app-header 
+    [enableSearch]="enableSearch"
+    [availableCategories]="availableCategories"
+    (filterChanged)="handleFilterChanged($event)"
+    (searchTextChanged)="handleSearchTextChanged($event)">
+  </app-header>
   
   <div class="row mb-3">
     <div class="text-center" *ngIf="isLoggedIn">

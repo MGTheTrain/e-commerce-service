@@ -3,7 +3,7 @@ import { CartRequestDTO, CartResponseDTO, CartService, ProductResponseDTO, Produ
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HeaderComponent } from '../../header/header.component';
+import { FilterParams, HeaderComponent } from '../../header/header.component';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faPlus, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -18,7 +18,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 export class ProductListComponent implements OnInit {
   @Input() products: ProductResponseDTO[] = [];
 
-  availableCategories: string[] = [
+  public availableCategories: string[] = [
     'Acoustic Guitar',
     'Electric Guitar',
     'Bass Guitar',
@@ -92,4 +92,13 @@ export class ProductListComponent implements OnInit {
   handleViewReviewsClick(product: ProductResponseDTO): void {
     this.router.navigate(['/products', product.productID, 'reviews']);
   }
+
+  handleFilterChanged(filterParams: FilterParams): void {
+    console.log('Filter parameters received:', filterParams);
+  }
+
+  handleSearchTextChanged(searchText: string): void {
+    console.log('Search text received:', searchText);
+  }
+
 }

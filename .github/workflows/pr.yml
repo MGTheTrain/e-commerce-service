@@ -52,7 +52,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image for web backend
-        run: 
+        run: |
           version=$(cat version)
           BACKEND_TAG="ecommerce-service-be:$version-dev${{ github.run_number }}"  
           docker build -t $BACKEND_TAG -f backend/Mgtt.ECom/src/Mgtt.ECom.Web/Dockerfile .
@@ -60,7 +60,7 @@ jobs:
           docker push ${{ secrets.DOCKER_REPOSITORY }}/ecommerce-service-be:dev${{ github.run_number }}
 
       - name: Build and push Docker image for web frontend
-        run: 
+        run: |
           version=$(cat version)
           FRONTEND_TAG="ecommerce-service-fe:$version-dev${{ github.run_number }}"
           docker build -t $FRONTEND_TAG -f frontend/e-commerce-service/Dockerfile .

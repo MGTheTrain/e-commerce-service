@@ -3,10 +3,11 @@ import { CartRequestDTO, CartResponseDTO, CartService, ProductResponseDTO, Produ
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FilterParams, HeaderComponent } from '../../header/header.component';
+import { HeaderComponent } from '../../header/header.component';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faPlus, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ProductListFilter } from '../../../models/product-list-filter';
 
 @Component({
   selector: 'app-product-list',
@@ -17,6 +18,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 })
 export class ProductListComponent implements OnInit {
   @Input() products: ProductResponseDTO[] = [];
+
+  public productListFilter: ProductListFilter | null = null;
 
   public availableCategories: string[] = [
     'Acoustic Guitar',
@@ -71,6 +74,8 @@ export class ProductListComponent implements OnInit {
         );
       }
     } 
+    // const pageSize = 20;
+    // this.productService.apiV1ProductsGet(2, pageSize, this.productListFilter!.category, this.productListFilter!.searchText, this.productListFilter!.minPrice!, this.productListFilter!.maxPrice!).subscribe(
     this.productService.apiV1ProductsGet().subscribe(
       (data: ProductResponseDTO[]) => {
         this.products = data;
@@ -93,12 +98,8 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['/products', product.productID, 'reviews']);
   }
 
-  handleFilterChanged(filterParams: FilterParams): void {
-    console.log('Filter parameters received:', filterParams);
-  }
-
-  handleSearchTextChanged(searchText: string): void {
-    console.log('Search text received:', searchText);
+  handleSearchChanged(productListFilter: ProductListFilter): void {
+    console.log('Filter parameters received:', productListFilter);
   }
 
 }

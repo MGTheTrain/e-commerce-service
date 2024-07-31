@@ -7,7 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faList, faSearch, faShoppingCart, faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { CartResponseDTO, CartService } from '../../generated';
-import { FilterParams } from '../../models/filter-params';
+import { ProductListFilter } from '../../models/product-list-filter';
 
 @Component({
   selector: 'app-header',
@@ -28,8 +28,7 @@ export class HeaderComponent implements OnInit {
   // filter and pagination properties
   @Input() enableSearch: boolean = true;
   @Input() availableCategories: string[] = [];
-  @Output() filterChanged = new EventEmitter<FilterParams>();
-  @Output() searchTextChanged = new EventEmitter<string>();
+  @Output() searchChanged = new EventEmitter<ProductListFilter>();
   @ViewChild('collapseElement') collapseElement!: ElementRef;
 
   public searchText: string = '';
@@ -99,8 +98,8 @@ export class HeaderComponent implements OnInit {
   }
 
   handleSearch(): void {
-    this.searchTextChanged.emit(this.searchText);
-    this.filterChanged.emit({
+    this.searchChanged.emit({
+      searchText: this.searchText,
       category: this.selectedCategory,
       minPrice: this.minPrice,
       maxPrice: this.maxPrice

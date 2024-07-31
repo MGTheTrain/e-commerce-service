@@ -44,11 +44,11 @@ namespace Mgtt.ECom.Application.Services
         }
 
         public async Task<IEnumerable<Product>?> GetAllProducts(
-            int pageNumber = 1, 
-            int pageSize = 10, 
-            string? category = null, 
-            string? name = null, 
-            float? minPrice = null, 
+            int pageNumber = 1,
+            int pageSize = 10,
+            string? category = null,
+            string? name = null,
+            float? minPrice = null,
             float? maxPrice = null)
         {
             this.logger.LogInformation("Fetching all products with filters");
@@ -93,7 +93,6 @@ namespace Mgtt.ECom.Application.Services
                 return await Task.FromResult<IEnumerable<Product>?>(null);
             }
         }
-
 
         public async Task<IEnumerable<Product>?> GetProductsByUserId(string userId)
         {

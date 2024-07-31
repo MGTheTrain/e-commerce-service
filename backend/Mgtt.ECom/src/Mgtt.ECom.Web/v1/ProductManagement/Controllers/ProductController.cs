@@ -172,7 +172,6 @@ namespace Mgtt.ECom.Web.V1.ProductManagement.Controllers
             return this.Ok(productDTOs);
         }
 
-
         /// <summary>
         /// Retrieves the product associated with a specific user.
         /// Explicitly checks whether a product belongs to a user by requiring a product id.

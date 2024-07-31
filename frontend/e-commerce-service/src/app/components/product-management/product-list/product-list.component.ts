@@ -113,7 +113,7 @@ export class ProductListComponent implements OnInit {
   }
 
   getProducts(append: boolean): void {
-    const pageSize = 20;
+    const pageSize = 3;
     this.productService.apiV1ProductsGet(this.pageNumber, pageSize, this.productListFilter.category!, this.productListFilter.searchText!, this.productListFilter.minPrice!, this.productListFilter.maxPrice!).subscribe(
       (data: ProductResponseDTO[]) => {
         if(append) {

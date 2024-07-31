@@ -82,7 +82,8 @@ export class ProductListComponent implements OnInit {
       }
     } 
 
-    this.getProducts();
+    const appendNewProducts: boolean = false;
+    this.getProducts(appendNewProducts);
   }
 
   handleCreateProduct(): void {
@@ -100,20 +101,28 @@ export class ProductListComponent implements OnInit {
   handleSearchChanged(productListFilter: ProductListFilter): void {
     this.productListFilter = productListFilter;
     // console.log(this.productListFilter);
-    this.getProducts();
+    const appendNewProducts: boolean = false;
+    this.getProducts(appendNewProducts);
   }
 
   handleLoadMore(pageNumber: number): void {
     this.pageNumber = pageNumber;
     // console.log(this.pageNumber);
-    this.getProducts();
+    const appendNewProducts: boolean = true;
+    this.getProducts(appendNewProducts);
   }
 
-  getProducts(): void {
+  getProducts(append: boolean): void {
     const pageSize = 20;
     this.productService.apiV1ProductsGet(this.pageNumber, pageSize, this.productListFilter.category!, this.productListFilter.searchText!, this.productListFilter.minPrice!, this.productListFilter.maxPrice!).subscribe(
       (data: ProductResponseDTO[]) => {
-        this.products = data;
+        if(append) {
+          for(const d of data) {
+            this.products.push(d);
+          }
+        }  else {
+          this.products = data;
+        }
       },
       error => {
         console.error('Error fetching products', error);

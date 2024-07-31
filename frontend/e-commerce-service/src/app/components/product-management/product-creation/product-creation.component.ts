@@ -54,11 +54,11 @@ export class ProductCreationComponent implements OnInit {
     } 
   }
 
-  handleNavigateBackClick(): void {
+  handleNavigateBack(): void {
     this.router.navigate(['/']);
   }
 
-  handleCreateProductClick(): void {
+  handleCreateProduct(): void {
     const fileBlobs: Blob[] = [];
     if (this.selectedFile) {
       fileBlobs.push(this.selectedFile);

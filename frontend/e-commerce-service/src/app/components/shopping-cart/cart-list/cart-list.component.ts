@@ -40,7 +40,7 @@ export class CartListComponent implements OnInit {
   //   return user ? user.userName : 'Unknown User';
   // }
 
-  handleCartClick(cart: CartResponseDTO): void {
+  handleCart(cart: CartResponseDTO): void {
     this.router.navigate(['/carts', cart.cartID]);
   }
 }

@@ -51,7 +51,7 @@ export class CartItemComponent implements OnInit {
     }
   }
 
-  handleDeleteItemClick(cartItem: CartItemResponseDTO): void {
+  handleDeleteItem(cartItem: CartItemResponseDTO): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       const cartId = localStorage.getItem('cartId')?.toString();
       this.cartService.apiV1CartsCartIdItemsItemIdDelete(cartId!, cartItem.cartItemID!).subscribe(

@@ -65,15 +65,15 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  handleLogoClick(): void {
+  handleLogo(): void {
     this.router.navigate(['/']);
   }
 
-  handleLoginClick(): void {
+  handleLogin(): void {
     this.auth.loginWithRedirect();
   }
 
-  handleLogoutClick(): void {
+  handleLogout(): void {
     const cartId = localStorage.getItem('cartId')?.toString();
     this.cartService.apiV1CartsCartIdDelete(cartId!).subscribe(
       (data: CartResponseDTO) => {
@@ -91,11 +91,11 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  handleCartClick(): void {
+  handleCart(): void {
     this.router.navigate(['/cart']);
   }
 
-  handleNavigateToOrdersClick(): void {
+  handleNavigateToOrders(): void {
     this.router.navigate(['/orders']);
   }
 

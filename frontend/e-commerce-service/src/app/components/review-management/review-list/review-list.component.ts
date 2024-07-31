@@ -84,7 +84,7 @@ export class ReviewListComponent implements OnInit {
     }
   }
 
-  handleCreateReviewClick(): void {
+  handleCreateReview(): void {
     if(this.productId != null) {
       this.router.navigate(['/products', this.productId! , 'review', 'creation']);
     }
@@ -101,7 +101,7 @@ export class ReviewListComponent implements OnInit {
      : 'Unknown User';
   }
 
-  handleReviewClick(review: ReviewResponseDTO): void {
+  handleReview(review: ReviewResponseDTO): void {
     this.router.navigate(['/reviews', review.reviewID]);
   }
 }

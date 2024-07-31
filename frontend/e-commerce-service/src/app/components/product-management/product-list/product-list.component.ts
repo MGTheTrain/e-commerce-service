@@ -91,15 +91,15 @@ export class ProductListComponent implements OnInit {
     );
   }
 
-  handleCreateProductClick(): void {
+  handleCreateProduct(): void {
     this.router.navigate(['/products/creation']);
   }
 
-  handleViewProductClick(product: ProductResponseDTO): void {
+  handleViewProduct(product: ProductResponseDTO): void {
     this.router.navigate(['/products', product.productID]);
   }
 
-  handleViewReviewsClick(product: ProductResponseDTO): void {
+  handleViewReviews(product: ProductResponseDTO): void {
     this.router.navigate(['/products', product.productID, 'reviews']);
   }
 

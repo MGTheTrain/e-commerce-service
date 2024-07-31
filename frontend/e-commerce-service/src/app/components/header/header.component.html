@@ -1,10 +1,10 @@
 <div class="row mb-3 justify-content-center">
   <div class="col-md-8 text-center">
-    <img src="assets/e-commerce-logo.png" class="ecommerce-logo" (click)="handleLogoClick()">
+    <img src="assets/e-commerce-logo.png" class="ecommerce-logo" (click)="handleLogo()">
 
     <div class="input-group" *ngIf="enableSearch">
       <div class="input-group-prepend">
-        <button *ngIf="isLoggedIn" type="button" class="btn btn-outline-secondary" (click)="handleNavigateToOrdersClick()">
+        <button *ngIf="isLoggedIn" type="button" class="btn btn-outline-secondary" (click)="handleNavigateToOrders()">
           <fa-icon [icon]="faList"></fa-icon> Orders
         </button>
         <span class="mx-2"></span>
@@ -12,22 +12,22 @@
       <input type="text" class="form-control" placeholder="Search" [(ngModel)]="productListFilter.searchText" (change)="handleSearch()">
       <div class="input-group-append ml-2">
         <span class="mx-2"></span>
-        <button *ngIf="!isLoggedIn" type="button" class="btn btn-primary" (click)="handleLoginClick()">
+        <button *ngIf="!isLoggedIn" type="button" class="btn btn-primary" (click)="handleLogin()">
           <fa-icon [icon]="faSignIn"></fa-icon> Login
         </button>
         <span class="mx-2"></span>
-        <button *ngIf="isLoggedIn" type="button" class="btn btn-outline-secondary" (click)="handleCartClick()">
+        <button *ngIf="isLoggedIn" type="button" class="btn btn-outline-secondary" (click)="handleCart()">
           <fa-icon [icon]="faShoppingCart"></fa-icon> Cart
         </button>
         <span class="mx-2"></span>
-        <button *ngIf="isLoggedIn" type="button" class="btn btn-danger" (click)="handleLogoutClick()">
+        <button *ngIf="isLoggedIn" type="button" class="btn btn-danger" (click)="handleLogout()">
           <fa-icon [icon]="faSignIn"></fa-icon> Logout
         </button>
       </div>
     </div>
 
     <div *ngIf="!enableSearch" class="text-center">
-      <button *ngIf="!isLoggedIn" type="button" class="btn btn-primary" (click)="handleLoginClick()">
+      <button *ngIf="!isLoggedIn" type="button" class="btn btn-primary" (click)="handleLogin()">
         <fa-icon [icon]="faSignIn"></fa-icon> Login
       </button>
     </div>

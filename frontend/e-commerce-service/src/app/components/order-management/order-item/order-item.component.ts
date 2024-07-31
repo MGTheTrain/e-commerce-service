@@ -50,7 +50,7 @@ export class OrderItemComponent implements OnInit {
     } 
   }
 
-  handleDeleteItemClick(orderItem: OrderItemResponseDTO): void {
+  handleDeleteItem(orderItem: OrderItemResponseDTO): void {
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.orderService.apiV1OrdersOrderIdItemsItemIdDelete(orderItem.orderID!, orderItem.orderItemID!).subscribe(
         (data: OrderItemResponseDTO) => {

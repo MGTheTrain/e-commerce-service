@@ -3,7 +3,7 @@
       <div class="col-md-6">
         <div class="container mt-4 border border-dark rounded p-4">
         <app-detail-header></app-detail-header>
-        <button type="button" class="btn btn-link mb-3" (click)="handleNavigateBackClick()">
+        <button type="button" class="btn btn-link mb-3" (click)="handleNavigateBack()">
           <fa-icon [icon]="faArrowLeft"></fa-icon> Back to Products
         </button>
         <h2 class="text-center mb-4">Review Creation</h2>
@@ -21,7 +21,7 @@
             <textarea class="form-control" placeholder="Comment" id="comment" name="comment" [(ngModel)]="review.comment"></textarea>
           </div>
           <div class="form-group mb-4 text-center">
-            <button type="button" class="btn btn-primary" (click)="handleCreateReviewClick()">
+            <button type="button" class="btn btn-primary" (click)="handleCreateReview()">
                 <fa-icon [icon]="faPlus"></fa-icon> Create Review
             </button>
           </div>

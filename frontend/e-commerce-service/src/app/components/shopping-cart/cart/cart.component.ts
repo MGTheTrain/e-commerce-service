@@ -84,7 +84,7 @@ export class CartComponent implements OnInit {
     } 
   }
 
-  handleCheckoutClick(): void {
+  handleCheckout(): void {
     if(this.cartItems.length > 0) {
       this.updateCart();
       const orderRequestDto: OrderRequestDTO = {

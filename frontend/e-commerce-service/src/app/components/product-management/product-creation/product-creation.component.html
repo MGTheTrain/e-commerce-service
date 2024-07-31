@@ -3,7 +3,7 @@
       <div class="col-md-6">
         <div class="border border-dark rounded p-4">
           <app-detail-header></app-detail-header>
-          <button type="button" class="btn btn-link mb-3" (click)="handleNavigateBackClick()">
+          <button type="button" class="btn btn-link mb-3" (click)="handleNavigateBack()">
             <fa-icon [icon]="faArrowLeft"></fa-icon> Back to Products
           </button>
           <h2 class="text-center mb-4">Product Creation</h2>
@@ -43,7 +43,7 @@
             </div>
             <hr>
             <div class="form-group mb-4 text-center">
-              <button type="button" class="btn btn-primary" (click)="handleCreateProductClick()">
+              <button type="button" class="btn btn-primary" (click)="handleCreateProduct()">
                 <fa-icon [icon]="faPlus"></fa-icon> Create Product
               </button>
             </div>

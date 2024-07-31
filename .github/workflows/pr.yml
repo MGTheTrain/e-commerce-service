@@ -67,10 +67,10 @@ jobs:
         run: |
           BACKEND_TAG="${{ secrets.DOCKER_REPOSITORY }}/ecommerce-service-be:${{ env.VERSION }}-dev${{ github.run_number }}"  
           docker build -t $BACKEND_TAG -f backend/Mgtt.ECom/src/Mgtt.ECom.Web/Dockerfile .
-          docker push ${{ secrets.DOCKER_REPOSITORY }}/$BACKEND_TAG
+          docker push $BACKEND_TAG
 
       - name: Build and push Docker image for web frontend
         run: |
           FRONTEND_TAG="${{ secrets.DOCKER_REPOSITORY }}/ecommerce-service-fe:${{ env.VERSION }}-dev${{ github.run_number }}"
           docker build -t $FRONTEND_TAG -f frontend/e-commerce-service/Dockerfile .
-          docker push ${{ secrets.DOCKER_REPOSITORY }}/$FRONTEND_TAG
+          docker push $FRONTEND_TAG

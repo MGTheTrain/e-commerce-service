@@ -81,6 +81,12 @@ namespace Mgtt.ECom.Application.Services
                     query = query.Where(p => p.Price <= maxPrice.Value);
                 }
 
+                // Apply OrderBy to ensure predictable results
+                query = query.OrderBy(p => p.ProductID);
+
+                // Ensure the page number is not negative
+                pageNumber = Math.Max(pageNumber, 1);
+
                 // Apply pagination
                 var skip = (pageNumber - 1) * pageSize;
                 var products = await query.Skip(skip).Take(pageSize).ToListAsync();

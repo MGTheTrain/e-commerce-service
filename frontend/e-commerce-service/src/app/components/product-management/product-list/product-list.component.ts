@@ -8,11 +8,12 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faPlus, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProductListFilter } from '../../../models/product-list-filter';
+import { FooterComponent } from '../../footer/footer.component';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [ CommonModule, FormsModule, FontAwesomeModule, HeaderComponent ],
+  imports: [ CommonModule, FormsModule, FontAwesomeModule, HeaderComponent, FooterComponent ],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
@@ -25,6 +26,7 @@ export class ProductListComponent implements OnInit {
     maxPrice: null,
     searchText: null
   };
+  public pageNumber: number = 0;
 
   public availableCategories: string[] = [
     'Acoustic Guitar',
@@ -80,15 +82,7 @@ export class ProductListComponent implements OnInit {
       }
     } 
 
-    const pageSize = 20;
-    this.productService.apiV1ProductsGet(1, pageSize).subscribe(
-      (data: ProductResponseDTO[]) => {
-        this.products = data;
-      },
-      error => {
-        console.error('Error fetching products', error);
-      }
-    );
+    this.getProducts();
   }
 
   handleCreateProduct(): void {
@@ -106,8 +100,18 @@ export class ProductListComponent implements OnInit {
   handleSearchChanged(productListFilter: ProductListFilter): void {
     this.productListFilter = productListFilter;
     // console.log(this.productListFilter);
+    this.getProducts();
+  }
+
+  handleLoadMore(pageNumber: number): void {
+    this.pageNumber = pageNumber;
+    // console.log(this.pageNumber);
+    this.getProducts();
+  }
+
+  getProducts(): void {
     const pageSize = 20;
-    this.productService.apiV1ProductsGet(1, pageSize, this.productListFilter.category!, this.productListFilter.searchText!, this.productListFilter.minPrice!, this.productListFilter.maxPrice!).subscribe(
+    this.productService.apiV1ProductsGet(this.pageNumber, pageSize, this.productListFilter.category!, this.productListFilter.searchText!, this.productListFilter.minPrice!, this.productListFilter.maxPrice!).subscribe(
       (data: ProductResponseDTO[]) => {
         this.products = data;
       },
@@ -116,5 +120,4 @@ export class ProductListComponent implements OnInit {
       }
     );
   }
-
 }

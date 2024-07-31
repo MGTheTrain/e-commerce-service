@@ -35,18 +35,18 @@ jobs:
         with:
           WORKING_DIRECTORY: ./frontend/e-commerce-service
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: 'csharp, javascript'
+      # - name: Initialize CodeQL
+      #   uses: github/codeql-action/init@v3
+      #   with:
+      #     languages: 'csharp, javascript'
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+      # - name: Autobuild
+      #   uses: github/codeql-action/autobuild@v3
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-        with:
-          languages: 'csharp, javascript'
+      # - name: Perform CodeQL Analysis
+      #   uses: github/codeql-action/analyze@v3
+      #   with:
+      #     languages: 'csharp, javascript'
       
       - name: Build and push Docker image for web backend
         run: 

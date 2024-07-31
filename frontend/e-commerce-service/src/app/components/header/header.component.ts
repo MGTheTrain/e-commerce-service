@@ -7,12 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faList, faSearch, faShoppingCart, faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { CartResponseDTO, CartService } from '../../generated';
-
-export interface FilterParams {
-  category: string;
-  minPrice: number | null;
-  maxPrice: number | null;
-}
+import { FilterParams } from '../../models/filter-params';
 
 @Component({
   selector: 'app-header',

@@ -3,7 +3,7 @@
     <div class="col-md-8">
       <div class="container mt-4 border border-dark rounded p-4">
         <app-detail-header></app-detail-header>
-        <button type="button" class="btn btn-link mb-3" (click)="handleNavigateBackClick()">
+        <button type="button" class="btn btn-link mb-3" (click)="handleNavigateBack()">
           <fa-icon [icon]="faArrowLeft"></fa-icon> Back to Orders
         </button>
         <h2 class="text-center mb-4">Order Details</h2>
@@ -41,15 +41,15 @@
 
         <hr>
         <div class="form-group mb-4 text-center">
-          <button type="button" class="btn btn-secondary" (click)="handleEditClick()" *ngIf="isOrderOwner">
+          <button type="button" class="btn btn-secondary" (click)="handleEdit()" *ngIf="isOrderOwner">
             <fa-icon [icon]="faEdit"></fa-icon> {{ isEditing ? 'Cancel' : 'Edit' }}
           </button>
           <span class="mx-2"></span>
-          <button type="button" class="btn btn-danger mr-2" (click)="handleDeleteOrderClick()" *ngIf="isOrderOwner && isEditing">
+          <button type="button" class="btn btn-danger mr-2" (click)="handleDeleteOrder()" *ngIf="isOrderOwner && isEditing">
             <fa-icon [icon]="faTrash"></fa-icon> Delete Order
           </button>
           <span class="mx-2"></span>
-          <button type="button" class="btn btn-primary" (click)="handleUpdateOrderClick()" *ngIf="isOrderOwner && isEditing">
+          <button type="button" class="btn btn-primary" (click)="handleUpdateOrder()" *ngIf="isOrderOwner && isEditing">
             <fa-icon [icon]="faEdit"></fa-icon> Update Order
           </button>
         </div>

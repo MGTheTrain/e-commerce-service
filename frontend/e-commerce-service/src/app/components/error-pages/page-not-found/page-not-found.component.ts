@@ -12,7 +12,7 @@ export class PageNotFoundComponent {
 
   constructor(private router: Router) {}
 
-  handleLogoClick(): void {
+  handleLogo(): void {
     this.router.navigate(['/']);
   }
 }

@@ -1,8 +1,8 @@
 <div class="container mt-4">
-    <app-header></app-header>
+    <app-header [enableSearch]="enableSearch"></app-header>
     
     <div class="row">
-        <div class="col-md-4" *ngFor="let cart of carts" (click)="handleCartClick(cart)">
+        <div class="col-md-4" *ngFor="let cart of carts" (click)="handleCart(cart)">
             <div class="card mb-3 card-hover">
                 <div class="card-body">
                     <p class="card-text">Cart ID: {{ cart.cartID }} </p>

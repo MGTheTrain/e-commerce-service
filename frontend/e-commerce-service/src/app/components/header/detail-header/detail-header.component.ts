@@ -31,15 +31,15 @@ export class DetailHeaderComponent implements OnInit {
     }
   }
 
-  handleLogoClick(): void {
+  handleLogo(): void {
     this.router.navigate(['/']);
   }
 
-  handleLoginClick(): void {
+  handleLogin(): void {
     this.auth.loginWithRedirect();
   }
 
-  handleLogoutClick(): void {
+  handleLogout(): void {
     const cartId = localStorage.getItem('cartId')?.toString();
     this.cartService.apiV1CartsCartIdDelete(cartId!).subscribe(
       (data: CartResponseDTO) => {

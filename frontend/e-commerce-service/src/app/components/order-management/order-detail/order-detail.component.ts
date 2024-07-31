@@ -85,11 +85,11 @@ export class OrderDetailComponent implements OnInit {
     } 
   }
 
-  handleNavigateBackClick(): void {
+  handleNavigateBack(): void {
     this.router.navigate(['/orders']);
   }
 
-  handleEditClick(): void {
+  handleEdit(): void {
     this.isEditing = !this.isEditing;
   }
 
@@ -101,7 +101,7 @@ export class OrderDetailComponent implements OnInit {
     }, 0);
   }
 
-  handleDeleteOrderClick(): void {    
+  handleDeleteOrder(): void {    
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.deleteAllOrderItems();
 
@@ -117,7 +117,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  handleUpdateOrderClick(): void {    
+  handleUpdateOrder(): void {    
     if(localStorage.getItem('isLoggedIn') === 'true') {  
       const orderRequestDto: OrderRequestDTO = {
         totalAmount: this.order.totalAmount!,

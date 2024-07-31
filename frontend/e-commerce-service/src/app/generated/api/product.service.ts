@@ -57,15 +57,47 @@ export class ProductService {
 
 
     /**
-     * Retrieves all products.
+     * Retrieves all products with optional pagination and filtering.
      * 
+     * @param pageNumber The page number for pagination.
+     * @param pageSize The number of items per page.
+     * @param category The category to filter by.
+     * @param name The name to filter by.
+     * @param minPrice The minimum price to filter by.
+     * @param maxPrice The maximum price to filter by.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ProductsGet(observe?: 'body', reportProgress?: boolean): Observable<Array<ProductResponseDTO>>;
-    public apiV1ProductsGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ProductResponseDTO>>>;
-    public apiV1ProductsGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ProductResponseDTO>>>;
-    public apiV1ProductsGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1ProductsGet(pageNumber?: number, pageSize?: number, category?: string, name?: string, minPrice?: number, maxPrice?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ProductResponseDTO>>;
+    public apiV1ProductsGet(pageNumber?: number, pageSize?: number, category?: string, name?: string, minPrice?: number, maxPrice?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ProductResponseDTO>>>;
+    public apiV1ProductsGet(pageNumber?: number, pageSize?: number, category?: string, name?: string, minPrice?: number, maxPrice?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ProductResponseDTO>>>;
+    public apiV1ProductsGet(pageNumber?: number, pageSize?: number, category?: string, name?: string, minPrice?: number, maxPrice?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+
+
+
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (pageNumber !== undefined && pageNumber !== null) {
+            queryParameters = queryParameters.set('pageNumber', <any>pageNumber);
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+            queryParameters = queryParameters.set('pageSize', <any>pageSize);
+        }
+        if (category !== undefined && category !== null) {
+            queryParameters = queryParameters.set('category', <any>category);
+        }
+        if (name !== undefined && name !== null) {
+            queryParameters = queryParameters.set('name', <any>name);
+        }
+        if (minPrice !== undefined && minPrice !== null) {
+            queryParameters = queryParameters.set('minPrice', <any>minPrice);
+        }
+        if (maxPrice !== undefined && maxPrice !== null) {
+            queryParameters = queryParameters.set('maxPrice', <any>maxPrice);
+        }
 
         let headers = this.defaultHeaders;
 
@@ -91,6 +123,7 @@ export class ProductService {
 
         return this.httpClient.request<Array<ProductResponseDTO>>('get',`${this.basePath}/api/v1/products`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

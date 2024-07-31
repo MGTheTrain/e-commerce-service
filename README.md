@@ -45,7 +45,7 @@ Web front- and backend for an e-commerce platform utilizing DDD principles based
 - **Optimizations**
   - [ ] Reduce the number of web backend calls from the web frontend by providing HTTP endpoints that perform multiple logical backend operations
   - [ ] Decompose monolith web backend into µServices
-  - [ ] Implement filtering and pagination for specific list calls in web backend
+  - [x] Implement filtering and pagination for specific list calls in web backend
   - [ ] Increase and measure code coverage
   - [x] Enable uploading of product images
   - [ ] Deployment of Auth0 resources using Terraform  required by web backend and web frontend

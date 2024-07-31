@@ -1,8 +1,8 @@
 <div class="container mt-4">
-  <app-header></app-header>
+  <app-header [enableSearch]="enableSearch"></app-header>
   
   <div class="row">
-    <div class="col-md-4" *ngFor="let order of orders" (click)="handleOrderClick(order)">
+    <div class="col-md-4" *ngFor="let order of orders" (click)="handleOrder(order)">
       <div class="card mb-4 shadow-sm card-hover">
         <div class="card-body">
           <p class="card-text">Order ID: {{ order.orderID }}</p>

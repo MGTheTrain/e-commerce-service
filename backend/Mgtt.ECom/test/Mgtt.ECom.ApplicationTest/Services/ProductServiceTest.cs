@@ -36,8 +36,10 @@ namespace Mgtt.ECom.ApplicationTest.Services
 
             var initialProducts = new List<Product>
             {
-                new Product { UserID = Guid.NewGuid().ToString(), Name = "Product 1", SnapShotImageName = "snapshot.jpg", Price = 100 },
-                new Product { UserID = Guid.NewGuid().ToString(), Name = "Product 2", SnapShotImageName = "snapshot.jpg", Price = 200 },
+                new Product { UserID = Guid.NewGuid().ToString(), Name = "Product 1", SnapShotImageName = "snapshot.jpg", Price = 100, Categories = new List<string> { "Category1" } },
+                new Product { UserID = Guid.NewGuid().ToString(), Name = "Product 2", SnapShotImageName = "snapshot.jpg", Price = 200, Categories = new List<string> { "Category2" } },
+                new Product { UserID = Guid.NewGuid().ToString(), Name = "Product 3", SnapShotImageName = "snapshot.jpg", Price = 150, Categories = new List<string> { "Category1" } },
+                new Product { UserID = Guid.NewGuid().ToString(), Name = "Product 4", SnapShotImageName = "snapshot.jpg", Price = 250, Categories = new List<string> { "Category2" } },
             };
 
             this.dbContext.Products.AddRange(initialProducts);
@@ -75,7 +77,7 @@ namespace Mgtt.ECom.ApplicationTest.Services
         public async Task Test_CreateProduct_GetProductById()
         {
             // Arrange
-            var product = new Product { UserID = Guid.NewGuid().ToString(), Name = "New Product", SnapShotImageName = "snapshot.jpg", Price = 300 };
+            var product = new Product { UserID = Guid.NewGuid().ToString(), Name = "New Product", SnapShotImageName = "snapshot.jpg", Price = 300, Categories = new List<string> { "Category3" } };
             var formFile = this.CreateTestFormFile("test.txt", "This is a test file.");
 
             // Act
@@ -93,7 +95,7 @@ namespace Mgtt.ECom.ApplicationTest.Services
         public async Task Test_UpdateProduct()
         {
             // Arrange
-            var product = new Product { UserID = Guid.NewGuid().ToString(), Name = "Product to Update", SnapShotImageName = "snapshot.jpg", Price = 400 };
+            var product = new Product { UserID = Guid.NewGuid().ToString(), Name = "Product to Update", SnapShotImageName = "snapshot.jpg", Price = 400, Categories = new List<string> { "Category1" } };
             var formFile = this.CreateTestFormFile("test.txt", "This is a test file.");
             await this.productService.CreateProduct(product, formFile);
 
@@ -111,7 +113,7 @@ namespace Mgtt.ECom.ApplicationTest.Services
         public async Task Test_DeleteProduct()
         {
             // Arrange
-            var product = new Product { UserID = Guid.NewGuid().ToString(), Name = "Product to Delete", SnapShotImageName = "snapshot.jpg", Price = 500 };
+            var product = new Product { UserID = Guid.NewGuid().ToString(), Name = "Product to Delete", SnapShotImageName = "snapshot.jpg", Price = 500, Categories = new List<string> { "Category1" } };
             var formFile = this.CreateTestFormFile("test.txt", "This is a test file.");
             await this.productService.CreateProduct(product, formFile);
 
@@ -131,7 +133,45 @@ namespace Mgtt.ECom.ApplicationTest.Services
 
             // Assert
             Assert.NotNull(products);
-            Assert.Equal(2, products.Count()); // Assuming there are 2 initial products in the in-memory context
+            Assert.Equal(4, products.Count()); // Assuming there are 4 initial products in the in-memory context
+        }
+
+        [Fact]
+        public async Task Test_GetAllProducts_WithPagination()
+        {
+            // Act
+            var productsPage1 = await this.productService.GetAllProducts(pageNumber: 1, pageSize: 2);
+            var productsPage2 = await this.productService.GetAllProducts(pageNumber: 2, pageSize: 2);
+
+            // Assert
+            Assert.NotNull(productsPage1);
+            Assert.Equal(2, productsPage1.Count()); // Page 1 should have 2 products
+
+            Assert.NotNull(productsPage2);
+            Assert.Equal(2, productsPage2.Count()); // Page 2 should have 2 products
+        }
+
+        [Fact]
+        public async Task Test_GetAllProducts_WithFiltering()
+        {
+            // Act
+            var productsCategory1 = await this.productService.GetAllProducts(category: "Category1");
+            var productsCategory2 = await this.productService.GetAllProducts(category: "Category2");
+            var productsByName = await this.productService.GetAllProducts(name: "Product 1");
+            var productsByPriceRange = await this.productService.GetAllProducts(minPrice: 100, maxPrice: 150);
+
+            // Assert
+            Assert.NotNull(productsCategory1);
+            Assert.Equal(2, productsCategory1.Count()); // There are 2 products in Category1
+
+            Assert.NotNull(productsCategory2);
+            Assert.Equal(2, productsCategory2.Count()); // There are 2 products in Category2
+
+            Assert.NotNull(productsByName);
+            Assert.Single(productsByName); // Only 1 product with the name "Product 1"
+
+            Assert.NotNull(productsByPriceRange);
+            Assert.Equal(2, productsByPriceRange.Count()); // There are 2 products in the price range 100 to 150
         }
     }
 }

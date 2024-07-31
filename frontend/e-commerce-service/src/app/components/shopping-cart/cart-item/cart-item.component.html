@@ -7,7 +7,7 @@
       <p class="card-text"><input type="number" [(ngModel)]="cartItem.quantity" [disabled]="!isEditing"></p>
       <label><strong>Price</strong></label>
       <p class="card-text">${{ cartItem.price }}</p>
-      <button type="button" class="btn btn-danger mr-2" (click)="handleDeleteItemClick(cartItem)" [disabled]="!isEditing">
+      <button type="button" class="btn btn-danger mr-2" (click)="handleDeleteItem(cartItem)" [disabled]="!isEditing">
         <fa-icon [icon]="faTrash"></fa-icon> Delete Item
       </button>
     </div>

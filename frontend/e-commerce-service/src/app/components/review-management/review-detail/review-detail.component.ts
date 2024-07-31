@@ -86,15 +86,15 @@ export class ReviewDetailComponent implements OnInit {
    });
   }
 
-  handleNavigateBackClick(): void {
+  handleNavigateBack(): void {
     this.router.navigate([this.productReviewsUrl]);
   }
 
-  handleEditClick(): void {
+  handleEdit(): void {
     this.isEditing = !this.isEditing;
   }
 
-  handleUpdateReviewClick(): void {    
+  handleUpdateReview(): void {    
     if(localStorage.getItem('isLoggedIn') === 'true') {
       const reviewRequestDto: ReviewRequestDTO = {
         productID: this.product.productID!,
@@ -113,7 +113,7 @@ export class ReviewDetailComponent implements OnInit {
     }
   }
 
-  handleDeleteReviewClick(): void {    
+  handleDeleteReview(): void {    
     if(localStorage.getItem('isLoggedIn') === 'true') {
       this.reviewService.apiV1ReviewsReviewIdDelete(this.review.reviewID!).subscribe(
         () => {

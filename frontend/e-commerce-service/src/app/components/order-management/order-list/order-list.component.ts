@@ -24,6 +24,8 @@ export class OrderListComponent implements OnInit {
   public isLoggedIn: boolean = false;
   public accessToken: string | null = ''; 
 
+  public enableSearch: boolean = false;
+
   constructor(private router: Router, private orderService: OrderService) {}
 
   ngOnInit(): void {
@@ -45,7 +47,7 @@ export class OrderListComponent implements OnInit {
   //   return user ? user.userName : 'Unknown User';
   // }
 
-  handleOrderClick(order: OrderResponseDTO): void {
+  handleOrder(order: OrderResponseDTO): void {
     this.router.navigate(['/orders', order.orderID]);
   }
 }

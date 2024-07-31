@@ -90,15 +90,15 @@ export class ProductDetailComponent implements OnInit {
      } 
   }
 
-  handleNavigateBackClick(): void {
+  handleNavigateBack(): void {
     this.router.navigate(['/']);
   }
 
-  handleEditClick(): void {
+  handleEdit(): void {
     this.isEditing = !this.isEditing;
   }
 
-  handleDeleteProductClick() {
+  handleDeleteProduct() {
     if(this.isLoggedIn) {
       const productID = this.product.productID;
       if (productID) {
@@ -117,7 +117,7 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  handleUpdateProductClick() {
+  handleUpdateProduct() {
     if(this.isLoggedIn) {
       const productID = this.product.productID;
       if (productID) {
@@ -156,7 +156,7 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  handleAddToCartClick(product: ProductResponseDTO): void {
+  handleAddToCart(product: ProductResponseDTO): void {
     if(this.isLoggedIn) {
       this.removeItemFromCart();
 
@@ -179,7 +179,7 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  handleRemoveFromCartClick(): void {
+  handleRemoveFromCart(): void {
     if(this.isLoggedIn) {
       this.removeItemFromCart();
       this.router.navigate(['/']);

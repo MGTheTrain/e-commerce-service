@@ -17,6 +17,7 @@ export class CartListComponent implements OnInit {
   @Input() carts: CartResponseDTO[] = [];
 
   public isLoggedIn: boolean = false;
+  public enableSearch: boolean = false;
 
   constructor(private router: Router, private cartService: CartService) {}
 
@@ -39,7 +40,7 @@ export class CartListComponent implements OnInit {
   //   return user ? user.userName : 'Unknown User';
   // }
 
-  handleCartClick(cart: CartResponseDTO): void {
+  handleCart(cart: CartResponseDTO): void {
     this.router.navigate(['/carts', cart.cartID]);
   }
 }

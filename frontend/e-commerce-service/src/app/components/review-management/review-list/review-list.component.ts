@@ -39,6 +39,7 @@ export class ReviewListComponent implements OnInit {
 
   public isLoggedIn: boolean = false;
   public productId: string | null = null;
+  public enableSearch: boolean = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private reviewService: ReviewService, private productService: ProductService) {}
 
@@ -83,7 +84,7 @@ export class ReviewListComponent implements OnInit {
     }
   }
 
-  handleCreateReviewClick(): void {
+  handleCreateReview(): void {
     if(this.productId != null) {
       this.router.navigate(['/products', this.productId! , 'review', 'creation']);
     }
@@ -100,7 +101,7 @@ export class ReviewListComponent implements OnInit {
      : 'Unknown User';
   }
 
-  handleReviewClick(review: ReviewResponseDTO): void {
+  handleReview(review: ReviewResponseDTO): void {
     this.router.navigate(['/reviews', review.reviewID]);
   }
 }

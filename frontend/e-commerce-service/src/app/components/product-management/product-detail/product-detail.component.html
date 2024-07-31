@@ -3,7 +3,7 @@
     <div class="col-md-6">
       <div class="border border-dark rounded p-4">
         <app-detail-header></app-detail-header>
-        <button type="button" class="btn btn-link mb-3" (click)="handleNavigateBackClick()">
+        <button type="button" class="btn btn-link mb-3" (click)="handleNavigateBack()">
           <fa-icon [icon]="faArrowLeft"></fa-icon> Back to Products
         </button>
         <h2 class="text-center mb-4">Product Details</h2>
@@ -44,27 +44,27 @@
           <hr>
           <div class="form-group mb-4 text-center" *ngIf="isLoggedIn">
             <div class="d-flex justify-content-center align-items-center mt-3 flex-wrap">
-              <button type="button" class="btn btn-secondary me-2 mb-2" (click)="handleEditClick()" *ngIf="isProductOwner">
+              <button type="button" class="btn btn-secondary me-2 mb-2" (click)="handleEdit()" *ngIf="isProductOwner">
                 <fa-icon [icon]="faEdit"></fa-icon> {{ isEditing ? 'Cancel' : 'Edit' }}
               </button>
           
               <span class="mx-2" *ngIf="isEditing && isProductOwner"></span>
-              <button type="submit" class="btn btn-danger me-2 mb-2" (click)="handleDeleteProductClick()" *ngIf="isEditing && isProductOwner">
+              <button type="submit" class="btn btn-danger me-2 mb-2" (click)="handleDeleteProduct()" *ngIf="isEditing && isProductOwner">
                 <fa-icon [icon]="faTrash"></fa-icon> Delete
               </button>
               <span class="mx-2" *ngIf="isEditing && isProductOwner"></span>
-              <button type="button" class="btn btn-primary me-2 mb-2" (click)="handleUpdateProductClick()" *ngIf="isEditing && isProductOwner">
+              <button type="button" class="btn btn-primary me-2 mb-2" (click)="handleUpdateProduct()" *ngIf="isEditing && isProductOwner">
                 <fa-icon [icon]="faEdit"></fa-icon> Update
               </button>
 
               <label class="mx-2 mb-2" *ngIf="!isEditing"><strong>Quantity</strong></label>
               <input type="number" placeholder="Quantity" class="form-control me-2 mb-2" id="quantity" name="quantity" [(ngModel)]="quantity" style="max-width: 100px;" *ngIf="!isEditing">
           
-              <button type="button" class="btn btn-primary me-2 mb-2" (click)="handleAddToCartClick(product)" *ngIf="!isEditing">
+              <button type="button" class="btn btn-primary me-2 mb-2" (click)="handleAddToCart(product)" *ngIf="!isEditing">
                 <fa-icon [icon]="faShoppingCart"></fa-icon> + Item
               </button>
 
-              <button type="button" class="btn btn-danger me-2 mb-2" (click)="handleRemoveFromCartClick()" *ngIf="!isEditing">
+              <button type="button" class="btn btn-danger me-2 mb-2" (click)="handleRemoveFromCart()" *ngIf="!isEditing">
                 <fa-icon [icon]="faShoppingCart"></fa-icon> - Item
               </button>
             </div>

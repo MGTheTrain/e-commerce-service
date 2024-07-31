@@ -52,11 +52,11 @@ export class ReviewCreationComponent implements OnInit {
     } 
   }
 
-  handleNavigateBackClick(): void {
+  handleNavigateBack(): void {
     this.router.navigate(['/']);
   }
 
-  handleCreateReviewClick(): void {
+  handleCreateReview(): void {
     // create review
     const reviewRequestDto: ReviewRequestDTO = {
       productID: this.product.productID!,

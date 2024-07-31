@@ -7,12 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0] - 31-07-2024
+
+### Updated
+
+- **Optimizations**
+  - [x] Implemented filtering and pagination for specific list calls in web backend
+- Removed `Click` suffix from method names in [web frontend](./frontend/e-commerce-service/)
+
 ## [0.12.0] - 27-07-2024
 
 ### Updated
 
 - **Optimizations**
- - [x] Enabled uploading of product images
+  - [x] Enabled uploading of product images
 
 ### Fixed
 
@@ -52,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modified [page not found component](./frontend/e-commerce-service/src/app/components/error-pages/page-not-found/)
 - Added HTTP controller endpoints for retrieval of orders, reviews, products and carts related to a specific user
 - Checked for existing user cart before creating a new one in [product list component](./frontend/e-commerce-service/src/app/components/product-management/product-list/)
-- Retrieved product by product id in `ngOnInit` and implemented `handleDeleteItemClick(...)` methods in [cart item component](./frontend/e-commerce-service/src/app/components/shopping-cart/cart-item/)
+- Retrieved product by product id in `ngOnInit` and implemented `handleDeleteItem(...)` methods in [cart item component](./frontend/e-commerce-service/src/app/components/shopping-cart/cart-item/)
 - Implemented checkout logic, removed edit and delete button/logic from [cart component](./frontend/e-commerce-service/src/app/components/shopping-cart/cart/)
 
 ## [0.8.0] - 17-07-2024

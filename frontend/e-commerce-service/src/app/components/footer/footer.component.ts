@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
@@ -8,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrl: './footer.component.css'
 })
 export class FooterComponent {
+  @Output() pageNumberChanged = new EventEmitter<number>();
+  public pageNumber: number = 0;
 
+  loadMore(): void {
+    this.pageNumber++;
+    this.pageNumberChanged.emit(this.pageNumber);
+  }
 }

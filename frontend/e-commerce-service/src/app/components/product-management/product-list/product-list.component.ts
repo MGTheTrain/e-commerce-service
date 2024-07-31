@@ -79,9 +79,9 @@ export class ProductListComponent implements OnInit {
         );
       }
     } 
-    this.productService.apiV1ProductsGet().subscribe(
-    // const pageSize = 20;
-    // this.productService.apiV1ProductsGet(2, pageSize, this.productListFilter.category!, this.productListFilter.searchText!, this.productListFilter.minPrice!, this.productListFilter.maxPrice!).subscribe(
+
+    const pageSize = 20;
+    this.productService.apiV1ProductsGet(1, pageSize).subscribe(
       (data: ProductResponseDTO[]) => {
         this.products = data;
       },
@@ -105,7 +105,16 @@ export class ProductListComponent implements OnInit {
 
   handleSearchChanged(productListFilter: ProductListFilter): void {
     this.productListFilter = productListFilter;
-    console.log('Filter parameters received:', productListFilter);
+    // console.log(this.productListFilter);
+    const pageSize = 20;
+    this.productService.apiV1ProductsGet(1, pageSize, this.productListFilter.category!, this.productListFilter.searchText!, this.productListFilter.minPrice!, this.productListFilter.maxPrice!).subscribe(
+      (data: ProductResponseDTO[]) => {
+        this.products = data;
+      },
+      error => {
+        console.error('Error fetching products', error);
+      }
+    );
   }
 
 }

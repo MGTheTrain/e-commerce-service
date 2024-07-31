@@ -31,10 +31,12 @@ export class HeaderComponent implements OnInit {
   @Output() searchChanged = new EventEmitter<ProductListFilter>();
   @ViewChild('collapseElement') collapseElement!: ElementRef;
 
-  public searchText: string = '';
-  public selectedCategory: string = '';
-  public minPrice: number | null = null;
-  public maxPrice: number | null = null;
+  public productListFilter: ProductListFilter = {
+    category: null,
+    minPrice: null,
+    maxPrice: null,
+    searchText: null
+  };
 
   constructor(private router: Router, private renderer: Renderer2, public auth: AuthService, private cartService: CartService) {}
 
@@ -99,11 +101,17 @@ export class HeaderComponent implements OnInit {
 
   handleSearch(): void {
     this.searchChanged.emit({
-      searchText: this.searchText,
-      category: this.selectedCategory,
-      minPrice: this.minPrice,
-      maxPrice: this.maxPrice
+      searchText: this.productListFilter.searchText,
+      category: this.productListFilter.category,
+      minPrice: this.productListFilter.minPrice,
+      maxPrice: this.productListFilter.maxPrice
     });
+    this.productListFilter = {
+      category: null,
+      minPrice: null,
+      maxPrice: null,
+      searchText: null
+    };
   }
 
   toggleCollapse(): void {

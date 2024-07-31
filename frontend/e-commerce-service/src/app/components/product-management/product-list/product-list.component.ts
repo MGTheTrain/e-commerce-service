@@ -19,7 +19,12 @@ import { ProductListFilter } from '../../../models/product-list-filter';
 export class ProductListComponent implements OnInit {
   @Input() products: ProductResponseDTO[] = [];
 
-  public productListFilter: ProductListFilter | null = null;
+  public productListFilter: ProductListFilter = {
+    category: null,
+    minPrice: null,
+    maxPrice: null,
+    searchText: null
+  };
 
   public availableCategories: string[] = [
     'Acoustic Guitar',
@@ -74,9 +79,9 @@ export class ProductListComponent implements OnInit {
         );
       }
     } 
-    // const pageSize = 20;
-    // this.productService.apiV1ProductsGet(2, pageSize, this.productListFilter!.category, this.productListFilter!.searchText, this.productListFilter!.minPrice!, this.productListFilter!.maxPrice!).subscribe(
     this.productService.apiV1ProductsGet().subscribe(
+    // const pageSize = 20;
+    // this.productService.apiV1ProductsGet(2, pageSize, this.productListFilter.category!, this.productListFilter.searchText!, this.productListFilter.minPrice!, this.productListFilter.maxPrice!).subscribe(
       (data: ProductResponseDTO[]) => {
         this.products = data;
       },
@@ -99,6 +104,7 @@ export class ProductListComponent implements OnInit {
   }
 
   handleSearchChanged(productListFilter: ProductListFilter): void {
+    this.productListFilter = productListFilter;
     console.log('Filter parameters received:', productListFilter);
   }
 

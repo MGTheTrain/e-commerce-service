@@ -51,18 +51,28 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Read version from file
+        id: get_version
+        run: |
+          # Check if the version file exists and read its content
+          if [ -f version ]; then
+            version=$(cat version)
+            echo "VERSION=$version" >> $GITHUB_ENV
+          else
+            echo "Version file not found!"
+            exit 1
+          fi
+
       - name: Build and push Docker image for web backend
         run: |
-          version=$(cat version)
-          BACKEND_TAG="ecommerce-service-be:$version-dev${{ github.run_number }}"  
+          BACKEND_TAG="ecommerce-service-be:${{ env.VERSION }}-dev${{ github.run_number }}"  
           docker build -t $BACKEND_TAG -f backend/Mgtt.ECom/src/Mgtt.ECom.Web/Dockerfile .
           docker tag $BACKEND_TAG ${{ secrets.DOCKER_REPOSITORY }}/ecommerce-service-be:dev${{ github.run_number }}
           docker push ${{ secrets.DOCKER_REPOSITORY }}/ecommerce-service-be:dev${{ github.run_number }}
 
       - name: Build and push Docker image for web frontend
         run: |
-          version=$(cat version)
-          FRONTEND_TAG="ecommerce-service-fe:$version-dev${{ github.run_number }}"
+          FRONTEND_TAG="ecommerce-service-fe:${{ env.VERSION }}-dev${{ github.run_number }}"
           docker build -t $FRONTEND_TAG -f frontend/e-commerce-service/Dockerfile .
           docker tag $FRONTEND_TAG ${{ secrets.DOCKER_REPOSITORY }}/ecommerce-service-fe:dev${{ github.run_number }}
           docker push ${{ secrets.DOCKER_REPOSITORY }}/ecommerce-service-fe:dev${{ github.run_number }}

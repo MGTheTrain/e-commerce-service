@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PageNotFoundComponent } from './components/error-pages/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './shared/component/page-not-found/page-not-found.component';
 // import { UserLoginComponent } from './components/user-management/user-login/user-login.component';
 // import { UserRegistrationComponent } from './components/user-management/user-registration/user-registration.component';
 // import { ResetPasswordComponent } from './components/user-management/reset-password/reset-password.component';

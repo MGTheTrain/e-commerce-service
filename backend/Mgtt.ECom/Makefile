@@ -54,7 +54,7 @@ run-selected-tests:
 		$(DOTNET) test $(TEST_DIR)/$(subdir); \
 	fi
 
-run-api-test:
+run-api-tests:
 	cd test/Api && $(PYTEST) --html=report.html
 
 run-selected-api-test:

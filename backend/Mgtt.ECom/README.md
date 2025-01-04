@@ -46,17 +46,27 @@ If external services for storage or messaging are needed via Docker Compose modi
 make start-docker-cmp-external
 ```
 
-Run xUnit tests:
+Run unit tests:
+
+```sh
+make run-unit-test
+```
+
+Run integration tests:
 
 ```sh
 export AWS_ACCESS_KEY_ID="test"
 export AWS_SECRET_ACCESS_KEY="test"
 export AWS_DEFAULT_REGION="us-east-1"
 export AWS_ENDPOINT_URL="http://localhost:4566"
-# All tests
-make test
-# Individual tests
-make test-individual subdir=<subdirectory in the test folder, e.g. Mgtt.ECom.ApplicationTest>
+
+make run-integration-tests
+```
+
+Run selected xUnit tests:
+
+```sh
+make run-selected-tests subdir=<subdirectory in the test folder, e.g. Unit/Mgtt.ECom.DomainTest or Integration/Mgtt.ECom.ApplicationTest>
 ```
 
 ### Starting the Kestrel-Webserver
@@ -73,27 +83,27 @@ Start Kestrel-Webserver:
 make run
 ```
 
-### Running smoke tests
+### Running api tests
 
-Run smoke tests:
+Run api tests:
 
 ```sh
 pip install -r requirements.txt # install pip depdencies
 export API_BASE_URL='http://localhost:5000/api/v1' # Substitute the value if it differs
 export BEARER_TOKEN='<your Auth0 access token>' # A user with claim permissions to manage reviews, orders, products, and carts. Retrieve the bearer token from browser storage via the web frontend
 # all
-make smoke-test
+make run-api-tests
 # Individual tests
-make smoke-test-individual test_file_name=<test file name, e.g. test_user_management_domain_smoker.py>
+make run-selected-api-test test_file_name=<test file name, e.g. test_user_management_domain_smoker.py>
 ```
 
 Results should resemble the following (the **left half of the screen** is executing the smoke test while **the right half** is ramping up the Kestrel web server as a precondition):
 
-![smoke tests results](../../docs/results/smoke-tests-results.PNG)
+![api tests results](../../docs/results/api-tests-results.PNG)
 
-After running the tests a **test report is generated** and available for review. To view it, open the **generated file smoke-tests/report.html** in your preferred web browser:
+After running the tests a **test report is generated** and available for review. To view it, open the **generated file test/Api/report.html** in your preferred web browser:
 
-![smoke tests report](../../docs/results/smoke-tests-report.PNG)
+![api tests report](../../docs/results/api-tests-report.PNG)
 
 ### Generating project documentation
 

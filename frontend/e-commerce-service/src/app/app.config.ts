@@ -6,7 +6,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { ApiModule, Configuration } from "./generated";
 import { environment } from "../../environments/environment";
 import { AuthModule } from "@auth0/auth0-angular";
-import { TokenInterceptor } from "./interceptors/token.service";
+import { TokenInterceptor } from "./shared/interceptors/token.service";
 
 @NgModule({
   declarations: [

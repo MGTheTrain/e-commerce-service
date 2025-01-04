@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PageNotFoundComponent } from './components/error-pages/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './shared/component/error-pages/page-not-found/page-not-found.component';
 // import { UserLoginComponent } from './components/user-management/user-login/user-login.component';
 // import { UserRegistrationComponent } from './components/user-management/user-registration/user-registration.component';
 // import { ResetPasswordComponent } from './components/user-management/reset-password/reset-password.component';
-import { ProductListComponent } from './components/product-management/product-list/product-list.component';
-import { ProductDetailComponent } from './components/product-management/product-detail/product-detail.component';
-import { OrderListComponent } from './components/order-management/order-list/order-list.component';
-import { OrderDetailComponent } from './components/order-management/order-detail/order-detail.component';
-import { CartComponent } from './components/shopping-cart/cart/cart.component';
-import { ReviewListComponent } from './components/review-management/review-list/review-list.component';
-import { ReviewDetailComponent } from './components/review-management/review-detail/review-detail.component';
-import { CartListComponent } from './components/shopping-cart/cart-list/cart-list.component';
-import { ProductCreationComponent } from './components/product-management/product-creation/product-creation.component';
-import { ReviewCreationComponent } from './components/review-management/review-creation/review-creation.component';
+import { ProductListComponent } from './domain/product-management/product-list/product-list.component';
+import { ProductDetailComponent } from './domain/product-management/product-detail/product-detail.component';
+import { OrderListComponent } from './domain/order-management/order-list/order-list.component';
+import { OrderDetailComponent } from './domain/order-management/order-detail/order-detail.component';
+import { CartComponent } from './domain/shopping-cart/cart/cart.component';
+import { ReviewListComponent } from './domain/review-management/review-list/review-list.component';
+import { ReviewDetailComponent } from './domain/review-management/review-detail/review-detail.component';
+import { CartListComponent } from './domain/shopping-cart/cart-list/cart-list.component';
+import { ProductCreationComponent } from './domain/product-management/product-creation/product-creation.component';
+import { ReviewCreationComponent } from './domain/review-management/review-creation/review-creation.component';
 
 const routes: Routes = [
     { path: '', component: ProductListComponent },

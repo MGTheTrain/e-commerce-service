@@ -17,6 +17,7 @@ services:
       - SERVICES=s3
     volumes:
       - localstack-data:/data
+    restart: on-failure
     networks:
       - custom-network 
     # Check: aws configure list
@@ -49,6 +50,7 @@ services:
       - localstack
     ports:
       - "5000:8080/tcp"
+    restart: on-failure
     networks:
       - custom-network 
 
@@ -63,6 +65,7 @@ services:
       - localstack
     ports:
       - "4200:80/tcp"
+    restart: on-failure
     networks:
       - custom-network 
 

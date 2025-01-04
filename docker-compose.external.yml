@@ -15,6 +15,7 @@ services:
       - AWS_ENDPOINT_URL=http://localstack:4566
       - AWS_PAGER=""
       - SERVICES=s3
+    restart: on-failure
     volumes:
       - localstack-data:/data
     # Check: aws configure list

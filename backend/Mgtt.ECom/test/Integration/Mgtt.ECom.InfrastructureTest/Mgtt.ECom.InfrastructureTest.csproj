@@ -26,7 +26,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <ProjectReference Include="..\..\src\Mgtt.ECom.Infrastructure\Mgtt.ECom.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\Mgtt.ECom.Infrastructure\Mgtt.ECom.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

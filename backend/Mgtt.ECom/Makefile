@@ -13,8 +13,8 @@ SMOKE_TEST_DIR = api-test
 
 help:
 	@echo "Available make commands:"
-	@echo "  start-docker-cmp           - Start the Docker Compose services"
-	@echo "  stop-docker-cmp            - Stop the Docker Compose services"
+	@echo "  start-docker-cmp-external  - Start the Docker Compose services"
+	@echo "  stop-docker-cmp-external   - Stop the Docker Compose services"
 	@echo "  run-unit-tests             - Run all unit tests"
 	@echo "  run-integration-tests      - Run all integration tests"
 	@echo "  run-selected-tests         - Run an selected tests (provide subdir=<subdirectory>)"

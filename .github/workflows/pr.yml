@@ -15,7 +15,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Start external storage services
-        run: docker-compose -f docker-compose.external.yml up -d --build
+        run: docker compose -f docker-compose.external.yml up -d --build
 
       - name: Run C# unit tests
         uses: MGTheTrain/public-github-actions/.github/actions/test-csharp-repository@main

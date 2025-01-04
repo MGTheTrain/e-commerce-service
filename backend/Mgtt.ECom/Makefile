@@ -59,7 +59,7 @@ run-api-tests:
 
 run-selected-api-test:
 	@if [ -z "$(test_file_name)" ]; then \
-		echo "Please provide a testname in the test folder using 'make run-selected-api-test test_file_name=<test file name, e.g. test_user_management_domain_smoker.py>'"; \
+		echo "Please provide a testname in the test folder using 'make run-selected-api-test test_file_name=<test file name, e.g. test_shopping_cart_domain_smoker.py>'"; \
 	else \
 		cd test/Api && $(PYTEST) $(test_file_name) --html=report.html; \
 	fi

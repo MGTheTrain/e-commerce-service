@@ -6,10 +6,25 @@ PYTEST = pytest
 DOCS_DIR = docs
 SRC_DIR = src
 TEST_DIR = test
-SMOKE_TEST_DIR = smoke-test
+SMOKE_TEST_DIR = api-test
 
 # Commands
-.PHONY: start-docker-cmp-external stop-docker-cmp-external test test-individual smoke-test run clean format-and-lint
+.PHONY: start-docker-cmp-external stop-docker-cmp-external run-unit-tests run-integration-tests run-selected-tests run-api-test run-selected-api-test run clean format-and-lint
+
+help:
+	@echo "Available make commands:"
+	@echo "  start-docker-cmp           - Start the Docker Compose services"
+	@echo "  stop-docker-cmp            - Stop the Docker Compose services"
+	@echo "  run-unit-tests             - Run all unit tests"
+	@echo "  run-integration-tests      - Run all integration tests"
+	@echo "  run-selected-tests         - Run an selected tests (provide subdir=<subdirectory>)"
+	@echo "  run-api-tests         		- Run api tests"
+	@echo "  run-selected-api-test      - Run selected api test"
+	@echo "  run                        - Start the web server"
+	@echo "  clean                      - Clean up generated files"
+	@echo "  docs                       - Build and serve the documentation"
+	@echo "  format-and-lint            - Format and lint C# files"
+	@echo "  help                       - Display this help message"
 
 start-docker-cmp-external:
 	cd ../.. && docker-compose -f docker-compose.external.yml up -d --build
@@ -18,28 +33,35 @@ stop-docker-cmp-external:
 	cd ../.. && docker-compose -f docker-compose.external.yml down -v
 
 # Run tests
-test:
-	@folders=$$(find ./test -type f -name '*.csproj' -exec dirname {} \;); \
+run-unit-tests:
+	@folders=$$(find ./test/Unit -type f -name '*.csproj' -exec dirname {} \;); \
 	for folder in $${folders}; do \
 		echo "Running tests in folder: $${folder}"; \
 		dotnet test "$${folder}"; \
 	done
 
-test-individual:
+run-integration-tests:
+	@folders=$$(find ./test/Integration -type f -name '*.csproj' -exec dirname {} \;); \
+	for folder in $${folders}; do \
+		echo "Running tests in folder: $${folder}"; \
+		dotnet test "$${folder}"; \
+	done
+
+run-selected-tests:
 	@if [ -z "$(subdir)" ]; then \
-		echo "Please provide a subdirectory in the test folder using 'make test-individual subdir=<subdirectory>'"; \
+		echo "Please provide a subdirectory in the test folder using 'make run-selected-tests subdir=<subdirectory>'"; \
 	else \
 		$(DOTNET) test $(TEST_DIR)/$(subdir); \
 	fi
 
-smoke-test:
-	cd smoke-test && $(PYTEST) --html=report.html
+run-api-test:
+	cd test/Api && $(PYTEST) --html=report.html
 
-smoke-test-individual:
+run-selected-api-test:
 	@if [ -z "$(test_file_name)" ]; then \
-		echo "Please provide a testname in the test folder using 'make smoke-test-individual test_file_name=<test file name, e.g. test_user_management_domain_smoker.py>'"; \
+		echo "Please provide a testname in the test folder using 'make run-selected-api-test test_file_name=<test file name, e.g. test_user_management_domain_smoker.py>'"; \
 	else \
-		cd smoke-test && $(PYTEST) $(test_file_name) --html=report.html; \
+		cd test/Api && $(PYTEST) $(test_file_name) --html=report.html; \
 	fi
 
 # Start server

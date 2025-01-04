@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 04-01-2025
+
 ### Updated
 
 - Modified the folder structure for the SPA and Web API tests. Modified CI workflows to align with these changes

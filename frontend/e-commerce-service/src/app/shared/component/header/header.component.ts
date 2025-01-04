@@ -7,7 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faList, faSearch, faShoppingCart, faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { CartResponseDTO, CartService } from '../../../generated';
-import { ProductListFilter } from '../../model/productListFilter.model';
+import { ProductListFilter } from '../../model/product-list-filter.model';
 
 @Component({
   selector: 'app-header',

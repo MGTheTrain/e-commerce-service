@@ -7,7 +7,7 @@ import { HeaderComponent } from '../../../shared/component/header/header.compone
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faPlus, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ProductListFilter } from '../../../models/product-list-filter';
+import { ProductListFilter } from '../../../shared/model/product-list-filter.model';
 import { FooterComponent } from '../../../shared/component/footer/footer.component';
 
 @Component({
